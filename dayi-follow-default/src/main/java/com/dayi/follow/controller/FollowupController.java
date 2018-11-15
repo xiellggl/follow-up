@@ -30,12 +30,19 @@ import java.util.List;
  * @date 2018/11/13
  */
 @Controller
-@RequestMapping("/followup/")
+@RequestMapping("/followup")
 public class FollowupController {
     @Resource
     FollowUpService followUpService;
     @Resource
     UserComponent userComponent;
+
+
+    @RequestMapping(value = "/index")
+    public String index(HttpServletRequest request) {
+        return "/index";
+    }
+
     /**
      * 登录表单页面
      *
@@ -43,15 +50,17 @@ public class FollowupController {
      * @param goTo
      * @return
      */
-    @RequestMapping(value = "login")
+    @RequestMapping(value = "/login")
     public String login(HttpServletRequest request, String goTo) {
         request.setAttribute("goTo", goTo);
-        return "/login";
+        return "login";
     }
+
+
     /**
      * 登录
      */
-    @RequestMapping("login/post")
+    @RequestMapping("/login/post")
     @ResponseBody
     public BizResult login(HttpServletRequest request, HttpServletResponse response, @Valid @ModelAttribute("loginVo") LoginVo loginVo, String goTo, BindingResult result) {
         if (result.hasErrors()) {//参数错误，拼接返回
