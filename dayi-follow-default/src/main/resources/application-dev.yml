@@ -1,24 +1,22 @@
 spring:
   datasource:
-    follow:
-      url: jdbc:mysql://172.28.1.3:3306/dayi_follow_all?useUnicode=true&characterEncoding=utf8&useAffectedRows=true
-      username: root
-      password: monda43%-346ujNyu7deJ
-      driver-class-name: com.mysql.jdbc.Driver
-      hikari:
-            minimum-idle: 5
-            maximum-pool-size: 100
-            pool-name: HikariPool
-    dayi:
-      url: jdbc:mysql://172.28.1.3:3306/dev_dayi_spot?useUnicode=true&characterEncoding=utf8&useAffectedRows=true
-      username: root
-      password: monda43%-346ujNyu7deJ
-      driver-class-name: com.mysql.jdbc.Driver
-      hikari:
-            minimum-idle: 5
-            maximum-pool-size: 100
-            pool-name: HikariPool
+    url: jdbc:mysql://172.28.1.3:3306/dayi_follow?useUnicode=true&characterEncoding=utf8&useAffectedRows=true
+    username: root
+    password: monda43%-346ujNyu7deJ
+    driver-class-name: com.mysql.jdbc.Driver
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 200
+      pool-name: HikariPool
   session:
     store-type: hash_map
 
+dayi:
+  mq:
+    nameservAddr: 172.28.1.60:9876
+    consumerGroup: dayi-follow-consumer
+  component:
+    constant: #常量参数
+      properties:
+        imageHost: http://localhost:9601
 

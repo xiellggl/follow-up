@@ -1,53 +1,22 @@
 spring:
   datasource:
-    url: jdbc:mysql://172.28.1.3:3306/dayi_wms_all?useUnicode=true&characterEncoding=utf8&useAffectedRows=true
+    url: jdbc:mysql://172.28.1.3:3306/dayi_follow?useUnicode=true&characterEncoding=utf8&useAffectedRows=true
     username: root
     password: monda43%-346ujNyu7deJ
     driver-class-name: com.mysql.jdbc.Driver
-    druid:
-      initial-size: 10
-      min-idle: 10
-      max-active: 50
-      max-wait: 60000
-      filters: stat,wall,log4j,config
-      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
-      stat-view-servlet:
-        login-username: dayiadmin
-        login-password: 123456
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 200
+      pool-name: HikariPool
   session:
-    store-type: redis
-    #store-type=hash_map
-  redis:
-    database: 1
-    host: 127.0.0.1
-    port: 6379
-    password:
-    timeout: 20000
-    pool:
-      max-active: 8
-      max-wait: -1
-      max-idle: 10
-      min-idle: 0
-
-dubbo:
-  registry:
-    address: zookeeper://172.28.1.4:2181
-  application:
-    name: dayi-user
-    owner: dayi
-    organization: dayi
-  protocol:
-    dubbo:
-      port: 21410
+    store-type: hash_map
 
 dayi:
-  image:
-    host: 127.0.0.1:8080
   mq:
-    nameservAddr: 172.28.1.4:9876
-    producerGroup: user-center-producer
-  sso:
-    urls: http://www.dayi35.my;http://spot.dayi35.my;http://jr.dayi35.my;http://localhost:8080;
-    token:
-      key: DAYI$token!&13-Ke*9527
+    nameservAddr: 172.28.1.60:9876
+    consumerGroup: dayi-follow-consumer
+  component:
+    constant: #常量参数
+      properties:
+        imageHost: http://localhost:9601
 

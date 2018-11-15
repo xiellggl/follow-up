@@ -46,7 +46,7 @@ public class FollowupController {
     @RequestMapping(value = "login")
     public String login(HttpServletRequest request, String goTo) {
         request.setAttribute("goTo", goTo);
-        return "/login1";
+        return "/login";
     }
     /**
      * 登录

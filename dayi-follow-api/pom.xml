@@ -6,10 +6,10 @@
     <parent>
         <artifactId>dayi-follow</artifactId>
         <groupId>com.dayi</groupId>
-        <version>1.0.3-SNAPSHOT</version>
+        <version>1.0.1-SNAPSHOT</version>
     </parent>
-
     <artifactId>dayi-follow-api</artifactId>
+    <packaging>jar</packaging>
 
 
 </project>
