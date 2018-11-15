@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.1.xsd
+	http://code.alibabatech.com/schema/dubbo
+	http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <context:property-placeholder location="classpath:src/main/resources/application-inet.yml"/>
+
+    <dubbo:registry address="${dubbo.registry.address}" username="${dubbo.registry.username}" password="${dubbo.registry.password}" check="false" />
+
+    <dubbo:application name="${dubbo.application.name}" owner="${dubbo.application.owner}" organization="${dubbo.application.organization}" >
+        <dubbo:parameter key="qos.enable" value="false"/>
+    </dubbo:application>
+
+    <dubbo:provider token="true" timeout="${dubbo.timeout}" /><!-- loadbalance="roundrobin" -->
+
+    <dubbo:protocol name="dubbo" server="netty4" threadpool="cached" port="${dubbo.protocol.dubbo.port}" threads="${dubbo.threads}" /><!--serialization="kryo"-->
+
+    <!-- 接口配置 -->
+    <dubbo:service interface="com.dayi.wms.service.ApiManifestService" ref="manifestService"/>
+    <dubbo:service interface="com.dayi.wms.service.ApiRepositoryService" ref="repositoryService"/>
+    <dubbo:service interface="com.dayi.wms.service.ApiCompanyService" ref="companyService"/>
+
+    <dubbo:reference interface="com.dayi.user.service.UserService" id="userService" check="false" />
+    <dubbo:reference interface="com.dayi.user.service.ManagerApiService" id="managerApiService" check="false" />
+    <dubbo:reference interface="com.dayi.user.service.ManagerLoginLogService" id="managerLoginLogService" check="false" />
+
+    <!-- 牌号 -->
+    <dubbo:reference interface="com.dayi.brand.service.BrandApiService" id="brandApiService" check="false" />
+</beans>
