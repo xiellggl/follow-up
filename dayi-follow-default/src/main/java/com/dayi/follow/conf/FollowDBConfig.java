@@ -1,6 +1,9 @@
 package com.dayi.follow.conf;
 
+import com.dayi.mybatis.spring.plus.MybatisSqlSessionFactoryBean;
 import com.dayi.mybatis.spring.spring.SqlSessionFactoryBean;
+import com.dayi.mybatis.support.BaseMapper;
+import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
@@ -21,7 +24,7 @@ import javax.sql.DataSource;
  * @date 2018/11/13
  */
 @Configuration
-@MapperScan(basePackages = {"com.dayi.follow.dao.follow"},sqlSessionFactoryRef = "followSqlSessionFactory")
+@MapperScan(basePackages = {"com.dayi.follow.dao.follow"},sqlSessionFactoryRef = "followSqlSessionFactory",markerInterface = BaseMapper.class)
 public class FollowDBConfig {
 
     @Autowired
@@ -36,9 +39,10 @@ public class FollowDBConfig {
     }
 
 
-    @Bean
+    @Bean(name = "followSqlSessionFactory")
+    @Primary
     public SqlSessionFactory followSqlSessionFactory() throws Exception {
-        SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
+        MybatisSqlSessionFactoryBean sqlSessionFactoryBean = new MybatisSqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(followDataSource);
 
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
@@ -47,14 +51,5 @@ public class FollowDBConfig {
 
         return sqlSessionFactoryBean.getObject();
     }
-
-    @Bean(name = "followSessionTemplate")
-    @Primary
-    public SqlSessionTemplate followSqlSession() throws Exception {
-        SqlSessionTemplate followSessionTemplate = new SqlSessionTemplate(followSqlSessionFactory());
-
-        return followSessionTemplate;
-    }
-
 
 }

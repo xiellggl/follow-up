@@ -17,7 +17,7 @@ spring:
       max-request-size: -1
 
 mybatis:
-  mapper-locations: classpath:com/dayi/follow/**/mapper/*.xml,classpath:com/dayi/user/manager/**/mapper/*.xml
+  mapper-locations: classpath:com/dayi/user/manager/**/mapper/*.xml
 
 dayi:
   serverid: 160

@@ -1,5 +1,6 @@
 package com.dayi.follow.util;
 
+import java.net.URLEncoder;
 import java.util.regex.Pattern;
 
 /**
@@ -15,5 +16,15 @@ public class StringUtil {
     public static boolean isInteger(String str) {
         Pattern pattern = Pattern.compile("^[-\\+]?[\\d]+$");
         return pattern.matcher(str).matches();
+    }
+
+
+    public static String urlEncode(String str){
+        try{
+            return URLEncoder.encode(str, "utf-8");
+        }catch(Exception ex){
+//        	log.error(str.concat(" 编码失败!"),ex);
+        }
+        return str;
     }
 }

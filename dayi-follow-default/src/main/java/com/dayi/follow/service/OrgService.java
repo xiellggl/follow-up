@@ -2,7 +2,9 @@ package com.dayi.follow.service;
 
 
 import com.dayi.follow.model.FollowUp;
+import com.dayi.follow.vo.AgentVo;
 import com.dayi.follow.vo.OrgVo;
+import com.dayi.mybatis.support.Page;
 /**
  * @author xiell
  * @date 2018/11/12
@@ -30,6 +32,10 @@ public interface OrgService {
      * 根据邀请码获取综合会员机构商信息
      */
     OrgVo getColligateOrgByInviteCode(String inviteCode);
+
+
+
+
 
 
 }

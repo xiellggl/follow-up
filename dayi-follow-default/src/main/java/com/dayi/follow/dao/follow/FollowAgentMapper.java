@@ -1,7 +1,8 @@
-package com.dayi.follow.dao.dayi_follow;
+package com.dayi.follow.dao.follow;
 
 import com.dayi.follow.vo.AgentVo;
 import com.dayi.mybatis.support.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -11,5 +12,5 @@ import java.util.List;
  */
 public interface FollowAgentMapper extends BaseMapper<AgentVo> {
 
-    List<Integer> getWaitLinkAgentIds(String followUpId);
+    List<Integer> getWaitLinkAgentIds(@Param("followUpId") String followUpId);
 }

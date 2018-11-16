@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.dayi.follow.dao.follow.FollowUpMapper">
+<mapper namespace="com.dayi.follow.dao.follow.DeptMapper">
 
-    <!--<resultMap id="BaseResultMap" type="com.dayi.follow.model.FollowUp">-->
-
-    <!--</resultMap>-->
-
-    <!--<select id="get" resultMap="BaseResultMap" parameterType="string">-->
-
-    <!--</select>-->
 
 </mapper>

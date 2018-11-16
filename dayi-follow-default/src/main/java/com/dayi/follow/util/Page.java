@@ -1,9 +1,9 @@
-package com.fiidee.eagle.framework.base.page;
+package com.dayi.follow.util;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fiidee.eagle.framework.base.dao.util.OrderBy;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
+import javax.persistence.OrderBy;
 import java.util.ArrayList;
 import java.util.List;
 

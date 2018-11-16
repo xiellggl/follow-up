@@ -4,5 +4,5 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="common" uri="http://www.dayi35.com/common/" %>
+<%--<%@ taglib prefix="common" uri="http://www.dayi35.com/common/" %>--%>
 <c:set var="sysName" value="塑如意跟进人管理系统"/>

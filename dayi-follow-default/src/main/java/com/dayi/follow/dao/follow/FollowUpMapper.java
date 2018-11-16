@@ -2,6 +2,7 @@ package com.dayi.follow.dao.follow;
 
 import com.dayi.follow.model.FollowUp;
 import com.dayi.mybatis.support.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 /**
@@ -13,4 +14,6 @@ public interface FollowUpMapper extends BaseMapper<FollowUp> {
     FollowUp getByUserName(String userName);
     @Select(" select * from follow_up where invite_code =#{inviteCode} ")
     FollowUp getByInviteCode(String inviteCode);
+
+
 }

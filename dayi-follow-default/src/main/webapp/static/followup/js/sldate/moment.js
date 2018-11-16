@@ -7,7 +7,7 @@
 (function (undefined) {
 
     /************************************
-        Constants
+        constants
     ************************************/
 
     var moment,

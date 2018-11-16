@@ -1,34 +1,38 @@
 package com.dayi.follow.service;
 
 
-import com.dayi.common.util.BizResult;
-import com.dayi.follow.model.FollowUp;
-import com.dayi.follow.vo.AgentVo;
-import com.dayi.follow.vo.LoginVo;
-import com.dayi.mybatis.support.Page;
-
-import javax.servlet.http.HttpServletRequest;
 /**
  * @author xiell
  * @date 2018/11/12
  */
 
+import com.dayi.follow.model.Department;
+import com.dayi.follow.model.FollowUp;
+
+import java.util.List;
+
 /**
- * 跟进人 业务接口类
+ *  部门 业务接口类
  */
-public interface FollowUpService {
+public interface DeptService {
 
     /**
-     * 添加跟进人信息
+     * 拼写 SQL 条件 -- 通过跟进人所属部门 ID -- 拼写本级不包括其他负责人的跟进人 ID 的 NOT IN 条件语句
      */
-    BizResult add(FollowUp followUp);
+     String spellMyDeptManagerFlowIdsNotInsql(Integer deptId, String fieldName, String alias);
+    /**
+     * 拼写 SQL 条件 -- 通过跟进人所属部门 ID -- 拼写所有下级跟进人 ID 的 IN 条件语句
+     */
+     String spellSubFlowIdsInsql(Integer deptId, List<Integer> chargeDeptIds, String fieldName, String alias, boolean isHaveOwn);
+
+    /**
+     * 递归查询 -- 指定部门
+     */
+     List<Department> getMySubDeptList(Integer deptId, boolean isHaveOwn, List<Department> loopInvokingList);
 
     /**
      * 获取跟进人信息
      */
-    FollowUp get(String followUpId);
-
-
-
+    Department get(String deptId);
 
 }

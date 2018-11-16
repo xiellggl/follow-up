@@ -1,26 +1,21 @@
-package com.dayi35.core.followup.model;
+package com.dayi.follow.model;
 
-import com.beust.jcommander.internal.Lists;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fiidee.eagle.framework.base.model.BaseEntity;
-import com.fiidee.eagle.framework.util.BeanUtils;
+import com.dayi.mybatis.support.BaseModel;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.*;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.*;
-import javax.persistence.OrderBy;
+import javax.persistence.Transient;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/** 跟进人部门 实体类 */
-@Entity
-@DynamicUpdate
-@DynamicInsert
-@SelectBeforeUpdate
-public class FollowDept extends BaseEntity {
+/**
+ * @author xiell
+ * @date 2018/11/16
+ */
+
+public class Department extends BaseModel {
 
     private Integer pid;    // 上级部门ID
     private Integer sortNo; // 排序号（同级）
@@ -34,59 +29,45 @@ public class FollowDept extends BaseEntity {
 
     @Transient
     private String managers;  // 负责人
+    @Transient
+    private List<FollowUp> followUpList = new ArrayList();  // 跟进人
+    @Transient
+    private Department parentDept;  // 上级部门
+    @Transient
+    private List<Department> subDeptList = new ArrayList();  // 下级部门
 
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "followDept", cascade = {CascadeType.REMOVE})
-    private List<FlowUp> flowUpList = Lists.newArrayList();  // 跟进人
+    public Department() {}
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pid", updatable = false, insertable = false)
-    @NotFound(action = NotFoundAction.IGNORE)
-    private FollowDept parentDept;  // 上级部门
-
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parentDept", cascade = {CascadeType.REMOVE})
-    @OrderBy("sortNo")
-    private List<FollowDept> subDeptList = Lists.newArrayList();  // 下级部门
-
-    public FollowDept() {}
-
-    public FollowDept(Integer sortNo, String name, String treeName) {
+    public Department(Integer sortNo, String name, String treeName) {
         this.sortNo = sortNo;
         this.name = name;
         this.treeName = treeName;
     }
 
-    /** 新增 -- 设置属性 */
-    public void setAddProperty() {
-        Date nowDate = new Date();
-        this.setCreateDate(nowDate);
-        this.setModifyDate(nowDate);
-    }
+
 
     /** 修改 -- 设置属性 */
-    public void setModifyProperty(FollowDept deptUI) {
-        if(deptUI != null){ // 更新页面修改属性值
-            BeanUtils.copyProperties(deptUI, this);
-            if(deptUI.getPid() == null){ // 当选择上级部门为顶级时
+    public void setModifyProperty(Department department) {
+        if(department != null){ // 更新页面修改属性值
+            BeanUtils.copyProperties(department, this);
+            if(department.getPid() == null){ // 当选择上级部门为顶级时
                 this.setPid(null);
             }
         }
-        this.setModifyDate(new Date());
+        this.setUpdateTime(new Date());
     }
 
     /* 自定义属性方法 */
     /** 负责人 */
     @Transient
     public String getManagers() {
-        if(CollectionUtils.isNotEmpty(flowUpList)){
+        if(CollectionUtils.isNotEmpty(followUpList)){
             managers = "";
             Integer isManager = null;
-            for(FlowUp flowUp : flowUpList){
-                isManager = flowUp.getIsManager(); // 是否负责人：0--否；1--是
+            for(FollowUp followUp : followUpList){
+                isManager = followUp.getIsManager(); // 是否负责人：0--否；1--是
                 if(isManager != null && isManager == 1){
-                    managers = managers + flowUp.getLinkPerson() + "，";
+                    managers = managers + followUp.getName() + "，";
                 }
             }
             if(StringUtils.isNotBlank(managers)){
@@ -165,27 +146,27 @@ public class FollowDept extends BaseEntity {
         this.remark = remark;
     }
 
-    public List<FlowUp> getFlowUpList() {
-        return flowUpList;
+    public List<FollowUp> getFollowUpList() {
+        return followUpList;
     }
 
-    public void setFlowUpList(List<FlowUp> flowUpList) {
-        this.flowUpList = flowUpList;
+    public void setFollowUpList(List<FollowUp> followUpList) {
+        this.followUpList = followUpList;
     }
 
-    public FollowDept getParentDept() {
+    public Department getParentDept() {
         return parentDept;
     }
 
-    public void setParentDept(FollowDept parentDept) {
+    public void setParentDept(Department parentDept) {
         this.parentDept = parentDept;
     }
 
-    public List<FollowDept> getSubDeptList() {
+    public List<Department> getSubDeptList() {
         return subDeptList;
     }
 
-    public void setSubDeptList(List<FollowDept> subDeptList) {
+    public void setSubDeptList(List<Department> subDeptList) {
         this.subDeptList = subDeptList;
     }
 }

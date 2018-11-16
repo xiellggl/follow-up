@@ -78008,7 +78008,7 @@ var asc$2 = asc;
 var bind$4 = bind;
 var each$23 = each$1;
 
-// Constants
+// constants
 var DEFAULT_LOCATION_EDGE_GAP = 7;
 var DEFAULT_FRAME_BORDER_WIDTH = 1;
 var DEFAULT_FILLER_SIZE = 30;

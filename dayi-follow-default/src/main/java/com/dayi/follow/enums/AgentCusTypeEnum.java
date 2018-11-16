@@ -6,34 +6,44 @@ package com.dayi.follow.enums;
  */
 
 /**
- * 机构会员分类枚举
+ * 代理商客户类型
  */
-public enum OrgTypeEnum {
+public enum AgentCusTypeEnum {
+    NOT_LINK("未联系", 1),
+    /**
+     * 未联系客户
+     */
+    OPEN_ACCOUNT("已开户", 2),
+    /**
+     * 可被跟进客户
+     */
+    CAN_FOLLOWUP("可被跟进", 3),
+    /**
+     * 无意向客户
+     */
+    NO_INTENTION("无意向", 4),
+    /**
+     * 流失客户
+     */
+    LOST("流失", 5),
+    /**
+     * 无效客户
+     */
+    INVALID("无效", 6);
 
-    Manager(1, "经纪会员"),
-    Colligate(2, "综合会员"),
-    Maker(4, "创客会员"),
-    CityServer(5, "城市服务商");
-    String name;
-    int value;
-
-    OrgTypeEnum(int value, String name) {
-        this.name = name;
-        this.value = value;
-    }
-
-    public int getValue() {
-        return value;
-    }
+    private String name;
+    private Integer value;
 
     public String getName() {
         return name;
     }
 
-    public static OrgTypeEnum getEnumOrgType(Integer key) {
-        for (OrgTypeEnum type : OrgTypeEnum.values()) {
-            if (key != null && key.equals(type.getValue())) return type;
-        }
-        return null;
+    public Integer getValue() {
+        return value;
+    }
+
+    AgentCusTypeEnum(String name, Integer value) {
+        this.name = name;
+        this.value = value;
     }
 }

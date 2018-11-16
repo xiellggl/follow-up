@@ -1,4 +1,4 @@
-package com.fiidee.eagle.framework.base.page;
+package com.dayi.follow.util;
 
 
 public class PageUtil {

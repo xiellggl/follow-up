@@ -27,6 +27,7 @@ public class OrgServiceImpl implements OrgService {
     @Resource
     private OrgMapper orgMapper;
 
+
     @Override
     public OrgVo getByMarkerNum(String makerNum) {
         Conditions conditions = new Conditions();
@@ -72,5 +73,9 @@ public class OrgServiceImpl implements OrgService {
         conditions.add(Restrictions.ne("del_status", DelStatusEnum.Delete.getValue()));
         return orgMapper.getByConditions(conditions);
     }
+
+
+
+
 }
 

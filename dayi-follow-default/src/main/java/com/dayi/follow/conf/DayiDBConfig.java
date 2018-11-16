@@ -1,5 +1,6 @@
 package com.dayi.follow.conf;
 
+import com.dayi.mybatis.spring.plus.MybatisSqlSessionFactoryBean;
 import com.dayi.mybatis.spring.spring.SqlSessionFactoryBean;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -35,9 +36,9 @@ public class DayiDBConfig {
     }
 
 
-    @Bean
+    @Bean(name = "dayiSqlSessionFactory")
     public SqlSessionFactory dayiSqlSessionFactory() throws Exception {
-        SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
+        MybatisSqlSessionFactoryBean sqlSessionFactoryBean = new MybatisSqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dayiDataSource);
 
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
@@ -45,13 +46,6 @@ public class DayiDBConfig {
         sqlSessionFactoryBean.setMapperLocations(resource);
 
         return sqlSessionFactoryBean.getObject();
-    }
-
-    @Bean(name = "dayiSessionTemplate")
-    public SqlSessionTemplate dayiSqlSession() throws Exception {
-        SqlSessionTemplate dayiSessionTemplate = new SqlSessionTemplate(dayiSqlSessionFactory());
-
-        return dayiSessionTemplate;
     }
 
 
