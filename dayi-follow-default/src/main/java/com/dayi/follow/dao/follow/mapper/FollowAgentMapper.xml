@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dayi.follow.dao.dayi_follow.FollowAgentMapper">
+
+    <select id="getWaitLinkAgentIds" resultType="java.lang.Integer" parameterType="string">
+        select ac2.agent_id id FROM ( SELECT max( create_date ) create_date, agent_id
+           FROM agent_contact where 1=1
+                <if test="null != followUpId">
+                    AND flow_id =#{followUpId}
+                </if>
+        GROUP BY agent_id ) ac1
+        LEFT JOIN ( SELECT create_date, agent_id, next_contact_time FROM agent_contact ) ac2
+        ON ac2.create_date = ac1.create_date
+        AND ac2.agent_id = ac1.agent_id WHERE next_contact_time = CURDATE()
+    </select>
+
+</mapper>

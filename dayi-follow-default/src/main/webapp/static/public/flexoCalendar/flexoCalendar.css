@@ -1,0 +1,31 @@
+@charset "utf-8";
+.flexoCalendar{margin:0;padding:0;border-collapse:separate;width: 100%; position: relative;z-index: 1}
+.flexoCalendar td,.flexoCalendar th{border:0 none;height:30px; line-height: 30px; color:#333; text-align:center; font-size:14px;cursor:pointer}
+
+.flexoCalendar thead th i{display:inline-block;cursor: pointer;}
+.flexoCalendar thead th i:before{font-style: normal; font-family: "宋体"; font-size: 16px; font-weight: bold;}
+.icon-arrow-left:before{content: '<';}
+.icon-arrow-right:before{content: '>';}
+
+.flexoCalendar tr td.other-month{color:#aaa}
+
+.flexoCalendar td.selected-day span{color:  #3dbaf0;}
+
+.flexoCalendar tr td .day{display: block;width: 30px;text-align: center;margin:1px;border:1px solid transparent;}
+
+.flexoCalendar tr td.current-day>div,.flexoCalendar td.current-day>span{border:1px solid #3dbaf0!important;border-radius: 4px;color:#3dbaf0;}
+
+.flexoCalendar .tweek .week{}
+.flexoCalendar .tweek .process{margin-left: 20px; color:#888;}
+
+.flexoCalendar .tweek>div:hover{background-color: #f1f1f1;}
+.flexoCalendar .tweek>div:hover span{color:#3dbaf0!important;}
+
+.flexoCalendar td.selected-week>div{background-color: #3dbaf0;}
+.flexoCalendar td.selected-week>div span{color:#fff!important;}
+
+
+
+.flexoCalendar td.tmonth .month{display: block;width: 55px;height: 30px;line-height:30px;margin:1px;text-align: center;border-radius: 4px;color: #565656;border:1px solid transparent;}
+.flexoCalendar td.current-month .month{border:1px solid #3dbaf0;}
+.flexoCalendar tr td.week1 div,.tmonth.month1 span,.tmonth.month2 span,.tmonth.month3 span,.tmonth.month4 span{margin-top: 10px!important;}

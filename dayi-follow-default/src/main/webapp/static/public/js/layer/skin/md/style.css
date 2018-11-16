@@ -1,0 +1,176 @@
+@charset "utf-8";
+/*
+ * layer皮肤
+ * 作者：一☆隐☆一
+ * QQ:9073194
+ * 请保留这里的信息 谢谢！虽然你不保留我也不能把你怎么样！
+ */
+
+html #layui_layer_skinmdstylecss {
+    display: none;
+    position: absolute;
+    width: 1989px;
+}
+body .layer-ext-md{border-radius:13px;}
+body .layer-ext-md[type="dialog"] {
+    min-width: 400px;
+}
+body .layer-ext-md-msg[type="dialog"]{min-width:200px;}
+body .layer-ext-md .layui-layer-title {
+    background: #05c3f9;
+    border:0 none;
+    color: #fff;
+    font-size:20px;
+    font-weight:normal;
+    height:50px;
+    line-height:50px;
+    padding-top:3px;
+    padding-left:27px;
+    border-radius:13px 13px 0 0;
+}
+
+
+
+body .layer-ext-md .layui-layer-content .layui-layer-ico {
+    height: 32px;
+    width: 32px;
+    top:26px;
+}
+body .layer-ext-md .layui-layer-ico0 {
+    background: url(default.png) no-repeat -96px 0;
+;
+}
+body .layer-ext-md .layui-layer-ico1 {
+    background: url(default.png) no-repeat -224px 0;
+;
+}
+body .layer-ext-md .layui-layer-ico2 {
+    background: url(default.png) no-repeat -192px 0;
+}
+body .layer-ext-md .layui-layer-ico3 {
+    background: url(default.png) no-repeat -160px 0;
+}
+body .layer-ext-md .layui-layer-ico4 {
+    background: url(default.png) no-repeat -320px 0;
+}
+body .layer-ext-md .layui-layer-ico5 {
+    background: url(default.png) no-repeat -288px 0;
+}
+body .layer-ext-md .layui-layer-ico6 {
+    background: url(default.png) -256px 0;
+}
+body .layer-ext-md .layui-layer-ico7 {
+    background: url(default.png) no-repeat -128px 0;
+}
+body .layer-ext-md .layui-layer-setwin {
+    top:20px;
+    right:20px;
+}
+body .layer-ext-md .layui-layer-setwin a {
+    width: 16px;
+    height: 16px;
+}
+body .layer-ext-md .layui-layer-setwin .layui-layer-min cite:hover {
+    background-color: #56abe4;
+}
+body .layer-ext-md .layui-layer-setwin .layui-layer-max {
+    background: url(default.png) no-repeat -80px 0;
+}
+body .layer-ext-md .layui-layer-setwin .layui-layer-max:hover {
+    background: url(default.png) no-repeat -64px 0;
+}
+body .layer-ext-md .layui-layer-setwin .layui-layer-maxmin {
+    background: url(default.png) no-repeat -32px 0;
+}
+body .layer-ext-md .layui-layer-setwin .layui-layer-maxmin:hover {
+    background: url(default.png) no-repeat -16px 0;
+}
+body .layer-ext-md .layui-layer-setwin .layui-layer-close1 {
+    background: url(default.png) 0 0;
+}
+body .layer-ext-md .layui-layer-setwin .layui-layer-close1:hover{
+    background: url(default.png) -49px 0;
+}
+
+body .layer-ext-md .layui-layer-setwin .layui-layer-close2{
+    width: 30px;
+    height: 30px;
+    background-image: url(../default/icon.png);
+}
+
+
+body .layer-ext-md .layui-layer-padding{padding-top: 24px;}
+body .layer-ext-md .layui-layer-btn {
+    padding:30px 0;
+    background:none;
+    border-top:0 none;
+    text-align:center;
+}
+body .layer-ext-md .layui-layer-btn a {
+    font-size:16px;
+    font-weight: normal;
+    margin:0 14px;
+    padding: 6px 30px;
+    color: #fff;
+    border: 2px solid #05c3f9;
+    background: #05c3f9;
+    border-radius: 20px;
+    display: inline-block;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    vertical-align: middle;
+    background-repeat: no-repeat;
+    text-decoration: none;
+    outline: none;
+    -moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+}
+body .layer-ext-md .layui-layer-btn .layui-layer-btn0 {
+    background: #05c3f9;
+}
+body .layer-ext-md .layui-layer-btn .layui-layer-btn0:hover{
+    background:#fff;color:#05c3f9;
+}
+body .layer-ext-md .layui-layer-btn .layui-layer-btn1 {
+    background: #a2acb5;
+    color: #fff;
+    border: 2px solid #a2acb5;
+    border-radius: 20px;
+}
+body .layer-ext-md .layui-layer-btn .layui-layer-btn1:hover{
+    background:#fff;color:#a2acb5;
+}
+body .layer-ext-md .layui-layer-btn .layui-layer-btn2 {
+    background: #a2acb5;
+    color: #fff;
+    border: 2px solid #a2acb5;
+    border-radius: 20px;
+}
+body .layer-ext-md .layui-layer-btn .layui-layer-btn3 {
+    background: #f00;
+    color: #fff;
+    border: 1px solid #f00;
+    border-radius: 3px;
+}
+
+body .layer-ext-md .layui-layer-title span.layui-layer-tabnow{
+    height:47px;
+}
+body .layer-ext-md .layui-layer-content{font-size:16px;line-height:36px;}
+body .layer-ext-md .layui-layer-content .cont{padding:30px;}
+
+body .layer-ext-md .layui-layer-content .input{vertical-align:middle;width:180px;height:20px;padding:12px 10px;background-color:#ecf1f1;border:0 none;border-radius:5px;}
+body .layer-ext-md .layui-layer-content .select{vertical-align:middle;width:180px;height:20px;padding:12px 10px;background-color:#ecf1f1;border:0 none;border-radius:5px;}
+
+body .layer-ext-md.layui-layer-tips .layui-layer-content{line-height:22px;font-size:12px;}
+body .layer-ext-md.layui-layer-dialog .layui-layer-content{padding-top:50px;}
+body .layer-ext-md.layui-layer-dialog .layui-layer-content .tc{text-align:center;font-size:18px;}
+body .layer-ext-md.layui-layer-dialog .layui-layer-content .decs{line-height:150%;}
+
+body .layer-ext-md.layer-ext-md-msg[type="dialog"] .layui-layer-content{padding-top:20px;}
+
+/*用layer显示图片或者图片背景的弹窗*/
+body .layer-img {background-color: transparent;box-shadow: none;}
+body .layer-img .layui-layer-content{padding: 0;}

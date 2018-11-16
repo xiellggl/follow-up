@@ -1,0 +1,131 @@
+.sidebar.menu-min .sidebar-shortcuts-large{text-align: left; text-indent: 10px; display: none!important;}
+
+.infobox{width: 100%;}
+.infobox>.infobox-data>.infobox-data-number { font-size: 18px;}
+
+
+
+.maintop{margin-bottom: 10px;}
+.lbl{line-height: 34px; color:#999;}
+.help-block{color:#999;}
+.none{display: none;}
+.bgccc{color:#999}
+.bgc{color:#666}
+.admin_sea {height: 30px; }
+
+.search-form input{max-width:120px!important;}
+
+.sl-date {height: 30px;width: 200px;}
+
+.pagination{margin:0;float:right}
+
+.ellipsis{text-overflow: ellipsis;overflow: hidden;}
+
+
+input.field-error,
+select.field-error,
+textarea.field-error{
+    border-color:#d77b68;
+    color:#d77b68;
+}
+input.field-error:focus,
+select.field-error:focus,
+textarea.field-error:focus{
+    border-color:#d77b68;
+    background-color:#fef9f8;
+}
+
+
+.list_order{width:50px;border:#fc6 solid 1px}
+.charsLeft{color:red;}
+
+
+/*验证提示*/
+label.field-error {
+    display: block;
+    margin: 0;
+    font-size: 13px;
+    color: #dd514c;
+    font-weight: normal;
+    box-shadow: none;
+}
+
+/*上传按钮*/
+.file{position:relative;display:inline-block;background:#d0eeff;border:1px solid #99d3f5;border-radius:4px;padding:4px 9pt;overflow:hidden;color:#1e88c7;text-decoration:none;text-indent:0;line-height:25px}
+.file input{position:absolute;font-size:75pt;right:10;top:0;opacity:0}
+.file:hover{background:#aadffd;border-color:#78c3f3;color:#004974;text-decoration:none}
+
+.no_data{text-align: center; padding:50px 0!important;}
+
+/*分页条*/
+.pagerBar {
+    clear: both;
+    height: 30px;
+    line-height: 30px;
+    padding: 10px 0;
+    text-align: center;
+}
+
+.pagerBar .pages {
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    vertical-align: middle;
+}
+
+.pagerBar .pg {
+    display: inline-block;
+    line-height: 30px;
+    line-height: 30px;
+    margin: 0 5px;
+    padding: 0 3px;
+    color: #333;
+    overflow: hidden;
+}
+
+.pagerBar .current {
+    color: #05c3f9;
+    text-decoration: underline;
+}
+
+.pagerBar a.pgbtn {
+    display: inline-block;
+    width: 20px;
+    height: 30px;
+    line-height: 30px;
+    margin: 0 5px;
+    text-indent: -9999px;
+    overflow: hidden;
+    background: url(images/icon_pageArrs.gif) no-repeat;
+}
+
+.pagerBar a.first {
+    background-position: 8px center;
+}
+
+.pagerBar a.prev {
+    background-position: -7px center;
+}
+
+.pagerBar a.last {
+    background-position: -33px center;
+}
+
+.pagerBar a.next {
+    background-position: -20px center;
+}
+
+.pagerBar .pages span.pgbtn {
+    display: none;
+}
+
+.pagerBar .recordTotal {
+    display: inline-block;
+    color: #999;
+    vertical-align: middle;
+}
+
+.pagerBar .recordTotal i {
+    margin: 0 5px;
+}
+

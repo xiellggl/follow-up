@@ -1,0 +1,118 @@
+@charset "utf-8";
+/*
+ * layer皮肤
+ * 作者：一☆隐☆一
+ * QQ:9073194
+ * 请保留这里的信息 谢谢！虽然你不保留我也不能把你怎么样！
+ */
+
+html #layui_layer_skinmdstylecss {
+    display: none;
+    position: absolute;
+    width: 1989px;
+}
+body .layer-ext-ruyi2{}
+body .layer-ext-ruyi2[type="dialog"] {
+    min-width: 400px;
+}
+body .layer-ext-ruyi2-msg[type="dialog"]{min-width:200px;}
+body .layer-ext-ruyi2 .layui-layer-title {
+    background: #fff;
+    color: #333;
+    font-size:16px;
+    font-weight:normal;
+    height:40px;
+    line-height:40px;
+    padding-top:20px;
+    padding-left:0;
+    margin:0 20px;
+}
+
+
+
+body .layer-ext-ruyi2 .layui-layer-content .layui-layer-ico {
+    height: 32px;
+    width: 30px;
+    top:26px;
+}
+
+body .layer-ext-ruyi2 .layui-layer-setwin {
+    top:35px;
+    right:20px;
+}
+body .layer-ext-ruyi2 .layui-layer-setwin a {
+    width: 16px;
+    height: 16px;
+}
+body .layer-ext-ruyi2 .layui-layer-setwin .layui-layer-min cite:hover {
+    background-color: #fff;
+}
+
+body .layer-ext-ruyi2 .layui-layer-padding{padding-top: 24px;}
+body .layer-ext-ruyi2 .layui-layer-btn {
+    padding:20px 0;
+    background:none;
+    border-top:0 none;
+    text-align:center;
+}
+body .layer-ext-ruyi2 .layui-layer-btn a {
+    font-weight: normal;
+    margin:0 14px;
+    padding: 6px 30px;
+    color: #fff;
+    border: 2px solid #3291ff;
+    background: #05c3f9;
+    display: inline-block;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    vertical-align: middle;
+    background-repeat: no-repeat;
+    text-decoration: none;
+    outline: none;
+    -moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+}
+body .layer-ext-ruyi2 .layui-layer-btn .layui-layer-btn0 {
+    background: #3291ff;
+}
+
+body .layer-ext-ruyi2 .layui-layer-btn .layui-layer-btn1 {
+    background: #fff;
+    color: #888;
+    border: 1px solid #ccc;
+
+}
+
+body .layer-ext-ruyi2 .layui-layer-btn .layui-layer-btn2 {
+    background: #a2acb5;
+    color: #fff;
+    border: 1px solid #a2acb5;
+}
+body .layer-ext-ruyi2 .layui-layer-btn .layui-layer-btn3 {
+    background: #f00;
+    color: #fff;
+    border: 1px solid #f00;
+}
+
+body .layer-ext-ruyi2 .layui-layer-title span.layui-layer-tabnow{
+    height:47px;
+}
+body .layer-ext-ruyi2 .layui-layer-content{font-size:14px;line-height:36px;}
+body .layer-ext-ruyi2 .layui-layer-content .cont{padding:20px;}
+
+body .layer-ext-ruyi2 .layui-layer-content .input{vertical-align:middle;width:180px;height:20px;padding:12px 10px;background-color:#ecf1f1;border:0 none;border-radius:3px;}
+body .layer-ext-ruyi2 .layui-layer-content .select{vertical-align:middle;width:180px;height:20px;padding:12px 10px;background-color:#ecf1f1;border:0 none;border-radius:3px;}
+
+body .layer-ext-ruyi2.layui-layer-tips .layui-layer-content{line-height:22px;font-size:12px;}
+body .layer-ext-ruyi2.layui-layer-dialog .layui-layer-content{padding-top:20px;}
+body .layer-ext-ruyi2.layui-layer-dialog .layui-layer-content .tc{text-align:center;font-size:20px;}
+body .layer-ext-ruyi2.layui-layer-dialog .layui-layer-content .decs{line-height:150%;}
+
+body .layer-ext-ruyi2.layer-ext-ruyi2-msg[type="dialog"] .layui-layer-content{padding-top:20px;}
+
+
+/*用layer显示图片或者图片背景的弹窗*/
+body .layer-img {background-color: transparent;box-shadow: none;}
+body .layer-img .layui-layer-content{padding: 0;}

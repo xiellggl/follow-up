@@ -94,7 +94,7 @@
                     common.Cookie.remove("followup_username");
                 }
                 common.ajax.handle({
-                    url: "/followup/login.json",
+                    url: "/followup/login/post",
                     data: $form.serialize(),
                     succback: function (data) {
                         $form[0].reset();
