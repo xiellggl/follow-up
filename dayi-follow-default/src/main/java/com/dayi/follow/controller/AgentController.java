@@ -10,6 +10,7 @@ import com.dayi.follow.service.FollowUpService;
 import com.dayi.follow.util.PageUtil;
 import com.dayi.follow.util.StringUtil;
 import com.dayi.follow.vo.AgentVo;
+import com.dayi.follow.vo.SearchVo;
 import com.dayi.mybatis.common.util.Misc;
 import com.dayi.mybatis.support.Page;
 import org.springframework.stereotype.Controller;
@@ -45,7 +46,7 @@ public class AgentController {
      * @return
      */
     @RequestMapping("/agent/list")
-    public String customerAgentCompile(HttpServletRequest request, Model model) {
+    public String customerAgentCompile(HttpServletRequest request, Model model, SearchVo searchVo) {
         FollowUp currUser = userComponent.getCurrUser(request);//需要加上loginType=followUp参数
         if (currUser == null) {
             return "redirect:/followup/login";
@@ -57,7 +58,7 @@ public class AgentController {
 
         Page page=new Page();
 
-        page = this.myCustomerQuery(request, Constants.SEARCH_PAGE_SIZE, page, flowId, 1);
+        page = this.myCustomerQuery(Constants.SEARCH_PAGE_SIZE, page, flowId, 1,searchVo);
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
         BankTypeEnum[] values = BankTypeEnum.values();
         List<BankTypeEnum> bankTypes = new ArrayList<BankTypeEnum>();
@@ -83,42 +84,27 @@ public class AgentController {
 
 
     /* 我的客户查询 -- 抽取通用查询方法 */
-    private Page<AgentVo> myCustomerQuery(HttpServletRequest request, Integer pageSize, Page<AgentVo> page, String flowId, Integer flowTypeTab) {
-        Integer linkStatus = Misc.toInt(request.getParameter("linkStatus"), -1);  // 是否联系
-        Integer bankSign = Misc.toInt(request.getParameter("bankSign"), -1);  // 是否绑卡
-        Integer idCardValid = Misc.toInt(request.getParameter("idCardVal"), -1);  // 代理商 -- 实名认证
-        Integer nameValidata = Misc.toInt(request.getParameter("nameValidata"), -1);  // 机构商 -- 实名认证
-        Integer inCash = Misc.toInt(request.getParameter("inCash"), -1);  // 是否入金
-        Integer totalFund = Misc.toInt(request.getParameter("totalFund"), -1);  // 总资产为零：1--勾选为零
-        String mobile = request.getParameter("mobile");  // 手机号
-        String inviteCode = request.getParameter("inviteCode");  // 邀请码
-        String makerNum = request.getParameter("makerNum");  // 邀请码(创客号)
-        Integer todayInCash = Misc.toInt(request.getParameter("todayInCash"), -1);  // 今日是否入金
-        Integer todayOutCash = Misc.toInt(request.getParameter("todayOutCash"), -1);  // 今日是否出金
-        Integer customerType = Misc.toInt(request.getParameter("customerType"), -1);  // 客户类型
-        Integer totalBalance = Misc.toInt(request.getParameter("totalBalance"), -1);  // 客户总资产分类
+    private Page<AgentVo> myCustomerQuery( Integer pageSize, Page<AgentVo> page, String followId, Integer flowTypeTab,SearchVo searchVo) {
+        List<String> bankTypeList = searchVo.getBankType();
 
-        String[] bankTypeArr = request.getParameterValues("bankType");//银行类型，1-中信银行，4-广发银行，5-华夏银行
         StringBuffer bankTypeBuf = new StringBuffer();
-        if (bankTypeArr != null && bankTypeArr.length != 0) {
-            for (int i = 0; i < bankTypeArr.length; i++) {
-                if (i < bankTypeArr.length - 1) {
-                    bankTypeBuf.append(bankTypeArr[i]).append(","); //组成这种形式发过来1,4,5
+        if (bankTypeList != null && bankTypeList.size() != 0) {
+            for (int i = 0; i < bankTypeList.size(); i++) {
+                if (i < bankTypeList.size() - 1) {
+                    bankTypeBuf.append(bankTypeList.get(i)).append(","); //组成这种形式发过来1,4,5
                 } else {
-                    bankTypeBuf.append(bankTypeArr[i]);
+                    bankTypeBuf.append(bankTypeList.get(i));
                 }
             }
         }
         String bankType = bankTypeBuf.toString();
+        searchVo.setBankTypeStr(bankType);
 
-        Integer waitToLinkToday = Misc.toInt(request.getParameter("waitToLinkToday"), -1);  // 是否查询今日待联系
         if (page != null) {
             page.setPageSize(pageSize);
         }
         if (flowTypeTab.equals(1)) { // 查询 代理商
-            return agentService.findAgentPage(page, linkStatus, idCardValid, bankSign, inCash, totalFund, mobile,
-                    inviteCode, null, null, todayInCash, todayOutCash, customerType, totalBalance, bankType,
-                    waitToLinkToday, flowId, null, null);
+            return agentService.findAgentPage(page, searchVo,followId,null,null, null, null);
         } else { // 查询 创客
 //            return financeAgentService.getOrgCustomerPage(page, linkStatus, nameValidata, mobile,
 //                    makerNum, null, null, flowId, null, null);

@@ -1,17 +1,23 @@
 package com.dayi.follow.service.impl;
 
 
+import com.dayi.common.util.DateUtil;
 import com.dayi.follow.dao.follow.FollowAgentMapper;
 import com.dayi.follow.dao.follow.FollowUpMapper;
 import com.dayi.follow.service.AgentService;
 import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.OrgService;
 import com.dayi.follow.vo.AgentVo;
+import com.dayi.follow.vo.SearchVo;
 import com.dayi.mybatis.support.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,32 +33,29 @@ public class AgentServiceImpl implements AgentService {
     private DeptService deptService;
     @Resource
     private FollowAgentMapper followAgentMapper;
-
     @Override
-    public Page<AgentVo> findAgentPage(Page<AgentVo> page, Integer linkStatus, Integer idCardValid, Integer sign,
-                                       Integer inCash, Integer totalFund, String mobile, String invitCode,
-                                       Integer subDeptId, String followUp, Integer todayInCash,
-                                       Integer todayOutCash, Integer customerType, Integer totalBalance,
-                                       String bankType, Integer waitToLinkToday, String flowId,
-                                       Integer deptId, Integer deptFlowId) {
+    public Page<AgentVo> findAgentPage(Page<AgentVo> page, SearchVo searchVo, String followId, Integer deptId, Integer deptFlowId,
+                                       Integer subDeptId, String followUpd) throws SQLException {
         String whereSql = this.spellCustomerWhereSql(subDeptId, deptId, deptFlowId);  // 拼写跟进人特殊条件过滤语句
         List<Integer> ids = null;
-        if (waitToLinkToday != null && waitToLinkToday != -1) {
-            ids = followAgentMapper.getWaitLinkAgentIds(flowId);
+        if (searchVo.getWaitToLinkToday() != null) {
+            ids = followAgentMapper.getWaitLinkAgentIds(followId);
         }
-        String idsStr = null;
-        if (ids != null) {
-            String str = ids.toString();
-            String replace = str.replace("[", "");
-            idsStr = replace.toString().replace("]", "");
-        }
-//        Page<AgentVo> agentPage = agentDao.getAgentCustomerPage(page, linkStatus, idCardValid, sign, inCash, totalFund,
-//                mobile, invitCode, followUp, todayInCash, todayOutCash, customerType, totalBalance,
-//                bankType, idsStr, flowId, whereSql);
-//        for (AgentVo vo : agentPage.getItems()) {
+
+        Date dayStart = DateUtil.getDayStart();
+        Date dayEnd = DateUtil.getDayEnd();
+        String startStr = DateUtil.formatStringyyyyMMddhhmmss(dayStart);
+        String endStr = DateUtil.formatStringyyyyMMddhhmmss(dayEnd);
+
+        List<AgentVo> agents = followAgentMapper.findAgents(searchVo,
+                ids, followId, whereSql, startStr, endStr,
+                (page.getPageNo() - 1) * page.getPageSize(), page.getPageSize());
+
+        Integer totalCount = followAgentMapper.findAgentsCount(searchVo, ids, followId, whereSql, startStr, endStr);
+//        for (AgentVo vo : agents) {
 //            Date lastLoginTime = financeLoginLogDao.findLastLoginTime(vo.getId());
 //            vo.setLastLoginDate(lastLoginTime);//最后登录时间
-//
+
 //            AgentContact lastContact = agentContactDao.findLastContact(vo.getId());//最新一条联系记录
 //            if (lastContact != null) {
 //                vo.setContactContent(lastContact.getContent());
@@ -63,6 +66,8 @@ public class AgentServiceImpl implements AgentService {
 //            vo.setDateStr(lastVo.getDateStr());
 //            vo.setAmount(lastVo.getAmount());
 //        }
+        page.setResults(agents);
+        page.setTotalRecord(totalCount);
 //        return agentPage;
         return null;
     }

@@ -24,8 +24,8 @@
                                     </span>
                     <select name="idCardVal">
                         <option value="">实名状态</option>
-                        <option value="1"  ${param.idCardVal=='1'?"selected":''}>已认证</option>
-                        <option value="0"  ${param.idCardVal=='0'?"selected":''}>未认证</option>
+                        <option value="1"  ${param.idCardValidate=='1'?"selected":''}>已认证</option>
+                        <option value="0"  ${param.idCardValidate=='0'?"selected":''}>未认证</option>
                     </select>
                 </div>
             </div>
@@ -69,13 +69,13 @@
                                     </span>
                     <select name="totalBalance">
                         <option value="">客户总资产</option>
-                        <option value="1" ${param.totalBalance eq 1 ? 'selected' : ''}>资产为零</option>
-                        <option value="2" ${param.totalBalance eq 2 ? 'selected' : ''}>2W以下</option>
-                        <option value="3" ${param.totalBalance eq 3 ? 'selected' : ''}>2W~10W</option>
-                        <option value="4" ${param.totalBalance eq 4 ? 'selected' : ''}>10W~50W</option>
-                        <option value="5" ${param.totalBalance eq 5 ? 'selected' : ''}>50W~100W</option>
-                        <option value="6" ${param.totalBalance eq 6 ? 'selected' : ''}>100W~300W</option>
-                        <option value="7" ${param.totalBalance eq 7 ? 'selected' : ''}>300W以上</option>
+                        <option value="1" ${param.totalFound eq 1 ? 'selected' : ''}>资产为零</option>
+                        <option value="2" ${param.totalFound eq 2 ? 'selected' : ''}>2W以下</option>
+                        <option value="3" ${param.totalFound eq 3 ? 'selected' : ''}>2W~10W</option>
+                        <option value="4" ${param.totalFound eq 4 ? 'selected' : ''}>10W~50W</option>
+                        <option value="5" ${param.totalFound eq 5 ? 'selected' : ''}>50W~100W</option>
+                        <option value="6" ${param.totalFound eq 6 ? 'selected' : ''}>100W~300W</option>
+                        <option value="7" ${param.totalFound eq 7 ? 'selected' : ''}>300W以上</option>
                     </select>
                 </div>
             </div>
