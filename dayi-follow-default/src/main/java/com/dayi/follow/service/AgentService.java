@@ -6,8 +6,6 @@ import com.dayi.follow.model.FollowUp;
 import com.dayi.follow.vo.AgentVo;
 import com.dayi.follow.vo.SearchVo;
 import com.dayi.mybatis.support.Page;
-
-import java.sql.SQLException;
 /**
  * @author xiell
  * @date 2018/11/12
@@ -23,7 +21,7 @@ public interface AgentService {
      * 获取代理商列表
      */
     Page<AgentVo> findAgentPage(Page<AgentVo> page, SearchVo searchVo, String followId, Integer deptId, Integer deptFlowId,
-                                Integer subDeptId, String followUp) throws SQLException;
+                                Integer subDeptId, String followUp);
 
 
 }

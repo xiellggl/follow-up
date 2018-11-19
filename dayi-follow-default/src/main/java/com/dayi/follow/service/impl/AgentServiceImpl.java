@@ -14,9 +14,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
@@ -33,9 +30,10 @@ public class AgentServiceImpl implements AgentService {
     private DeptService deptService;
     @Resource
     private FollowAgentMapper followAgentMapper;
+
     @Override
     public Page<AgentVo> findAgentPage(Page<AgentVo> page, SearchVo searchVo, String followId, Integer deptId, Integer deptFlowId,
-                                       Integer subDeptId, String followUpd) throws SQLException {
+                                       Integer subDeptId, String followUpd) {
         String whereSql = this.spellCustomerWhereSql(subDeptId, deptId, deptFlowId);  // 拼写跟进人特殊条件过滤语句
         List<Integer> ids = null;
         if (searchVo.getWaitToLinkToday() != null) {
@@ -52,6 +50,7 @@ public class AgentServiceImpl implements AgentService {
                 (page.getPageNo() - 1) * page.getPageSize(), page.getPageSize());
 
         Integer totalCount = followAgentMapper.findAgentsCount(searchVo, ids, followId, whereSql, startStr, endStr);
+
 //        for (AgentVo vo : agents) {
 //            Date lastLoginTime = financeLoginLogDao.findLastLoginTime(vo.getId());
 //            vo.setLastLoginDate(lastLoginTime);//最后登录时间
