@@ -228,14 +228,14 @@
             </tr>
             </thead>
             <tbody>
-            <c:if test="${empty page.items}">
+            <c:if test="${empty page.results}">
                 <tr>
                     <td colspan="20" class="no_data">暂无数据</td>
                 </tr>
             </c:if>
 
-            <c:if test="${not empty page.items}">
-                <c:forEach items="${page.items}" var="item" >
+            <c:if test="${not empty page.results}">
+                <c:forEach items="${page.results}" var="item" >
                     <tr>
                             <%-- 名称 --%>
                         <td><c:if test="${not empty item.linkPersonFm}">${item.linkPersonFm}</c:if></td>
@@ -255,7 +255,7 @@
                             <%-- 实名认证 --%>
                         <td>
                             <c:choose>
-                                <c:when test="${item.cancelStatus eq 3 or item.auditStatus eq -3 or item.auditStatus eq 1}">
+                                <c:when test="${!empty idCard }">
                                 <span class="green" data-toggle="tooltip"
                                       title="认证时间：<fmt:formatDate value='${item.cardValidDate}' pattern='yyyy-MM-dd HH:mm:ss'/>">
                                     <i class="ace-icon fa fa-check"></i>
@@ -271,7 +271,7 @@
                             <%-- 是否绑卡 --%>
                         <td>
                             <c:choose>
-                                <c:when test="${item.bankAccount ne null}">
+                                <c:when test="${item.bankSign eq true}">
                                 <span class="green" data-toggle="tooltip"
                                       title="绑卡时间：<fmt:formatDate value='${item.bankSignDate}' pattern='yyyy-MM-dd HH:mm:ss'/>">
                                     <i class="ace-icon fa fa-check"></i>
@@ -299,20 +299,20 @@
 
                         </td>
                             <%-- 当日累计入金 --%>
-                        <td>${item.sameDayInCashFormat}
-                            <c:if test="${item.lastInCashDateFm ne null}">/${item.lastInCashDateFm}</c:if>
+                        <td>${item.dayInCashFm}
+                            <c:if test="${item.dayLastInCashTimeFm ne null}">/${item.dayLastInCashTimeFm}</c:if>
                         </td>
                     <%-- 当日申请出金 --%>
-                        <td>${item.outCashFrozenFormat}
-                            <c:if test="${item.lastOutCashFrozenDateFm ne null}">/${item.lastOutCashFrozenDateFm}</c:if>
+                        <td>${item.dayOutCashFm}
+                            <c:if test="${item.dayLastOutCashTimeFm ne null}">/${item.dayLastOutCashTimeFm}</c:if>
                         </td>
                             <%-- 总资产 --%>
-                        <td class="hidden-sm hidden-xs">${item.totalFundFormat}</td>
+                        <td class="hidden-sm hidden-xs">${item.totalFundFm}</td>
                             <%-- 最近代理 --%>
-                        <td class="hidden-sm hidden-xs">${item.amountFormat}<c:if test="${not empty item.dateStr}"><br>${item.dateStr}</c:if></td>
+                        <td class="hidden-sm hidden-xs">${item.recentAgentFundFm}<c:if test="${not empty item.recentAgentDateFm}"><br>${item.recentAgentDateFm}</c:if></td>
                             <%-- 客户类型 --%>
                          <td class="hidden-sm hidden-xs">${item.customerTypeStr}
-                               <i  class="glyphicon glyphicon-exclamation-sign"  data-toggle="tooltip" title="意向度：${item.customerIntentionTypeStr}" style="color:#aaa;"></i>
+                               <i  class="glyphicon glyphicon-exclamation-sign"  data-toggle="tooltip" title="意向度：${item.cusIntentionTypeStr}" style="color:#aaa;"></i>
                           </td>
                             <%-- 最后登录 --%>
                         <td class="hidden-sm hidden-xs"><fmt:formatDate value="${item.lastLoginDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
@@ -356,7 +356,7 @@
             </c:if>
             </tbody>
         </table>
-        <c:if test="${not empty page.items}">
+        <c:if test="${not empty page.results}">
             <div class="pagerBar" id="pagerBar">
                 <common:page2 url="${pageUrl}" type="3" />
                 <input id="page-import" name="page-import" style="margin-left: 5px" class="input-sm" type="text" name="fname" placeholder="输入要跳转页数"/>

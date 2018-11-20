@@ -9,9 +9,8 @@ import com.dayi.follow.service.AgentService;
 import com.dayi.follow.service.FollowUpService;
 import com.dayi.follow.util.PageUtil;
 import com.dayi.follow.util.StringUtil;
-import com.dayi.follow.vo.AgentVo;
+import com.dayi.follow.vo.AgentListVo;
 import com.dayi.follow.vo.SearchVo;
-import com.dayi.mybatis.common.util.Misc;
 import com.dayi.mybatis.support.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -79,12 +78,12 @@ public class AgentController {
         model.addAttribute("bankTypes", bankTypes);//银行类型
         model.addAttribute("bankTypesArr", bankTypesArr);
         model.addAttribute("returnUrl", returnUrl);
-        return "/followup/uc/customer/agent/list";
+        return "uc/customer/agent/list";
     }
 
 
     /* 我的客户查询 -- 抽取通用查询方法 */
-    private Page<AgentVo> myCustomerQuery( Integer pageSize, Page<AgentVo> page, String followId, Integer flowTypeTab,SearchVo searchVo) {
+    private Page<AgentListVo> myCustomerQuery(Integer pageSize, Page<AgentListVo> page, String followId, Integer flowTypeTab, SearchVo searchVo) {
         List<String> bankTypeList = searchVo.getBankType();
 
         StringBuffer bankTypeBuf = new StringBuffer();

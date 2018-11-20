@@ -1,9 +1,9 @@
 package com.dayi.follow.dao.follow;
 
-import com.dayi.follow.vo.AgentVo;
+import com.dayi.follow.model.AgentContact;
+import com.dayi.follow.vo.AgentListVo;
 import com.dayi.follow.vo.SearchVo;
 import com.dayi.mybatis.support.BaseMapper;
-import com.dayi.mybatis.support.Page;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -12,17 +12,12 @@ import java.util.List;
  * @author xiell
  * @date 2018/11/13
  */
-public interface FollowAgentMapper extends BaseMapper<AgentVo> {
+public interface FollowAgentMapper extends BaseMapper<AgentListVo> {
 
     List<Integer> getWaitLinkAgentIds(@Param("followUpId") String followUpId);
 
-    List<AgentVo> findAgents(@Param("searchVo") SearchVo searchVo, @Param("ids") List<Integer> ids,
-                             @Param("followId") String followId, @Param("whereSql") String whereSql,
-                             @Param("startStr") String startStr, @Param("endStr") String endStr,
-                             @Param("limitStart") Integer limitStart, @Param("limitEnd") Integer limitEnd);
+    List<Integer> findAgentIdFollow(@Param("searchVo") SearchVo searchVo, @Param("followId") String followId,
+                                    @Param("whereSql") String whereSql);
 
-    Integer findAgentsCount(@Param("searchVo") SearchVo searchVo, @Param("ids") List<Integer> ids,
-                             @Param("followId") String followId, @Param("whereSql") String whereSql,
-                             @Param("startStr") String startStr, @Param("endStr") String endStr);
-
+    AgentContact findLastContact(@Param("agentId") Integer agentId) ;
 }

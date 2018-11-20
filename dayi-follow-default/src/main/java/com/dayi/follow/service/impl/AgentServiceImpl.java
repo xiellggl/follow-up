@@ -2,15 +2,18 @@ package com.dayi.follow.service.impl;
 
 
 import com.dayi.common.util.DateUtil;
+import com.dayi.follow.dao.dayi.AgentMapper;
 import com.dayi.follow.dao.follow.FollowAgentMapper;
 import com.dayi.follow.dao.follow.FollowUpMapper;
+import com.dayi.follow.model.AgentContact;
 import com.dayi.follow.service.AgentService;
 import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.OrgService;
-import com.dayi.follow.vo.AgentVo;
+import com.dayi.follow.vo.AgentListVo;
 import com.dayi.follow.vo.SearchVo;
 import com.dayi.mybatis.support.Page;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -30,45 +33,49 @@ public class AgentServiceImpl implements AgentService {
     private DeptService deptService;
     @Resource
     private FollowAgentMapper followAgentMapper;
+    @Resource
+    private AgentMapper agentMapper;
 
     @Override
-    public Page<AgentVo> findAgentPage(Page<AgentVo> page, SearchVo searchVo, String followId, Integer deptId, Integer deptFlowId,
-                                       Integer subDeptId, String followUpd) {
+    public Page<AgentListVo> findAgentPage(Page<AgentListVo> page, SearchVo searchVo, String followId, Integer deptId, Integer deptFlowId,
+                                           Integer subDeptId, String followUpd) {
         String whereSql = this.spellCustomerWhereSql(subDeptId, deptId, deptFlowId);  // 拼写跟进人特殊条件过滤语句
         List<Integer> ids = null;
         if (searchVo.getWaitToLinkToday() != null) {
             ids = followAgentMapper.getWaitLinkAgentIds(followId);
         }
 
-        Date dayStart = DateUtil.getDayStart();
-        Date dayEnd = DateUtil.getDayEnd();
-        String startStr = DateUtil.formatStringyyyyMMddhhmmss(dayStart);
-        String endStr = DateUtil.formatStringyyyyMMddhhmmss(dayEnd);
+        DateTime dateTime = new DateTime();
+        String startStr = dateTime.millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
+        String endStr = dateTime.millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
 
-        List<AgentVo> agents = followAgentMapper.findAgents(searchVo,
-                ids, followId, whereSql, startStr, endStr,
+        // List<Integer> agentIdList = followAgentMapper.findAgentIdFollow(searchVo, );
+
+        List<AgentListVo> agents = agentMapper.findAgents(searchVo,
+                ids, startStr, endStr, followId, whereSql,
                 (page.getPageNo() - 1) * page.getPageSize(), page.getPageSize());
 
-        Integer totalCount = followAgentMapper.findAgentsCount(searchVo, ids, followId, whereSql, startStr, endStr);
+        Integer totalCount = agentMapper.findAgentsCount(searchVo, ids, startStr, endStr, followId, whereSql);
 
-//        for (AgentVo vo : agents) {
-//            Date lastLoginTime = financeLoginLogDao.findLastLoginTime(vo.getId());
-//            vo.setLastLoginDate(lastLoginTime);//最后登录时间
+        for (AgentListVo vo : agents) {
+            Date lastLoginTime = agentMapper.findLastLoginTime(vo.getId());
+            vo.setLastLoginDate(lastLoginTime);//最后登录时间
 
-//            AgentContact lastContact = agentContactDao.findLastContact(vo.getId());//最新一条联系记录
-//            if (lastContact != null) {
-//                vo.setContactContent(lastContact.getContent());
-//                vo.setContactDate(lastContact.getCreateDate());
-//            }
-//
-//            AgentVo lastVo = agentDao.calLastAgentVo(vo.getId());//获取最近代理金额，和日期
-//            vo.setDateStr(lastVo.getDateStr());
-//            vo.setAmount(lastVo.getAmount());
-//        }
+            AgentContact lastContact = followAgentMapper.findLastContact(vo.getId());//最新一条联系记录
+            if (lastContact != null) {
+                vo.setContactContent(lastContact.getContent());
+                vo.setContactDate(lastContact.getCreateTime());
+            }
+
+            AgentListVo lastVo = agentMapper.countRecentAgent(vo.getId());//获取最近代理金额，和日期
+            if (lastVo != null) {
+                vo.setRecentAgentDate(lastVo.getRecentAgentDate());
+                vo.setRecentAgentFund(lastVo.getRecentAgentFund());
+            }
+        }
         page.setResults(agents);
         page.setTotalRecord(totalCount);
-//        return agentPage;
-        return null;
+        return page;
     }
 
 

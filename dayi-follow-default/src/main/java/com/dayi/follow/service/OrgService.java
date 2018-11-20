@@ -1,10 +1,7 @@
 package com.dayi.follow.service;
 
 
-import com.dayi.follow.model.FollowUp;
-import com.dayi.follow.vo.AgentVo;
 import com.dayi.follow.vo.OrgVo;
-import com.dayi.mybatis.support.Page;
 /**
  * @author xiell
  * @date 2018/11/12
