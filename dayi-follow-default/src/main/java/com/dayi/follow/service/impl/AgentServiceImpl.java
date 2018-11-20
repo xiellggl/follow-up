@@ -49,13 +49,11 @@ public class AgentServiceImpl implements AgentService {
         String startStr = dateTime.millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
         String endStr = dateTime.millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
 
-        // List<Integer> agentIdList = followAgentMapper.findAgentIdFollow(searchVo, );
-
-        List<AgentListVo> agents = agentMapper.findAgents(searchVo,
+        List<AgentListVo> agents = followAgentMapper.findAgents(searchVo,
                 ids, startStr, endStr, followId, whereSql,
                 (page.getPageNo() - 1) * page.getPageSize(), page.getPageSize());
 
-        Integer totalCount = agentMapper.findAgentsCount(searchVo, ids, startStr, endStr, followId, whereSql);
+        Integer totalCount = followAgentMapper.findAgentsCount(searchVo, ids, startStr, endStr, followId, whereSql);
 
         for (AgentListVo vo : agents) {
             Date lastLoginTime = agentMapper.findLastLoginTime(vo.getId());
