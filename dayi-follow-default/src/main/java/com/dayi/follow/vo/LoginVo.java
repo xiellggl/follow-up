@@ -56,23 +56,23 @@ public class LoginVo {
     }
 
     //--------------------------------------------------------
-    private Integer id;
+    private String id;
     private String name;
     private String mobile;
     private String cookie;
     private Integer disable;
-    private Integer deptId;     // 所属部门ID
+    private String deptId;     // 所属部门ID
     private String deptName;     // 所属部门名称
     private Integer isManager;  // 是否负责人：0--否；1--是
     private Integer isAdmin;    // 是否管理员：0--否；1--是
     private String chargeDeptId;//负责部门ID
     private String date;//日期
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -108,11 +108,11 @@ public class LoginVo {
         this.disable = disable;
     }
 
-    public Integer getDeptId() {
+    public String getDeptId() {
         return deptId;
     }
 
-    public void setDeptId(Integer deptId) {
+    public void setDeptId(String deptId) {
         this.deptId = deptId;
     }
 

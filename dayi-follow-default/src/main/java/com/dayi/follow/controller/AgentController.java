@@ -10,6 +10,7 @@ import com.dayi.follow.service.FollowUpService;
 import com.dayi.follow.util.PageUtil;
 import com.dayi.follow.util.StringUtil;
 import com.dayi.follow.vo.AgentListVo;
+import com.dayi.follow.vo.LoginVo;
 import com.dayi.follow.vo.SearchVo;
 import com.dayi.mybatis.support.Page;
 import org.springframework.stereotype.Controller;
@@ -46,14 +47,14 @@ public class AgentController {
      */
     @RequestMapping("/agent/list")
     public String customerAgentCompile(HttpServletRequest request, Model model, SearchVo searchVo) {
-        FollowUp currUser = userComponent.getCurrUser(request);//需要加上loginType=followUp参数
-        if (currUser == null) {
+        LoginVo currVo = userComponent.getCurrUser(request);//需要加上loginType=followUp参数
+        if (currVo == null) {
             return "redirect:/followup/login";
         }
-        if ((currUser.getIsAdmin().equals(1)) || ("admin".equals(currUser.getUserName()))) {
+        if ((currVo.getIsAdmin().equals(1)) || ("admin".equals(currVo.getUsername()))) {
             return "redirect:/followup/manage/index";
         }
-        String flowId = currUser.getId();  // 跟进人ID
+        String flowId = currVo.getId();  // 跟进人ID
 
         Page page=new Page();
 

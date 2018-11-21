@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dayi.follow.dao.follow.ReportMapper">
+
+<select id="countPreDayDaily" resultType="com.dayi.follow.vo.IndexVo" parameterType="map">
+      <if test="null!=deptIdStr and ''!=deptStr">
+            SELECT dept_id deptId,sum(open_account_num)openNum,
+                  sum(in_cash)inCash,sum(in_cash_num)inCashNum,
+                  sum(out_cash)outCash,sum(out_cash_num)outCashNum,
+                   deptName,date(create_date) date
+            from follow_up_log ful
+            left join (select id,name deptName from follow_dept )fd on fd.id = ful.dept_id
+            WHERE  date(create_date) =
+                (select date(max(create_date)) from follow_up_log) and ful.dept_id in (#{deptIdStr})
+            GROUP BY dept_id
+      </if>
+
+        <if test="null!=followId">
+            SELECT date(create_date) date,open_account_num openNum,
+                  in_cash inCash,in_cash_num inCashNum,
+                   out_cash outCash,out_cash_num outCashNum
+            from follow_up_log ful
+            WHERE  date(create_date) =
+              (select date(max(create_date)) from follow_up_log)
+              and flow_id=#{followId}
+        </if>
+
+
+</select>
+</mapper>

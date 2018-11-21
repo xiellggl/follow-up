@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Select;
  * @date 2018/11/13
  */
 public interface FollowUpMapper extends BaseMapper<FollowUp> {
-    @Select(" select * from follow_up where user_name =#{userName} ")
+    @Select(" select * from follow_up where user_name =#{username} ")
     FollowUp getByUserName(String userName);
     @Select(" select * from follow_up where invite_code =#{inviteCode} ")
     FollowUp getByInviteCode(String inviteCode);

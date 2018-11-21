@@ -37,23 +37,23 @@ public class FollowupController {
     @Resource
     UserComponent userComponent;
 
-//    /**
-//     * 默认跳转登录
-//     *
-//     * @param request
-//     * @return
-//     */
-//    @RequestMapping(value = {"","/"})
-//    public String index(HttpServletRequest request){
-//        FollowUp currUser = userComponent.getCurrUser(request);
-//        if(null == currUser){
-//            return "redirect:/followup/login";
-//        }else if (currUser.getUserName().equals("admin") || currUser.getIsAdmin().equals(1)) { // 当 超级管理员 或者 管理员登录时，默认进入跟进人分配页面
-//            return "redirect:/followup/manage/index";
-//        } else {
-//            return "redirect:/followup/uc/index";
-//        }
-//    }
+    /**
+     * 默认跳转登录
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = {"","/"})
+    public String index(HttpServletRequest request){
+        LoginVo currVo = userComponent.getCurrUser(request);
+        if(null == currVo){
+            return "redirect:/followup/login";
+        }else if (currVo.getUsername().equals("admin") || currVo.getIsAdmin().equals(1)) { // 当 超级管理员 或者 管理员登录时，默认进入跟进人分配页面
+            return "redirect:/followup/manage/index";
+        } else {
+            return "redirect:/followup/uc/index";
+        }
+    }
 
     /**
      * 登录表单页面
@@ -86,13 +86,13 @@ public class FollowupController {
             boolean b = AuthorizationManager.login(request, new UsernamePasswordToken(loginVo.getUsername(), loginVo.getPassword(), IPUtil.getIp(request)));
 
             if (b) {//登录成功
-                FollowUp currUser = userComponent.getCurrUser(request);
-                if (currUser != null) {
-                    if (currUser.getDisable() == MemberStatusEnum.ENABLE.getValue()) {
+                LoginVo currVo = userComponent.getCurrUser(request);
+                if (currVo != null) {
+                    if (currVo.getDisable() == MemberStatusEnum.ENABLE.getValue()) {
                         String goToUrl;
                         if (StringUtils.isNotBlank(goTo)) {//跳转
                             goToUrl = goTo;
-                        } else if (currUser.getUserName().equals("admin") || currUser.getIsAdmin().equals(1)) { // 当 超级管理员 或者 管理员登录时，默认进入跟进人分配页面
+                        } else if (currVo.getUsername().equals("admin") || currVo.getIsAdmin().equals(1)) { // 当 超级管理员 或者 管理员登录时，默认进入跟进人分配页面
                             goToUrl = "/followup/manage/index";
                         } else {
                             goToUrl = "/followup/uc/index";
@@ -129,13 +129,13 @@ public class FollowupController {
     @RequestMapping("/add/save")
     @ResponseBody
     public BizResult add(HttpServletRequest request, @Valid FollowUp followUp) {
-        FollowUp currUser = userComponent.getCurrUser(request);
-        if (currUser == null || (!"admin".equals(currUser.getUserName()) && !currUser.getIsAdmin().equals(1))) {
+        LoginVo currVo = userComponent.getCurrUser(request);
+        if (currVo == null || (!"admin".equals(currVo.getUsername()) && !currVo.getIsAdmin().equals(1))) {
             return BizResult.FAIL;
         }
         try {
-            followUp.setCreateBy(currUser.getName());
-            followUp.setModifyBy(currUser.getName());
+            followUp.setCreateBy(currVo.getName());
+            followUp.setModifyBy(currVo.getName());
             BizResult bizResult = followUpService.add(followUp);
             return bizResult;
         } catch (Exception e) {

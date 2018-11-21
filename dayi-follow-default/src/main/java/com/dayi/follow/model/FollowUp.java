@@ -13,7 +13,7 @@ public class FollowUp extends BaseModel implements Principal {
     private String userName;    // 账号
     private String password;    // 密码
     private String mobile;      // 手机号
-    private Integer deptId;     // 所属部门ID
+    private String deptId;     // 所属部门ID
     private String inviteCode;  // 邀请码
     private Integer isManager;  // 是否负责人：0--否；1--是
     private Integer isAdmin;    // 是否管理员：0--否；1--是
@@ -41,7 +41,7 @@ public class FollowUp extends BaseModel implements Principal {
         return mobile;
     }
 
-    public Integer getDeptId() {
+    public String getDeptId() {
         return deptId;
     }
 
@@ -99,7 +99,7 @@ public class FollowUp extends BaseModel implements Principal {
         this.mobile = mobile;
     }
 
-    public void setDeptId(Integer deptId) {
+    public void setDeptId(String deptId) {
         this.deptId = deptId;
     }
 

@@ -99,7 +99,7 @@
                     succback: function (data) {
                         $form[0].reset();
                         common.successMsg(data.msg, function () {
-                            window.location.href = data.ref;
+                            window.location.href = data.result;
                         });
                     }
                 });
