@@ -45,11 +45,12 @@
 
     <sql id="findAgentsSelect">
         SELECT
-        a.invite_code flowUpInviteCode,
-        a.id ,a.name,
+        a.flow_date ,
+        a.follow_id ,a.customer_type , a.cus_intention_type,
 
-        b.flow_date ,
-        b.follow_id ,b.customer_type , b.cus_intention_type,
+        b.invite_code flowUpInviteCode,
+        b.id ,b.name,
+
 
         c.id, c.link_person , c.bank_name , c.create_date ,
         c.card_valid_date ,c.bank_sign_date , c.mobile,
@@ -72,13 +73,11 @@
     </sql>
 
     <sql id="findAgentsSql">
-
-        from follow_up a
+        from follow_agent a
 
         left join (
-        SELECT agent_id,follow_id,flow_date,customer_type,cus_intention_type
-        from follow_agent
-        )b on b.follow_id=a.id
+             select id from follow_up
+        )b on a.follow_id=b.id
 
         left join (
         select  id, link_person , bank_name , create_date ,
@@ -86,7 +85,7 @@
         bank_sign , record_invite_code ,id_card,
         account_id,uc_id
         from dev_dayi_spot.agent  where del_status != -1
-        )c on c.id = b.agent_id
+        )c on c.id = a.agent_id
 
         left join dev_dayi_spot.finance_account d on d.id = c.account_id
 
@@ -115,7 +114,7 @@
         GROUP BY agent_id
         )g ON c.id = g.agent_id
 
-        WHERE 1 = 1  and a.disable != -1
+        WHERE 1 = 1  and b.disable != -1
     </sql>
 
     <sql id="ConditionQuery">
@@ -125,17 +124,17 @@
             #{whereSql}
         </if>
         <if test="null!=followId">
-            AND a.id =#{followId}
+            AND b.id =#{followId}
         </if>
 
         -- 页面查询条件
         -- 客户类型
         <if test="null!=searchVo.customerType and -1!=searchVo.customerType">
-            AND b.customer_type =#{searchVo.customerType}
+            AND a.customer_type =#{searchVo.customerType}
         </if>
         -- 页面查询条件：跟进人
         <if test=" ''!=searchVo.followUp and null!=searchVo.followUp">
-            AND a.follow_up like like '%#{searchVo.followUp}%'
+            AND b.follow_up like like '%#{searchVo.followUp}%'
         </if>
 
         --         大易相关表查询条件
@@ -258,7 +257,7 @@
             AND c.record_invite_code like like '%#{searchVo.inviteCode}%'
         </if>
         --         根据分配日期排序
-        ORDER BY b.flow_date DESC
+        ORDER BY a.flow_date DESC
     </sql>
     <!--分页-->
     <sql id="pageSql">

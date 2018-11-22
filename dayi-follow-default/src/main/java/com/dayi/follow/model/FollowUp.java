@@ -23,7 +23,15 @@ public class FollowUp extends BaseModel implements Principal {
     private String chargeDeptId;//负责部门id
     private String createBy;    // 创建人
     private String modifyBy;    // 修改人
+    private String roleids;//角色ids
 
+    public String getRoleids() {
+        return roleids;
+    }
+
+    public void setRoleids(String roleids) {
+        this.roleids = roleids;
+    }
 
     public String getName() {
         return name;

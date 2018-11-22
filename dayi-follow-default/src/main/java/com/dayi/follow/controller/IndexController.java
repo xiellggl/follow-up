@@ -22,7 +22,7 @@ import java.util.*;
  * @date 2018/11/13
  */
 @Controller
-@RequestMapping("/index")
+@RequestMapping("/followup/index")
 public class IndexController {
     @Resource
     FollowUpService followUpService;
@@ -33,7 +33,6 @@ public class IndexController {
 
     @RequestMapping("")
     public String index(HttpServletRequest request) {
-        LoginVo currVo = userComponent.getCurrUser(request);
         return "uc/index";
     }
 

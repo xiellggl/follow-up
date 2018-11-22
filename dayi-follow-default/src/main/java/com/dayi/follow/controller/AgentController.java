@@ -45,15 +45,9 @@ public class AgentController {
      * @param request
      * @return
      */
-    @RequestMapping("/agent/list")
+    @RequestMapping("/list")
     public String customerAgentCompile(HttpServletRequest request, Model model, SearchVo searchVo) {
         LoginVo currVo = userComponent.getCurrUser(request);//需要加上loginType=followUp参数
-        if (currVo == null) {
-            return "redirect:/followup/login";
-        }
-        if ((currVo.getIsAdmin().equals(1)) || ("admin".equals(currVo.getUsername()))) {
-            return "redirect:/followup/manage/index";
-        }
         String flowId = currVo.getId();  // 跟进人ID
 
         Page page=new Page();

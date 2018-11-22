@@ -40,23 +40,6 @@ public class FollowupController {
     FollowUpService followUpService;
     @Resource
     UserComponent userComponent;
-    /**
-     * 默认跳转登录
-     *
-     * @param request
-     * @return
-     */
-    @RequestMapping(value = {"","/"})
-    public String index(HttpServletRequest request){
-        LoginVo currVo = userComponent.getCurrUser(request);
-        if(null == currVo){
-            return "redirect:/followup/login";
-        }else if (currVo.getUsername().equals("admin") || currVo.getIsAdmin().equals(1)) { // 当 超级管理员 或者 管理员登录时，默认进入跟进人分配页面
-            return "redirect:/followup/manage/index";
-        } else {
-            return "redirect:/followup/uc/index";
-        }
-    }
 
     /**
      * 登录表单页面
@@ -95,7 +78,7 @@ public class FollowupController {
                         if (StringUtils.isNotBlank(goTo)) {//跳转
                             goToUrl = goTo;
                         } else {
-                            goToUrl = "/index";
+                            goToUrl = "/followup/index";
                         }
                         return BizResult.succ(goToUrl, "登录成功！");
                     } else {
