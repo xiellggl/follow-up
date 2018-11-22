@@ -3,6 +3,7 @@ package com.dayi.follow.service.impl;
 
 import com.dayi.common.util.BizResult;
 import com.dayi.follow.dao.follow.FollowUpMapper;
+import com.dayi.follow.dao.follow.ReportMapper;
 import com.dayi.follow.model.FollowUp;
 import com.dayi.follow.service.CountService;
 import com.dayi.follow.service.FollowUpService;
@@ -30,7 +31,12 @@ import java.util.List;
 public class CountServiceImpl implements CountService {
     @Resource
     private FollowUpMapper followUpMapper;
+    @Resource
+    private ReportMapper reportMapper;
 
-
+    @Override
+    public IndexVo countPreDayDaily(String followId, String deptIdStr) {
+        return reportMapper.countPreDayDaily(followId,deptIdStr);
+    }
 }
 

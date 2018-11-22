@@ -1,6 +1,7 @@
 package com.dayi.follow.dao.follow;
 
 import com.dayi.follow.vo.IndexVo;
+import com.dayi.mybatis.support.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -9,9 +10,9 @@ import java.util.List;
  * @author xiell
  * @date 2018/11/13
  */
-public interface ReportMapper {
+public interface ReportMapper extends BaseMapper<IndexVo>{
     /**
      * 负责人和管理员--统计前一天的部门日报
      */
-    List<IndexVo> countPreDayDaily(@Param("followId") Integer followId, @Param("deptIdStr") String deptIdStr);
+    IndexVo countPreDayDaily(@Param("followId") String followId, @Param("deptIdStr") String deptIdStr);
 }

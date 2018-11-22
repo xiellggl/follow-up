@@ -84,7 +84,6 @@ public class FollowupController {
         } else {
             //使用用户中心api进行登录
             boolean b = AuthorizationManager.login(request, new UsernamePasswordToken(loginVo.getUsername(), loginVo.getPassword(), IPUtil.getIp(request)));
-
             if (b) {//登录成功
                 LoginVo currVo = userComponent.getCurrUser(request);
                 if (currVo != null) {
@@ -92,10 +91,8 @@ public class FollowupController {
                         String goToUrl;
                         if (StringUtils.isNotBlank(goTo)) {//跳转
                             goToUrl = goTo;
-                        } else if (currVo.getUsername().equals("admin") || currVo.getIsAdmin().equals(1)) { // 当 超级管理员 或者 管理员登录时，默认进入跟进人分配页面
-                            goToUrl = "/followup/manage/index";
                         } else {
-                            goToUrl = "/followup/uc/index";
+                            goToUrl = "/index";
                         }
                         return BizResult.succ(goToUrl, "登录成功！");
                     } else {

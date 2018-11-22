@@ -1,7 +1,9 @@
 package com.dayi.follow.controller;
 
+import com.dayi.common.util.BizResult;
 import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.model.FollowUp;
+import com.dayi.follow.service.CountService;
 import com.dayi.follow.service.FollowUpService;
 import com.dayi.follow.vo.IndexVo;
 import com.dayi.follow.vo.LoginVo;
@@ -22,42 +24,55 @@ import java.util.*;
 @Controller
 @RequestMapping("/index")
 public class IndexController {
-//    @Resource
-//    FollowUpService followUpService;
-//    @Resource
-//    UserComponent userComponent;
-//
-//    @RequestMapping("/")
-//    public String index(HttpServletRequest request) {
-//        return "uc/index";
-//    }
-//
-//    @RequestMapping("sale/personal/daily")
-//    public String salePersonalDaily(HttpServletRequest request, Model model) {
-//        //判断权限
-//
-//        LoginVo currVo = userComponent.getCurrUser(request);
-//
-//        String followId = currVo.getId();  // 跟进人ID
-//        IndexVo vo = new IndexVo();
-//        List<IndexVo> pDDailyList = null;
-//        pDDailyList = flowUpService.countPreDayDaily(followId, null);//日报
-//        return null;
-//    }
-//
-//    @RequestMapping("sale/team/daily")
-//    public String saleTeamDaily(HttpServletRequest request, Model model) {
-//        LoginVo currVo = userComponent.getCurrUser(request);
-//        boolean isKA = currVo.getDeptName().equals("KA及渠道部") ? true : false;
-//        boolean isManager = currVo.getIsManager().equals(1) ? true : false;
-//        String followId = currVo.getId();  // 跟进人ID
-//        IndexVo vo = new IndexVo();
-//        List<IndexVo> pDDailyList = null;
-//
-//        pDDailyList = flowUpService.countPreDayDaily(null, currVo.getDeptId());//负责人日报
-//
-//        return null;
-//    }
+    @Resource
+    FollowUpService followUpService;
+    @Resource
+    CountService countService;
+    @Resource
+    UserComponent userComponent;
+
+    @RequestMapping("")
+    public String index(HttpServletRequest request) {
+        return "uc/index";
+    }
+
+    @RequestMapping("sale/personal/daily")
+    @ResponseBody
+    public BizResult salePersonalDaily(HttpServletRequest request, Model model) {
+        //判断权限
+        LoginVo currVo = userComponent.getCurrUser(request);
+        String followId = currVo.getId();  // 跟进人ID
+        IndexVo daily = countService.countPreDayDaily(followId, null);//日报
+        return BizResult.succ(daily);
+    }
+
+    @RequestMapping("sale/team/daily")
+    public String saleTeamDaily(HttpServletRequest request, Model model) {
+        LoginVo currVo = userComponent.getCurrUser(request);
+        String followId = currVo.getId();  // 跟进人ID
+        IndexVo daily = countService.countPreDayDaily(null, currVo.getDeptId());//负责人日报
+        return null;
+    }
+
+    @RequestMapping("ka/personal/daily")
+    @ResponseBody
+    public BizResult kaPersonalDaily(HttpServletRequest request, Model model) {
+        //判断权限
+        LoginVo currVo = userComponent.getCurrUser(request);
+        String followId = currVo.getId();  // 跟进人ID
+        IndexVo daily = countService.countPreDayDaily(followId, null);//日报
+        return BizResult.succ(daily);
+    }
+
+    @RequestMapping("ka/team/daily")
+    @ResponseBody
+    public BizResult kaTeamDaily(HttpServletRequest request, Model model) {
+        //判断权限
+        LoginVo currVo = userComponent.getCurrUser(request);
+        String followId = currVo.getId();  // 跟进人ID
+        IndexVo daily = countService.countPreDayDaily(followId, null);//日报
+        return BizResult.succ(daily);
+    }
 //
 //    @RequestMapping("sale/team/daily")
 //    public String saleTeamDaily(HttpServletRequest request, Model model) {

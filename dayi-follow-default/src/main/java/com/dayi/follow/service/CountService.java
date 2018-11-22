@@ -16,7 +16,7 @@ import java.util.List;
  */
 public interface CountService {
 
-    //saleIndexCount();
+    IndexVo countPreDayDaily(String followId, String deptIdStr);
 
 
 
