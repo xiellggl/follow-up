@@ -33,44 +33,53 @@ public class IndexController {
 
     @RequestMapping("")
     public String index(HttpServletRequest request) {
+        LoginVo currVo = userComponent.getCurrUser(request);
         return "uc/index";
     }
 
     @RequestMapping("sale/personal/daily")
     @ResponseBody
-    public BizResult salePersonalDaily(HttpServletRequest request, Model model) {
+    public BizResult salePersonalDaily(HttpServletRequest request) {
         //判断权限
         LoginVo currVo = userComponent.getCurrUser(request);
-        String followId = currVo.getId();  // 跟进人ID
-        IndexVo daily = countService.countPreDayDaily(followId, null);//日报
+        if (currVo == null) {
+            return BizResult.FAIL;
+        }
+        IndexVo daily = countService.countPreDayDaily(currVo.getId(), null);//日报
         return BizResult.succ(daily);
     }
 
     @RequestMapping("sale/team/daily")
-    public String saleTeamDaily(HttpServletRequest request, Model model) {
+    public BizResult saleTeamDaily(HttpServletRequest request) {
         LoginVo currVo = userComponent.getCurrUser(request);
-        String followId = currVo.getId();  // 跟进人ID
+        if (currVo == null) {
+            return BizResult.FAIL;
+        }
         IndexVo daily = countService.countPreDayDaily(null, currVo.getDeptId());//负责人日报
-        return null;
+        return BizResult.succ(daily);
     }
 
     @RequestMapping("ka/personal/daily")
     @ResponseBody
-    public BizResult kaPersonalDaily(HttpServletRequest request, Model model) {
+    public BizResult kaPersonalDaily(HttpServletRequest request) {
         //判断权限
         LoginVo currVo = userComponent.getCurrUser(request);
-        String followId = currVo.getId();  // 跟进人ID
-        IndexVo daily = countService.countPreDayDaily(followId, null);//日报
+        if (currVo == null) {
+            return BizResult.FAIL;
+        }
+        IndexVo daily = countService.countPreDayDaily(currVo.getId(), null);//日报
         return BizResult.succ(daily);
     }
 
     @RequestMapping("ka/team/daily")
     @ResponseBody
-    public BizResult kaTeamDaily(HttpServletRequest request, Model model) {
+    public BizResult kaTeamDaily(HttpServletRequest request) {
         //判断权限
         LoginVo currVo = userComponent.getCurrUser(request);
-        String followId = currVo.getId();  // 跟进人ID
-        IndexVo daily = countService.countPreDayDaily(followId, null);//日报
+        if (currVo == null) {
+            return BizResult.FAIL;
+        }
+        IndexVo daily = countService.countPreDayDaily(null, currVo.getDeptId());//日报
         return BizResult.succ(daily);
     }
 //

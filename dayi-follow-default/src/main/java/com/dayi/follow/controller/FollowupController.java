@@ -8,8 +8,12 @@ import com.dayi.follow.model.FollowUp;
 import com.dayi.follow.service.FollowUpService;
 import com.dayi.follow.vo.LoginVo;
 import com.dayi.user.authorization.AuthorizationManager;
+import com.dayi.user.authorization.SubjectContext;
 import com.dayi.user.authorization.authc.AccountInfo;
+import com.dayi.user.authorization.authc.AuthenticationInfo;
 import com.dayi.user.authorization.authc.support.UsernamePasswordToken;
+import com.dayi.user.service.ManagerApiService;
+import com.dayi.user.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -36,7 +40,6 @@ public class FollowupController {
     FollowUpService followUpService;
     @Resource
     UserComponent userComponent;
-
     /**
      * 默认跳转登录
      *
@@ -108,17 +111,11 @@ public class FollowupController {
     }
 
 
-//    @RequestMapping("loginout")
-//    public String loginOut(HttpServletRequest request, HttpServletResponse response, Model model) {
-//        FlowUpLoginVo vo = financeUserComponent.getCurrentLoginFollowUp(request);
-//        if (vo != null) {
-//            flowUpService.loginOut(vo.getUserName());
-//        }
-//        financeUserService.createPulblicKey(request);
-//        // 退出用户中心
-//        AuthorizationManager.cleanAllAuthenticationInfo(request,response);
-//        return "redirect:/followup/login";
-//    }
+    @RequestMapping("loginout")
+    public String loginOut(HttpServletRequest request, HttpServletResponse response) {
+        AuthorizationManager.cleanAllAuthenticationInfo(request,response);
+        return "redirect:/followup/login";
+    }
 
     /**
      * 新增 -- 保存 -- 跟进人
