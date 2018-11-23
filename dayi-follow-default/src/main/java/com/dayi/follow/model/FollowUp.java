@@ -115,14 +115,6 @@ public class FollowUp extends BaseModel implements Principal {
         this.inviteCode = inviteCode;
     }
 
-    public void setIsManager(Integer isManager) {
-        this.isManager = isManager;
-    }
-
-    public void setIsAdmin(Integer isAdmin) {
-        this.isAdmin = isAdmin;
-    }
-
     public void setDisable(Integer disable) {
         this.disable = disable;
     }

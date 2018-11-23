@@ -34,8 +34,6 @@ public class UserComponent {
             if (department != null) {
                 loginVo.setDeptName(department.getName());
             }
-            loginVo.setIsAdmin(followUp.getIsAdmin());
-            loginVo.setIsManager(followUp.getIsAdmin());
             loginVo.setUsername(followUp.getUserName());
             loginVo.setDisable(followUp.getDisable());
             loginVo.setName(followUp.getName());

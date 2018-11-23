@@ -1,13 +1,16 @@
 package com.dayi.follow.model;
 
+import com.dayi.common.util.NameItem;
+import com.dayi.common.util.NameItems;
 import com.dayi.mybatis.support.BaseModel;
+import com.dayi.user.authorization.authz.PermissionBase;
+
 
 /**
  * @author xiell
- * @date 2018/11/12
+ * @date 2018/11/23
  */
-
-public class Permission extends BaseModel {
+public class Permission extends BaseModel implements PermissionBase {
 
     private static final long serialVersionUID = 1L;
 
@@ -63,6 +66,65 @@ public class Permission extends BaseModel {
      */
     private String updateBy;
 
+
+    /**
+     * 状态 - 无效、禁用
+     */
+    public final static NameItem STATUS_DISABLE = NameItem.valueOf("禁用", 0);
+    /**
+     * 状态 - 有效、启用
+     */
+    public final static NameItem STATUS_NORMAL = NameItem.valueOf("启用", 1);
+    /**
+     * 状态 - 全部状态
+     */
+    public final static NameItems STATUS_ALL = NameItems.valueOf(STATUS_DISABLE, STATUS_NORMAL);
+
+
+    /**
+     * 删除状态 - 正常
+     */
+    public final static NameItem DEL_STATUS_NO = NameItem.valueOf("正常", 0);
+
+    /**
+     * 删除状态 - 已删除
+     */
+    public final static NameItem DEL_STATUS_IS = NameItem.valueOf("删除", 1);
+
+    /**
+     * 删除状态 - 全部状态
+     */
+    public final static NameItems DEL_STATUS_ALL = NameItems.valueOf(DEL_STATUS_NO, DEL_STATUS_IS);
+
+
+    /**
+     * 显示状态 - 隐藏
+     */
+    public final static NameItem DISPLAY_STATUS_DISABLE = NameItem.valueOf("隐藏", 0);
+    /**
+     * 显示状态 - 显示
+     */
+    public final static NameItem DISPLAY_STATUS_NORMAL = NameItem.valueOf("显示", 1);
+    /**
+     * 显示状态 - 全部状态
+     */
+    public final static NameItems DISPLAY_STATUS_ALL = NameItems.valueOf(DISPLAY_STATUS_DISABLE, DISPLAY_STATUS_NORMAL);
+
+    public Permission() {
+    }
+
+    public Permission(String id) {
+        super(id);
+    }
+
+    public Permission(String id, String name, String url, Integer displayStatus) {
+        super(id);
+        this.name = name;
+        this.url = url;
+        this.displayStatus = displayStatus;
+    }
+
+    @Override
     public String getName() {
         return name;
     }
@@ -87,13 +149,11 @@ public class Permission extends BaseModel {
         this.moduleid = moduleid;
     }
 
-    public String getDisplayName() {
-        return displayName;
+    @Override
+    public String getKey() {
+        return url;
     }
 
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
 
     public Integer getDisplayStatus() {
         return displayStatus;
@@ -103,20 +163,27 @@ public class Permission extends BaseModel {
         this.displayStatus = displayStatus;
     }
 
-    public Integer getDelStatus() {
-        return delStatus;
-    }
-
-    public void setDelStatus(Integer delStatus) {
-        this.delStatus = delStatus;
-    }
-
     public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public Permission setStatus(Integer status) {
         this.status = status;
+        return this;
+    }
+    public Integer getDelStatus() {
+        return delStatus;
+    }
+
+    public Permission setDelStatus(Integer delStatus) {
+        this.delStatus = delStatus;
+        return this;
+    }
+    /**
+     * 判断状态
+     */
+    public boolean isStatus(NameItem nameItem) {
+        return this.status == nameItem.id;
     }
 
     public Integer getSort() {
@@ -125,6 +192,14 @@ public class Permission extends BaseModel {
 
     public void setSort(Integer sort) {
         this.sort = sort;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public String getDescription() {
@@ -139,15 +214,17 @@ public class Permission extends BaseModel {
         return createBy;
     }
 
-    public void setCreateBy(String createBy) {
+    public Permission setCreateBy(String createBy) {
         this.createBy = createBy;
+        return this;
     }
 
     public String getUpdateBy() {
         return updateBy;
     }
 
-    public void setUpdateBy(String updateBy) {
+    public Permission setUpdateBy(String updateBy) {
         this.updateBy = updateBy;
+        return this;
     }
 }

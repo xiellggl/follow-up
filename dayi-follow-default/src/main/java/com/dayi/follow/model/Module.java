@@ -6,11 +6,13 @@ import com.dayi.mybatis.support.BaseModel;
 
 import javax.persistence.Transient;
 import java.util.List;
+
+
 /**
  * @author xiell
- * @date 2018/11/12
+ * @date 2018/11/23
  */
-public class Module extends BaseModel  {
+public class Module extends BaseModel implements Comparable<Module> {
 
     private static final long serialVersionUID = 1L;
 
@@ -56,13 +58,54 @@ public class Module extends BaseModel  {
      * 子菜单
      */
     @Transient
-    private List<Module> childModules;
+    private List<com.dayi.user.model.Module> childModules;
 
     /**
      * 属性parentid-> 关联Module对象
      */
     @Transient
-    private Module parentModule;
+    private com.dayi.user.model.Module parentModule;
+
+    /**
+     * 状态 - 无效、禁用
+     */
+    public final static NameItem STATUS_DISABLE = NameItem.valueOf("禁用", 0);
+    /**
+     * 状态 - 有效、启用
+     */
+    public final static NameItem STATUS_NORMAL = NameItem.valueOf("启用", 1);
+    /**
+     * 状态 - 全部状态
+     */
+    public final static NameItems STATUS_ALL = NameItems.valueOf(STATUS_DISABLE, STATUS_NORMAL);
+
+    /**
+     * 删除状态 - 正常
+     */
+    public final static NameItem DEL_STATUS_NO = NameItem.valueOf("正常", 0);
+
+    /**
+     * 删除状态 - 已删除
+     */
+    public final static NameItem DEL_STATUS_IS = NameItem.valueOf("删除", 1);
+
+    /**
+     * 删除状态 - 全部状态
+     */
+    public final static NameItems DEL_STATUS_ALL = NameItems.valueOf(DEL_STATUS_NO, DEL_STATUS_IS);
+
+    public Module() {
+    }
+
+    public Module(String id) {
+        super(id);
+    }
+
+    public Module(String id, String name, String parentid) {
+        super(id);
+        this.name = name;
+        this.parentid = parentid;
+    }
 
     public String getName() {
         return name;
@@ -76,9 +119,12 @@ public class Module extends BaseModel  {
         return parentid;
     }
 
-    public void setParentid(String parentid) {
+    public Module setParentid(String parentid) {
         this.parentid = parentid;
+        return this;
     }
+
+
 
     public String getUrl() {
         return url;
@@ -92,18 +138,32 @@ public class Module extends BaseModel  {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public Module setStatus(Integer status) {
         this.status = status;
+        return this;
     }
 
     public Integer getDelStatus() {
         return delStatus;
     }
 
-    public void setDelStatus(Integer delStatus) {
+    public Module setDelStatus(Integer delStatus) {
         this.delStatus = delStatus;
+        return this;
     }
 
+    /**
+     * 判断状态
+     */
+    public boolean isStatus(NameItem nameItem) {
+        return this.status == nameItem.id;
+    }
+    /**
+     * 判断删除状态
+     */
+    public boolean isDelStatus(NameItem nameItem) {
+        return this.delStatus == nameItem.id;
+    }
     public Integer getSort() {
         return sort;
     }
@@ -136,19 +196,27 @@ public class Module extends BaseModel  {
         this.updateBy = updateBy;
     }
 
-    public List<Module> getChildModules() {
+    public List<com.dayi.user.model.Module> getChildModules() {
         return childModules;
     }
 
-    public void setChildModules(List<Module> childModules) {
+    public void setChildModules(List<com.dayi.user.model.Module> childModules) {
         this.childModules = childModules;
     }
 
-    public Module getParentModule() {
+    public com.dayi.user.model.Module getParentModule() {
         return parentModule;
     }
 
-    public void setParentModule(Module parentModule) {
+    public void setParentModule(com.dayi.user.model.Module parentModule) {
         this.parentModule = parentModule;
+    }
+
+    @Override
+    public int compareTo(Module o) {
+        if (o == null || o.getSort() == null) {
+            return -1;
+        }
+        return this.getSort() - o.getSort();
     }
 }
