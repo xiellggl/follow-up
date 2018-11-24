@@ -2,12 +2,10 @@ package com.dayi.follow.controller;
 
 import com.dayi.common.util.BizResult;
 import com.dayi.follow.component.UserComponent;
-import com.dayi.follow.model.Permission;
-import com.dayi.follow.model.Role;
+import com.dayi.follow.model.follow.Permission;
 import com.dayi.follow.service.PermissionService;
 import com.dayi.follow.service.RoleService;
 import com.dayi.follow.vo.PermissionVo;
-import com.dayi.mybatis.common.util.Misc;
 import com.dayi.mybatis.support.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

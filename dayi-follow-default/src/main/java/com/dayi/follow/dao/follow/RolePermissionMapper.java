@@ -1,7 +1,7 @@
 package com.dayi.follow.dao.follow;
 
 
-import com.dayi.follow.model.RolePermission;
+import com.dayi.follow.model.follow.RolePermission;
 import com.dayi.mybatis.support.BaseMapper;
 
 import java.util.List;

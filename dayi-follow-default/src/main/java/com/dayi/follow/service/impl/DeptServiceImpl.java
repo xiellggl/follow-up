@@ -1,8 +1,8 @@
 package com.dayi.follow.service.impl;
 
 import com.dayi.follow.dao.follow.DeptMapper;
-import com.dayi.follow.model.Department;
-import com.dayi.follow.model.FollowUp;
+import com.dayi.follow.model.follow.Department;
+import com.dayi.follow.model.follow.FollowUp;
 import com.dayi.follow.service.DeptService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -121,6 +122,12 @@ public class DeptServiceImpl implements DeptService {
     @Override
     public Department get(String deptId) {
         return deptMapper.get(deptId);
+    }
+
+    @Override
+    public boolean updateDept(Department department) {
+        department.setUpdateTime(new Date());
+        return 1 == deptMapper.update(department);
     }
 
     /* 私有方法：递归查询所有下级部门 */

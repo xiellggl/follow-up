@@ -1,18 +1,14 @@
 package com.dayi.follow.service.impl;
 
 
-import com.dayi.common.util.Misc;
 import com.dayi.component.annotation.Log;
 import com.dayi.component.model.BaseLog;
 import com.dayi.follow.dao.follow.PermissionMapper;
-import com.dayi.follow.dao.follow.RoleMapper;
 import com.dayi.follow.dao.follow.RolePermissionMapper;
-import com.dayi.follow.model.OperateLog;
-import com.dayi.follow.model.Permission;
-import com.dayi.follow.model.Role;
-import com.dayi.follow.model.RolePermission;
+import com.dayi.follow.model.follow.OperateLog;
+import com.dayi.follow.model.follow.Permission;
+import com.dayi.follow.model.follow.RolePermission;
 import com.dayi.follow.service.PermissionService;
-import com.dayi.follow.service.RoleService;
 import com.dayi.follow.vo.PermissionVo;
 import com.dayi.mybatis.support.Page;
 import org.springframework.stereotype.Service;
@@ -92,6 +88,16 @@ public class PermissionServiceImpl implements PermissionService {
     public boolean updatePermission(Permission permission) {
         permission.setUpdateTime(new Date());
         return 1 == permissionMapper.update(permission);
+    }
+
+    @Override
+    public List<Permission> getPermissions() {
+        return permissionMapper.search();
+    }
+
+    @Override
+    public List<Permission> getPermissionsByRoleId(String roleId) {
+        return permissionMapper.getPermissionByRoleId(roleId);
     }
 
 }

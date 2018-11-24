@@ -1,11 +1,10 @@
 package com.dayi.follow.service.impl;
 
 
-import com.dayi.common.util.DateUtil;
 import com.dayi.follow.dao.dayi.AgentMapper;
 import com.dayi.follow.dao.follow.FollowAgentMapper;
 import com.dayi.follow.dao.follow.FollowUpMapper;
-import com.dayi.follow.model.AgentContact;
+import com.dayi.follow.model.follow.AgentContact;
 import com.dayi.follow.service.AgentService;
 import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.OrgService;

@@ -4,7 +4,6 @@ import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.conf.Constants;
 import com.dayi.follow.enums.AgentCusTypeEnum;
 import com.dayi.follow.enums.BankTypeEnum;
-import com.dayi.follow.model.FollowUp;
 import com.dayi.follow.service.AgentService;
 import com.dayi.follow.service.FollowUpService;
 import com.dayi.follow.util.PageUtil;

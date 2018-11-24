@@ -1,7 +1,7 @@
 package com.dayi.follow.dao.follow;
 
 
-import com.dayi.follow.model.Permission;
+import com.dayi.follow.model.follow.Permission;
 import com.dayi.follow.vo.PermissionVo;
 import com.dayi.mybatis.support.BaseMapper;
 import com.dayi.mybatis.support.Page;

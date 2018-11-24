@@ -24,7 +24,7 @@ import javax.sql.DataSource;
  * @date 2018/11/13
  */
 @Configuration
-@MapperScan(basePackages = {"com.dayi.follow.dao.follow"},sqlSessionFactoryRef = "followSqlSessionFactory",markerInterface = BaseMapper.class)
+@MapperScan(basePackages = {"com.dayi.follow.dao.follow"},sqlSessionFactoryRef = "followSqlSessionFactory")
 public class FollowDBConfig {
 
     @Autowired

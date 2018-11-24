@@ -2,9 +2,9 @@ package com.dayi.follow.controller;
 
 import com.dayi.common.util.BizResult;
 import com.dayi.common.util.Misc;
-import com.dayi.follow.model.Module;
+import com.dayi.follow.model.follow.Module;
 import com.dayi.follow.service.ModuleService;
-import com.dayi.follow.model.Menu;
+import com.dayi.follow.model.follow.Menu;
 import com.dayi.follow.service.PermissionService;
 import com.dayi.follow.vo.PermissionVo;
 import org.springframework.stereotype.Controller;

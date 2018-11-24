@@ -1,7 +1,7 @@
 package com.dayi.follow.dao.follow;
 
 
-import com.dayi.follow.model.Module;
+import com.dayi.follow.model.follow.Module;
 import com.dayi.mybatis.support.BaseMapper;
 
 import java.util.List;

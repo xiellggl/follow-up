@@ -2,20 +2,16 @@ package com.dayi.follow.controller;
 
 import com.dayi.common.util.BizResult;
 import com.dayi.follow.component.UserComponent;
-import com.dayi.follow.model.FollowUp;
 import com.dayi.follow.service.CountService;
 import com.dayi.follow.service.FollowUpService;
 import com.dayi.follow.vo.IndexVo;
 import com.dayi.follow.vo.LoginVo;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
 
 /**
  * @author xiell

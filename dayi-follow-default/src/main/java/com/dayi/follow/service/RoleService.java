@@ -1,11 +1,7 @@
 package com.dayi.follow.service;
 
 
-import com.dayi.follow.model.Menu;
-import com.dayi.follow.model.Module;
-import com.dayi.follow.model.Permission;
-import com.dayi.follow.model.Role;
-import com.dayi.follow.vo.PermissionVo;
+import com.dayi.follow.model.follow.Role;
 
 import java.util.List;
 /**
@@ -49,4 +45,12 @@ public interface RoleService {
      * @return
      */
     boolean deleteRole(String id);
+
+    /**
+     * 根据ids查询角色列表
+     *
+     * @param roleIds
+     * @return
+     */
+    List<Role> queryRolesByIds(String roleIds);
 }

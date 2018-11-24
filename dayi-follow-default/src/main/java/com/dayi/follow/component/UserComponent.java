@@ -1,7 +1,7 @@
 package com.dayi.follow.component;
 
-import com.dayi.follow.model.Department;
-import com.dayi.follow.model.FollowUp;
+import com.dayi.follow.model.follow.Department;
+import com.dayi.follow.model.follow.FollowUp;
 import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.FollowUpService;
 import com.dayi.follow.vo.LoginVo;

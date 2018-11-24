@@ -1,12 +1,9 @@
-package com.dayi.follow.model;
+package com.dayi.follow.model.follow;
 
-import com.dayi.common.constant.DayiConstant;
 import com.dayi.common.util.NameItem;
 import com.dayi.common.util.NameItems;
 import com.dayi.mybatis.support.BaseModel;
 import com.dayi.user.authorization.authz.RoleBase;
-
-import javax.persistence.Transient;
 
 
 /**

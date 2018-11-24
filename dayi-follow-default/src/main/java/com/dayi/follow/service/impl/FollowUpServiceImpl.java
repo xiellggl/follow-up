@@ -2,12 +2,13 @@ package com.dayi.follow.service.impl;
 
 
 import com.dayi.common.util.BizResult;
+import com.dayi.follow.dao.follow.DeptMapper;
 import com.dayi.follow.dao.follow.FollowUpMapper;
-import com.dayi.follow.model.FollowUp;
-import com.dayi.follow.model.Permission;
-import com.dayi.follow.model.Role;
-import com.dayi.follow.service.FollowUpService;
-import com.dayi.follow.service.OrgService;
+import com.dayi.follow.model.follow.Department;
+import com.dayi.follow.model.follow.FollowUp;
+import com.dayi.follow.model.follow.Permission;
+import com.dayi.follow.model.follow.Role;
+import com.dayi.follow.service.*;
 import com.dayi.follow.util.Md5Util;
 import com.dayi.follow.vo.OrgVo;
 import com.dayi.user.authorization.authc.AccountInfo;
@@ -21,6 +22,7 @@ import com.dayi.user.authorization.authz.RolePermissionResult;
 import com.dayi.user.authorization.authz.support.SimpleAuthorizationInfo;
 import com.dayi.user.authorization.realm.Realm;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -37,42 +39,53 @@ public class FollowUpServiceImpl implements FollowUpService, Realm {
     private FollowUpMapper followUpMapper;
     @Resource
     private OrgService orgService;
+    @Resource
+    PermissionService permissionService;
+    @Resource
+    DeptMapper deptMapper;
+    @Resource
+    DeptService deptService;
+    @Resource
+    RoleService roleService;
+    /**
+     * 黑名单列表
+     */
+    private List<String> blackList;
+    private List<Permission> permissions;
+
+    @Autowired
+    public FollowUpServiceImpl(PermissionService permissionService) {
+        this.blackList = new ArrayList<>();
+        this.permissions = permissionService.getPermissions();
+        for (Permission permission : this.permissions) {
+            if (permission != null) {
+                String url = permission.getKey();
+                this.blackList.add(url);
+            }
+        }
+    }
 
     @Override
     public BizResult add(FollowUp followUp) {
-        if (!this.checkUserName(followUp.getUserName(), followUp.getId())) {
-            return BizResult.fail("用户名已存在！");
-        }
-        if (!this.checkCodeRepeat(followUp.getInviteCode())) {
-            return BizResult.fail("邀请码已存在！");
-        }
-        followUp.setPassword(Md5Util.md5(followUp.getUserName(), followUp.getPassword()));
         followUpMapper.add(followUp);
-        // updateDept(flowUp.getDeptId(), null, 1);//更新部门信息
-        return BizResult.SUCCESS;
+        Department department = deptService.get(followUp.getDeptId());
+        if (null != department) {
+            department.setPersonNum(department.getPersonNum() + 1);
+        }
+        return deptService.updateDept(department) ? BizResult.SUCCESS : BizResult.FAIL;
     }
+
 
     @Override
     public FollowUp get(String followUpId) {
         return followUpMapper.get(followUpId);
     }
 
-    /**
-     * 新增/修改 -- 跟进人 -- 校验账号是否重复
-     */
-    public boolean checkUserName(String userName, String id) {
-        FollowUp flowUp = followUpMapper.getByUserName(userName);
-        if (flowUp != null) {
-            if (!StringUtils.isBlank(id)) {
-                if (!id.equals(flowUp.getId())) {
-                    return false;
-                }
-            } else {
-                return false;
-            }
-        }
-        return true;
+    @Override
+    public FollowUp getByUserName(String userName) {
+        return followUpMapper.getByUserName(userName);
     }
+
 
     /**
      * 新增/修改 -- 跟进人 -- 校验邀请码是否重复
@@ -166,49 +179,24 @@ public class FollowUpServiceImpl implements FollowUpService, Realm {
 
     @Override
     public AuthorizationInfo getAuthorizationInfo(AuthenticationInfo authenticationInfo) {
-//        if (null == authenticationInfo) {
-//            return null;
-//        }
-//        FollowUp followUp = (FollowUp) authenticationInfo.getPrincipal();
-//        SimpleAuthorizationInfo authorizationInfoImpl = new SimpleAuthorizationInfo(this.getTargetClass(),this.getRealmId(),authenticationInfo);
+        if (null == authenticationInfo) {
+            return null;
+        }
+        FollowUp followUp = (FollowUp) authenticationInfo.getPrincipal();
+        SimpleAuthorizationInfo authorizationInfoImpl = new SimpleAuthorizationInfo(this.getTargetClass(),this.getRealmId(),authenticationInfo);
         List<RolePermissionResult> rolePermissionResults = new ArrayList<>();
-//        //根据id获取角色列表
-//        List<Role> roles = roleService.queryRolesByIds(followUp.getRoleids());
-//        for (RoleBase<String> role : roles) {
-//            List<Permission> permissions = permissionService.getPermissionsByRoleId(role.getId());
-//            RolePermissionResult ar = new RolePermissionResult(role, permissions);
-//            rolePermissionResults.add(ar);
-//        }
-        SimpleAuthorizationInfo authorizationInfoImpl = new SimpleAuthorizationInfo(this.getTargetClass(), this.getRealmId(), authenticationInfo);
+        //根据id获取角色列表
+        List<Role> roles = roleService.queryRolesByIds(followUp.getRoleids());
+        for (RoleBase<String> role : roles) {
+            List<Permission> permissions = permissionService.getPermissionsByRoleId(role.getId());
+            RolePermissionResult ar = new RolePermissionResult(role, permissions);
+            rolePermissionResults.add(ar);
+        }
         //封装角色权限数据到AuthorizationInfoImpl
-
-        Role role = new Role();
-        role.setStatus(1);
-        role.setCreateTime(new Date());
-        role.setUpdateTime(new Date());
-
-        List<Role> roles = new ArrayList<Role>();
-        roles.add(role);
-
         authorizationInfoImpl.setRoles(roles);
-
-        Permission permission = new Permission();
-        permission.setDisplayStatus(1);
-        permission.setDelStatus(0);
-        permission.setStatus(1);
-        permission.setCreateTime(new Date());
-        permission.setUpdateTime(new Date());
-        permission.setUrl("/followup/index");
-
-        List<Permission> permissions = new ArrayList<Permission>();
-        permissions.add(permission);
-
-        RolePermissionResult rolePermissionResult = new RolePermissionResult(role, permissions);
-        rolePermissionResults.add(rolePermissionResult);
-
         authorizationInfoImpl.setRolePermissionResults(rolePermissionResults);
 
-        return authorizationInfoImpl;//暂时模拟有权限
+        return authorizationInfoImpl;
     }
 
     @Override
@@ -218,9 +206,7 @@ public class FollowUpServiceImpl implements FollowUpService, Realm {
 
     @Override
     public List<String> getBlacklistUrls() {
-        List<String> blackList = new ArrayList<String>();
-        blackList.add("/followup/index");
-        return blackList;
+        return this.blackList;
     }
 
     @Override

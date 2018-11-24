@@ -6,10 +6,10 @@ import com.dayi.component.annotation.Log;
 import com.dayi.component.model.BaseLog;
 import com.dayi.follow.dao.follow.ModuleMapper;
 import com.dayi.follow.dao.follow.PermissionMapper;
-import com.dayi.follow.model.Menu;
-import com.dayi.follow.model.Module;
-import com.dayi.follow.model.OperateLog;
-import com.dayi.follow.model.Permission;
+import com.dayi.follow.model.follow.Menu;
+import com.dayi.follow.model.follow.Module;
+import com.dayi.follow.model.follow.OperateLog;
+import com.dayi.follow.model.follow.Permission;
 import com.dayi.follow.service.ModuleService;
 import com.dayi.follow.vo.PermissionVo;
 import org.springframework.stereotype.Service;
@@ -209,7 +209,7 @@ public class ModuleServiceImpl implements ModuleService {
 
 
     @Override
-    @Log(target = OperateLog.class, action = BaseLog.LogAction.ADD, what = "模块管理", note = "添加模块")
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.ADD, what = "模块管理", note = "添加模块",authorName = "")
     public boolean addModule(Module module) {
         if (module.getParentid() == null) {
             module.setParentid("");

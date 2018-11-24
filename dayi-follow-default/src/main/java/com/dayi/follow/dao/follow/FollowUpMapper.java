@@ -1,8 +1,7 @@
 package com.dayi.follow.dao.follow;
 
-import com.dayi.follow.model.FollowUp;
+import com.dayi.follow.model.follow.FollowUp;
 import com.dayi.mybatis.support.BaseMapper;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 /**

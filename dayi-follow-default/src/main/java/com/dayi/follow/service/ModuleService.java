@@ -1,9 +1,9 @@
 package com.dayi.follow.service;
 
 
-import com.dayi.follow.model.Module;
-import com.dayi.follow.model.Menu;
-import com.dayi.follow.model.Permission;
+import com.dayi.follow.model.follow.Module;
+import com.dayi.follow.model.follow.Menu;
+import com.dayi.follow.model.follow.Permission;
 import com.dayi.follow.vo.PermissionVo;
 
 import java.util.List;

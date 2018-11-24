@@ -1,7 +1,7 @@
 package com.dayi.follow.dao.follow;
 
 
-import com.dayi.follow.model.Role;
+import com.dayi.follow.model.follow.Role;
 import com.dayi.follow.vo.RoleVo;
 import com.dayi.mybatis.support.BaseMapper;
 import com.dayi.mybatis.support.Page;

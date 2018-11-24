@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dayi.follow.dao.follow.FollowAgentMapper">
 
-    <resultMap id="AgentContactResultMap" type="com.dayi.follow.model.AgentContact">
+    <resultMap id="AgentContactResultMap" type="com.dayi.follow.model.follow.AgentContact">
         <result property="createTime" column="create_date" />
         <result property="content" column="content" />
     </resultMap>

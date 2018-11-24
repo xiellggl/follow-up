@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dayi.follow.dao.follow.PermissionMapper">
+
+    <resultMap id="permissionResultMap" type="com.dayi.follow.model.follow.Permission">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="url" column="url"/>
+        <result property="moduleid" column="moduleid"/>
+        <result property="displayStatus" column="display_status"/>
+        <result property="displayName" column="display_name"/>
+        <result property="status" column="status"/>
+        <result property="description" column="description"/>
+        <result property="sort" column="sort"/>
+        <result property="createBy" column="create_by"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+    <!-- 模糊name搜索 -->
+    <sql id="selectListByFuzzyNameSql">
+        Select * from permission
+        <where>
+            del_status=0
+            <if test="id != null and id != ''">
+                AND id=#{id}
+            </if>
+            <if test="name != null and name != ''">
+                AND name LIKE "%"#{name}"%"
+            </if>
+            <if test="moduleid != null">
+                AND moduleid=#{moduleid}
+            </if>
+            <if test="displayStatus != null and displayStatus != ''">
+                AND display_status=#{displayStatus}
+            </if>
+            <if test="url != null and url != ''">
+                AND url=#{url}
+            </if>
+            <if test="status != null and status != ''">
+                AND status=#{status}
+            </if>
+            <if test="bindStatus != null">
+                <if test="bindStatus==1">
+                    And moduleid!=''
+                </if>
+                <if test="bindStatus==0">
+                    And moduleid=''
+                </if>
+            </if>
+            <if test="permissionIds !=null">
+                And id in
+                <foreach collection="permissionIds" item="item" index="index" open="(" separator=","
+                         close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </sql>
+
+    <sql id="selectListSql">
+        Select * from permission
+        <where>
+            del_status=0
+            <if test="id != null and id != ''">
+                AND id=#{id}
+            </if>
+            <if test="name != null and name != ''">
+                AND name=#{name}
+            </if>
+            <if test="moduleid != null">
+                AND moduleid=#{moduleid}
+            </if>
+            <if test="displayStatus != null and displayStatus != ''">
+                AND display_status=#{displayStatus}
+            </if>
+            <if test="url != null and url != ''">
+                AND url=#{url}
+            </if>
+            <if test="status != null and status != ''">
+                AND status=#{status}
+            </if>
+            <if test="permissionIds !=null and permissionIds.size()>0">
+                And id in
+                <foreach collection="permissionIds" item="item" index="index" open="(" separator=","
+                         close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </sql>
+
+    <select id="get" resultMap="permissionResultMap">
+        SELECT * FROM permission  WHERE id = #{id}
+    </select>
+
+    <select id="getByIds" resultMap="permissionResultMap">
+        SELECT * FROM permission where id in
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="getList" resultMap="permissionResultMap">
+        SELECT * FROM permission
+    </select>
+
+    <select id="getListBySystemId" resultMap="permissionResultMap">
+        SELECT permission.* FROM module Left Join permission on module.id=permission.moduleid where module.system_id=#{systemId}
+    </select>
+
+    <select id="getPermissionByRoleId" resultMap="permissionResultMap">
+        SELECT permission.* FROM role_permission As rp Left Join permission on rp.permissionid=permission.id where rp.roleid=#{roleId}
+    </select>
+
+    <select id="findList" resultMap="permissionResultMap">
+        <include refid="selectListSql"/>
+    </select>
+
+    <select id="findPage" resultMap="permissionResultMap">
+        <include refid="selectListByFuzzyNameSql"/>
+        ORDER BY update_time DESC
+    </select>
+</mapper>
+

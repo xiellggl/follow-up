@@ -1,12 +1,11 @@
 package com.dayi.follow.service;
 
-import com.dayi.follow.model.Permission;
-import com.dayi.follow.model.RolePermission;
+import com.dayi.follow.model.follow.Permission;
+import com.dayi.follow.model.follow.RolePermission;
 import com.dayi.follow.vo.PermissionVo;
 import com.dayi.mybatis.support.Page;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author xiell
@@ -77,6 +76,21 @@ public interface PermissionService {
      * @return
      */
     boolean updatePermission(Permission permission);
+
+    /**
+     * 获取权限列表
+     * @return
+     */
+    List<Permission> getPermissions();
+
+
+    /**
+     * 根据角色id,获取权限列表
+     *
+     * @param roleId
+     * @return
+     */
+    List<Permission> getPermissionsByRoleId(String roleId);
 
 
 }

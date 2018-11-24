@@ -6,8 +6,7 @@ package com.dayi.follow.service;
  * @date 2018/11/12
  */
 
-import com.dayi.follow.model.Department;
-import com.dayi.follow.model.FollowUp;
+import com.dayi.follow.model.follow.Department;
 
 import java.util.List;
 
@@ -34,5 +33,12 @@ public interface DeptService {
      * 获取跟进人信息
      */
     Department get(String deptId);
+
+    /**
+     * 更新部门
+     * @param department
+     * @return
+     */
+    boolean updateDept(Department department);
 
 }

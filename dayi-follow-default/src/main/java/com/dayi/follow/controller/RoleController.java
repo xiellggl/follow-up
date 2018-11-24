@@ -1,21 +1,14 @@
 package com.dayi.follow.controller;
 
 import com.dayi.common.util.BizResult;
-import com.dayi.common.util.Misc;
 import com.dayi.follow.component.UserComponent;
-import com.dayi.follow.model.Menu;
-import com.dayi.follow.model.Module;
-import com.dayi.follow.model.Role;
-import com.dayi.follow.service.ModuleService;
+import com.dayi.follow.model.follow.Role;
 import com.dayi.follow.service.RoleService;
-import com.dayi.follow.vo.LoginVo;
-import com.dayi.follow.vo.PermissionVo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
  * @author xiell

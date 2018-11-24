@@ -4,8 +4,9 @@ import com.dayi.common.util.BizResult;
 import com.dayi.common.web.util.IPUtil;
 import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.enums.MemberStatusEnum;
-import com.dayi.follow.model.FollowUp;
+import com.dayi.follow.model.follow.FollowUp;
 import com.dayi.follow.service.FollowUpService;
+import com.dayi.follow.util.Md5Util;
 import com.dayi.follow.vo.LoginVo;
 import com.dayi.user.authorization.AuthorizationManager;
 import com.dayi.user.authorization.authc.support.UsernamePasswordToken;
@@ -77,7 +78,7 @@ public class FollowupController {
                         }
                         return BizResult.succ(goToUrl, "登录成功！");
                     } else {
-                        return BizResult.fail("登录失败！");
+                        return BizResult.fail("账号已被禁用！");
                     }
                 } else {
                     return BizResult.fail("登录失败！");
@@ -91,7 +92,7 @@ public class FollowupController {
 
     @RequestMapping("loginout")
     public String loginOut(HttpServletRequest request, HttpServletResponse response) {
-        AuthorizationManager.cleanAllAuthenticationInfo(request,response);
+        AuthorizationManager.cleanAllAuthenticationInfo(request, response);
         return "redirect:/followup/login";
     }
 
@@ -102,17 +103,20 @@ public class FollowupController {
     @ResponseBody
     public BizResult add(HttpServletRequest request, @Valid FollowUp followUp) {
         LoginVo currVo = userComponent.getCurrUser(request);
-        if (currVo == null || (!"admin".equals(currVo.getUsername()) && !currVo.getIsAdmin().equals(1))) {
+        if (null == followUp) {
             return BizResult.FAIL;
         }
-        try {
-            followUp.setCreateBy(currVo.getName());
-            followUp.setModifyBy(currVo.getName());
-            BizResult bizResult = followUpService.add(followUp);
-            return bizResult;
-        } catch (Exception e) {
-            return BizResult.fail(e.getMessage());
+        if (followUpService.getByUserName(followUp.getUserName()) != null) {
+            return BizResult.fail("用户名已存在！");
         }
+
+        if (!followUpService.checkCodeRepeat(followUp.getInviteCode())) {
+            return BizResult.fail("邀请码已存在！");
+        }
+        followUp.setPassword(Md5Util.md5(followUp.getUserName(), followUp.getPassword()));
+        followUp.setCreateBy(currVo.getName());
+        followUp.setModifyBy(currVo.getName());
+        return followUpService.add(followUp);
     }
 
 

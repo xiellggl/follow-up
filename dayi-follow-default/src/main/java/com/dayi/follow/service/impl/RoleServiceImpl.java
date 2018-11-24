@@ -4,14 +4,11 @@ package com.dayi.follow.service.impl;
 import com.dayi.common.util.Misc;
 import com.dayi.component.annotation.Log;
 import com.dayi.component.model.BaseLog;
-import com.dayi.follow.dao.follow.ModuleMapper;
-import com.dayi.follow.dao.follow.PermissionMapper;
 import com.dayi.follow.dao.follow.RoleMapper;
-import com.dayi.follow.model.*;
-import com.dayi.follow.service.ModuleService;
+import com.dayi.follow.model.follow.OperateLog;
+import com.dayi.follow.model.follow.Role;
 import com.dayi.follow.service.PermissionService;
 import com.dayi.follow.service.RoleService;
-import com.dayi.follow.vo.PermissionVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -73,6 +70,15 @@ public class RoleServiceImpl implements RoleService {
         role.setStatus(Role.STATUS_DEL.id);
         role.setUpdateTime(new Date());
         return 1 == roleMapper.update(role);
+    }
+
+    @Override
+    public List<Role> queryRolesByIds(String roleIds) {
+        if (roleIds == null) {
+            return new ArrayList<>();
+        }
+        String[] roleArr = roleIds.split(",");
+        return roleMapper.getByIds(Arrays.asList(roleArr));
     }
 
 }

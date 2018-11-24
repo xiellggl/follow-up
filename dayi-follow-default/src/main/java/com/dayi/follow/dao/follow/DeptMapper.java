@@ -1,6 +1,6 @@
 package com.dayi.follow.dao.follow;
 
-import com.dayi.follow.model.Department;
+import com.dayi.follow.model.follow.Department;
 import com.dayi.mybatis.support.BaseMapper;
 
 /**

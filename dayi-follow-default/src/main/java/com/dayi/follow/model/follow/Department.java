@@ -1,4 +1,4 @@
-package com.dayi.follow.model;
+package com.dayi.follow.model.follow;
 
 import com.dayi.mybatis.support.BaseModel;
 import org.apache.commons.collections.CollectionUtils;

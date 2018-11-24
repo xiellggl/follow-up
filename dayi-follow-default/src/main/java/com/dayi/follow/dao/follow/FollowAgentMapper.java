@@ -1,6 +1,6 @@
 package com.dayi.follow.dao.follow;
 
-import com.dayi.follow.model.AgentContact;
+import com.dayi.follow.model.follow.AgentContact;
 import com.dayi.follow.vo.AgentListVo;
 import com.dayi.follow.vo.SearchVo;
 import com.dayi.mybatis.support.BaseMapper;

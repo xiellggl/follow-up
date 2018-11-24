@@ -2,7 +2,6 @@ package com.dayi.follow.controller;
 
 import com.dayi.common.util.BizResult;
 import com.dayi.follow.FollowApplication;
-import com.dayi.follow.model.FollowUp;
 import com.dayi.follow.service.FollowUpService;
 import com.dayi.user.authorization.AuthorizationManager;
 import com.dayi.user.authorization.authc.AccountInfo;
