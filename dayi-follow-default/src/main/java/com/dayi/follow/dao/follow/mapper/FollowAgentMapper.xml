@@ -298,4 +298,5 @@
          SELECT create_date,content FROM `agent_contact` WHERE agent_id = #{agentId} ORDER BY create_date DESC LIMIT 1
     </select>
 
+
 </mapper>

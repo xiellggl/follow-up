@@ -28,4 +28,5 @@ public interface FollowAgentMapper extends BaseMapper<AgentListVo> {
                             @Param("startStr") String startStr, @Param("endStr") String endStr,
                             @Param("followId") String followId, @Param("whereSql") String whereSql,
                             @Param("dayiDataBaseStr") String dayiDataBaseStr);
+
 }

@@ -9,17 +9,21 @@ import com.dayi.follow.service.AgentService;
 import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.OrgService;
 import com.dayi.follow.vo.AgentListVo;
+import com.dayi.follow.vo.CusStatusVo;
 import com.dayi.follow.vo.IndexVo;
 import com.dayi.follow.vo.SearchVo;
 import com.dayi.mybatis.support.Page;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.Footer;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -54,10 +58,10 @@ public class AgentServiceImpl implements AgentService {
         String endStr = dateTime.millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
 
         List<AgentListVo> agents = followAgentMapper.findAgents(searchVo,
-                ids, startStr, endStr, followId, whereSql,dayiDataBaseStr,
+                ids, startStr, endStr, followId, whereSql, dayiDataBaseStr,
                 (page.getPageNo() - 1) * page.getPageSize(), page.getPageSize());
 
-        Integer totalCount = followAgentMapper.findAgentsCount(searchVo, ids, startStr, endStr, followId, whereSql,dayiDataBaseStr);
+        Integer totalCount = followAgentMapper.findAgentsCount(searchVo, ids, startStr, endStr, followId, whereSql, dayiDataBaseStr);
 
         for (AgentListVo vo : agents) {
             Date lastLoginTime = agentMapper.findLastLoginTime(vo.getId());
@@ -110,8 +114,22 @@ public class AgentServiceImpl implements AgentService {
     /**
      * 代理商 -- 统计相应跟进人数目--
      */
-    public IndexVo countCusStatus(String followId) {
-        return agentMapper.countCusStatus(followId);
+    public CusStatusVo countCusStatus(String followId) {
+        CusStatusVo statusVo= new CusStatusVo();
+
+        List<String> followIds = new ArrayList<String>();
+        followIds.add(followId);
+
+        statusVo.setCusNum(agentMapper.getCusNum(followIds));// 跟进用户总数
+        statusVo.setHadLinkNum(agentMapper.getLinkCusNum(followIds));   // 已联系--用户人数
+        statusVo.setHadRealNameNum(agentMapper.getNameCusNum(followIds));// 已实名认证--用户人数
+        statusVo.setHadSignNum(agentMapper.getCardCusNum(followIds));// 已绑卡--用户人数
+        statusVo.setHadInCashNum(agentMapper.getInCashCusNum(followIds));// 已入金--用户人数
+        statusVo.setHadAgentNum(agentMapper.getAgentCusNum(followIds));// 已代理--用户人数
+        statusVo.setNoFundNum(agentMapper.getNoFundCusNum(followIds));// 总资产为零--用户人数
+        statusVo.setHadLostNum(agentMapper.getLostCusNum(followIds)); //流失客户
+
+        return statusVo;
     }
 
 

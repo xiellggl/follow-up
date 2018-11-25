@@ -24,25 +24,118 @@ public class IndexVo {
     private String applyOutCashFm;//提现转出总额（格式化：显示前两位和小数点位，其余用*标识）
     private Integer outCashNum;//出金人数
 
-    //----------------客户状态开始
-    private Integer cusNum = 0;  // 客户总数
-    private Integer hadLinkNum = 0;  // 已联系--用户人数
-    private Integer hadInCashNum = 0;  // 已入金--用户人数
-    private Integer hadRealNameNum = 0; // 已实名认证--用户人数
-    private Integer hadSignNum = 0;  // 已绑卡--用户人数
-    private Integer hadAgentNum = 0;  // 已代理--用户人数
-    private Integer hadLostNum = 0;  //流失客户
-    private Integer noFundNum = 0;  // 总资产为零--用户人数
-    //管理员特有
-    private Integer followUpNum = 0; // 跟进人数量
-    private Integer waitAssignCusNum;//待分配用户
-    private Double totalFund = 0d;  // 代理商资产总规模
-    private String totalFundFm;  // 代理商资产总规模
-    //------------------客户状态结束
-
-
     private Integer deptId;//部门（团队）ID
     private String deptName;//部门名称
 
+    public Integer getKaOrgNum() {
+        return kaOrgNum;
+    }
 
+    public void setKaOrgNum(Integer kaOrgNum) {
+        this.kaOrgNum = kaOrgNum;
+    }
+
+    public Integer getKaOrgValidAgentNum() {
+        return kaOrgValidAgentNum;
+    }
+
+    public void setKaOrgValidAgentNum(Integer kaOrgValidAgentNum) {
+        this.kaOrgValidAgentNum = kaOrgValidAgentNum;
+    }
+
+    public BigDecimal getKaOrgManageFund() {
+        return kaOrgManageFund;
+    }
+
+    public void setKaOrgManageFund(BigDecimal kaOrgManageFund) {
+        this.kaOrgManageFund = kaOrgManageFund;
+    }
+
+    public Integer getWaitLinkNum() {
+        return waitLinkNum;
+    }
+
+    public void setWaitLinkNum(Integer waitLinkNum) {
+        this.waitLinkNum = waitLinkNum;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public Integer getOpenNum() {
+        return openNum;
+    }
+
+    public void setOpenNum(Integer openNum) {
+        this.openNum = openNum;
+    }
+
+    public BigDecimal getInCash() {
+        return inCash;
+    }
+
+    public void setInCash(BigDecimal inCash) {
+        this.inCash = inCash;
+    }
+
+    public String getInCashFm() {
+        return inCashFm;
+    }
+
+    public void setInCashFm(String inCashFm) {
+        this.inCashFm = inCashFm;
+    }
+
+    public Integer getInCashNum() {
+        return inCashNum;
+    }
+
+    public void setInCashNum(Integer inCashNum) {
+        this.inCashNum = inCashNum;
+    }
+
+    public BigDecimal getApplyOutCash() {
+        return applyOutCash;
+    }
+
+    public void setApplyOutCash(BigDecimal applyOutCash) {
+        this.applyOutCash = applyOutCash;
+    }
+
+    public String getApplyOutCashFm() {
+        return applyOutCashFm;
+    }
+
+    public void setApplyOutCashFm(String applyOutCashFm) {
+        this.applyOutCashFm = applyOutCashFm;
+    }
+
+    public Integer getOutCashNum() {
+        return outCashNum;
+    }
+
+    public void setOutCashNum(Integer outCashNum) {
+        this.outCashNum = outCashNum;
+    }
+
+    public Integer getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(Integer deptId) {
+        this.deptId = deptId;
+    }
+
+    public String getDeptName() {
+        return deptName;
+    }
+
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
+    }
 }
