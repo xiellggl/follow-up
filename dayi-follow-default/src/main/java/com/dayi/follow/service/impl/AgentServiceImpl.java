@@ -9,10 +9,13 @@ import com.dayi.follow.service.AgentService;
 import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.OrgService;
 import com.dayi.follow.vo.AgentListVo;
+import com.dayi.follow.vo.IndexVo;
 import com.dayi.follow.vo.SearchVo;
 import com.dayi.mybatis.support.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -34,6 +37,8 @@ public class AgentServiceImpl implements AgentService {
     private FollowAgentMapper followAgentMapper;
     @Resource
     private AgentMapper agentMapper;
+    @Value("${spring.datasource.dayi.dataBase}")
+    String dayiDataBaseStr;
 
     @Override
     public Page<AgentListVo> findAgentPage(Page<AgentListVo> page, SearchVo searchVo, String followId, Integer deptId, Integer deptFlowId,
@@ -49,10 +54,10 @@ public class AgentServiceImpl implements AgentService {
         String endStr = dateTime.millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
 
         List<AgentListVo> agents = followAgentMapper.findAgents(searchVo,
-                ids, startStr, endStr, followId, whereSql,
+                ids, startStr, endStr, followId, whereSql,dayiDataBaseStr,
                 (page.getPageNo() - 1) * page.getPageSize(), page.getPageSize());
 
-        Integer totalCount = followAgentMapper.findAgentsCount(searchVo, ids, startStr, endStr, followId, whereSql);
+        Integer totalCount = followAgentMapper.findAgentsCount(searchVo, ids, startStr, endStr, followId, whereSql,dayiDataBaseStr);
 
         for (AgentListVo vo : agents) {
             Date lastLoginTime = agentMapper.findLastLoginTime(vo.getId());
@@ -101,5 +106,14 @@ public class AgentServiceImpl implements AgentService {
         }
         return whereSql.toString();
     }
+
+    /**
+     * 代理商 -- 统计相应跟进人数目--
+     */
+    public IndexVo countCusStatus(String followId) {
+        return agentMapper.countCusStatus(followId);
+    }
+
+
 }
 

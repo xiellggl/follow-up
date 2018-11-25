@@ -2,6 +2,7 @@ package com.dayi.follow.controller;
 
 import com.dayi.common.util.BizResult;
 import com.dayi.follow.component.UserComponent;
+import com.dayi.follow.service.AgentService;
 import com.dayi.follow.service.CountService;
 import com.dayi.follow.service.FollowUpService;
 import com.dayi.follow.vo.IndexVo;
@@ -26,7 +27,8 @@ public class IndexController {
     CountService countService;
     @Resource
     UserComponent userComponent;
-
+    @Resource
+    AgentService agentService;
     @RequestMapping("")
     public String index(HttpServletRequest request) {
         return "uc/index";
@@ -35,7 +37,6 @@ public class IndexController {
     @RequestMapping("sale/personal/daily")
     @ResponseBody
     public BizResult salePersonalDaily(HttpServletRequest request) {
-        //判断权限
         LoginVo currVo = userComponent.getCurrUser(request);
         if (currVo == null) {
             return BizResult.FAIL;
@@ -69,7 +70,6 @@ public class IndexController {
     @RequestMapping("ka/team/daily")
     @ResponseBody
     public BizResult kaTeamDaily(HttpServletRequest request) {
-        //判断权限
         LoginVo currVo = userComponent.getCurrUser(request);
         if (currVo == null) {
             return BizResult.FAIL;
@@ -77,30 +77,18 @@ public class IndexController {
         IndexVo daily = countService.countPreDayDaily(null, currVo.getDeptId());//日报
         return BizResult.succ(daily);
     }
-//
-//    @RequestMapping("sale/team/daily")
-//    public String saleTeamDaily(HttpServletRequest request, Model model) {
-//        LoginVo currVo = userComponent.getCurrUser(request);
-//        boolean isKA = currVo.getDeptName().equals("KA及渠道部") ? true : false;
-//        boolean isManager = currVo.getIsManager().equals(1) ? true : false;
-//        String followId = currVo.getId();  // 跟进人ID
-//        IndexVo vo = new IndexVo();
-//        List<IndexVo> pDDailyList = null;
-//        if (isManager) {//是否负责人
-//            pDDailyList = flowUpService.countPreDayDaily(null, currVo.getDeptId());//负责人日报
-//        } else {
-//            pDDailyList = flowUpService.countPreDayDaily(flowId, null);//日报
-//        }
-//        if (pDDailyList.size() != 0) {
-//            pDDaily = pDDailyList.get(0);
-//        }
-//        if (pDDaily.getDate() != null) {
-//            model.addAttribute("pDDaily", pDDaily);//日报
-//        }
-//        return null;
-//    }
-//
-//
+
+    @RequestMapping("cus/status")
+    @ResponseBody
+    public BizResult cusStatus(HttpServletRequest request) {
+        LoginVo currVo = userComponent.getCurrUser(request);
+        if (currVo == null) {
+            return BizResult.FAIL;
+        }
+        IndexVo cusStatus = agentService.countCusStatus(currVo.getId());//客户状态
+        return BizResult.succ(cusStatus);
+    }
+
 //    /**
 //     * 用户首页
 //     *

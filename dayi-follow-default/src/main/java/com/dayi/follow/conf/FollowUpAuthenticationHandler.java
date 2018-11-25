@@ -51,9 +51,9 @@ public class FollowUpAuthenticationHandler  implements AuthenticationHandler {
 
     @Override
     public boolean handlerAuthenticated(HttpServletRequest request, HttpServletResponse response, AuthorizationManager.AuthorizedResult authorizedResult) {
-        //String unAuthorizedUrl = managerRealmService.getUnAuthorizedUrl(null);
+    //    String unAuthorizedUrl = followUpServiceImpl.getUnAuthorizedUrl(null);//登陆通过，没有权限
         try {
-            //response.sendRedirect(unAuthorizedUrl);
+      //      response.sendRedirect(unAuthorizedUrl);
             String message="未分配权限";
             response.setContentType("text/html; charset=utf-8");
             response.getWriter().write("{\"status\" : \"403\", \"msg\" :\""+ message+"\"}");
@@ -65,9 +65,9 @@ public class FollowUpAuthenticationHandler  implements AuthenticationHandler {
 
     @Override
     public boolean handlerUnAuthenticated(HttpServletRequest request, HttpServletResponse response, AuthorizationManager.AuthorizedResult authorizedResult) {
-        //String unAuthenticatedUrl = managerRealmService.getUnAuthenticatedUrl(null);
+      //  String unAuthenticatedUrl = followUpServiceImpl.getUnAuthenticatedUrl(null);
         try {
-            //response.sendRedirect(unAuthenticatedUrl);
+       //     response.sendRedirect(unAuthenticatedUrl);
             String message="登录超时";
             response.setContentType("text/html; charset=utf-8");
             response.getWriter().write("{\"status\" : \"300\", \"succ\" : true, \"msg\" :\""+ message+"\"}");

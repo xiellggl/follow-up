@@ -76,7 +76,7 @@
         from follow_agent a
 
         left join (
-             select id from follow_up
+             select id,invite_code,name,disable from follow_up
         )b on a.follow_id=b.id
 
         left join (
@@ -87,7 +87,7 @@
         from dev_dayi_spot.agent  where del_status != -1
         )c on c.id = a.agent_id
 
-        left join dev_dayi_spot.finance_account d on d.id = c.account_id
+        left join ${dayiDataBaseStr}.finance_account d on d.id = c.account_id
 
         left join (
         SELECT agent, IFNULL(SUM(amount), 0) amount from dev_dayi_spot.protocol WHERE (status = 1 OR status = 2) GROUP BY agent

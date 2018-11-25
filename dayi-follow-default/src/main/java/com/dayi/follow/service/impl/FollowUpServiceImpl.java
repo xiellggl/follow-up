@@ -211,12 +211,12 @@ public class FollowUpServiceImpl implements FollowUpService, Realm {
 
     @Override
     public String getUnAuthorizedUrl(String s) {
-        return null;
+        return "/followup/login";
     }
 
     @Override
     public String getUnAuthenticatedUrl(String s) {
-        return null;
+        return "/followup/login";
     }
 }
 

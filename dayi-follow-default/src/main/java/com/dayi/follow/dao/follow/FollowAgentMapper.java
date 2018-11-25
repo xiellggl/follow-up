@@ -16,14 +16,16 @@ public interface FollowAgentMapper extends BaseMapper<AgentListVo> {
 
     List<Integer> getWaitLinkAgentIds(@Param("followUpId") String followUpId);
 
-    AgentContact findLastContact(@Param("agentId") Integer agentId) ;
+    AgentContact findLastContact(@Param("agentId") Integer agentId);
 
     List<AgentListVo> findAgents(@Param("searchVo") SearchVo searchVo, @Param("ids") List<Integer> ids,
                                  @Param("startStr") String startStr, @Param("endStr") String endStr,
-                                 @Param("followId")String followId,@Param("whereSql")String whereSql,
-                                 @Param("limitStart") Integer limitStart, @Param("limitEnd") Integer limitEnd);
+                                 @Param("followId") String followId, @Param("whereSql") String whereSql,
+                                 @Param("dayiDataBaseStr") String dayiDataBaseStr, @Param("limitStart") Integer limitStart,
+                                 @Param("limitEnd") Integer limitEnd);
 
     Integer findAgentsCount(@Param("searchVo") SearchVo searchVo, @Param("ids") List<Integer> ids,
                             @Param("startStr") String startStr, @Param("endStr") String endStr,
-                            @Param("followId")String followId,@Param("whereSql")String whereSql);
+                            @Param("followId") String followId, @Param("whereSql") String whereSql,
+                            @Param("dayiDataBaseStr") String dayiDataBaseStr);
 }
