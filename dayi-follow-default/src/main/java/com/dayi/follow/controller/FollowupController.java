@@ -139,8 +139,8 @@ public class FollowupController extends BaseController {
     @RequestMapping("/update/save")
     @ResponseBody
     public BizResult updateSave(HttpServletRequest request, @Valid FollowUp followUp, BindingResult result) {
-        BizResult bizResult = checkErrors(result);
-        if (!bizResult.isSucc()) return bizResult;//参数传入错误
+       // BizResult bizResult = checkErrors(result);
+      //  if (!bizResult.isSucc()) return bizResult;//参数传入错误
 
         LoginVo currVo = userComponent.getCurrUser(request);
         followUp.setModifyBy(currVo.getName());

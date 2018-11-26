@@ -10,22 +10,22 @@
         </div>
         <div class="modal-body clearfix">
             <div class="col-xs-12 maintop">账号：${followUp.userName}</div>
-            <div class="col-xs-12 maintop">姓名：${followUp.linkPerson}</div>
+            <div class="col-xs-12 maintop">姓名：${followUp.name}</div>
 
             <c:if test="${followUp.userName ne 'admin' && followUp.isAdmin ne 1}"> <%-- 当不为 超级管理员 或 部门管理员 时 --%>
                 <div class="col-xs-12 maintop">所属部门：${followUp.deptName}</div>
                 <div class="col-xs-12 maintop">
                     邀请码：<span style="margin-right: 10px;">${followUp.inviteCode}</span>
                 </div>
-                <c:if test="${not empty followUp.followDept}">
+                <c:if test="${not empty followUp.department}">
 
                     <div class="col-xs-12 maintop">
                         邀请链接：
                         <c:choose>
                             <%--上级机构是城市服务商的--%>
-                            <c:when test="${followUp.followDept.cityServer==1}">
+                            <c:when test="${followUp.department.cityServer==1}">
                                 <input type="text" id="inviteCode"
-                                       value="${financeHost}/finance/reg?inviteCode=${followUp.followDept.cityInviteCode}&followCode=${followUp.inviteCode}">
+                                       value="${financeHost}/finance/reg?inviteCode=${followUp.department.cityInviteCode}&followCode=${followUp.inviteCode}">
                             </c:when>
                             <c:otherwise>
                                 <input type="text" id="inviteCode"
@@ -53,8 +53,8 @@
                     </c:otherwise>
                 </c:choose>
             </div>
-            <div class="col-xs-12 maintop">创建时间：${createDateStrSub}</div>
-            <div class="col-xs-12 maintop">最后修改时间：${modifyDateStrSub}</div>
+            <div class="col-xs-12 maintop">创建时间：${followUp.createTimeFm}</div>
+            <div class="col-xs-12 maintop">最后修改时间：${followUp.updateTimeFm}</div>
         </div>
     </div>
 </div>

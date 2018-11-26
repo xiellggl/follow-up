@@ -2,8 +2,10 @@ package com.dayi.follow.model.follow;
 
 import com.dayi.mybatis.support.BaseModel;
 import com.dayi.user.authorization.authc.Principal;
+import com.dayi.user.model.*;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 
@@ -35,15 +37,15 @@ public class FollowUp extends BaseModel implements Principal {
     private String modifyBy;    // 修改人
     @NotBlank(message = "角色不能为空！")
     private String roleids;//角色ids
-    @NotNull(message = "请选择是否是跟进人！")
-    private Boolean followUp;//是否是跟进人
+    @NotNull(message = "请选择身份！")
+    private Integer identity;//1-跟进人，2-运维
 
-    public Boolean getFollowUp() {
-        return followUp;
+    public Integer getIdentity() {
+        return identity;
     }
 
-    public void setFollowUp(Boolean followUp) {
-        this.followUp = followUp;
+    public void setIdentity(Integer identity) {
+        this.identity = identity;
     }
 
     public String getRoleids() {

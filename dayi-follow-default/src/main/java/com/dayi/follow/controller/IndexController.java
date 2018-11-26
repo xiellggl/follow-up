@@ -6,8 +6,10 @@ import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.model.follow.FollowUp;
 import com.dayi.follow.service.AgentService;
 import com.dayi.follow.service.CountService;
+import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.FollowUpService;
 import com.dayi.follow.vo.*;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +35,8 @@ public class IndexController {
     UserComponent userComponent;
     @Resource
     AgentService agentService;
+    @Resource
+    DeptService deptService;
 
     @RequestMapping("")
     public String index(HttpServletRequest request) {
@@ -158,17 +162,23 @@ public class IndexController {
     @RequestMapping("/myinfo")
     public String myInfo(HttpServletRequest request, Model model) {
         LoginVo currVo = userComponent.getCurrUser(request);
+
         FollowUp followUp = followUpService.get(currVo.getId());
+        FollowUpVo followUpVo = new FollowUpVo();
+        BeanUtils.copyProperties(followUp, followUpVo);
+        followUpVo.setDeptName(currVo.getDeptName());
+        followUpVo.setDepartment(deptService.get(currVo.getDeptId()));
+
 //        Date createDate = flowUp.getCreateDate();
 //        Date modifyDate = flowUp.getModifyDate();
 //        String createDateStr = createDate.toString();
 //        String modifyDateStr = modifyDate.toString();
 //        String createDateStrSub = createDateStr.substring(0, createDateStr.length() - 2);
 //        String modifyDateStrSub = modifyDateStr.substring(0, modifyDateStr.length() - 2);
-        model.addAttribute("followUp", followUp);
+        model.addAttribute("followUp", followUpVo);
 //        model.addAttribute("createDateStrSub", createDateStrSub);
 //        model.addAttribute("modifyDateStrSub", modifyDateStrSub);
-        return "/followup/uc/myinfo";
+        return "uc/myinfo";
     }
 
 //    /**
