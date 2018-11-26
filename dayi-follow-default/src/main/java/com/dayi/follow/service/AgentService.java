@@ -25,6 +25,7 @@ public interface AgentService {
     Page<AgentListVo> findAgentPage(Page<AgentListVo> page, SearchVo searchVo, String followId, Integer deptId, Integer deptFlowId,
                                     Integer subDeptId, String followUp);
 
-    CusStatusVo countCusStatus(String followId);
+
+
 
 }

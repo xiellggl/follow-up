@@ -1,7 +1,6 @@
 spring:
   datasource:
     follow:
-      dataBase: dayi_follow_all
       jdbc-url: jdbc:mysql://172.28.1.3:3306/dayi_follow_all?useUnicode=true&characterEncoding=utf8&useAffectedRows=true
 #      jdbc-url: jdbc:mysql://localhost:3306/dayi_follow_all?useUnicode=true&characterEncoding=utf8&useAffectedRows=true
       username: root
@@ -9,7 +8,6 @@ spring:
 #      password: monda123
       driver-class-name: com.mysql.jdbc.Driver
     dayi:
-      dataBase: dev_dayi_spot
       jdbc-url: jdbc:mysql://172.28.1.3:3306/dev_dayi_spot?useUnicode=true&characterEncoding=utf8&useAffectedRows=true
 #      jdbc-url: jdbc:mysql://localhost:3306/dev_dayi_spot?useUnicode=true&characterEncoding=utf8&useAffectedRows=true
       username: root
@@ -31,4 +29,6 @@ dayi:
     constant: #常量参数
       properties:
         imageHost: http://localhost:9601
-
+  dataBase: dev_dayi_spot
+follow:
+  dataBase: dayi_follow_all

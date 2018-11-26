@@ -3,6 +3,7 @@ package com.dayi.follow.model.follow;
 import com.dayi.mybatis.support.BaseModel;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Transient;
@@ -19,10 +20,11 @@ public class Department extends BaseModel {
 
     private Integer pid;    // 上级部门ID
     private Integer sortNo; // 排序号（同级）
+    @NotBlank(message = "部门名称不能为空！")
     private String name;    // 部门名称
     private String remark;  // 部门描述
-    private Integer cityServer; //是否城市服务商
-    private String  cityInviteCode; //城市服务商邀请码
+    private Integer cityServer = 0; //是否城市服务商-默认不是
+    private String cityInviteCode; //城市服务商邀请码
     private Integer personNum;//部门人数
     @Transient
     private String treeName;  // 部门名称--树型显示
@@ -36,7 +38,8 @@ public class Department extends BaseModel {
     @Transient
     private List<Department> subDeptList = new ArrayList();  // 下级部门
 
-    public Department() {}
+    public Department() {
+    }
 
     public Department(Integer sortNo, String name, String treeName) {
         this.sortNo = sortNo;
@@ -45,12 +48,13 @@ public class Department extends BaseModel {
     }
 
 
-
-    /** 修改 -- 设置属性 */
+    /**
+     * 修改 -- 设置属性
+     */
     public void setModifyProperty(Department department) {
-        if(department != null){ // 更新页面修改属性值
+        if (department != null) { // 更新页面修改属性值
             BeanUtils.copyProperties(department, this);
-            if(department.getPid() == null){ // 当选择上级部门为顶级时
+            if (department.getPid() == null) { // 当选择上级部门为顶级时
                 this.setPid(null);
             }
         }
@@ -58,19 +62,22 @@ public class Department extends BaseModel {
     }
 
     /* 自定义属性方法 */
-    /** 负责人 */
+
+    /**
+     * 负责人
+     */
     @Transient
     public String getManagers() {
-        if(CollectionUtils.isNotEmpty(followUpList)){
+        if (CollectionUtils.isNotEmpty(followUpList)) {
             managers = "";
             Integer isManager = null;
-            for(FollowUp followUp : followUpList){
+            for (FollowUp followUp : followUpList) {
                 isManager = followUp.getIsManager(); // 是否负责人：0--否；1--是
-                if(isManager != null && isManager == 1){
+                if (isManager != null && isManager == 1) {
                     managers = managers + followUp.getName() + "，";
                 }
             }
-            if(StringUtils.isNotBlank(managers)){
+            if (StringUtils.isNotBlank(managers)) {
                 managers = managers.substring(0, managers.length() - 1);
             }
         }
@@ -113,7 +120,9 @@ public class Department extends BaseModel {
         this.treeName = treeName;
     }
 
-    /** Getter Setter Field */
+    /**
+     * Getter Setter Field
+     */
     public Integer getPid() {
         return pid;
     }

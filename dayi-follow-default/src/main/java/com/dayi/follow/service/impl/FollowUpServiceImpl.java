@@ -2,6 +2,7 @@ package com.dayi.follow.service.impl;
 
 
 import com.dayi.common.util.BizResult;
+import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.dao.follow.DeptMapper;
 import com.dayi.follow.dao.follow.FollowUpMapper;
 import com.dayi.follow.model.follow.Department;
@@ -10,6 +11,7 @@ import com.dayi.follow.model.follow.Permission;
 import com.dayi.follow.model.follow.Role;
 import com.dayi.follow.service.*;
 import com.dayi.follow.util.Md5Util;
+import com.dayi.follow.vo.LoginVo;
 import com.dayi.follow.vo.OrgVo;
 import com.dayi.user.authorization.authc.AccountInfo;
 import com.dayi.user.authorization.authc.AuthenticationInfo;
@@ -47,6 +49,8 @@ public class FollowUpServiceImpl implements FollowUpService, Realm {
     DeptService deptService;
     @Resource
     RoleService roleService;
+    @Resource
+    UserComponent userComponent;
     /**
      * 黑名单列表
      */
@@ -66,13 +70,16 @@ public class FollowUpServiceImpl implements FollowUpService, Realm {
     }
 
     @Override
-    public BizResult add(FollowUp followUp) {
-        followUpMapper.add(followUp);
+    public BizResult addFollowUp(FollowUp followUp) {
+        if (followUpMapper.add(followUp) != 1) {
+            return BizResult.FAIL;
+        }
+        //处理部门关系
         Department department = deptService.get(followUp.getDeptId());
         if (null != department) {
             department.setPersonNum(department.getPersonNum() + 1);
         }
-        return deptService.updateDept(department) ? BizResult.SUCCESS : BizResult.FAIL;
+        return deptService.updateDept(department);
     }
 
 
@@ -91,6 +98,7 @@ public class FollowUpServiceImpl implements FollowUpService, Realm {
      * 新增/修改 -- 跟进人 -- 校验邀请码是否重复
      */
     public boolean checkCodeRepeat(String inviteCode) {
+        if (StringUtils.isBlank(inviteCode)) return false;
         OrgVo orgVo = null;
         orgVo = orgService.getByMarkerNum(inviteCode);
         if (orgVo != null) {
@@ -105,6 +113,29 @@ public class FollowUpServiceImpl implements FollowUpService, Realm {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public BizResult update(FollowUp followUpVo) {
+        FollowUp followUp = followUpMapper.get(followUpVo.getId());
+
+        Department oldDept = deptMapper.get(followUp.getDeptId());
+        oldDept.setPersonNum(oldDept.getPersonNum() - 1);
+
+        Department newDept = deptMapper.get(followUpVo.getDeptId());
+        newDept.setPersonNum(newDept.getPersonNum() + 1);
+
+        deptMapper.update(oldDept);
+        deptMapper.update(newDept);
+
+        followUp.setName(followUpVo.getName());
+        followUp.setMobile(followUpVo.getMobile());
+        followUp.setDeptId(followUpVo.getDeptId());
+        followUp.setRoleids(followUpVo.getRoleids());
+
+        followUpMapper.update(followUp);
+
+        return BizResult.SUCCESS;
     }
 
 
@@ -183,7 +214,7 @@ public class FollowUpServiceImpl implements FollowUpService, Realm {
             return null;
         }
         FollowUp followUp = (FollowUp) authenticationInfo.getPrincipal();
-        SimpleAuthorizationInfo authorizationInfoImpl = new SimpleAuthorizationInfo(this.getTargetClass(),this.getRealmId(),authenticationInfo);
+        SimpleAuthorizationInfo authorizationInfoImpl = new SimpleAuthorizationInfo(this.getTargetClass(), this.getRealmId(), authenticationInfo);
         List<RolePermissionResult> rolePermissionResults = new ArrayList<>();
         //根据id获取角色列表
         List<Role> roles = roleService.queryRolesByIds(followUp.getRoleids());

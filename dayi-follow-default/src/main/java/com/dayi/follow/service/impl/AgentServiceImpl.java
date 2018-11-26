@@ -41,7 +41,7 @@ public class AgentServiceImpl implements AgentService {
     private FollowAgentMapper followAgentMapper;
     @Resource
     private AgentMapper agentMapper;
-    @Value("${spring.datasource.dayi.dataBase}")
+    @Value("${dayi.dataBase}")
     String dayiDataBaseStr;
 
     @Override
@@ -111,26 +111,7 @@ public class AgentServiceImpl implements AgentService {
         return whereSql.toString();
     }
 
-    /**
-     * 代理商 -- 统计相应跟进人数目--
-     */
-    public CusStatusVo countCusStatus(String followId) {
-        CusStatusVo statusVo= new CusStatusVo();
 
-        List<String> followIds = new ArrayList<String>();
-        followIds.add(followId);
-
-        statusVo.setCusNum(agentMapper.getCusNum(followIds));// 跟进用户总数
-        statusVo.setHadLinkNum(agentMapper.getLinkCusNum(followIds));   // 已联系--用户人数
-        statusVo.setHadRealNameNum(agentMapper.getNameCusNum(followIds));// 已实名认证--用户人数
-        statusVo.setHadSignNum(agentMapper.getCardCusNum(followIds));// 已绑卡--用户人数
-        statusVo.setHadInCashNum(agentMapper.getInCashCusNum(followIds));// 已入金--用户人数
-        statusVo.setHadAgentNum(agentMapper.getAgentCusNum(followIds));// 已代理--用户人数
-        statusVo.setNoFundNum(agentMapper.getNoFundCusNum(followIds));// 总资产为零--用户人数
-        statusVo.setHadLostNum(agentMapper.getLostCusNum(followIds)); //流失客户
-
-        return statusVo;
-    }
 
 
 }

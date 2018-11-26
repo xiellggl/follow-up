@@ -21,12 +21,12 @@ public interface FollowAgentMapper extends BaseMapper<AgentListVo> {
     List<AgentListVo> findAgents(@Param("searchVo") SearchVo searchVo, @Param("ids") List<Integer> ids,
                                  @Param("startStr") String startStr, @Param("endStr") String endStr,
                                  @Param("followId") String followId, @Param("whereSql") String whereSql,
-                                 @Param("dayiDataBaseStr") String dayiDataBaseStr, @Param("limitStart") Integer limitStart,
+                                 @Param("assistDataBase") String assistDataBase, @Param("limitStart") Integer limitStart,
                                  @Param("limitEnd") Integer limitEnd);
 
     Integer findAgentsCount(@Param("searchVo") SearchVo searchVo, @Param("ids") List<Integer> ids,
                             @Param("startStr") String startStr, @Param("endStr") String endStr,
                             @Param("followId") String followId, @Param("whereSql") String whereSql,
-                            @Param("dayiDataBaseStr") String dayiDataBaseStr);
+                            @Param("assistDataBase") String assistDataBase);
 
 }

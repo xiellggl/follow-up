@@ -1,5 +1,6 @@
 package com.dayi.follow.service.impl;
 
+import com.dayi.common.util.BizResult;
 import com.dayi.follow.dao.follow.DeptMapper;
 import com.dayi.follow.model.follow.Department;
 import com.dayi.follow.model.follow.FollowUp;
@@ -125,9 +126,13 @@ public class DeptServiceImpl implements DeptService {
     }
 
     @Override
-    public boolean updateDept(Department department) {
+    public BizResult updateDept(Department department) {
         department.setUpdateTime(new Date());
-        return 1 == deptMapper.update(department);
+        if (deptMapper.update(department) == 1) {
+            return BizResult.SUCCESS;
+        } else {
+            return BizResult.FAIL;
+        }
     }
 
     /* 私有方法：递归查询所有下级部门 */

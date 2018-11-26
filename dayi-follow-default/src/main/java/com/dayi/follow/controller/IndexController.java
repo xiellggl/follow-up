@@ -1,18 +1,22 @@
 package com.dayi.follow.controller;
 
 import com.dayi.common.util.BizResult;
+import com.dayi.common.util.DateUtil;
 import com.dayi.follow.component.UserComponent;
+import com.dayi.follow.model.follow.FollowUp;
 import com.dayi.follow.service.AgentService;
 import com.dayi.follow.service.CountService;
 import com.dayi.follow.service.FollowUpService;
-import com.dayi.follow.vo.IndexVo;
-import com.dayi.follow.vo.LoginVo;
+import com.dayi.follow.vo.*;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author xiell
@@ -29,6 +33,7 @@ public class IndexController {
     UserComponent userComponent;
     @Resource
     AgentService agentService;
+
     @RequestMapping("")
     public String index(HttpServletRequest request) {
         return "uc/index";
@@ -85,133 +90,87 @@ public class IndexController {
         if (currVo == null) {
             return BizResult.FAIL;
         }
-        IndexVo cusStatus = agentService.countCusStatus(currVo.getId());//客户状态
+        CusStatusVo cusStatus = countService.countCusStatus(currVo.getId());//客户状态
         return BizResult.succ(cusStatus);
     }
 
-//    /**
-//     * 用户首页
-//     *
-//     * @param request
-//     * @return
-//     */
-//    @RequestMapping("/sale/daily")
-//    public String index1(HttpServletRequest request, Model model) {
-//        LoginVo currVo = userComponent.getCurrUser(request);
-//        if (currVo == null) {
-//            return "redirect:/followup/login";
-//        }
-//        if ((currVo.getIsAdmin().equals(1)) || ("admin".equals(currVo.getUserName()))) {
-//            return "redirect:/followup/manage/index";
-//        }
-//        boolean isKA = currVo.getDeptName().equals("KA及渠道部") ? true : false;
-//        boolean isManager = currVo.getIsManager().equals(1) ? true : false;
-//        String followId = currVo.getId();  // 跟进人ID
-//        IndexVo pDDaily = new IndexVo();
-//        List<IndexVo> pDDailyList = null;
-//        if (isManager) {//是否负责人
-//            pDDailyList = flowUpService.countPreDayDaily(null, String.valueOf(vo.getDeptId()));//负责人日报
-//        } else {
-//            pDDailyList = flowUpService.countPreDayDaily(flowId, null);//日报
-//        }
-//        if (pDDailyList.size() != 0) {
-//            pDDaily = pDDailyList.get(0);
-//        }
-//        if (pDDaily.getDate() != null) {
-//            model.addAttribute("pDDaily", pDDaily);//日报
-//        }
-//        FollowUpCountVo fUCountVo = financeAgentService.getTotal(flowId, null, null, null);//客户状态
-//        model.addAttribute("fUCountVo", fUCountVo);//客户状态
-//        if (isKA) { //创客数据
-//            List<Integer> deptIdList = new ArrayList<Integer>();
-//            deptIdList.add(vo.getDeptId());
-//            IndexVo orgCount;
-//            if (isManager) {
-//                orgCount = flowUpService.indexOrgCount(null, null, null, deptIdList);
-//            } else {
-//                orgCount = flowUpService.indexOrgCount(flowId, null, null, null);
-//            }
-//            model.addAttribute("orgCount", orgCount);//创客数据
-//        } else {
-//            IndexVo wLCount = flowUpService.indexWaitLinkCount(flowId, new Date());//待联系代理商
-//            model.addAttribute("wLCount", wLCount);//待联系代理商
-//        }
-//        model.addAttribute("isKA", isKA);
-//        model.addAttribute("isManager", isManager);
-//        return "/followup/uc/index";
-//    }
-//
-//    /**
-//     * 统计图形
-//     *
-//     * @param request
-//     * @return
-//     */
-//    @RequestMapping(value = "/charts")
-//    @ResponseBody
-//    public BizRetVo charts(HttpServletRequest request) {
-//        BizRetVo retVo = new BizRetVo();
-//        FlowUpLoginVo vo = financeUserComponent.getCurrentLoginFollowUp(request);
-//        if (vo == null || (vo.getIsAdmin().equals(1)) || ("admin".equals(vo.getUserName()))) {
-//            retVo.setError("无权限");
-//            return retVo;
-//        }
-//        boolean isKA = vo.getDeptName().equals("KA及渠道部") ? true : false;
-//        Integer flowId = vo.getId();  // 跟进人ID
-//        Map<String, List<IndexVo>> map = new LinkedHashMap<String, List<IndexVo>>();
-//        List<IndexVo> cusTypeList = flowUpService.countCustomerType(flowId);//客户类型占比
-//        for (IndexVo indexVo : cusTypeList) {//遍历--数字转中文
-//            Agent.CustomerType[] values = Agent.CustomerType.values();
-//            for (Agent.CustomerType value : values) {
-//                String str = value.getValue().toString();
-//                String customerType = indexVo.getCustomerType();
-//                if (customerType != null && str.equals(customerType)) {
-//                    indexVo.setCustomerType(value.getName());
-//                }
-//            }
-//        }
-//        List<IndexVo> totalMoneysList = flowUpService.countTotalMoney(flowId);//总资产各阶级占比
-//        for (IndexVo indexVo : totalMoneysList) {//遍历--数字转中文
-//            Agent.RankAsset[] values = Agent.RankAsset.values();
-//            for (Agent.RankAsset value : values) {
-//                String str = value.getValue().toString();
-//                if (str.equals(indexVo.getMoneyType())) {
-//                    indexVo.setMoneyType(value.getName());
-//                }
-//            }
-//        }
-//        List<IndexVo> sDInCashList = flowUpService.nearSevenDayInCash(flowId);//近七日入金总额
-//        map.put("cusTypeList", cusTypeList);//客户类型占比
-//        map.put("totalMoneysList", totalMoneysList);//总资产各阶级占比
-//        map.put("sDInCashList", sDInCashList);//近七日入金总额
-//        if (!isKA) {
-//            List<IndexVo> sDOpenList = flowUpService.nearSevenDayOpen(flowId);//近七日开户数
-//            map.put("sDOpenList", sDOpenList);//近七日开户数
-//        }
-//        retVo.setSuccess("操作成功");
-//        retVo.setItem(map);
-//        return retVo;
-//    }
-//
-//    /**
-//     * 我的资料 -- 查询
-//     */
-//    @RequestMapping("/myinfo")
-//    public String myInfo(HttpServletRequest request, Model model) {
-//        FlowUpLoginVo vo = financeUserComponent.getCurrentLoginFollowUp(request);
-//        FlowUp flowUp = flowUpService.getFlowUp(vo.getId());
+    @RequestMapping("agent/link")
+    @ResponseBody
+    public BizResult agentLink(HttpServletRequest request) {
+        LoginVo currVo = userComponent.getCurrUser(request);
+        if (currVo == null) {
+            return BizResult.FAIL;
+        }
+        String dateStr = DateUtil.formatDate(new Date());
+        Integer num = countService.getAgentNumWait2Link(currVo.getId(), dateStr);//待联系代理商
+        return BizResult.succ(num);
+    }
+
+    @RequestMapping("cus/proportion")
+    @ResponseBody
+    public BizResult cusProportion(HttpServletRequest request) {//客户类型占比
+        LoginVo currVo = userComponent.getCurrUser(request);
+        if (currVo == null) {
+            return BizResult.FAIL;
+        }
+        List<CusTypeRatioVo> cusTypeRatioVos = countService.countCusTypeRatio(currVo.getId());
+        return BizResult.succ(cusTypeRatioVos);
+    }
+
+
+    @RequestMapping("cus/fund/rank")
+    @ResponseBody
+    public BizResult cusFundRank(HttpServletRequest request) {//客户资产阶级统计
+        LoginVo currVo = userComponent.getCurrUser(request);
+        if (currVo == null) {
+            return BizResult.FAIL;
+        }
+        List<FundRankVo> fundRankVos = countService.countCusFundRank(currVo.getId());
+        return BizResult.succ(fundRankVos);
+    }
+
+    @RequestMapping("seven/open")
+    @ResponseBody
+    public BizResult sevenOpen(HttpServletRequest request) {//统计近七日开户数
+        LoginVo currVo = userComponent.getCurrUser(request);
+        if (currVo == null) {
+            return BizResult.FAIL;
+        }
+        List<SevenOpenVo> sevenOpenVos = countService.countSevenOpen(currVo.getId());
+        return BizResult.succ(sevenOpenVos);
+    }
+
+    @RequestMapping("seven/incash")
+    @ResponseBody
+    public BizResult sevenInCash(HttpServletRequest request) {//统计近七日入金
+        LoginVo currVo = userComponent.getCurrUser(request);
+        if (currVo == null) {
+            return BizResult.FAIL;
+        }
+        List<SevenInCashVo> sevenOpenVos = countService.countSevenInCash(currVo.getId());
+        return BizResult.succ(sevenOpenVos);
+    }
+
+
+    /**
+     * 我的资料 -- 查询
+     */
+    @RequestMapping("/myinfo")
+    public String myInfo(HttpServletRequest request, Model model) {
+        LoginVo currVo = userComponent.getCurrUser(request);
+        FollowUp followUp = followUpService.get(currVo.getId());
 //        Date createDate = flowUp.getCreateDate();
 //        Date modifyDate = flowUp.getModifyDate();
 //        String createDateStr = createDate.toString();
 //        String modifyDateStr = modifyDate.toString();
 //        String createDateStrSub = createDateStr.substring(0, createDateStr.length() - 2);
 //        String modifyDateStrSub = modifyDateStr.substring(0, modifyDateStr.length() - 2);
-//        model.addAttribute("followUp", flowUp);
+        model.addAttribute("followUp", followUp);
 //        model.addAttribute("createDateStrSub", createDateStrSub);
 //        model.addAttribute("modifyDateStrSub", modifyDateStrSub);
-//        return "/followup/uc/myinfo";
-//    }
-//
+        return "/followup/uc/myinfo";
+    }
+
 //    /**
 //     * 我的资料 -- 查询
 //     */

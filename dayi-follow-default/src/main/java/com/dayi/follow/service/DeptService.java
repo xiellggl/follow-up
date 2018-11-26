@@ -6,6 +6,7 @@ package com.dayi.follow.service;
  * @date 2018/11/12
  */
 
+import com.dayi.common.util.BizResult;
 import com.dayi.follow.model.follow.Department;
 
 import java.util.List;
@@ -39,6 +40,6 @@ public interface DeptService {
      * @param department
      * @return
      */
-    boolean updateDept(Department department);
+    BizResult updateDept(Department department);
 
 }

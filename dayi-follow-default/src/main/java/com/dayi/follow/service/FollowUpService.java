@@ -3,6 +3,7 @@ package com.dayi.follow.service;
 
 import com.dayi.common.util.BizResult;
 import com.dayi.follow.model.follow.FollowUp;
+import com.dayi.follow.vo.LoginVo;
 /**
  * @author xiell
  * @date 2018/11/12
@@ -16,7 +17,7 @@ public interface FollowUpService {
     /**
      * 添加跟进人信息
      */
-    BizResult add(FollowUp followUp);
+    BizResult addFollowUp(FollowUp followUp);
 
     /**
      * 获取跟进人信息
@@ -31,5 +32,9 @@ public interface FollowUpService {
      */
     boolean checkCodeRepeat(String inviteCode);
 
+    /**
+     * 更新跟进人信息
+     */
+    BizResult update(FollowUp followUp);
 
 }

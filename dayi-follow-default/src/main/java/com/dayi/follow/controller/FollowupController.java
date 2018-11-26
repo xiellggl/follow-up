@@ -2,6 +2,7 @@ package com.dayi.follow.controller;
 
 import com.dayi.common.util.BizResult;
 import com.dayi.common.web.util.IPUtil;
+import com.dayi.follow.base.BaseController;
 import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.enums.MemberStatusEnum;
 import com.dayi.follow.model.follow.FollowUp;
@@ -11,6 +12,8 @@ import com.dayi.follow.vo.LoginVo;
 import com.dayi.user.authorization.AuthorizationManager;
 import com.dayi.user.authorization.authc.support.UsernamePasswordToken;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -23,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,11 +35,13 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/followup")
-public class FollowupController {
+public class FollowupController extends BaseController {
     @Resource
     FollowUpService followUpService;
     @Resource
     UserComponent userComponent;
+
+    private static Logger logger = LoggerFactory.getLogger(FollowupController.class);
 
     /**
      * 登录表单页面
@@ -101,11 +107,13 @@ public class FollowupController {
      */
     @RequestMapping("/add/save")
     @ResponseBody
-    public BizResult add(HttpServletRequest request, @Valid FollowUp followUp) {
+    public BizResult add(HttpServletRequest request, @Valid FollowUp followUp, BindingResult result) {
+        BizResult bizResult = checkErrors(result);
+
+        if (!bizResult.isSucc()) return bizResult;//参数传入错误
+
         LoginVo currVo = userComponent.getCurrUser(request);
-        if (null == followUp) {
-            return BizResult.FAIL;
-        }
+
         if (followUpService.getByUserName(followUp.getUserName()) != null) {
             return BizResult.fail("用户名已存在！");
         }
@@ -113,10 +121,33 @@ public class FollowupController {
         if (!followUpService.checkCodeRepeat(followUp.getInviteCode())) {
             return BizResult.fail("邀请码已存在！");
         }
+
         followUp.setPassword(Md5Util.md5(followUp.getUserName(), followUp.getPassword()));
         followUp.setCreateBy(currVo.getName());
         followUp.setModifyBy(currVo.getName());
-        return followUpService.add(followUp);
+        followUp.setCreateTime(new Date());
+        followUp.setUpdateTime(new Date());
+        return followUpService.addFollowUp(followUp);
+
+
+    }
+
+
+    /**
+     * 修改 -- 保存 -- 跟进人
+     */
+    @RequestMapping("/update/save")
+    @ResponseBody
+    public BizResult updateSave(HttpServletRequest request, @Valid FollowUp followUp, BindingResult result) {
+        BizResult bizResult = checkErrors(result);
+        if (!bizResult.isSucc()) return bizResult;//参数传入错误
+
+        LoginVo currVo = userComponent.getCurrUser(request);
+        followUp.setModifyBy(currVo.getName());
+        followUp.setUpdateTime(new Date());
+        return followUpService.update(followUp);
+
+
     }
 
 

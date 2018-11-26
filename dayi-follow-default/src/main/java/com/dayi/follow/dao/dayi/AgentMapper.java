@@ -19,27 +19,5 @@ public interface AgentMapper extends BaseMapper<AgentListVo> {
 
     AgentListVo countRecentAgent(@Param("agentId") Integer agentId);
 
-    //获取跟进用户数量
-    Integer getCusNum(@Param("followIds") List<String> followIds);
 
-    //获取已联系用户数量
-    Integer getLinkCusNum(@Param("followIds") List<String> followIds);
-
-    //获取已实名认证用户数量
-    Integer getNameCusNum(@Param("followIds") List<String> followIds);
-
-    //获取已绑卡用户数量
-    Integer getCardCusNum(@Param("followIds") List<String> followIds);
-
-    //获取已入金用户数量
-    Integer getInCashCusNum(@Param("followIds") List<String> followIds);
-
-    //获取已代理用户数量
-    Integer getAgentCusNum(@Param("followIds") List<String> followIds);
-
-    //获取资产为0用户数量
-    Integer getNoFundCusNum(@Param("followIds") List<String> followIds);
-
-    //获取已流失用户数量
-    Integer getLostCusNum(@Param("followIds") List<String> followIds);
 }
