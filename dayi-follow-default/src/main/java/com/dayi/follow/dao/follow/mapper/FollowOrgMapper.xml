@@ -18,12 +18,16 @@
         </foreach>
     </select>
 
-    <select id="findOrgsByfollowId" parameterType="java.lang.String" resultType="com.dayi.follow.vo.OrgVo">
+    <select id="findOrgsByfollowId" parameterType="map" resultType="com.dayi.follow.vo.OrgVo">
         SELECT * from follow_org a
         left join (
           SELECT * from organization where org_type=4 and del_status !=-1
+          <if test="''!=deadline and null!=deadline">
+              and create_date &lt; ${dateStr}
+          </if>
         )b on b.id = a.org_id
-        where follow_id = ${followId} and b.id is not null
+        where follow_id = ${deadline} and b.id is not null
+
     </select>
 
 

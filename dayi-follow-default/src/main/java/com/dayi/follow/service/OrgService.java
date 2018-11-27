@@ -29,6 +29,8 @@ public interface OrgService {
      * 根据邀请码获取综合会员机构商信息
      */
     OrgVo getColligateOrgByInviteCode(String inviteCode);
+    //获取管理资产
+    double getManageFund(Integer orgId,Integer level);
 
 
 

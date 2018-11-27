@@ -16,98 +16,12 @@
             LIMIT 0, 1
     </select>
 
-    <select id="getCusNum" parameterType="map" resultType="java.lang.Integer">
-            SELECT count(b.id)  from dayi_follow_all.follow_agent a
-            left join (SELECT id FROM agent  where del_status != -1) b on b.id = a.agent_id
-            WHERE  a.follow_id in
-            <foreach item="item" index="index" collection="followIds"
-                     open="(" separator="," close=")">
-                #{item}
-            </foreach>
-
+    <select id="findByOrgId" parameterType="java.lang.Integer" resultType="com.dayi.follow.vo.AgentVo">
+        SELECT * from agent where org_id =${orgId} and del_status != -1
     </select>
 
-    <select id="getLinkCusNum" parameterType="map" resultType="java.lang.Integer">
-        SELECT count(b.id)  from dayi_follow_all.follow_agent a
-          left join (SELECT id FROM agent  where del_status != -1) b on b.id = a.agent_id
-        WHERE a.customer_type !=1 and a.follow_id in
-        <foreach item="item" index="index" collection="followIds"
-           open="(" separator="," close=")">
-        #{item}
-    </foreach>
-
-    </select>
-
-    <select id="getNameCusNum" parameterType="map" resultType="java.lang.Integer">
-        SELECT count(b.id)  from dayi_follow_all.follow_agent a
-        left join (SELECT id from agent where (audit_status IN (1 ,- 3) OR cancel_status = 3) and del_status != -1) b
-        on b.id = a.agent_id
-        WHERE  a.follow_id IN
-        <foreach item="item" index="index" collection="followIds"
-                 open="(" separator="," close=")">
-            #{item}
-        </foreach>
-    </select>
-
-    <select id="getCardCusNum" parameterType="map" resultType="java.lang.Integer">
-        SELECT count(b.id)  from dayi_follow_all.follow_agent a
-        left join ( SELECT  id FROM agent WHERE bank_account is not null and del_status != -1) b on b.id = a.agent_id
-        WHERE  a.follow_id IN
-        <foreach item="item" index="index" collection="followIds"
-                 open="(" separator="," close=")">
-            #{item}
-        </foreach>
-    </select>
-
-    <select id="getInCashCusNum" parameterType="map" resultType="java.lang.Integer">
-        SELECT count(b.id)  from dayi_follow_all.follow_agent a
-        left join (
-          SELECT b1.id  FROM agent b1
-          LEFT JOIN finance_account b2 ON b1.account_id = b2.id WHERE b2.total_in_cash > 0  and b1.del_status != -1
-        ) b on b.id = a.agent_id
-        WHERE  a.follow_id IN
-        <foreach item="item" index="index" collection="followIds"
-                 open="(" separator="," close=")">
-            #{item}
-        </foreach>
-    </select>
-
-    <select id="getAgentCusNum" parameterType="map" resultType="java.lang.Integer">
-        SELECT count(b.id)  from dayi_follow_all.follow_agent a
-        left join (
-          SELECT id FROM agent b1, (SELECT DISTINCT agent FROM protocol ) b2 WHERE b1.id = b2.agent and b1.del_status != -1
-        ) b on b.id = a.agent_id
-        WHERE  a.follow_id IN
-        <foreach item="item" index="index" collection="followIds"
-                 open="(" separator="," close=")">
-            #{item}
-        </foreach>
-    </select>
-
-    <select id="getNoFundCusNum" parameterType="map" resultType="java.lang.Integer">
-        SELECT count(b.id)  from dayi_follow_all.follow_agent a
-        left join (
-            SELECT b1.id FROM agent b1 LEFT JOIN finance_account b2 ON b1.account_id = b2.id
-              LEFT JOIN (
-                  SELECT agent, IFNULL(SUM(amount), 0) amount from protocol WHERE (status = 1 OR status = 2) GROUP BY agent
-              ) b3 ON b1.id = b3.agent
-            WHERE b1.del_status != -1 and IFNULL(b2.useable + b2.frozen + b2.out_frozen + IFNULL(b3.amount, 0), 0) = 0
-        ) b on b.id = a.agent_id
-        WHERE  a.follow_id IN
-        <foreach item="item" index="index" collection="followIds"
-                 open="(" separator="," close=")">
-            #{item}
-        </foreach>
-    </select>
-
-    <select id="getLostCusNum" parameterType="map" resultType="java.lang.Integer">
-        SELECT count(b.id)  from dayi_follow_all.follow_agent a
-        left join (SELECT id from agent WHERE del_status != -1) b on b.id = a.agent_id
-        WHERE  a.customer_type =5 and  a.follow_id IN
-        <foreach item="item" index="index" collection="followIds"
-                 open="(" separator="," close=")">
-            #{item}
-        </foreach>
+    <select id="getAgentFund" parameterType="java.lang.Integer" resultType="java.lang.Double">
+        SELECT IFNULL(SUM(amount), 0) FROM protocol where (status = 1 or status = 2) and agent = ${agentId}
     </select>
 
 

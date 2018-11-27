@@ -7,6 +7,7 @@ import com.dayi.follow.vo.SearchVo;
 import com.dayi.mybatis.support.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,6 +19,7 @@ public interface FollowOrgMapper extends BaseMapper<AgentListVo> {
     //统计资产规模
     double getTotalFund(@Param("followIds") List<String> followIds);
 
-    List<OrgVo> findOrgsByfollowId(String followId);
+    List<OrgVo> findOrgsByfollowId(String followId, String deadline);
+
 
 }

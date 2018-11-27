@@ -60,35 +60,35 @@ public class DeptServiceImpl implements DeptService {
     public String spellSubFlowIdsInsql(Integer deptId, List<Integer> chargeDeptIds, String fieldName, String alias, boolean isHaveOwn) {
         StringBuffer strBuf = new StringBuffer();
         List<Department> mysubList = new ArrayList<Department>();
-        if (StringUtils.isNotBlank(fieldName)) {
-            if (chargeDeptIds != null && chargeDeptIds.size() != 0) {
-                for (Integer chargeDeptId : chargeDeptIds) {
-                    mysubList = this.getSubDepts(chargeDeptId, isHaveOwn, mysubList);
-                }
-            }
-            if (deptId != null) {
-                mysubList = this.getSubDepts(deptId, isHaveOwn, null);
-            }
-            if (CollectionUtils.isNotEmpty(mysubList)) {
-                String fieldStr = StringUtils.isNotBlank(alias) ? (alias + "." + fieldName) : fieldName;
-                List<FollowUp> flowUpList = null;
-                String flowUpIds = "";
-                for (Department dept : mysubList) {
-                    flowUpList = dept.getFollowUpList();
-                    if (CollectionUtils.isNotEmpty(flowUpList)) {
-                        for (FollowUp flowUp : flowUpList) {
-                            if (!flowUp.getIsAdmin().equals(1)) { // 排除 管理员 跟进人
-                                flowUpIds = flowUpIds + flowUp.getId() + ",";
-                            }
-                        }
-                    }
-                }
-                if (StringUtils.isNotBlank(flowUpIds)) {
-                    flowUpIds = flowUpIds.substring(0, flowUpIds.length() - 1);
-                    strBuf.append(" AND ").append(fieldStr).append(" IN (").append(flowUpIds).append(") ");
-                }
-            }
-        }
+//        if (StringUtils.isNotBlank(fieldName)) {
+//            if (chargeDeptIds != null && chargeDeptIds.size() != 0) {
+//                for (Integer chargeDeptId : chargeDeptIds) {
+//                    mysubList = this.getSubDepts(chargeDeptId, isHaveOwn, mysubList);
+//                }
+//            }
+//            if (deptId != null) {
+//                mysubList = this.getSubDepts(deptId, isHaveOwn, null);
+//            }
+//            if (CollectionUtils.isNotEmpty(mysubList)) {
+//                String fieldStr = StringUtils.isNotBlank(alias) ? (alias + "." + fieldName) : fieldName;
+//                List<FollowUp> flowUpList = null;
+//                String flowUpIds = "";
+//                for (Department dept : mysubList) {
+//                    flowUpList = dept.getFollowUpList();
+//                    if (CollectionUtils.isNotEmpty(flowUpList)) {
+//                        for (FollowUp flowUp : flowUpList) {
+//                            if (!flowUp.getIsAdmin().equals(1)) { // 排除 管理员 跟进人
+//                                flowUpIds = flowUpIds + flowUp.getId() + ",";
+//                            }
+//                        }
+//                    }
+//                }
+//                if (StringUtils.isNotBlank(flowUpIds)) {
+//                    flowUpIds = flowUpIds.substring(0, flowUpIds.length() - 1);
+//                    strBuf.append(" AND ").append(fieldStr).append(" IN (").append(flowUpIds).append(") ");
+//                }
+//            }
+//        }
         return strBuf.toString();
     }
 

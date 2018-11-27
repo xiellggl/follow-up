@@ -5,6 +5,7 @@ import com.dayi.common.util.BigDecimals;
 import com.dayi.common.util.BizResult;
 import com.dayi.follow.dao.dayi.AgentMapper;
 import com.dayi.follow.dao.dayi.CountMapper;
+import com.dayi.follow.dao.dayi.OrgMapper;
 import com.dayi.follow.dao.follow.FollowAgentMapper;
 import com.dayi.follow.dao.follow.FollowOrgMapper;
 import com.dayi.follow.dao.follow.FollowUpMapper;
@@ -13,11 +14,13 @@ import com.dayi.follow.enums.OrgTypeEnum;
 import com.dayi.follow.enums.SwitchStatusEnum;
 import com.dayi.follow.model.follow.FollowUp;
 import com.dayi.follow.service.CountService;
+import com.dayi.follow.service.OrgService;
 import com.dayi.follow.util.StringUtil;
 import com.dayi.follow.vo.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +45,8 @@ public class CountServiceImpl implements CountService {
     private FollowAgentMapper followAgentMapper;
     @Resource
     private FollowOrgMapper followOrgMapper;
+    @Resource
+    private OrgService orgService;
     @Value("${follow.dataBase}")
     String followDataBaseStr;
 
@@ -130,45 +135,46 @@ public class CountServiceImpl implements CountService {
 
     @Override
     public OrgDataVo countOrgData(String followId) {
-        IndexVo indexVo = new IndexVo();
         OrgDataVo orgDataVo = new OrgDataVo();
-        Integer num = 0;
-        Integer orgValidAgentNum = 0;
-
-
         if (StringUtils.isBlank(followId)) return orgDataVo;
-        FollowUp followUp = followUpMapper.get(followId);
 
-        List<OrgVo> subOrgList = followOrgMapper.findOrgsByfollowId(followId);
+        int num = 0;
+        int agentNum = 0;
 
+        List<OrgVo> orgVos = followOrgMapper.findOrgsByfollowId(followId, null);
 
-        for (OrgVo orgVo : subOrgList) {
+        for (OrgVo orgVo : orgVos) {
             Integer switchStatus = orgVo.getSwitchStatus();
             if (switchStatus != null && switchStatus.equals(SwitchStatusEnum.OPEN.getKey())) {//二级资管开启
-                num = countMapper.getOrgValidAgentNum(orgVo.getId(), null);//有效代理商-包括2级
-                orgValidAgentNum = orgValidAgentNum + num;
+                num = countMapper.getOrgValidAgentNum(orgVo.getId(), null);//包括2级
+                agentNum = agentNum + num;
             }
-            if (switchStatus != null && switchStatus.equals(ChannelCodeRecord.EnumSwitchStatus.CLOSE.getKey())) {//二级资管关闭
-                num = flowUpDao.countOrgValidAgentNum(organization.getId(), 1).getOrgValidAgentNum();//有效代理商-包括2级
-                orgValidAgentNum = orgValidAgentNum + num;
+            if (switchStatus != null && switchStatus.equals(SwitchStatusEnum.CLOSE.getKey())) {//二级资管关闭
+                num = countMapper.getOrgValidAgentNum(orgVo.getId(), 1);//不包括2级
+                agentNum = agentNum + num;
             }
         }
-        indexVo.setKaOrgNum(subOrgList.size());
-        indexVo.setKaOrgValidAgentNum(orgValidAgentNum);
 
-        List<Organization> organizations = flowUpDao.getFlowUpOrg(true, flowId, whereSql);
-        double assets = 0.0;
-        for (Organization organization : organizations) {
-            double firstAgentAssets = protocolService.getAgentAssets(organization, 1);//我的代理商资产（第一级代理商资产）
-            double secondAgentAssets = 0.0;//二级代理商资产
-            Integer secondIncomeSwitch = organization.getSecondIncomeSwitch();
-            if (secondIncomeSwitch != null && secondIncomeSwitch.equals(ChannelCodeRecord.EnumSwitchStatus.OPEN.getKey().intValue())) {//如果开了二级收益开关
-                secondAgentAssets = protocolService.getAgentAssets(organization, 2);
+        orgDataVo.setOrgNum(orgVos.size());
+        orgDataVo.setAgentNum(agentNum);
+
+        DateTime dateTime = DateTime.now();
+        String deadline = dateTime.millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
+
+        List<OrgVo> yesOrgVos = followOrgMapper.findOrgsByfollowId(followId, deadline);//截至昨天的创客
+
+        double manageFund = 0.0;
+        for (OrgVo orgVo : yesOrgVos) {
+            double oneLevel = orgService.getManageFund(orgVo.getId(), 1);//我的代理商资产（第一级代理商资产）
+            double twoLevel = 0.0;//二级代理商资产
+            Integer switchStatus = orgVo.getSwitchStatus();
+            if (switchStatus != null && switchStatus.equals(SwitchStatusEnum.OPEN.getKey().intValue())) {//开了二级收益开关
+                twoLevel = orgService.getManageFund(orgVo.getId(), 2);
             }
-            double organizationAssets = BigDecimals.add(firstAgentAssets, secondAgentAssets);
-            assets = BigDecimals.add(assets, organizationAssets);
+            manageFund = BigDecimals.add(oneLevel, twoLevel);
         }
-        indexVo.setKaOrgManageMoney(BigDecimal.valueOf(assets).setScale(2, BigDecimal.ROUND_HALF_UP));
+        orgDataVo.setManageFund(BigDecimal.valueOf(manageFund).setScale(2, BigDecimal.ROUND_HALF_UP));
+        return orgDataVo;
     }
 
     @Override

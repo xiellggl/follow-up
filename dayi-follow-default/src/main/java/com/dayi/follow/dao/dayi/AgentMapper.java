@@ -1,6 +1,7 @@
 package com.dayi.follow.dao.dayi;
 
 import com.dayi.follow.vo.AgentListVo;
+import com.dayi.follow.vo.AgentVo;
 import com.dayi.follow.vo.IndexVo;
 import com.dayi.mybatis.support.BaseMapper;
 import org.apache.ibatis.annotations.Param;
@@ -19,7 +20,9 @@ public interface AgentMapper extends BaseMapper<AgentListVo> {
 
     AgentListVo countRecentAgent(@Param("agentId") Integer agentId);
 
-
+    List<AgentVo> findByOrgId (@Param("orgId") Integer orgId);
+    //获取代理商中的资金
+    double getAgentFund(Integer agentId);
 
 
 }

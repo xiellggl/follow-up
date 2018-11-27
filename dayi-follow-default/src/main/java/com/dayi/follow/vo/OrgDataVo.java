@@ -5,31 +5,31 @@ import java.math.BigDecimal;
 
 public class OrgDataVo {
 
-    private Integer kaOrgNum;//KA创客人数
-    private Integer kaOrgValidAgentNum;//KA创客有效代理商总数
-    private BigDecimal kaOrgManageFund;//KA创客管理资金规模
+    private Integer orgNum;//KA创客人数
+    private Integer agentNum;//KA创客有效代理商总数
+    private BigDecimal manageFund;//KA创客管理资金规模
 
-    public Integer getKaOrgNum() {
-        return kaOrgNum;
+    public Integer getOrgNum() {
+        return orgNum;
     }
 
-    public void setKaOrgNum(Integer kaOrgNum) {
-        this.kaOrgNum = kaOrgNum;
+    public void setOrgNum(Integer orgNum) {
+        this.orgNum = orgNum;
     }
 
-    public Integer getKaOrgValidAgentNum() {
-        return kaOrgValidAgentNum;
+    public Integer getAgentNum() {
+        return agentNum;
     }
 
-    public void setKaOrgValidAgentNum(Integer kaOrgValidAgentNum) {
-        this.kaOrgValidAgentNum = kaOrgValidAgentNum;
+    public void setAgentNum(Integer agentNum) {
+        this.agentNum = agentNum;
     }
 
-    public BigDecimal getKaOrgManageFund() {
-        return kaOrgManageFund;
+    public BigDecimal getManageFund() {
+        return manageFund;
     }
 
-    public void setKaOrgManageFund(BigDecimal kaOrgManageFund) {
-        this.kaOrgManageFund = kaOrgManageFund;
+    public void setManageFund(BigDecimal manageFund) {
+        this.manageFund = manageFund;
     }
 }

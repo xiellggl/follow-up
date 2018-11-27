@@ -52,6 +52,9 @@ public class FollowupController extends BaseController {
      */
     @RequestMapping(value = "/login")
     public String login(HttpServletRequest request, String goTo) {
+        for(int i=1;i<2000;i++){
+
+        }
         request.setAttribute("goTo", goTo);
         return "login";
     }

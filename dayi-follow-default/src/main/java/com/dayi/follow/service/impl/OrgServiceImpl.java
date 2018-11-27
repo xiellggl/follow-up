@@ -1,19 +1,25 @@
 package com.dayi.follow.service.impl;
 
 
+import com.dayi.follow.dao.dayi.AgentMapper;
 import com.dayi.follow.dao.dayi.OrgMapper;
 import com.dayi.follow.enums.DelStatusEnum;
 import com.dayi.follow.enums.OrgTypeEnum;
 import com.dayi.follow.service.OrgService;
 import com.dayi.follow.util.StringUtil;
 import com.dayi.follow.util.WordLetterUtil;
+import com.dayi.follow.vo.AgentVo;
 import com.dayi.follow.vo.InviteCodeVo;
 import com.dayi.follow.vo.OrgVo;
 import com.dayi.mybatis.support.Conditions;
 import com.dayi.mybatis.support.ext.Restrictions;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 /**
  * @author xiell
  * @date 2018/11/14
@@ -26,7 +32,8 @@ import javax.annotation.Resource;
 public class OrgServiceImpl implements OrgService {
     @Resource
     private OrgMapper orgMapper;
-
+    @Resource
+    private AgentMapper agentMapper;
 
     @Override
     public OrgVo getByMarkerNum(String makerNum) {
@@ -74,7 +81,26 @@ public class OrgServiceImpl implements OrgService {
         return orgMapper.getByConditions(conditions);
     }
 
+    @Override
+    public double getManageFund(Integer orgId, Integer level) {
 
+        List<AgentVo> agents = agentMapper.findByOrgId(orgId);
+
+        if (CollectionUtils.isEmpty(agents)) return 0;
+
+        double manageFund = 0;
+
+
+
+        for (AgentVo agent : agents) {
+            if (agent.getInviteLevel() == level) {
+
+            }
+        }
+        return manageFund;
+
+
+    }
 
 
 }
