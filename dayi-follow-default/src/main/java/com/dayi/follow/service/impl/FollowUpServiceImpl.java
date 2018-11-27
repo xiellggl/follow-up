@@ -78,8 +78,9 @@ public class FollowUpServiceImpl implements FollowUpService, Realm {
         Department department = deptService.get(followUp.getDeptId());
         if (null != department) {
             department.setPersonNum(department.getPersonNum() + 1);
+            return deptService.updateDept(department);
         }
-        return deptService.updateDept(department);
+        return BizResult.FAIL;
     }
 
 
@@ -138,43 +139,29 @@ public class FollowUpServiceImpl implements FollowUpService, Realm {
         return BizResult.SUCCESS;
     }
 
-
     /**
-     * 新增/修改 -- 跟进人 -- 校验邀请码是否重复
+     * 修改密码 -- 跟进人信息
      */
-//    public boolean checkCode(String code, String id) {
-//        FollowUp flowUp = null;
-//        if (!StringUtils.isBlank(id)) {
-//            flowUp = flowUpMapper.get(id);
-//            if (flowUp != null && flowUp.getInviteCode().equals(code)) {
-//                return true;
-//            }
-//        }
-//        BizRetVo biz = organizationService.findFollowUpCodeValid(code);
-//        if (biz.isSucc()) {
-//            return true;
-//        }
-//        return false;
-//    }
+    public BizResult editPwd(String id, String oldPwd, String newPwd, String confirmPwd) {
+        FollowUp followUp = followUpMapper.get(id);
+        if (followUp == null) {
+            return BizResult.fail("用户信息不存在！");
+        }
 
-//    public BizResult findFollowUpCodeValid(String inviteCode) {
-//        Organization organization = findOrgByMarkerNum(inviteCode);
-//        if (organization != null) {
-//            biz.setError("该邀请码已经被创客使用!");
-//            return biz;
-//        }
-//        Organization org = inviteOrganizatonService.findOrgnByInviteCode(inviteCode);
-//        if (org != null) {
-//            biz.setError("该邀请码已经被机构会员使用!");
-//            return biz;
-//        }
-//        FollowUp flowUp = flowUpService.getFlowUpByCode(inviteCode);
-//        if (flowUp != null) {
-//            biz.setError("该邀请码已经被使用!");
-//            return biz;
-//        }
-//        return biz;
-//    }
+        if (!newPwd.equals(confirmPwd)) {
+            return BizResult.fail("两次输入的密码不相同!");
+        }
+
+        if (!Md5Util.md5(followUp.getUserName(), oldPwd).equals(followUp.getPassword())) {
+            return BizResult.fail("密码不正确!");
+        }
+        if (!StringUtils.isBlank(newPwd)) {
+            followUp.setPassword(Md5Util.md5(followUp.getUserName(), newPwd));
+        }
+
+        return 1 == followUpMapper.update(followUp) ? BizResult.SUCCESS : BizResult.FAIL;
+    }
+
     @Override
     public String getRealmId() {
         return String.valueOf(hashCode());

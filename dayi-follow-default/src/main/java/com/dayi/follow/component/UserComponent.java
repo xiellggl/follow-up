@@ -39,6 +39,7 @@ public class UserComponent {
             loginVo.setName(followUp.getName());
             loginVo.setId(followUp.getId());
             loginVo.setDeptId(followUp.getDeptId());
+            loginVo.setChargeDeptId(followUp.getChargeDeptId());
             return loginVo;
         }
         return null;

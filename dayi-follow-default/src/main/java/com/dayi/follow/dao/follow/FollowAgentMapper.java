@@ -29,4 +29,7 @@ public interface FollowAgentMapper extends BaseMapper<AgentListVo> {
                             @Param("followId") String followId, @Param("whereSql") String whereSql,
                             @Param("assistDataBase") String assistDataBase);
 
+    //统计资产规模
+    double getTotalFund(@Param("followIds") List<String> followIds);
+
 }

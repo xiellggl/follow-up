@@ -202,4 +202,30 @@
               WHERE del_status != -1 and b.agent_id is not null
           )a on a.id=fal.agent_org_id group by click_date
     </select>
+
+    <select id="getWaitAssignAgentNum" resultType="java.lang.Long">
+            SELECT count(IF(b.agent_id is null,1,null))
+            from agent a
+            LEFT join (
+                SELECT agent_id from ${assistDataBase}.follow_agent
+            )b on b.agent_id=a.id
+            where del_status != -1
+    </select>
+
+    <select id="getWaitAssignOrgNum" parameterType="map" resultType="java.lang.Long">
+        SELECT count(IF(b.org_id is null,1,null))
+        from organization a
+        LEFT join (
+        SELECT org_id from ${assistDataBase}.follow_org
+        )b on b.org_id=a.id
+        where del_status != -1 and org_type=${orgType}
+    </select>
+
+    <select id="getFollowCusNum">
+        SELECT * from follow_agent where follow_id in
+        <foreach item="item" index="index" collection="followUpIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
 </mapper>

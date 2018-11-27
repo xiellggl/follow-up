@@ -40,6 +40,9 @@ public class FollowUp extends BaseModel implements Principal {
     @NotNull(message = "请选择身份！")
     private Integer identity;//1-跟进人，2-运维
 
+
+
+
     public Integer getIdentity() {
         return identity;
     }

@@ -3,22 +3,24 @@ package com.dayi.follow.controller;
 import com.dayi.common.util.BizResult;
 import com.dayi.common.util.DateUtil;
 import com.dayi.follow.component.UserComponent;
+import com.dayi.follow.model.follow.Department;
 import com.dayi.follow.model.follow.FollowUp;
-import com.dayi.follow.service.AgentService;
-import com.dayi.follow.service.CountService;
-import com.dayi.follow.service.DeptService;
-import com.dayi.follow.service.FollowUpService;
+import com.dayi.follow.service.*;
 import com.dayi.follow.vo.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author xiell
@@ -37,7 +39,8 @@ public class IndexController {
     AgentService agentService;
     @Resource
     DeptService deptService;
-
+    @Resource
+    ReportService reportService;
     @RequestMapping("")
     public String index(HttpServletRequest request) {
         return "uc/index";
@@ -45,68 +48,68 @@ public class IndexController {
 
     @RequestMapping("sale/personal/daily")
     @ResponseBody
-    public BizResult salePersonalDaily(HttpServletRequest request) {
+    public BizResult salePersonalDaily(HttpServletRequest request) {//销售个人日报
         LoginVo currVo = userComponent.getCurrUser(request);
         if (currVo == null) {
             return BizResult.FAIL;
         }
-        IndexVo daily = countService.countPreDayDaily(currVo.getId(), null);//日报
+        DailyVo daily = reportService.countDaily(currVo.getId());
         return BizResult.succ(daily);
     }
 
     @RequestMapping("sale/team/daily")
-    public BizResult saleTeamDaily(HttpServletRequest request) {
+    public BizResult saleTeamDaily(HttpServletRequest request) {//销售团队日报
         LoginVo currVo = userComponent.getCurrUser(request);
         if (currVo == null) {
             return BizResult.FAIL;
         }
-        IndexVo daily = countService.countPreDayDaily(null, currVo.getDeptId());//负责人日报
+        DailyVo daily = reportService.countTeamDaily(currVo.getDeptId());
         return BizResult.succ(daily);
     }
 
     @RequestMapping("ka/personal/daily")
     @ResponseBody
-    public BizResult kaPersonalDaily(HttpServletRequest request) {
+    public BizResult kaPersonalDaily(HttpServletRequest request) {//ka个人日报
         //判断权限
         LoginVo currVo = userComponent.getCurrUser(request);
         if (currVo == null) {
             return BizResult.FAIL;
         }
-        IndexVo daily = countService.countPreDayDaily(currVo.getId(), null);//日报
+        DailyVo daily = reportService.countDaily(currVo.getId());
         return BizResult.succ(daily);
     }
 
     @RequestMapping("ka/team/daily")
     @ResponseBody
-    public BizResult kaTeamDaily(HttpServletRequest request) {
+    public BizResult kaTeamDaily(HttpServletRequest request) {//ka团队日报
         LoginVo currVo = userComponent.getCurrUser(request);
         if (currVo == null) {
             return BizResult.FAIL;
         }
-        IndexVo daily = countService.countPreDayDaily(null, currVo.getDeptId());//日报
+        DailyVo daily = reportService.countTeamDaily(currVo.getDeptId());
         return BizResult.succ(daily);
     }
 
     @RequestMapping("cus/status")
     @ResponseBody
-    public BizResult cusStatus(HttpServletRequest request) {
+    public BizResult cusStatus(HttpServletRequest request) {//销售客户状态
         LoginVo currVo = userComponent.getCurrUser(request);
         if (currVo == null) {
             return BizResult.FAIL;
         }
-        CusStatusVo cusStatus = countService.countCusStatus(currVo.getId());//客户状态
+        CusStatusVo cusStatus = countService.countCusStatus(currVo.getId());
         return BizResult.succ(cusStatus);
     }
 
     @RequestMapping("agent/link")
     @ResponseBody
-    public BizResult agentLink(HttpServletRequest request) {
+    public BizResult agentLink(HttpServletRequest request) {//待联系代理商
         LoginVo currVo = userComponent.getCurrUser(request);
         if (currVo == null) {
             return BizResult.FAIL;
         }
         String dateStr = DateUtil.formatDate(new Date());
-        Integer num = countService.getAgentNumWait2Link(currVo.getId(), dateStr);//待联系代理商
+        long num = countService.getAgentNumWait2Link(currVo.getId(), dateStr);
         return BizResult.succ(num);
     }
 
@@ -155,6 +158,34 @@ public class IndexController {
         return BizResult.succ(sevenOpenVos);
     }
 
+    @RequestMapping("ser/cus/status")
+    @ResponseBody
+    public BizResult serCusStatus(HttpServletRequest request) {//客服的客户状态,即原来系统的管理员
+        LoginVo currVo = userComponent.getCurrUser(request);
+        if (currVo == null) {
+            return BizResult.FAIL;
+        }
+        String chargeDeptId = currVo.getChargeDeptId();
+        if (StringUtils.isBlank(chargeDeptId)) return BizResult.SUCCESS;
+        String[] roleArr = chargeDeptId.split(",");
+        SerCusStatusVo serCusStatus = countService.countSerCusStatus(Arrays.asList(roleArr));
+        return BizResult.succ(serCusStatus);
+    }
+
+    @RequestMapping("ser/team/daily")
+    @ResponseBody
+    public BizResult serTeamDaily(HttpServletRequest request) {//客服的团队日报
+        LoginVo currVo = userComponent.getCurrUser(request);
+        if (currVo == null) {
+            return BizResult.FAIL;
+        }
+        String chargeDeptId = currVo.getChargeDeptId();
+        if (StringUtils.isBlank(chargeDeptId)) return BizResult.SUCCESS;
+        String[] roleArr = chargeDeptId.split(",");
+        Map map = reportService.countSerTeamDaily(Arrays.asList(roleArr));
+        return BizResult.succ(map);
+    }
+
 
     /**
      * 我的资料 -- 查询
@@ -164,45 +195,48 @@ public class IndexController {
         LoginVo currVo = userComponent.getCurrUser(request);
 
         FollowUp followUp = followUpService.get(currVo.getId());
-        FollowUpVo followUpVo = new FollowUpVo();
-        BeanUtils.copyProperties(followUp, followUpVo);
-        followUpVo.setDeptName(currVo.getDeptName());
-        followUpVo.setDepartment(deptService.get(currVo.getDeptId()));
 
-//        Date createDate = flowUp.getCreateDate();
-//        Date modifyDate = flowUp.getModifyDate();
-//        String createDateStr = createDate.toString();
-//        String modifyDateStr = modifyDate.toString();
-//        String createDateStrSub = createDateStr.substring(0, createDateStr.length() - 2);
-//        String modifyDateStrSub = modifyDateStr.substring(0, modifyDateStr.length() - 2);
+        Department department = deptService.get(currVo.getDeptId());
+
+        FollowUpVo followUpVo = new FollowUpVo();
+        followUpVo.setName(followUp.getName());
+        followUpVo.setUserName(followUp.getUserName());
+
+        if (department != null) {
+            followUpVo.setDepartment(department);
+            followUpVo.setDeptName(department.getName());
+        }
+
+        followUpVo.setInviteCode(followUp.getInviteCode());
+        followUpVo.setIsAdmin(followUp.getIsAdmin());
+        followUpVo.setIsManager(followUp.getIsManager());
+        followUpVo.setCreateTimeFm(DateUtil.formatDate(followUp.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));
+        followUpVo.setUpdateTimeFm(DateUtil.formatDate(followUp.getUpdateTime(), "yyyy-MM-dd HH:mm:ss"));
+
         model.addAttribute("followUp", followUpVo);
-//        model.addAttribute("createDateStrSub", createDateStrSub);
-//        model.addAttribute("modifyDateStrSub", modifyDateStrSub);
         return "uc/myinfo";
     }
 
-//    /**
-//     * 我的资料 -- 查询
-//     */
-//    @RequestMapping("/pwd")
-//    public String pwd() {
-//        return "/followup/uc/pwd";
-//    }
-//
-//    /**
-//     * 修改 -- 修改密码
-//     */
-//    @RequestMapping(value = "/update/pwd")
-//    @ResponseBody
-//    public BizRetVo updateLoginPassword(HttpServletRequest request,
-//                                        @RequestParam(value = "oldPwd", required = true) String oldPwd,
-//                                        @RequestParam(value = "newPwd", required = true) String newPwd,
-//                                        @RequestParam(value = "confirmNewPwd", required = true) String confirmNewPwd) {
-//        FlowUpLoginVo vo = financeUserComponent.getCurrentLoginFollowUp(request);
-//        BizRetVo retVo = flowUpService.updatePwdById(vo.getId(), oldPwd, newPwd, confirmNewPwd);
-//        if (retVo.isSucc()) retVo.setMsg("修改密码成功");
-//        return retVo;
-//    }
+    /**
+     * 我的资料 -- 查询
+     */
+    @RequestMapping("/pwd")
+    public String pwd() {
+        return "uc/pwd";
+    }
+
+    /**
+     * 修改 -- 修改密码
+     */
+    @RequestMapping(value = "/update/pwd")
+    @ResponseBody
+    public BizResult updatePassword(HttpServletRequest request,
+                                    @RequestParam(value = "oldPwd", required = true) String oldPwd,
+                                    @RequestParam(value = "newPwd", required = true) String newPwd,
+                                    @RequestParam(value = "confirmNewPwd", required = true) String confirmNewPwd) {
+        LoginVo currVo = userComponent.getCurrUser(request);
+        return followUpService.editPwd(currVo.getId(), oldPwd, newPwd, confirmNewPwd);
+    }
 
 
 }

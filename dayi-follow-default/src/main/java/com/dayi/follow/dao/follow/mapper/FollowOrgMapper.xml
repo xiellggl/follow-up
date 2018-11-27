@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dayi.follow.dao.follow.FollowOrgMapper">
+
+    <select id="getTotalFund" parameterType="java.lang.String" resultType="java.lang.Double">
+        SELECT sum(amount) from follow_org a
+        left join (
+          SELECT id from organization where org_type = 4
+        )b on b.id = a.org_id
+        left join (
+          SELECT agent,amount FROM protocol WHERE 1 = 1 and status in (1,2)
+        )c on c.agent = a.org_id
+        where b.id is not null and  c.agent is not NULL
+        and a.follow_id in
+        <foreach item="item" index="index" collection="followIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+
+</mapper>

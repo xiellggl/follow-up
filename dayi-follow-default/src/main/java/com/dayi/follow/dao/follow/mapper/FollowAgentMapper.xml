@@ -299,4 +299,18 @@
     </select>
 
 
+    <select id="getTotalFund" parameterType="java.lang.String" resultType="java.lang.Double">
+        SELECT sum(amount) from follow_agent a
+        left join (
+        SELECT agent,amount FROM protocol WHERE 1 = 1 and status in (1,2)
+        )b on b.agent = a.agent_id
+        where b.agent is not NULL
+        and a.follow_id in
+        <foreach item="item" index="index" collection="followIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+
 </mapper>

@@ -12,6 +12,7 @@ import com.dayi.follow.model.follow.OperateLog;
 import com.dayi.follow.model.follow.Permission;
 import com.dayi.follow.service.ModuleService;
 import com.dayi.follow.vo.PermissionVo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -243,6 +244,34 @@ public class ModuleServiceImpl implements ModuleService {
         }
         return false;
     }
+
+    /**
+     * "剪叶子"算法实现树形结构的搜索功能
+     */
+    @Override
+    public List<Menu> eachMenu(List<Menu> menus, String keyword) {
+        //退出条件
+        if (menus == null || menus.isEmpty()) {
+            return Collections.emptyList();
+        }
+        Iterator<Menu> iterator = menus.iterator();
+        while (iterator.hasNext()) {
+            Menu menu = iterator.next();
+            if (menu.getChildMenus() == null || menu.getChildMenus().isEmpty()) {
+                if (StringUtils.isNotBlank(keyword)) {
+                    String name = Misc.toString(menu.getName());
+                    String url = Misc.toString(menu.getUrl());
+                    if (name.indexOf(keyword) == -1 && url.indexOf(keyword) == -1) {
+                        iterator.remove();
+                    }
+                }
+            }
+            eachMenu(menu.getChildMenus(), keyword);
+        }
+        return menus;
+    }
+
+
 
 }
 

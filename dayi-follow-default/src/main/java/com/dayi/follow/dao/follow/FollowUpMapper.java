@@ -4,6 +4,8 @@ import com.dayi.follow.model.follow.FollowUp;
 import com.dayi.mybatis.support.BaseMapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 /**
  * @author xiell
  * @date 2018/11/13
@@ -14,5 +16,8 @@ public interface FollowUpMapper extends BaseMapper<FollowUp> {
     @Select(" select * from follow_up where invite_code =#{inviteCode} ")
     FollowUp getByInviteCode(String inviteCode);
 
+    List<FollowUp> findByDeptId(List<String> deptIds);
+
+    List<String> findIdsByDeptId(List<String> deptIds);
 
 }

@@ -7,12 +7,15 @@ import com.dayi.follow.service.ModuleService;
 import com.dayi.follow.model.follow.Menu;
 import com.dayi.follow.service.PermissionService;
 import com.dayi.follow.vo.PermissionVo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author xiell
@@ -73,6 +76,23 @@ public class ModuleController {
             }
         }
         return BizResult.SUCCESS;
+    }
+
+    /**
+     * 列表查询
+     */
+    @RequestMapping("/query")
+    public BizResult list(HttpServletRequest request) {
+        String keyword = request.getParameter("keyword");
+        List<Menu> menus = moduleService.queryMenus(null, false, true, new Module(), new PermissionVo());
+        if (StringUtils.isNotBlank(keyword)) {
+            for (int i = 0; i < 6; i++) {
+                moduleService.eachMenu(menus, keyword);
+            }
+        }
+        Map<String, Object> map = new HashMap<>();
+        map.put("items", menus);
+        return BizResult.succ(map);
     }
 
 

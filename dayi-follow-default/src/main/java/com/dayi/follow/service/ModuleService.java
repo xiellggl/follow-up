@@ -75,4 +75,12 @@ public interface ModuleService {
      * @return
      */
     boolean deleteModule(String id);
+
+    /**
+     * "剪叶子"算法实现树形结构的搜索功能
+     * @param menus
+     * @param keyword
+     * @return
+     */
+    List<Menu> eachMenu(List<Menu> menus, String keyword);
 }

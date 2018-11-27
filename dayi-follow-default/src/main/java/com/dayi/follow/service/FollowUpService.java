@@ -36,5 +36,9 @@ public interface FollowUpService {
      * 更新跟进人信息
      */
     BizResult update(FollowUp followUp);
+    /**
+     * 修改密码
+     */
+    BizResult editPwd(String id, String oldPwd, String newPwd, String confirmPwd);
 
 }

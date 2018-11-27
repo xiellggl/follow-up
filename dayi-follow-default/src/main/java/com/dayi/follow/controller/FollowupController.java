@@ -125,8 +125,6 @@ public class FollowupController extends BaseController {
         followUp.setPassword(Md5Util.md5(followUp.getUserName(), followUp.getPassword()));
         followUp.setCreateBy(currVo.getName());
         followUp.setModifyBy(currVo.getName());
-        followUp.setCreateTime(new Date());
-        followUp.setUpdateTime(new Date());
         return followUpService.addFollowUp(followUp);
 
 
@@ -139,8 +137,8 @@ public class FollowupController extends BaseController {
     @RequestMapping("/update/save")
     @ResponseBody
     public BizResult updateSave(HttpServletRequest request, @Valid FollowUp followUp, BindingResult result) {
-       // BizResult bizResult = checkErrors(result);
-      //  if (!bizResult.isSucc()) return bizResult;//参数传入错误
+        BizResult bizResult = checkErrors(result);
+        if (!bizResult.isSucc()) return bizResult;//参数传入错误
 
         LoginVo currVo = userComponent.getCurrUser(request);
         followUp.setModifyBy(currVo.getName());

@@ -34,4 +34,17 @@ public class RoleController {
         return roleService.addRole(role, permissionIds) ? BizResult.SUCCESS : BizResult.FAIL;
     }
 
+    /**
+     * 保存
+     */
+    @RequestMapping("/edit/save")
+    public BizResult editSave(HttpServletRequest request, Role role) {
+        String[] permissionIds = request.getParameterValues("permissionId");
+        if (permissionIds == null || permissionIds.length == 0) {
+            return BizResult.fail("保存角色前，请选择一个模块");
+        }
+        return roleService.updateRole(role, permissionIds) ? BizResult.SUCCESS : BizResult.FAIL;
+
+    }
+
 }

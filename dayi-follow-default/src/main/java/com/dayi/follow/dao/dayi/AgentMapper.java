@@ -20,4 +20,6 @@ public interface AgentMapper extends BaseMapper<AgentListVo> {
     AgentListVo countRecentAgent(@Param("agentId") Integer agentId);
 
 
+
+
 }
