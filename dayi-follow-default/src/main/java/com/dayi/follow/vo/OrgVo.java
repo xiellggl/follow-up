@@ -8,13 +8,25 @@ import javax.persistence.Table;
  */
 @Table(name = "Organization")
 public class OrgVo {
-    private String id;
+    private Integer id;
 
-    public String getId() {
+
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    private Integer switchStatus; //二级资管状态
+
+    public Integer getSwitchStatus() {
+        return switchStatus;
+    }
+
+    public void setSwitchStatus(Integer switchStatus) {
+        this.switchStatus = switchStatus;
     }
 }

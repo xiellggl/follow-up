@@ -17,10 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author xiell
@@ -41,6 +38,7 @@ public class IndexController {
     DeptService deptService;
     @Resource
     ReportService reportService;
+
     @RequestMapping("")
     public String index(HttpServletRequest request) {
         return "uc/index";
@@ -165,10 +163,15 @@ public class IndexController {
         if (currVo == null) {
             return BizResult.FAIL;
         }
-        String chargeDeptId = currVo.getChargeDeptId();
-        if (StringUtils.isBlank(chargeDeptId)) return BizResult.SUCCESS;
-        String[] roleArr = chargeDeptId.split(",");
-        SerCusStatusVo serCusStatus = countService.countSerCusStatus(Arrays.asList(roleArr));
+
+        //获取下级部门
+        List<Department> subDepts = deptService.getSubDepts(currVo.getDeptId(), true, null);
+        List<String> deptIds = new ArrayList<String>();
+        for (Department subDept : subDepts) {
+            deptIds.add(subDept.getId());
+        }
+
+        SerCusStatusVo serCusStatus = countService.countSerCusStatus(deptIds);
         return BizResult.succ(serCusStatus);
     }
 
@@ -179,10 +182,15 @@ public class IndexController {
         if (currVo == null) {
             return BizResult.FAIL;
         }
-        String chargeDeptId = currVo.getChargeDeptId();
-        if (StringUtils.isBlank(chargeDeptId)) return BizResult.SUCCESS;
-        String[] roleArr = chargeDeptId.split(",");
-        Map map = reportService.countSerTeamDaily(Arrays.asList(roleArr));
+
+        //获取下级部门
+        List<Department> subDepts = deptService.getSubDepts(currVo.getDeptId(),true, null);
+        List<String> deptIds = new ArrayList<String>();
+        for (Department subDept : subDepts) {
+            deptIds.add(subDept.getId());
+        }
+
+        Map map = reportService.countSerTeamDaily(deptIds);
         return BizResult.succ(map);
     }
 

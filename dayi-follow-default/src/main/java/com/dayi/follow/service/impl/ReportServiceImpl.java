@@ -25,6 +25,7 @@ public class ReportServiceImpl implements ReportService {
     ReportMapper reportMapper;
     @Resource
     CountService countService;
+
     @Override
     public DailyVo countTeamDaily(String deptId) {
         return reportMapper.countTeamDaily(deptId);
@@ -37,11 +38,8 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public Map countSerTeamDaily(List<String> deptIds) {
-
         HashMap map = new HashMap();
-
         if (CollectionUtils.isEmpty(deptIds)) return map;
-
 
         //获取管辖部门（团队）的所有日报，包括KA
         DailyVo dailyVo = new DailyVo();
@@ -50,18 +48,11 @@ public class ReportServiceImpl implements ReportService {
             dailyVo = reportMapper.countTeamDaily(deptId);
             dailyVos.add(dailyVo);
         }
+        map.put("dailyVos", dailyVos);
 
-        map.put("dailyVos",dailyVos);
-
-
-//        String[] roleArr = deptIdStr.split(",");
-//
-//        //KA的创客数据
-//        OrgDataVo orgDataVo = countService.countTeamOrgData();
-//
-//        List<String> followIds = followUpMapper.findIdsByDeptId(Arrays.asList(roleArr));
-
-
+        //获取部门的创客数据
+        OrgDataVo orgDataVo = countService.countTeamsOrgData(deptIds);
+        map.put("orgDataVo", orgDataVo);
         return map;
     }
 

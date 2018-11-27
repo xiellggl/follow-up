@@ -63,11 +63,11 @@ public class DeptServiceImpl implements DeptService {
         if (StringUtils.isNotBlank(fieldName)) {
             if (chargeDeptIds != null && chargeDeptIds.size() != 0) {
                 for (Integer chargeDeptId : chargeDeptIds) {
-                    mysubList = this.getMySubDeptList(chargeDeptId, isHaveOwn, mysubList);
+                    mysubList = this.getSubDepts(chargeDeptId, isHaveOwn, mysubList);
                 }
             }
             if (deptId != null) {
-                mysubList = this.getMySubDeptList(deptId, isHaveOwn, null);
+                mysubList = this.getSubDepts(deptId, isHaveOwn, null);
             }
             if (CollectionUtils.isNotEmpty(mysubList)) {
                 String fieldStr = StringUtils.isNotBlank(alias) ? (alias + "." + fieldName) : fieldName;
@@ -95,7 +95,8 @@ public class DeptServiceImpl implements DeptService {
     /**
      * 递归查询 -- 指定部门
      */
-    public List<Department> getMySubDeptList(Integer deptId, boolean isHaveOwn, List<Department> loopInvokingList) {
+    public List<Department> getSubDepts(String deptId, boolean isHaveOwn, List<Department> loopInvokingList) {
+
         List<Department> deptList;
         if (loopInvokingList != null) {
             deptList = loopInvokingList;
@@ -118,6 +119,7 @@ public class DeptServiceImpl implements DeptService {
             }
         }
         return deptList;
+
     }
 
     @Override

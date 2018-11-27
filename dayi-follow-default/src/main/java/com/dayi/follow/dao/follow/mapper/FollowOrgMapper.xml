@@ -5,7 +5,7 @@
     <select id="getTotalFund" parameterType="java.lang.String" resultType="java.lang.Double">
         SELECT sum(amount) from follow_org a
         left join (
-          SELECT id from organization where org_type = 4
+          SELECT id from organization where org_type = 4 and del_status !=-1
         )b on b.id = a.org_id
         left join (
           SELECT agent,amount FROM protocol WHERE 1 = 1 and status in (1,2)
@@ -16,6 +16,14 @@
                  open="(" separator="," close=")">
             #{item}
         </foreach>
+    </select>
+
+    <select id="findOrgsByfollowId" parameterType="java.lang.String" resultType="com.dayi.follow.vo.OrgVo">
+        SELECT * from follow_org a
+        left join (
+          SELECT * from organization where org_type=4 and del_status !=-1
+        )b on b.id = a.org_id
+        where follow_id = ${followId} and b.id is not null
     </select>
 
 

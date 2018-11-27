@@ -59,5 +59,7 @@ public interface CountMapper {
     //统计KA的创客数据
     OrgDataVo countOrgData(List<String> followIds);
 
+    int getOrgValidAgentNum(Integer orgId,Integer inviteLevel);
+
 
 }

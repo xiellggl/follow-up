@@ -17,7 +17,7 @@ import java.util.Map;
 public interface CountService {
 
 
-//    统计客户状态
+    //    统计客户状态
     CusStatusVo countCusStatus(String followId);
 
 
@@ -34,13 +34,20 @@ public interface CountService {
 
     /* 统计近七日开户数--跟进人ID */
     List<SevenOpenVo> countSevenOpen(String followId);
+
     // 统计近七日入金
     List<SevenInCashVo> countSevenInCash(String followId);
-//    统计客服的客户状态
+
+    //    统计客服的客户状态
     SerCusStatusVo countSerCusStatus(List<String> chargeDeptIds);
 
-    OrgDataVo countOrgData();
+    //统计创客数据
+    OrgDataVo countOrgData(String followId);
 
-    OrgDataVo countTeamOrgData();
+    //统计团队创客数据
+    OrgDataVo countTeamOrgData(String deptId);
+
+    //统计指定团队集合的创客数据
+    OrgDataVo countTeamsOrgData(List<String> deptIds);
 
 }
