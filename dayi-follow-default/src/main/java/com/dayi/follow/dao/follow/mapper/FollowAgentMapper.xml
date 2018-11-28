@@ -346,5 +346,8 @@
         SELECT follow_id from follow_agent where agent_id =${agentId}
     </select>
 
+    <select id="findContacts" resultType="com.dayi.follow.model.follow.AgentContact" parameterType="java.lang.Integer" >
+        SELECT * FROM `agent_contact` WHERE agent_id = #{agentId}
+    </select>
 
 </mapper>

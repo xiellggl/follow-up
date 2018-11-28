@@ -23,7 +23,17 @@
     <select id="getAgentFund" parameterType="java.lang.Integer" resultType="java.lang.Double">
         SELECT IFNULL(SUM(amount), 0) FROM protocol where (status = 1 or status = 2) and agent = ${agentId}
     </select>
+    <select id="getUseableFund" parameterType="java.lang.Integer" resultType="java.lang.Double">
+        SELECT useable  from finance_account where agent_org_id =${agentId}
+    </select>
+    <select id="getFrozenFund" parameterType="java.lang.Integer" resultType="java.lang.Double">
+        SELECT frozen  from finance_account where agent_org_id =${agentId}
+    </select>
+    <select id="getOutFrozenFund" parameterType="java.lang.Integer" resultType="java.lang.Double">
+        SELECT out_frozen  from finance_account where agent_org_id =${agentId}
+    </select>
 
-
-
+    <select id="getTotalInCash" parameterType="java.lang.Integer" resultType="java.lang.Double">
+        SELECT total_in_cash  from finance_account where agent_org_id =${agentId}
+    </select>
 </mapper>

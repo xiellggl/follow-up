@@ -42,4 +42,7 @@ public interface FollowAgentMapper extends BaseMapper<AgentListVo> {
 
     String getFollowIdByAgentId(Integer agentId);
 
+    //获取联系记录
+    List<AgentContact> findContacts(Integer agentId);
+
 }

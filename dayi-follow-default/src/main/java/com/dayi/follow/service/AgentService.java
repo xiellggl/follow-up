@@ -27,4 +27,6 @@ public interface AgentService {
     Page<AgentListVo> findTeamAgentPage(Page<AgentListVo> page, SearchVo searchVo,String followId, String deptId);
     AgentVo get(Integer agentId);
 
+
+
 }

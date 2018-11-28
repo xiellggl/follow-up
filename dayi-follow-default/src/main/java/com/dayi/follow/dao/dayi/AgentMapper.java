@@ -21,8 +21,14 @@ public interface AgentMapper extends BaseMapper<AgentVo> {
     AgentListVo countRecentAgent(@Param("agentId") Integer agentId);
 
     List<AgentVo> findByOrgId (@Param("orgId") Integer orgId);
-    //获取代理商中的资金
+    //获取代理中的资金
     double getAgentFund(Integer agentId);
-
-
+    //获取可用余额
+    double getUseableFund(Integer agentId);
+    //获取代理冻结货款
+    double getFrozenFund(Integer agentId);
+    //获取出金冻结
+    double getOutFrozenFund(Integer agentId);
+    //获取历史入金总数
+    double getTotalInCash(Integer agentId);
 }

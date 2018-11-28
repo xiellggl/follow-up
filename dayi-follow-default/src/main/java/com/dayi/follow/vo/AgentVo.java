@@ -21,6 +21,9 @@ public class AgentVo {
     private String mobile;          //手机号码
     private String recordInviteCode; //注册邀请码记录
     private Date createDate;// 创建日期
+    private Date cardValidDate;     //实名认证时间
+    private boolean bankSign;      //银行是否已签约（0=未签约，1=已签约）,现在也用来判断是否绑卡
+    private Date bankSignDate;      //绑卡时间
 
     public Integer getInviteLevel() {
         return inviteLevel;
@@ -68,5 +71,29 @@ public class AgentVo {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
+    }
+
+    public Date getCardValidDate() {
+        return cardValidDate;
+    }
+
+    public void setCardValidDate(Date cardValidDate) {
+        this.cardValidDate = cardValidDate;
+    }
+
+    public boolean isBankSign() {
+        return bankSign;
+    }
+
+    public void setBankSign(boolean bankSign) {
+        this.bankSign = bankSign;
+    }
+
+    public Date getBankSignDate() {
+        return bankSignDate;
+    }
+
+    public void setBankSignDate(Date bankSignDate) {
+        this.bankSignDate = bankSignDate;
     }
 }

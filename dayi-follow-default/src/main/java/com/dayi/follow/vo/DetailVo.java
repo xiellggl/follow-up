@@ -27,7 +27,7 @@ public class DetailVo {
     private boolean bankSign;//是否绑卡
     private Date bankSignDate; //绑卡时间
 
-    private boolean isInCash;      // 是否入金
+    private double inCash;      // 是否入金
 
     private Date createDate;       // 注册时间
 
@@ -35,16 +35,16 @@ public class DetailVo {
 
     private String status;//状态
 
-    private BigDecimal totalFund;//总资产
+    private double totalFund;//总资产
     private String totalFundFm; // 总资产（格式化：显示前两位和小数点位，其余用*标识）
 
     private BigDecimal agentFund;//代理中的资金
     private String agentFundFm;//
 
-    private BigDecimal freezeFund;//冻结货款
-    private String freezeFundFm;//
+    private BigDecimal frozenFund;//冻结货款
+    private String frozenFundFm;//
 
-    private BigDecimal useableFund = BigDecimal.valueOf(0);  // 可用余额
+    private double useableFund ;  // 可用余额
     private String useableFundFm;      // 可用余额（格式化：显示前两位和小数点位，其余用*标识）
 
     private BigDecimal recentAgentFund;//最近一天代理金额
@@ -155,14 +155,6 @@ public class DetailVo {
         this.bankSignDate = bankSignDate;
     }
 
-    public boolean isInCash() {
-        return isInCash;
-    }
-
-    public void setInCash(boolean inCash) {
-        isInCash = inCash;
-    }
-
     public Date getCreateDate() {
         return createDate;
     }
@@ -187,11 +179,11 @@ public class DetailVo {
         this.status = status;
     }
 
-    public BigDecimal getTotalFund() {
+    public double getTotalFund() {
         return totalFund;
     }
 
-    public void setTotalFund(BigDecimal totalFund) {
+    public void setTotalFund(double totalFund) {
         this.totalFund = totalFund;
     }
 
@@ -219,27 +211,27 @@ public class DetailVo {
         this.agentFundFm = agentFundFm;
     }
 
-    public BigDecimal getFreezeFund() {
-        return freezeFund;
+    public BigDecimal getFrozenFund() {
+        return frozenFund;
     }
 
-    public void setFreezeFund(BigDecimal freezeFund) {
-        this.freezeFund = freezeFund;
+    public void setFrozenFund(BigDecimal frozenFund) {
+        this.frozenFund = frozenFund;
     }
 
-    public String getFreezeFundFm() {
-        return freezeFundFm;
+    public String getFrozenFundFm() {
+        return frozenFundFm;
     }
 
-    public void setFreezeFundFm(String freezeFundFm) {
-        this.freezeFundFm = freezeFundFm;
+    public void setFrozenFundFm(String frozenFundFm) {
+        this.frozenFundFm = frozenFundFm;
     }
 
-    public BigDecimal getUseableFund() {
+    public double getUseableFund() {
         return useableFund;
     }
 
-    public void setUseableFund(BigDecimal useableFund) {
+    public void setUseableFund(double useableFund) {
         this.useableFund = useableFund;
     }
 
@@ -369,5 +361,13 @@ public class DetailVo {
 
     public void setOutCashFm(String outCashFm) {
         this.outCashFm = outCashFm;
+    }
+
+    public double getInCash() {
+        return inCash;
+    }
+
+    public void setInCash(double inCash) {
+        this.inCash = inCash;
     }
 }
