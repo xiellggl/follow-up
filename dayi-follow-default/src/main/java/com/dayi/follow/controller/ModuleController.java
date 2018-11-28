@@ -9,6 +9,7 @@ import com.dayi.follow.service.PermissionService;
 import com.dayi.follow.vo.PermissionVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
@@ -82,7 +83,7 @@ public class ModuleController {
      * 列表查询
      */
     @RequestMapping("/query")
-    public BizResult list(HttpServletRequest request) {
+    public String list(HttpServletRequest request, Model model) {
         String keyword = request.getParameter("keyword");
         List<Menu> menus = moduleService.queryMenus(null, false, true, new Module(), new PermissionVo());
         if (StringUtils.isNotBlank(keyword)) {
@@ -90,9 +91,8 @@ public class ModuleController {
                 moduleService.eachMenu(menus, keyword);
             }
         }
-        Map<String, Object> map = new HashMap<>();
-        map.put("items", menus);
-        return BizResult.succ(map);
+        model.addAttribute("menus",menus);
+        return "sys/module_list";
     }
 
 
