@@ -30,5 +30,21 @@
 
     </select>
 
+    <select id="findOrgsByfollowIds" parameterType="map" resultType="com.dayi.follow.vo.OrgVo">
+        SELECT * from follow_org a
+        left join (
+        SELECT * from organization where org_type=4 and del_status !=-1
+        <if test="''!=deadline and null!=deadline">
+            and create_date &lt; ${dateStr}
+        </if>
+        )b on b.id = a.org_id
+        where  b.id is not null
+        and follow_id in
+        <foreach item="item" index="index" collection="followIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
 
 </mapper>

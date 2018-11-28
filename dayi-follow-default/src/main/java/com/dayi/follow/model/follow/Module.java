@@ -58,13 +58,13 @@ public class Module extends BaseModel implements Comparable<Module> {
      * 子菜单
      */
     @Transient
-    private List<com.dayi.user.model.Module> childModules;
+    private List<Module> childModules;
 
     /**
      * 属性parentid-> 关联Module对象
      */
     @Transient
-    private com.dayi.user.model.Module parentModule;
+    private Module parentModule;
 
     /**
      * 状态 - 无效、禁用
@@ -196,19 +196,19 @@ public class Module extends BaseModel implements Comparable<Module> {
         this.updateBy = updateBy;
     }
 
-    public List<com.dayi.user.model.Module> getChildModules() {
+    public List<Module> getChildModules() {
         return childModules;
     }
 
-    public void setChildModules(List<com.dayi.user.model.Module> childModules) {
+    public void setChildModules(List<Module> childModules) {
         this.childModules = childModules;
     }
 
-    public com.dayi.user.model.Module getParentModule() {
+    public Module getParentModule() {
         return parentModule;
     }
 
-    public void setParentModule(com.dayi.user.model.Module parentModule) {
+    public void setParentModule(Module parentModule) {
         this.parentModule = parentModule;
     }
 

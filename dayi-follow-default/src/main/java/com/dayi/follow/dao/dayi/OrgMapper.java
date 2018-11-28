@@ -8,6 +8,6 @@ import com.dayi.mybatis.support.BaseMapper;
  * @date 2018/11/13
  */
 public interface OrgMapper extends BaseMapper<OrgVo> {
-
+    double getManageFund(Integer orgId, Integer level);
 
 }

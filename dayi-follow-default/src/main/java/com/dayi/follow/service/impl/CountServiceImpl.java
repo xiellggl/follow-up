@@ -12,8 +12,10 @@ import com.dayi.follow.dao.follow.FollowUpMapper;
 import com.dayi.follow.dao.follow.ReportMapper;
 import com.dayi.follow.enums.OrgTypeEnum;
 import com.dayi.follow.enums.SwitchStatusEnum;
+import com.dayi.follow.model.follow.Department;
 import com.dayi.follow.model.follow.FollowUp;
 import com.dayi.follow.service.CountService;
+import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.OrgService;
 import com.dayi.follow.util.StringUtil;
 import com.dayi.follow.vo.*;
@@ -45,6 +47,8 @@ public class CountServiceImpl implements CountService {
     private FollowAgentMapper followAgentMapper;
     @Resource
     private FollowOrgMapper followOrgMapper;
+    @Resource
+    private DeptService deptService;
     @Resource
     private OrgService orgService;
     @Value("${follow.dataBase}")
@@ -112,7 +116,7 @@ public class CountServiceImpl implements CountService {
         serCusStatusVo.setWaitAssignNum(waitAgentNum + waitOrgNum);
 
         //跟进用户总数
-        List<String> followIds = followUpMapper.findIdsByDeptId(chargeDeptIds);
+        List<String> followIds = followUpMapper.findIdsByDeptIds(chargeDeptIds);
         long followCusNum = countMapper.getFollowCusNum(followIds, followDataBaseStr);
         serCusStatusVo.setFollowCusNum(followCusNum);
 
@@ -138,11 +142,55 @@ public class CountServiceImpl implements CountService {
         OrgDataVo orgDataVo = new OrgDataVo();
         if (StringUtils.isBlank(followId)) return orgDataVo;
 
+        List<OrgVo> orgVos = followOrgMapper.findOrgsByfollowId(followId, null);
+        orgDataVo.setOrgNum(orgVos.size());
+
+        int agentNum = this.getAgentNum(orgVos);
+        orgDataVo.setAgentNum(agentNum);
+
+
+        DateTime dateTime = DateTime.now();
+        String deadline = dateTime.millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
+        List<OrgVo> yesOrgVos = followOrgMapper.findOrgsByfollowId(followId, deadline);//截至昨天的创客
+
+        double manageFund = this.getManageFund(yesOrgVos);
+
+        orgDataVo.setManageFund(BigDecimal.valueOf(manageFund).setScale(2, BigDecimal.ROUND_HALF_UP));
+        return orgDataVo;
+    }
+
+    @Override
+    public OrgDataVo countTeamOrgData(String deptId) {
+        OrgDataVo orgDataVo = new OrgDataVo();
+        if (StringUtils.isBlank(deptId)) return orgDataVo;
+
+        List<Department> subDepts = deptService.getSubDepts(deptId, true, null);
+        List<String> deptIds = new ArrayList<String>();
+        for (Department subDept : subDepts) {
+            deptIds.add(subDept.getId());
+        }
+
+        List<String> followIds = followUpMapper.findIdsByDeptIds(deptIds);
+
+        List<OrgVo> orgVos = followOrgMapper.findOrgsByfollowIds(followIds, null);
+        orgDataVo.setOrgNum(orgVos.size());
+
+        int agentNum = this.getAgentNum(orgVos);
+        orgDataVo.setAgentNum(agentNum);
+
+        DateTime dateTime = DateTime.now();
+        String deadline = dateTime.millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
+        List<OrgVo> yesOrgVos = followOrgMapper.findOrgsByfollowIds(followIds, deadline);//截至昨天的创客
+
+        double manageFund = this.getManageFund(yesOrgVos);
+
+        orgDataVo.setManageFund(BigDecimal.valueOf(manageFund).setScale(2, BigDecimal.ROUND_HALF_UP));
+        return orgDataVo;
+    }
+
+    private int getAgentNum(List<OrgVo> orgVos) {
         int num = 0;
         int agentNum = 0;
-
-        List<OrgVo> orgVos = followOrgMapper.findOrgsByfollowId(followId, null);
-
         for (OrgVo orgVo : orgVos) {
             Integer switchStatus = orgVo.getSwitchStatus();
             if (switchStatus != null && switchStatus.equals(SwitchStatusEnum.OPEN.getKey())) {//二级资管开启
@@ -154,38 +202,29 @@ public class CountServiceImpl implements CountService {
                 agentNum = agentNum + num;
             }
         }
+        return agentNum;
+    }
 
-        orgDataVo.setOrgNum(orgVos.size());
-        orgDataVo.setAgentNum(agentNum);
-
-        DateTime dateTime = DateTime.now();
-        String deadline = dateTime.millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
-
-        List<OrgVo> yesOrgVos = followOrgMapper.findOrgsByfollowId(followId, deadline);//截至昨天的创客
-
-        double manageFund = 0.0;
+    private double getManageFund(List<OrgVo> yesOrgVos) {
+        double manageFund = 0;//全部机构商资产
+        double orgManageFund = 0;//单个机构商的管理资产
         for (OrgVo orgVo : yesOrgVos) {
-            double oneLevel = orgService.getManageFund(orgVo.getId(), 1);//我的代理商资产（第一级代理商资产）
-            double twoLevel = 0.0;//二级代理商资产
+            double oneLevel = orgService.getManageFund(orgVo.getId(), 1);//一级代理商资产
+
+            double twoLevel = 0;//二级代理商资产
             Integer switchStatus = orgVo.getSwitchStatus();
             if (switchStatus != null && switchStatus.equals(SwitchStatusEnum.OPEN.getKey().intValue())) {//开了二级收益开关
                 twoLevel = orgService.getManageFund(orgVo.getId(), 2);
             }
-            manageFund = BigDecimals.add(oneLevel, twoLevel);
+
+            orgManageFund = BigDecimals.add(oneLevel, twoLevel);
+            manageFund = BigDecimals.add(manageFund, orgManageFund);
         }
-        orgDataVo.setManageFund(BigDecimal.valueOf(manageFund).setScale(2, BigDecimal.ROUND_HALF_UP));
-        return orgDataVo;
+        return manageFund;
     }
 
-    @Override
-    public OrgDataVo countTeamOrgData(String deptId) {
-        return null;
-    }
 
-    @Override
-    public OrgDataVo countTeamsOrgData(List<String> deptIds) {
-        return null;
-    }
+
 
 
 }

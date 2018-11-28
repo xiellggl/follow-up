@@ -13,11 +13,13 @@ import java.util.List;
 public interface FollowUpMapper extends BaseMapper<FollowUp> {
     @Select(" select * from follow_up where user_name =#{username} ")
     FollowUp getByUserName(String userName);
+
     @Select(" select * from follow_up where invite_code =#{inviteCode} ")
     FollowUp getByInviteCode(String inviteCode);
 
     List<FollowUp> findByDeptId(List<String> deptIds);
 
-    List<String> findIdsByDeptId(List<String> deptIds);
+    List<String> findIdsByDeptIds(List<String> deptIds);
 
+    List<String> findIdsByDeptId(String deptId);
 }

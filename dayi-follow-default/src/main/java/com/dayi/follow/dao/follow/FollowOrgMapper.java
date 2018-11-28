@@ -21,5 +21,5 @@ public interface FollowOrgMapper extends BaseMapper<AgentListVo> {
 
     List<OrgVo> findOrgsByfollowId(String followId, String deadline);
 
-
+    List<OrgVo> findOrgsByfollowIds(List<String> followIds, String deadline);
 }

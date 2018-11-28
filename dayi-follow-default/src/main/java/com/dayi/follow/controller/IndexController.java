@@ -38,6 +38,8 @@ public class IndexController {
     DeptService deptService;
     @Resource
     ReportService reportService;
+    @Resource
+    OrgService orgService;
 
     @RequestMapping("")
     public String index(HttpServletRequest request) {
@@ -184,7 +186,7 @@ public class IndexController {
         }
 
         //获取下级部门
-        List<Department> subDepts = deptService.getSubDepts(currVo.getDeptId(),true, null);
+        List<Department> subDepts = deptService.getSubDepts(currVo.getDeptId(), true, null);
         List<String> deptIds = new ArrayList<String>();
         for (Department subDept : subDepts) {
             deptIds.add(subDept.getId());
@@ -192,6 +194,28 @@ public class IndexController {
 
         Map map = reportService.countSerTeamDaily(deptIds);
         return BizResult.succ(map);
+    }
+
+    @RequestMapping("ka/personal/orgdata")
+    @ResponseBody
+    public BizResult kaPerOrgData(HttpServletRequest request) {//KA个人创客数据
+        LoginVo currVo = userComponent.getCurrUser(request);
+        if (currVo == null) {
+            return BizResult.FAIL;
+        }
+        OrgDataVo orgDataVo = countService.countOrgData(currVo.getId());
+        return BizResult.succ(orgDataVo);
+    }
+
+    @RequestMapping("ka/team/orgdata")
+    @ResponseBody
+    public BizResult kaTeamOrgData(HttpServletRequest request) {//KA团队创客数据
+        LoginVo currVo = userComponent.getCurrUser(request);
+        if (currVo == null) {
+            return BizResult.FAIL;
+        }
+        OrgDataVo orgDataVo = countService.countTeamOrgData(currVo.getDeptId());
+        return BizResult.succ(orgDataVo);
     }
 
 

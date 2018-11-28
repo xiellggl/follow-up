@@ -83,23 +83,7 @@ public class OrgServiceImpl implements OrgService {
 
     @Override
     public double getManageFund(Integer orgId, Integer level) {
-
-        List<AgentVo> agents = agentMapper.findByOrgId(orgId);
-
-        if (CollectionUtils.isEmpty(agents)) return 0;
-
-        double manageFund = 0;
-
-
-
-        for (AgentVo agent : agents) {
-            if (agent.getInviteLevel() == level) {
-
-            }
-        }
-        return manageFund;
-
-
+        return orgMapper.getManageFund(orgId, level);
     }
 
 

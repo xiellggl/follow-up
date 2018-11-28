@@ -47,7 +47,4 @@ public interface CountService {
     //统计团队创客数据
     OrgDataVo countTeamOrgData(String deptId);
 
-    //统计指定团队集合的创客数据
-    OrgDataVo countTeamsOrgData(List<String> deptIds);
-
 }

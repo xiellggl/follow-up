@@ -49,10 +49,10 @@ public class ReportServiceImpl implements ReportService {
             dailyVos.add(dailyVo);
         }
         map.put("dailyVos", dailyVos);
-
-        //获取部门的创客数据
-        OrgDataVo orgDataVo = countService.countTeamsOrgData(deptIds);
-        map.put("orgDataVo", orgDataVo);
+//
+//        //获取部门的创客数据
+//        OrgDataVo orgDataVo = countService.countTeamsOrgData(deptIds);
+//        map.put("orgDataVo", orgDataVo);
         return map;
     }
 

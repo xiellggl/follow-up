@@ -2,6 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dayi.follow.dao.dayi.OrgMapper">
 
-
+    <select id="getManageFund" parameterType="map" resultType="java.lang.Double">
+      SELECT IFNULL(SUM(amount), 0) from (
+      	  SELECT a.id,c.amount from organization a
+          LEFT JOIN (
+              select org_id,id,invite_level  from agent
+          )b on b.org_id = a.id
+          LEFT  join (
+              SELECT agent,amount FROM protocol where (status = 1 or status = 2)
+          )c on c.agent=b.id
+          where  a.org_type =4  and b.org_id is not null and c.agent is not null
+          and a.id = ${orgId} and b.invite_level=${level}
+      )t
+    </select>
 
 </mapper>

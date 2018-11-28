@@ -13,7 +13,7 @@
    </select>
 
 
-    <select id="findIdsByDeptId" parameterType="java.lang.String" resultType="java.lang.String">
+    <select id="findIdsByDeptIds" parameterType="java.lang.String" resultType="java.lang.String">
         SELECT id from follow_up where disable !=0
         andn dept_id in
         <foreach item="item" index="index" collection="deptIds"
@@ -21,6 +21,11 @@
             #{item}
         </foreach>
 
+    </select>
+
+    <select id="findIdsByDeptId" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT id from follow_up where disable !=0
+        andn dept_id =${deptId}
     </select>
 
 

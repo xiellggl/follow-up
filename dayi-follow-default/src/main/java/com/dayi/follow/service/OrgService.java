@@ -2,6 +2,8 @@ package com.dayi.follow.service;
 
 
 import com.dayi.follow.vo.OrgVo;
+
+import java.util.List;
 /**
  * @author xiell
  * @date 2018/11/12
@@ -31,10 +33,6 @@ public interface OrgService {
     OrgVo getColligateOrgByInviteCode(String inviteCode);
     //获取管理资产
     double getManageFund(Integer orgId,Integer level);
-
-
-
-
 
 
 }
