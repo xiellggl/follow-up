@@ -63,8 +63,8 @@ public class IndexController {
         if (currVo == null) {
             return BizResult.FAIL;
         }
-        DailyVo daily = reportService.countTeamDaily(currVo.getDeptId());
-        return BizResult.succ(daily);
+        List<DailyVo> dailyVos = reportService.countTeamDaily(currVo.getDeptId());
+        return BizResult.succ(dailyVos);
     }
 
     @RequestMapping("ka/personal/daily")
@@ -86,8 +86,8 @@ public class IndexController {
         if (currVo == null) {
             return BizResult.FAIL;
         }
-        DailyVo daily = reportService.countTeamDaily(currVo.getDeptId());
-        return BizResult.succ(daily);
+        List<DailyVo> dailyVos = reportService.countTeamDaily(currVo.getDeptId());
+        return BizResult.succ(dailyVos);
     }
 
     @RequestMapping("cus/status")
@@ -167,33 +167,10 @@ public class IndexController {
         }
 
         //获取下级部门
-        List<Department> subDepts = deptService.getSubDepts(currVo.getDeptId(), true, null);
-        List<String> deptIds = new ArrayList<String>();
-        for (Department subDept : subDepts) {
-            deptIds.add(subDept.getId());
-        }
+        List<String> deptIds = deptService.getSubDeptIds(currVo.getDeptId());
 
         SerCusStatusVo serCusStatus = countService.countSerCusStatus(deptIds);
         return BizResult.succ(serCusStatus);
-    }
-
-    @RequestMapping("ser/team/daily")
-    @ResponseBody
-    public BizResult serTeamDaily(HttpServletRequest request) {//客服的团队日报
-        LoginVo currVo = userComponent.getCurrUser(request);
-        if (currVo == null) {
-            return BizResult.FAIL;
-        }
-
-        //获取下级部门
-        List<Department> subDepts = deptService.getSubDepts(currVo.getDeptId(), true, null);
-        List<String> deptIds = new ArrayList<String>();
-        for (Department subDept : subDepts) {
-            deptIds.add(subDept.getId());
-        }
-
-        Map map = reportService.countSerTeamDaily(deptIds);
-        return BizResult.succ(map);
     }
 
     @RequestMapping("ka/personal/orgdata")

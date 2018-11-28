@@ -28,7 +28,7 @@ public interface DeptService {
     /**
      * 递归查询 -- 指定部门
      */
-     List<Department> getSubDepts(String deptId, boolean isHaveOwn, List<Department> loopInvokingList);
+     List<String> getSubDeptIds(String deptId);
 
     /**
      * 获取跟进人信息

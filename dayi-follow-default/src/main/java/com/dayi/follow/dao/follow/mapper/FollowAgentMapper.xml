@@ -83,7 +83,7 @@
         select  id, link_person , bank_name , create_date ,
         card_valid_date ,bank_sign_date , mobile,
         bank_sign , record_invite_code ,id_card,
-        account_id,uc_id
+        account_id,uc_id,bank_account
         from ${assistDataBase}.agent  where del_status != -1
         )c on c.id = a.agent_id
 
@@ -117,16 +117,27 @@
         WHERE 1 = 1  and b.disable != -1
     </sql>
 
-    <sql id="ConditionQuery">
-        --         跟进人相关表查询条件
-        -- 归属条件
-        <if test="null!=whereSql and ''!=whereSql">
-            #{whereSql}
-        </if>
-        <if test="null!=followId">
-            AND b.id =#{followId}
-        </if>
+   <sql id="followConditionSql">
+       --         跟进人相关表查询条件
+       -- 归属条件
+       <if test="null!=followId">
+           AND b.id =#{followId}
+       </if>
 
+
+   </sql>
+    <sql id="followTeamConditionSql">
+        <if test="null!=followIds and 0 != followIds.size ">
+            AND b.id in
+            <foreach item="item" index="index" collection="ids"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+
+        </if>
+    </sql>
+
+    <sql id="ConditionQuery">
         -- 页面查询条件
         -- 客户类型
         <if test="null!=searchVo.customerType and -1!=searchVo.customerType">
@@ -171,8 +182,8 @@
             </if>
         </if>
         -- 已开通结算银行
-        <if test="null!=searchVo.bankType and ''!=searchVo.bankType">
-            and g.bank_ids like '%#{bankType}%'
+        <if test="null!=searchVo.bankTypeStr and ''!=searchVo.bankTypeStr">
+            and g.bank_ids like CONCAT('%','${searchVo.bankTypeStr}','%' )
         </if>
 
         -- 客户总资产
@@ -250,11 +261,11 @@
 
 
         <if test=" ''!=searchVo.mobile and null!=searchVo.mobile">
-            AND c.mobile like '%#{searchVo.mobile}%'
+            AND c.mobile like CONCAT('%','${searchVo.mobile}','%' )
         </if>
         -- 页面查询条件：邀请码
         <if test=" ''!=searchVo.inviteCode and null!=searchVo.inviteCode">
-            AND c.record_invite_code like like '%#{searchVo.inviteCode}%'
+            AND c.record_invite_code like CONCAT('%','${searchVo.inviteCode}','%' )
         </if>
         --         根据分配日期排序
         ORDER BY a.flow_date DESC
@@ -270,6 +281,7 @@
     <select id="findAgents" resultMap="BaseResultMap" parameterType="map">
         <include refid="findAgentsSelect"/>
         <include refid="findAgentsSql"/>
+        <include refid="followConditionSql"/>
         <include refid="ConditionQuery"/>
         <include refid="pageSql"/>
     </select>
@@ -278,6 +290,24 @@
     <select id="findAgentsCount" resultType="java.lang.Integer" parameterType="map">
         <include refid="countNum"/>
         <include refid="findAgentsSql"/>
+        <include refid="followConditionSql"/>
+        <include refid="ConditionQuery"/>
+    </select>
+
+    <!--分页查找团队代理商列表-->
+    <select id="findTeamAgents" resultMap="BaseResultMap" parameterType="map">
+        <include refid="findAgentsSelect"/>
+        <include refid="findAgentsSql"/>
+        <include refid="followTeamConditionSql"/>
+        <include refid="ConditionQuery"/>
+        <include refid="pageSql"/>
+    </select>
+
+    <!--统计分页团队代理商列表总数-->
+    <select id="findTeamAgentsCount" resultType="java.lang.Integer" parameterType="map">
+        <include refid="countNum"/>
+        <include refid="findAgentsSql"/>
+        <include refid="followTeamConditionSql"/>
         <include refid="ConditionQuery"/>
     </select>
 
@@ -310,6 +340,10 @@
                  open="(" separator="," close=")">
             #{item}
         </foreach>
+    </select>
+
+    <select id="getFollowIdByAgentId" parameterType="java.lang.Integer" resultType="java.lang.String">
+        SELECT follow_id from follow_agent where agent_id =${agentId}
     </select>
 
 

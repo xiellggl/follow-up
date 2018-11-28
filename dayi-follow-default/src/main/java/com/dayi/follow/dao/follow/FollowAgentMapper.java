@@ -20,16 +20,26 @@ public interface FollowAgentMapper extends BaseMapper<AgentListVo> {
 
     List<AgentListVo> findAgents(@Param("searchVo") SearchVo searchVo, @Param("ids") List<Integer> ids,
                                  @Param("startStr") String startStr, @Param("endStr") String endStr,
-                                 @Param("followId") String followId, @Param("whereSql") String whereSql,
-                                 @Param("assistDataBase") String assistDataBase, @Param("limitStart") Integer limitStart,
+                                 @Param("followId") String followId, @Param("assistDataBase") String assistDataBase, @Param("limitStart") Integer limitStart,
                                  @Param("limitEnd") Integer limitEnd);
 
     Integer findAgentsCount(@Param("searchVo") SearchVo searchVo, @Param("ids") List<Integer> ids,
                             @Param("startStr") String startStr, @Param("endStr") String endStr,
-                            @Param("followId") String followId, @Param("whereSql") String whereSql,
-                            @Param("assistDataBase") String assistDataBase);
+                            @Param("followId") String followId, @Param("assistDataBase") String assistDataBase);
+
+    List<AgentListVo> findTeamAgents(@Param("searchVo") SearchVo searchVo, @Param("ids") List<Integer> ids,
+                                     @Param("startStr") String startStr, @Param("endStr") String endStr,
+                                     @Param("followIds") List<String> followIds, @Param("assistDataBase") String assistDataBase,
+                                     @Param("limitStart") Integer limitStart, @Param("limitEnd") Integer limitEnd);
+
+    Integer findTeamAgentsCount(@Param("searchVo") SearchVo searchVo, @Param("ids") List<Integer> ids,
+                                @Param("startStr") String startStr, @Param("endStr") String endStr,
+                                @Param("followIds") List<String> followIds, @Param("assistDataBase") String assistDataBase);
+
 
     //统计资产规模
     double getTotalFund(@Param("followIds") List<String> followIds);
+
+    String getFollowIdByAgentId(Integer agentId);
 
 }

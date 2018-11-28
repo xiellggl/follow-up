@@ -55,26 +55,7 @@ public class CountServiceImpl implements CountService {
     String followDataBaseStr;
 
 
-    /**
-     * 代理商 -- 统计相应跟进人数目--
-     */
-    public CusStatusVo countCusStatus(String followId) {
-        CusStatusVo statusVo = new CusStatusVo();
 
-        List<String> followIds = new ArrayList<String>();
-        followIds.add(followId);
-
-        statusVo.setCusNum(countMapper.getCusNum(followIds));// 跟进用户总数
-        statusVo.setHadLinkNum(countMapper.getLinkCusNum(followIds));   // 已联系--用户人数
-        statusVo.setHadRealNameNum(countMapper.getNameCusNum(followIds));// 已实名认证--用户人数
-        statusVo.setHadSignNum(countMapper.getCardCusNum(followIds));// 已绑卡--用户人数
-        statusVo.setHadInCashNum(countMapper.getInCashCusNum(followIds));// 已入金--用户人数
-        statusVo.setHadAgentNum(countMapper.getAgentCusNum(followIds));// 已代理--用户人数
-        statusVo.setNoFundNum(countMapper.getNoFundCusNum(followIds));// 总资产为零--用户人数
-        statusVo.setHadLostNum(countMapper.getLostCusNum(followIds)); //流失客户
-
-        return statusVo;
-    }
 
     @Override
     public long getAgentNumWait2Link(String followId, String dateStr) {
@@ -102,12 +83,32 @@ public class CountServiceImpl implements CountService {
         return countMapper.countSevenInCash(followId, followDataBaseStr);
     }
 
+    /**
+     * 代理商 -- 统计相应跟进人数目--
+     */
+    public CusStatusVo countCusStatus(String followId) {
+        CusStatusVo statusVo = new CusStatusVo();
 
-    public SerCusStatusVo countSerCusStatus(List<String> chargeDeptIds) {
+        List<String> followIds = new ArrayList<String>();
+        followIds.add(followId);
+
+        statusVo.setCusNum(countMapper.getCusNum(followIds));// 跟进用户总数
+        statusVo.setHadLinkNum(countMapper.getLinkCusNum(followIds));   // 已联系--用户人数
+        statusVo.setHadRealNameNum(countMapper.getNameCusNum(followIds));// 已实名认证--用户人数
+        statusVo.setHadSignNum(countMapper.getCardCusNum(followIds));// 已绑卡--用户人数
+        statusVo.setHadInCashNum(countMapper.getInCashCusNum(followIds));// 已入金--用户人数
+        statusVo.setHadAgentNum(countMapper.getAgentCusNum(followIds));// 已代理--用户人数
+        statusVo.setNoFundNum(countMapper.getNoFundCusNum(followIds));// 总资产为零--用户人数
+        statusVo.setHadLostNum(countMapper.getLostCusNum(followIds)); //流失客户
+
+        return statusVo;
+    }
+
+    public SerCusStatusVo countSerCusStatus(List<String> deptIds) {
         SerCusStatusVo serCusStatusVo = new SerCusStatusVo();
 
         //跟进人数量
-        List<FollowUp> followUps = followUpMapper.findByDeptId(chargeDeptIds);
+        List<FollowUp> followUps = followUpMapper.findByDeptId(deptIds);
         serCusStatusVo.setFollowUpNum(followUps.size());
 
         //待分配客户数量
@@ -116,7 +117,7 @@ public class CountServiceImpl implements CountService {
         serCusStatusVo.setWaitAssignNum(waitAgentNum + waitOrgNum);
 
         //跟进用户总数
-        List<String> followIds = followUpMapper.findIdsByDeptIds(chargeDeptIds);
+        List<String> followIds = followUpMapper.findIdsByDeptIds(deptIds);
         long followCusNum = countMapper.getFollowCusNum(followIds, followDataBaseStr);
         serCusStatusVo.setFollowCusNum(followCusNum);
 
@@ -164,11 +165,11 @@ public class CountServiceImpl implements CountService {
         OrgDataVo orgDataVo = new OrgDataVo();
         if (StringUtils.isBlank(deptId)) return orgDataVo;
 
-        List<Department> subDepts = deptService.getSubDepts(deptId, true, null);
-        List<String> deptIds = new ArrayList<String>();
-        for (Department subDept : subDepts) {
-            deptIds.add(subDept.getId());
-        }
+        Department department = deptService.get(deptId);
+        if (department == null) return orgDataVo;
+
+        List<String> deptIds = deptService.getSubDeptIds(deptId);//下级部门id
+        deptIds.add(deptId);//加上自己
 
         List<String> followIds = followUpMapper.findIdsByDeptIds(deptIds);
 
@@ -222,9 +223,6 @@ public class CountServiceImpl implements CountService {
         }
         return manageFund;
     }
-
-
-
 
 
 }

@@ -3,15 +3,22 @@ package com.dayi.follow.controller;
 import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.conf.Constants;
 import com.dayi.follow.enums.AgentCusTypeEnum;
+import com.dayi.follow.enums.AgentIntenTypeEnum;
 import com.dayi.follow.enums.BankTypeEnum;
+import com.dayi.follow.enums.ContactTypeEnum;
 import com.dayi.follow.service.AgentService;
+import com.dayi.follow.service.FollowAgentService;
+import com.dayi.follow.service.FollowOrgService;
 import com.dayi.follow.service.FollowUpService;
+import com.dayi.follow.util.CollectionUtil;
 import com.dayi.follow.util.PageUtil;
 import com.dayi.follow.util.StringUtil;
-import com.dayi.follow.vo.AgentListVo;
-import com.dayi.follow.vo.LoginVo;
-import com.dayi.follow.vo.SearchVo;
+import com.dayi.follow.vo.*;
+import com.dayi.mybatis.common.util.Misc;
 import com.dayi.mybatis.support.Page;
+import org.apache.commons.collections.ListUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,7 +43,10 @@ public class AgentController {
     UserComponent userComponent;
     @Resource
     AgentService agentService;
-
+    @Resource
+    FollowAgentService followAgentService;
+    @Resource
+    FollowOrgService followOrgService;
 
     /**
      * 我的客户-代理商列表
@@ -45,68 +55,176 @@ public class AgentController {
      * @return
      */
     @RequestMapping("/list")
-    public String customerAgentCompile(HttpServletRequest request, Model model, SearchVo searchVo) {
-        LoginVo currVo = userComponent.getCurrUser(request);//需要加上loginType=followUp参数
-        String flowId = currVo.getId();  // 跟进人ID
+    public String agentList(HttpServletRequest request, Model model, SearchVo searchVo) {
+        LoginVo currVo = userComponent.getCurrUser(request);
+        String followId = currVo.getId();
+        Page page = new Page();
+        page.setPageSize(Constants.SEARCH_PAGE_SIZE);
+        //处理银行搜索参数
+        searchVo.setBankTypeStr(CollectionUtil.getStr(searchVo.getBankType()));
 
-        Page page=new Page();
+        page = agentService.findAgentPage(page, searchVo, followId);
+        //处理银行枚举
+        BankTypeEnum[] bankTypes = ArrayUtils.removeElements(BankTypeEnum.values(), BankTypeEnum.Ping_An, BankTypeEnum.Ping_An_Card);
 
-        page = this.myCustomerQuery(Constants.SEARCH_PAGE_SIZE, page, flowId, 1,searchVo);
+        String queryStr = request.getQueryString();//返回地址
+        String returnUrl = StringUtil.urlEncode(queryStr);
+        model.addAttribute("returnUrl", returnUrl);
+
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
-        BankTypeEnum[] values = BankTypeEnum.values();
-        List<BankTypeEnum> bankTypes = new ArrayList<BankTypeEnum>();
-        Collections.addAll(bankTypes, values);
-        Iterator<BankTypeEnum> iterator = bankTypes.iterator();
-        while (iterator.hasNext()) {
-            BankTypeEnum next = iterator.next();
-            if (BankTypeEnum.Ping_An.equals(next) || BankTypeEnum.Ping_An_Card.equals(next)) {
-                iterator.remove();
-            }
-        }
-        String queryStr = request.getQueryString();
-        String returnUrl =StringUtil.urlEncode(queryStr);
+
         String[] bankTypesArr = request.getParameterValues("bankType");   //结算银行搜索参数
+
         request.setAttribute("pageUrl", pageUrl);
         model.addAttribute("page", page);
         model.addAttribute("customerTypes", AgentCusTypeEnum.values());//客户类型
         model.addAttribute("bankTypes", bankTypes);//银行类型
         model.addAttribute("bankTypesArr", bankTypesArr);
-        model.addAttribute("returnUrl", returnUrl);
         return "uc/customer/agent/list";
     }
 
+    @RequestMapping("/detail")
+    public String agentDetail(HttpServletRequest request, Model model) {
+        LoginVo currVo = userComponent.getCurrUser(request);
 
-    /* 我的客户查询 -- 抽取通用查询方法 */
-    private Page<AgentListVo> myCustomerQuery(Integer pageSize, Page<AgentListVo> page, String followId, Integer flowTypeTab, SearchVo searchVo) {
-        List<String> bankTypeList = searchVo.getBankType();
+        Integer agentId = Misc.toInt(request.getParameter("agentId"), 0);// 代理人ID
 
-        StringBuffer bankTypeBuf = new StringBuffer();
-        if (bankTypeList != null && bankTypeList.size() != 0) {
-            for (int i = 0; i < bankTypeList.size(); i++) {
-                if (i < bankTypeList.size() - 1) {
-                    bankTypeBuf.append(bankTypeList.get(i)).append(","); //组成这种形式发过来1,4,5
-                } else {
-                    bankTypeBuf.append(bankTypeList.get(i));
+        String followId = followAgentService.getFollowIdByAgentId(agentId);
+
+        DetailVo detailVo = new DetailVo();
+
+        if (currVo.getId() == followId) {//客户属于当前登陆者
+            detailVo = followAgentService.getDetail(agentId);//代理商明细
+        } else {
+            return "redirect:/followup/uc/index";
+        }
+
+        String returnUrl = request.getParameter("returnUrl");
+        model.addAttribute("detailVo", detailVo);//明细
+        model.addAttribute("customerTypes", AgentCusTypeEnum.values());//客户类型
+        model.addAttribute("contactTypes", ContactTypeEnum.values());//联系方式
+        model.addAttribute("customerIntentionTypes", AgentIntenTypeEnum.values());//客户意向度
+        model.addAttribute("returnUrl", returnUrl);//返回代理商进来列表的路径
+        return "/followup/uc/customer/agent/detail";
+    }
+
+    /**
+     * 代理商登录日志
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping("/loginlog")
+    public String loginlog(HttpServletRequest request, Model model, Page page) {
+        FlowUpLoginVo vo = financeUserComponent.getCurrentLoginFollowUp(request);
+        if (vo == null) {
+            return "redirect:/followup/login";
+        }
+        if ((vo.getIsAdmin().equals(1)) || ("admin".equals(vo.getUserName()))) {
+            return "redirect:/followup/manage/index";
+        }
+        String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
+        Integer agentId = Misc.toInt(request.getParameter("agentId"));// 代理人ID
+        Integer belong = judgeCusBelong(agentId, null, vo);//判断客户是否属于当前跟进人，或当前登录用户是团队负责人
+        if (belong.equals(0) || agentId.equals(0)) {
+            return "redirect:/followup/uc/index";
+        }
+        List<PropertyFilter> filterList = PropertyFilter.buildFromHttpRequest(request);
+        Page<FinanceLoginLogVo> logVoPage = this.customerLoginLogQuery(Constants.DEFAULT_PAGE_SIZE, page, filterList, agentId);
+        model.addAttribute("page", logVoPage);//登录日志
+        model.addAttribute("pageUrl", pageUrl);
+        return "/followup/uc/customer/login_list";
+    }
+
+    /**
+     * 代理商联系记录
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping("/contact")
+    public String customerAgent_compile(HttpServletRequest request, Model model, Page page) {//page不接受代理商的分页
+        FlowUpLoginVo vo = financeUserComponent.getCurrentLoginFollowUp(request);
+        String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
+        Integer agentId = Misc.toInt(request.getParameter("agentId"));// 代理人ID
+        Integer belong = judgeCusBelong(agentId, null, vo);//判断客户是否属于当前跟进人，或当前登录用户是团队负责人
+        if (belong.equals(0) || agentId.equals(0)) {
+            return "redirect:/followup/uc/index";
+        }
+        Page<AgentContactVo> agentContactVoPage = this.contactQuery(page, agentId);//联系记录分页
+        String returnUrl = request.getParameter("returnUrl");//返回代理商进来列表的路径
+        model.addAttribute("nextAgentVo", null);//如果nextAgentVo为空
+        model.addAttribute("page", agentContactVoPage);//联系时间取createDate
+        model.addAttribute("returnUrl", returnUrl);//返回代理商进来列表的路径
+        request.setAttribute("pageUrl", pageUrl);
+        request.setAttribute("agentId", agentId);
+        return "/followup/uc/customer/contact_list";
+    }
+
+    /**
+     * 判断客户归属//返回0-不属于，1-属于当前用户，2-属于当前用户的下级用户
+     */
+    private Integer judgeTeamCusBelong(Integer agentId, Integer orgId, LoginVo loginVo) {
+        String cusFollowId = null;
+        List<Integer> flowUpList = null;
+        if (agentId != null) {//代理商
+
+            if (followId == null) {
+                return 0;
+            }
+            cusFollowId = followId;//客户的跟进人id
+        }
+        if (orgId != null) {//创客
+            String followId = followOrgService.getFollowIdByOrgId(orgId);
+            if (followId == null) {
+                return 0;
+            }
+            cusFollowId = followId;
+        }
+        if (cusFlowId != null && cusFlowId.equals(loginVo.getId())) {
+            return 1;
+        }
+        if (isManager != null && isManager.equals(1)) {//登陆者是团队负责人
+            if (deptId == null) {
+                return 0;
+            }
+            flowUpList = followDeptService.getSubFlowIds(deptId, loginVo.getId(), null, true);   //下级跟进人
+            if (flowUpList.isEmpty()) {
+                return 0;
+            }
+            for (Integer flowUp : flowUpList) {
+                if (cusFlowId != null && cusFlowId.equals(flowUp)) {
+                    return 2;
                 }
             }
         }
-        String bankType = bankTypeBuf.toString();
-        searchVo.setBankTypeStr(bankType);
-
-        if (page != null) {
-            page.setPageSize(pageSize);
-        }
-        if (flowTypeTab.equals(1)) { // 查询 代理商
-            return agentService.findAgentPage(page, searchVo,followId,null,null, null, null);
-        } else { // 查询 创客
-//            return financeAgentService.getOrgCustomerPage(page, linkStatus, nameValidata, mobile,
-//                    makerNum, null, null, flowId, null, null);
-            return null;
-        }
+        return 0;
     }
 
-
-
+    private Integer judgeCusBelong(Integer agentId, Integer orgId, FlowUpLoginVo loginVo) {
+        Integer isManager = loginVo.getIsManager();
+        Integer deptId = loginVo.getDeptId();
+        Integer cusFlowId = null;
+        List<Integer> flowUpList = null;
+        if (agentId != null) {//代理商
+            Agent agent = financeAgentService.getUserById(agentId);
+            if (agent == null) {
+                return 0;
+            }
+            cusFlowId = agent.getFlowId();//客户的跟进人id
+        }
+        if (orgId != null) {//创客
+            Organization org = organizationService.getUserById(orgId);
+            if (org == null) {
+                return 0;
+            }
+            cusFlowId = org.getFlowId();
+        }
+        if (cusFlowId != null && cusFlowId.equals(loginVo.getId())) {
+            return 1;
+        }
+        return 0;
+    }
 
 
 }

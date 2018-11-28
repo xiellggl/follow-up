@@ -13,7 +13,7 @@ import java.util.List;
  * @author xiell
  * @date 2018/11/13
  */
-public interface AgentMapper extends BaseMapper<AgentListVo> {
+public interface AgentMapper extends BaseMapper<AgentVo> {
 
 
     Date findLastLoginTime(@Param("agentId") Integer agentId);

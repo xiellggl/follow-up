@@ -21,7 +21,8 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
     }
 //    @Override
 //    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        //将所有/static/** 访问都映射到classpath:/static/ 目录下
-//        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/views/");
+//        registry.addResourceHandler("/static/**").addResourceLocations("/static/");
+//        registry.addResourceHandler("/inc/**").addResourceLocations("/inc/");
+//        registry.addResourceHandler("/views/**").addResourceLocations("/WEB-INF/views/");
 //    }
 }

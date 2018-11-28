@@ -3,6 +3,7 @@ package com.dayi.follow.service.impl;
 import com.dayi.follow.dao.follow.FollowUpMapper;
 import com.dayi.follow.dao.follow.ReportMapper;
 import com.dayi.follow.service.CountService;
+import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.ReportService;
 import com.dayi.follow.vo.DailyVo;
 import com.dayi.follow.vo.OrgDataVo;
@@ -24,11 +25,25 @@ public class ReportServiceImpl implements ReportService {
     @Resource
     ReportMapper reportMapper;
     @Resource
+    DeptService deptService;
+    @Resource
     CountService countService;
 
     @Override
-    public DailyVo countTeamDaily(String deptId) {
-        return reportMapper.countTeamDaily(deptId);
+    public List<DailyVo> countTeamDaily(String deptId) {
+        List<DailyVo> dailyVos = new ArrayList<DailyVo>();
+        if (StringUtils.isBlank(deptId)) return dailyVos;
+
+        List<String> deptIds = deptService.getSubDeptIds(deptId);//下级部门id
+        deptIds.add(deptId);//加上自己
+
+        //获取管辖部门（团队）的所有日报，包括KA
+        DailyVo dailyVo = new DailyVo();
+        for (String subDeptId : deptIds) {
+            dailyVo = reportMapper.countTeamDaily(deptId);
+            dailyVos.add(dailyVo);
+        }
+        return dailyVos;
     }
 
     @Override
@@ -36,25 +51,6 @@ public class ReportServiceImpl implements ReportService {
         return reportMapper.countDaily(followId);
     }
 
-    @Override
-    public Map countSerTeamDaily(List<String> deptIds) {
-        HashMap map = new HashMap();
-        if (CollectionUtils.isEmpty(deptIds)) return map;
-
-        //获取管辖部门（团队）的所有日报，包括KA
-        DailyVo dailyVo = new DailyVo();
-        List<DailyVo> dailyVos = new ArrayList<DailyVo>();
-        for (String deptId : deptIds) {
-            dailyVo = reportMapper.countTeamDaily(deptId);
-            dailyVos.add(dailyVo);
-        }
-        map.put("dailyVos", dailyVos);
-//
-//        //获取部门的创客数据
-//        OrgDataVo orgDataVo = countService.countTeamsOrgData(deptIds);
-//        map.put("orgDataVo", orgDataVo);
-        return map;
-    }
 
 
 }

@@ -49,7 +49,7 @@
             </a>
             <ul class="submenu">
                 <li data-index="1">
-                    <a href="/followup/uc/customer/agent/list">
+                    <a href="/followup/agent/list">
                         <i class="menu-icon fa fa-caret-right"></i>
                         代理商
                     </a>

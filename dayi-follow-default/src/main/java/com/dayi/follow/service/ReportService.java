@@ -20,9 +20,6 @@ public interface ReportService {
 
     DailyVo countDaily(String followId);
 
-    DailyVo countTeamDaily(String deptId);
-
-    //统计客服的团队日报
-    Map countSerTeamDaily(List<String> deptIds);
+    List<DailyVo> countTeamDaily(String deptId);
 
 }

@@ -6,6 +6,7 @@ import com.dayi.follow.model.follow.Department;
 import com.dayi.follow.model.follow.FollowUp;
 import com.dayi.follow.service.DeptService;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -95,31 +96,20 @@ public class DeptServiceImpl implements DeptService {
     /**
      * 递归查询 -- 指定部门
      */
-    public List<Department> getSubDepts(String deptId, boolean isHaveOwn, List<Department> loopInvokingList) {
+    public List<String> getSubDeptIds(String deptId) {
 
-        List<Department> deptList;
-        if (loopInvokingList != null) {
-            deptList = loopInvokingList;
-        } else {
-            deptList = new ArrayList<>();
-        }
-        if (deptId != null) {
-            Department dept = deptMapper.get(deptId);
-            int depth = 0;
-            if (isHaveOwn) { // 包含自己
-                dept.setTreeName(dept.getName());
-                deptList.add(dept);
-                depth++;
-            }
-            if (dept != null) {
-                List<Department> subList = dept.getSubDeptList();  // 下一级部门
-                if (CollectionUtils.isNotEmpty(subList)) {
-                    deptList.addAll(this.queryAllSubDeptList(subList, null, depth));
-                }
-            }
-        }
-        return deptList;
+        List<String> deptIdList = new ArrayList<String>();
+        if (StringUtils.isBlank(deptId)) return deptIdList;
 
+        Department me = deptMapper.get(deptId);
+        List<Department> subDeptList = me.getSubDeptList();
+        if (CollectionUtils.isEmpty(subDeptList)) return deptIdList;
+
+        for (Department dept : subDeptList) {
+            deptIdList.addAll(this.getSubDeptIds(dept.getId()));
+        }
+
+        return deptIdList;
     }
 
     @Override

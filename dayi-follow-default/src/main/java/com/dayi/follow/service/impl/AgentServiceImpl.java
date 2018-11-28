@@ -1,6 +1,7 @@
 package com.dayi.follow.service.impl;
 
 
+import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.dao.dayi.AgentMapper;
 import com.dayi.follow.dao.follow.FollowAgentMapper;
 import com.dayi.follow.dao.follow.FollowUpMapper;
@@ -8,11 +9,11 @@ import com.dayi.follow.model.follow.AgentContact;
 import com.dayi.follow.service.AgentService;
 import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.OrgService;
-import com.dayi.follow.vo.AgentListVo;
-import com.dayi.follow.vo.CusStatusVo;
-import com.dayi.follow.vo.IndexVo;
-import com.dayi.follow.vo.SearchVo;
+import com.dayi.follow.util.CollectionUtil;
+import com.dayi.follow.vo.*;
 import com.dayi.mybatis.support.Page;
+import com.google.common.collect.Lists;
+import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Footer;
 import org.joda.time.DateTime;
@@ -41,13 +42,14 @@ public class AgentServiceImpl implements AgentService {
     private FollowAgentMapper followAgentMapper;
     @Resource
     private AgentMapper agentMapper;
+    @Resource
+    private UserComponent userComponent;
     @Value("${dayi.dataBase}")
     String dayiDataBaseStr;
 
     @Override
-    public Page<AgentListVo> findAgentPage(Page<AgentListVo> page, SearchVo searchVo, String followId, Integer deptId, Integer deptFlowId,
-                                           Integer subDeptId, String followUpd) {
-        String whereSql = this.spellCustomerWhereSql(subDeptId, deptId, deptFlowId);  // 拼写跟进人特殊条件过滤语句
+    public Page<AgentListVo> findAgentPage(Page<AgentListVo> page, SearchVo searchVo, String followId) {
+
         List<Integer> ids = null;
         if (searchVo.getWaitToLinkToday() != null) {
             ids = followAgentMapper.getWaitLinkAgentIds(followId);
@@ -58,11 +60,51 @@ public class AgentServiceImpl implements AgentService {
         String endStr = dateTime.millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
 
         List<AgentListVo> agents = followAgentMapper.findAgents(searchVo,
-                ids, startStr, endStr, followId, whereSql, dayiDataBaseStr,
+                ids, startStr, endStr, followId, dayiDataBaseStr,
                 (page.getPageNo() - 1) * page.getPageSize(), page.getPageSize());
 
-        Integer totalCount = followAgentMapper.findAgentsCount(searchVo, ids, startStr, endStr, followId, whereSql, dayiDataBaseStr);
+        Integer totalCount = followAgentMapper.findAgentsCount(searchVo, ids, startStr, endStr, followId, dayiDataBaseStr);
 
+        page.setResults(this.queryByList(agents));
+        page.setTotalRecord(totalCount);
+
+        return page;
+    }
+
+    @Override
+    public Page<AgentListVo> findTeamAgentPage(Page<AgentListVo> page, SearchVo searchVo, String followId, String deptId) {
+
+        List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
+        followIds.remove(followId);//过滤自己
+
+
+        List<Integer> ids = null;
+        if (searchVo.getWaitToLinkToday() != null) {
+            ids = followAgentMapper.getWaitLinkAgentIds(followId);
+        }
+
+        DateTime dateTime = new DateTime();
+        String startStr = dateTime.millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
+        String endStr = dateTime.millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
+
+        List<AgentListVo> agents = followAgentMapper.findTeamAgents(searchVo,
+                ids, startStr, endStr, followIds, dayiDataBaseStr,
+                (page.getPageNo() - 1) * page.getPageSize(), page.getPageSize());
+
+        Integer totalCount = followAgentMapper.findTeamAgentsCount(searchVo, ids, startStr, endStr, followIds, dayiDataBaseStr);
+
+        page.setResults(this.queryByList(agents));
+        page.setTotalRecord(totalCount);
+
+        return page;
+    }
+
+    @Override
+    public AgentVo get(Integer agentId) {
+        return agentMapper.get(agentId);
+    }
+
+    private List<AgentListVo> queryByList(List<AgentListVo> agents) {
         for (AgentListVo vo : agents) {
             Date lastLoginTime = agentMapper.findLastLoginTime(vo.getId());
             vo.setLastLoginDate(lastLoginTime);//最后登录时间
@@ -79,39 +121,8 @@ public class AgentServiceImpl implements AgentService {
                 vo.setRecentAgentFund(lastVo.getRecentAgentFund());
             }
         }
-        page.setResults(agents);
-        page.setTotalRecord(totalCount);
-        return page;
+        return agents;
     }
-
-
-    /* 私有方法：抽取通用拼写跟进人特殊条件过滤语句 */
-    private String spellCustomerWhereSql(Integer subDeptId, Integer deptId, Integer deptFlowId) {
-        StringBuffer whereSql = new StringBuffer();
-        if (deptFlowId != null) { // 下级客户 -- 不包含自己的跟进人
-            whereSql.append(" AND a.flow_id != ").append(deptFlowId).append(" ");
-        }
-        if (deptId != null) { // 下级客户 -- 跟进人列表过滤
-            whereSql.append(deptService.spellMyDeptManagerFlowIdsNotInsql(deptId, "flow_id", "a"));  // 排除本部门所有负责人
-            String deptSubSql = deptService.spellSubFlowIdsInsql(deptId, null, "flow_id", "a", true);
-            if (StringUtils.isNotBlank(deptSubSql)) {  // 所有下级部门跟进人
-                whereSql.append(deptSubSql);
-            } else {
-                whereSql.append(" AND 1 = 0 ");
-            }
-        }
-        if (subDeptId != null && subDeptId != -1) { // 下级客户 -- 页面查询条件 -- 选择部门
-            String subWhereSql = deptService.spellSubFlowIdsInsql(subDeptId, null, "flow_id", "a", true);
-            if (StringUtils.isNotBlank(subWhereSql)) {
-                whereSql.append(subWhereSql);
-            } else { // 如果选择条件部门的所有下级都不存在跟进人，则查询无结果
-                whereSql.append(" AND 1 = 0 ");
-            }
-        }
-        return whereSql.toString();
-    }
-
-
 
 
 }
