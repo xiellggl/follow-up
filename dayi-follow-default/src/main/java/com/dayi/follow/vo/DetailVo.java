@@ -1,5 +1,7 @@
 package com.dayi.follow.vo;
 
+import com.dayi.follow.model.follow.Agent;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -33,18 +35,19 @@ public class DetailVo {
 
     private Date followDate;//分配跟进人时间
 
-    private String status;//状态
+    private Integer status;//状态
+    private String statusStr;//状态
 
     private double totalFund;//总资产
     private String totalFundFm; // 总资产（格式化：显示前两位和小数点位，其余用*标识）
 
-    private BigDecimal agentFund;//代理中的资金
+    private double agentFund;//代理中的资金
     private String agentFundFm;//
 
-    private BigDecimal frozenFund;//冻结货款
+    private double frozenFund;//冻结货款
     private String frozenFundFm;//
 
-    private double useableFund ;  // 可用余额
+    private double useableFund;  // 可用余额
     private String useableFundFm;      // 可用余额（格式化：显示前两位和小数点位，其余用*标识）
 
     private BigDecimal recentAgentFund;//最近一天代理金额
@@ -54,18 +57,18 @@ public class DetailVo {
 
     private String bankOpen;//已开通结算银行
 
-    private BigDecimal dayInCash;//当日累计入金
+    private double dayInCash;//当日累计入金
     private String dayInCashFm;//当日累计入金(格式化：显示前两位和小数点位，其余用*标识），用于是否入金判断
     private Date dayLastInCashTime;   // 当日最后一笔入金时间
     private String dayLastInCashTimeFm;  // 当日最后一笔入金时间（格式化）
 
-    private BigDecimal dayOutCash; // 当日申请出金
-    private String dayOutCashFm; // 当日申请出金（格式化：显示前两位和小数点位，其余用*标识）
-    private Date dayLastOutCashTime;//当日最后一笔申请出金时间
-    private String dayLastOutCashTimeFm;  //当日最后一笔申请出金时间（格式化）
+    private double dayApplyOutCash; // 当日申请出金
+    private String dayApplyOutCashFm; // 当日申请出金（格式化：显示前两位和小数点位，其余用*标识）
+    private Date dayLastApplyOutCashTime;//当日最后一笔申请出金时间
+    private String dayLastApplyOutCashTimeFm;  //当日最后一笔申请出金时间（格式化）
 
-    private BigDecimal outCash = BigDecimal.valueOf(0);  // 实际出金
-    private String outCashFm;      // 实际出金（格式化）
+    private double dayOutCash;  // 当日实际出金
+    private String dayOutCashFm;      // 当日实际出金（格式化）
 
     public String getLinkPerson() {
         return linkPerson;
@@ -171,12 +174,26 @@ public class DetailVo {
         this.followDate = followDate;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getStatusStr() {
+        this.statusStr = "禁用";
+        if (this.status == Agent.Status_Locked.id) {
+            this.statusStr = "锁定";
+        } else if (this.status == Agent.Status_Normal.id) {
+            this.statusStr = "启用";
+        }
+        return statusStr;
+    }
+
+    public void setStatusStr(String statusStr) {
+        this.statusStr = statusStr;
     }
 
     public double getTotalFund() {
@@ -195,11 +212,11 @@ public class DetailVo {
         this.totalFundFm = totalFundFm;
     }
 
-    public BigDecimal getAgentFund() {
+    public double getAgentFund() {
         return agentFund;
     }
 
-    public void setAgentFund(BigDecimal agentFund) {
+    public void setAgentFund(double agentFund) {
         this.agentFund = agentFund;
     }
 
@@ -211,11 +228,11 @@ public class DetailVo {
         this.agentFundFm = agentFundFm;
     }
 
-    public BigDecimal getFrozenFund() {
+    public double getFrozenFund() {
         return frozenFund;
     }
 
-    public void setFrozenFund(BigDecimal frozenFund) {
+    public void setFrozenFund(double frozenFund) {
         this.frozenFund = frozenFund;
     }
 
@@ -283,11 +300,11 @@ public class DetailVo {
         this.bankOpen = bankOpen;
     }
 
-    public BigDecimal getDayInCash() {
+    public double getDayInCash() {
         return dayInCash;
     }
 
-    public void setDayInCash(BigDecimal dayInCash) {
+    public void setDayInCash(double dayInCash) {
         this.dayInCash = dayInCash;
     }
 
@@ -315,11 +332,11 @@ public class DetailVo {
         this.dayLastInCashTimeFm = dayLastInCashTimeFm;
     }
 
-    public BigDecimal getDayOutCash() {
+    public double getDayOutCash() {
         return dayOutCash;
     }
 
-    public void setDayOutCash(BigDecimal dayOutCash) {
+    public void setDayOutCash(double dayOutCash) {
         this.dayOutCash = dayOutCash;
     }
 
@@ -331,36 +348,36 @@ public class DetailVo {
         this.dayOutCashFm = dayOutCashFm;
     }
 
-    public Date getDayLastOutCashTime() {
-        return dayLastOutCashTime;
+    public double getDayApplyOutCash() {
+        return dayApplyOutCash;
     }
 
-    public void setDayLastOutCashTime(Date dayLastOutCashTime) {
-        this.dayLastOutCashTime = dayLastOutCashTime;
+    public void setDayApplyOutCash(double dayApplyOutCash) {
+        this.dayApplyOutCash = dayApplyOutCash;
     }
 
-    public String getDayLastOutCashTimeFm() {
-        return dayLastOutCashTimeFm;
+    public String getDayApplyOutCashFm() {
+        return dayApplyOutCashFm;
     }
 
-    public void setDayLastOutCashTimeFm(String dayLastOutCashTimeFm) {
-        this.dayLastOutCashTimeFm = dayLastOutCashTimeFm;
+    public void setDayApplyOutCashFm(String dayApplyOutCashFm) {
+        this.dayApplyOutCashFm = dayApplyOutCashFm;
     }
 
-    public BigDecimal getOutCash() {
-        return outCash;
+    public Date getDayLastApplyOutCashTime() {
+        return dayLastApplyOutCashTime;
     }
 
-    public void setOutCash(BigDecimal outCash) {
-        this.outCash = outCash;
+    public void setDayLastApplyOutCashTime(Date dayLastApplyOutCashTime) {
+        this.dayLastApplyOutCashTime = dayLastApplyOutCashTime;
     }
 
-    public String getOutCashFm() {
-        return outCashFm;
+    public String getDayLastApplyOutCashTimeFm() {
+        return dayLastApplyOutCashTimeFm;
     }
 
-    public void setOutCashFm(String outCashFm) {
-        this.outCashFm = outCashFm;
+    public void setDayLastApplyOutCashTimeFm(String dayLastApplyOutCashTimeFm) {
+        this.dayLastApplyOutCashTimeFm = dayLastApplyOutCashTimeFm;
     }
 
     public double getInCash() {

@@ -11,8 +11,7 @@ import com.dayi.follow.model.follow.Permission;
 import com.dayi.follow.model.follow.Role;
 import com.dayi.follow.service.*;
 import com.dayi.follow.util.Md5Util;
-import com.dayi.follow.vo.LoginVo;
-import com.dayi.follow.vo.OrgVo;
+import com.dayi.follow.model.follow.Organization;
 import com.dayi.user.authorization.authc.AccountInfo;
 import com.dayi.user.authorization.authc.AuthenticationInfo;
 import com.dayi.user.authorization.authc.AuthenticationToken;
@@ -29,7 +28,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -100,7 +98,7 @@ public class FollowUpServiceImpl implements FollowUpService, Realm {
      */
     public boolean checkCodeRepeat(String inviteCode) {
         if (StringUtils.isBlank(inviteCode)) return false;
-        OrgVo orgVo = null;
+        Organization orgVo = null;
         orgVo = orgService.getByMarkerNum(inviteCode);
         if (orgVo != null) {
             return false;
@@ -160,6 +158,11 @@ public class FollowUpServiceImpl implements FollowUpService, Realm {
         }
 
         return 1 == followUpMapper.update(followUp) ? BizResult.SUCCESS : BizResult.FAIL;
+    }
+
+    @Override
+    public List<String> findIdsByDeptId(String deptId) {
+        return followUpMapper.findIdsByDeptId(deptId);
     }
 
     @Override

@@ -1,34 +1,28 @@
-package com.dayi.follow.model.follow;
+package com.dayi.follow.vo;
 
 import com.dayi.mybatis.support.BaseModel;
 import org.springframework.beans.BeanUtils;
 
-import javax.persistence.Transient;
 import java.util.Date;
 
 /**
  * @author xiell
  * @date 2018/7/20
  */
-public class AgentContact extends BaseModel {
+public class AgentContactVo extends BaseModel {
     private Integer agentId;//代理商ID
     private Integer contactType;//联系类型
     private Integer customerType;//客户类型
     private Integer customerIntentionType;//客户意向度
     private Date nextContactTime;//下次联系时间
     private String content;//内容
-    private String flowId;//跟进人ID
+    private Integer flowId;//跟进人ID
 
-    @Transient
-    private String followUp;
-
-
-
-    public String getFlowId() {
+    public Integer getFlowId() {
         return flowId;
     }
 
-    public void setFlowId(String flowId) {
+    public void setFlowId(Integer flowId) {
         this.flowId = flowId;
     }
 
@@ -82,18 +76,11 @@ public class AgentContact extends BaseModel {
     }
 
     /** 修改 -- 设置属性 */
-    public void setModifyProperty(AgentContact agentContact) {
+    public void setModifyProperty(AgentContactVo agentContact) {
         if(agentContact != null){ // 更新页面修改属性值
             BeanUtils.copyProperties(agentContact, this);
         }
         this.setUpdateTime(new Date());
     }
 
-    public String getFollowUp() {
-        return followUp;
-    }
-
-    public void setFollowUp(String followUp) {
-        this.followUp = followUp;
-    }
 }

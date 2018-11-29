@@ -295,7 +295,7 @@
     </select>
 
     <!--分页查找团队代理商列表-->
-    <select id="findTeamAgents" resultMap="BaseResultMap" parameterType="map">
+    <select id="findTeamAgents" resultMap="AgentListVoResultMap" parameterType="map">
         <include refid="findAgentsSelect"/>
         <include refid="findAgentsSql"/>
         <include refid="followTeamConditionSql"/>
@@ -346,8 +346,16 @@
         SELECT follow_id from follow_agent where agent_id =${agentId}
     </select>
 
-    <select id="findContacts" resultType="com.dayi.follow.model.follow.AgentContact" parameterType="java.lang.Integer" >
-        SELECT * FROM `agent_contact` WHERE agent_id = #{agentId}
+    <select id="findContacts" resultType="com.dayi.follow.vo.AgentContactVo" parameterType="java.lang.Integer" >
+        SELECT * FROM `agent_contact` WHERE agent_id = #{agentId} order by create_date desc LIMIT #{limitStart},#{limitEnd}
+    </select>
+
+    <select id="getFollowDate" parameterType="java.lang.Integer" resultType="java.util.Date">
+        SELECT create_date from follow_agent where agent_id =${agentId}
+    </select>
+
+    <select id="getFollowAgentByAgentId" parameterType="java.lang.Integer" resultType="com.dayi.follow.model.follow.FollowAgent">
+        SELECT * from follow_agent where agent_id =${agentId}
     </select>
 
 </mapper>

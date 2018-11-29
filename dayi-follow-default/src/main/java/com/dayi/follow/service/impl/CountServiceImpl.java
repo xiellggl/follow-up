@@ -2,10 +2,8 @@ package com.dayi.follow.service.impl;
 
 
 import com.dayi.common.util.BigDecimals;
-import com.dayi.common.util.BizResult;
 import com.dayi.follow.dao.dayi.AgentMapper;
 import com.dayi.follow.dao.dayi.CountMapper;
-import com.dayi.follow.dao.dayi.OrgMapper;
 import com.dayi.follow.dao.follow.FollowAgentMapper;
 import com.dayi.follow.dao.follow.FollowOrgMapper;
 import com.dayi.follow.dao.follow.FollowUpMapper;
@@ -14,13 +12,11 @@ import com.dayi.follow.enums.OrgTypeEnum;
 import com.dayi.follow.enums.SwitchStatusEnum;
 import com.dayi.follow.model.follow.Department;
 import com.dayi.follow.model.follow.FollowUp;
+import com.dayi.follow.model.follow.Organization;
 import com.dayi.follow.service.CountService;
 import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.OrgService;
-import com.dayi.follow.util.StringUtil;
 import com.dayi.follow.vo.*;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
@@ -143,18 +139,18 @@ public class CountServiceImpl implements CountService {
         OrgDataVo orgDataVo = new OrgDataVo();
         if (StringUtils.isBlank(followId)) return orgDataVo;
 
-        List<OrgVo> orgVos = followOrgMapper.findOrgsByfollowId(followId, null);
+        List<Organization> orgVos = followOrgMapper.findOrgsByfollowId(followId, null);
         orgDataVo.setOrgNum(orgVos.size());
 
-        int agentNum = this.getAgentNum(orgVos);
+        int agentNum = this.getValidAgentNum(orgVos);
         orgDataVo.setAgentNum(agentNum);
 
 
         DateTime dateTime = DateTime.now();
         String deadline = dateTime.millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
-        List<OrgVo> yesOrgVos = followOrgMapper.findOrgsByfollowId(followId, deadline);//截至昨天的创客
+        List<Organization> yesOrgVos = followOrgMapper.findOrgsByfollowId(followId, deadline);//截至昨天的创客
 
-        double manageFund = this.getManageFund(yesOrgVos);
+        double manageFund = this.getOrgManageFund(yesOrgVos);
 
         orgDataVo.setManageFund(BigDecimal.valueOf(manageFund).setScale(2, BigDecimal.ROUND_HALF_UP));
         return orgDataVo;
@@ -173,26 +169,26 @@ public class CountServiceImpl implements CountService {
 
         List<String> followIds = followUpMapper.findIdsByDeptIds(deptIds);
 
-        List<OrgVo> orgVos = followOrgMapper.findOrgsByfollowIds(followIds, null);
+        List<Organization> orgVos = followOrgMapper.findOrgsByfollowIds(followIds, null);
         orgDataVo.setOrgNum(orgVos.size());
 
-        int agentNum = this.getAgentNum(orgVos);
+        int agentNum = this.getValidAgentNum(orgVos);
         orgDataVo.setAgentNum(agentNum);
 
         DateTime dateTime = DateTime.now();
         String deadline = dateTime.millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
-        List<OrgVo> yesOrgVos = followOrgMapper.findOrgsByfollowIds(followIds, deadline);//截至昨天的创客
+        List<Organization> yesOrgVos = followOrgMapper.findOrgsByfollowIds(followIds, deadline);//截至昨天的创客
 
-        double manageFund = this.getManageFund(yesOrgVos);
+        double manageFund = this.getOrgManageFund(yesOrgVos);
 
         orgDataVo.setManageFund(BigDecimal.valueOf(manageFund).setScale(2, BigDecimal.ROUND_HALF_UP));
         return orgDataVo;
     }
-
-    private int getAgentNum(List<OrgVo> orgVos) {
+    @Override
+    public int getValidAgentNum(List<Organization> orgs) {
         int num = 0;
         int agentNum = 0;
-        for (OrgVo orgVo : orgVos) {
+        for (Organization orgVo : orgs) {
             Integer switchStatus = orgVo.getSwitchStatus();
             if (switchStatus != null && switchStatus.equals(SwitchStatusEnum.OPEN.getKey())) {//二级资管开启
                 num = countMapper.getOrgValidAgentNum(orgVo.getId(), null);//包括2级
@@ -205,11 +201,11 @@ public class CountServiceImpl implements CountService {
         }
         return agentNum;
     }
-
-    private double getManageFund(List<OrgVo> yesOrgVos) {
+    @Override
+    public double getOrgManageFund(List<Organization> orgs) {
         double manageFund = 0;//全部机构商资产
         double orgManageFund = 0;//单个机构商的管理资产
-        for (OrgVo orgVo : yesOrgVos) {
+        for (Organization orgVo : orgs) {
             double oneLevel = orgService.getManageFund(orgVo.getId(), 1);//一级代理商资产
 
             double twoLevel = 0;//二级代理商资产

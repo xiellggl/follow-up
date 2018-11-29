@@ -1,20 +1,14 @@
-package com.dayi.follow.vo;
+package com.dayi.follow.model.follow;
 
-import com.dayi.follow.enums.AgentCusTypeEnum;
-import com.dayi.follow.enums.AgentIntenTypeEnum;
-import com.dayi.follow.util.CheckIdCardUtils;
-import com.dayi.follow.util.Misc;
-import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
+import com.dayi.common.util.NameItem;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**
  * @author xiell
  * @date 2018/11/14
  */
-public class AgentVo {
+public class Agent {
     private Integer inviteLevel;//邀请等级
     private String idCard;          //身份证号码
     private String linkPerson;      //联系人
@@ -24,6 +18,21 @@ public class AgentVo {
     private Date cardValidDate;     //实名认证时间
     private boolean bankSign;      //银行是否已签约（0=未签约，1=已签约）,现在也用来判断是否绑卡
     private Date bankSignDate;      //绑卡时间
+    private Integer status;         //会员状态（-2=禁用,-1=锁定,0=待审核,1=正常）
+    private String idCardAddr;      //身份证所在地
+
+
+
+
+
+    /**
+     * 会员状态：-2--禁用；-1--锁定；0--待审核；1--正常
+     */
+    public final static NameItem Status_Forbid = NameItem.valueOf("禁用", -2);
+    public final static NameItem Status_Locked = NameItem.valueOf("锁定", -1);
+    public final static NameItem Status_Auditing = NameItem.valueOf("待审核", 0);
+    public final static NameItem Status_Normal = NameItem.valueOf("正常", 1);
+
 
     public Integer getInviteLevel() {
         return inviteLevel;
@@ -95,5 +104,21 @@ public class AgentVo {
 
     public void setBankSignDate(Date bankSignDate) {
         this.bankSignDate = bankSignDate;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public String getIdCardAddr() {
+        return idCardAddr;
+    }
+
+    public void setIdCardAddr(String idCardAddr) {
+        this.idCardAddr = idCardAddr;
     }
 }

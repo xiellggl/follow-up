@@ -16,24 +16,73 @@
             LIMIT 0, 1
     </select>
 
-    <select id="findByOrgId" parameterType="java.lang.Integer" resultType="com.dayi.follow.vo.AgentVo">
+    <select id="findByOrgId" parameterType="java.lang.Integer" resultType="com.dayi.follow.model.follow.Agent">
         SELECT * from agent where org_id =${orgId} and del_status != -1
     </select>
 
     <select id="getAgentFund" parameterType="java.lang.Integer" resultType="java.lang.Double">
         SELECT IFNULL(SUM(amount), 0) FROM protocol where (status = 1 or status = 2) and agent = ${agentId}
     </select>
-    <select id="getUseableFund" parameterType="java.lang.Integer" resultType="java.lang.Double">
-        SELECT useable  from finance_account where agent_org_id =${agentId}
-    </select>
-    <select id="getFrozenFund" parameterType="java.lang.Integer" resultType="java.lang.Double">
-        SELECT frozen  from finance_account where agent_org_id =${agentId}
-    </select>
-    <select id="getOutFrozenFund" parameterType="java.lang.Integer" resultType="java.lang.Double">
-        SELECT out_frozen  from finance_account where agent_org_id =${agentId}
+
+
+    <select id="getDayInCash" parameterType="java.lang.Integer" resultType="java.lang.Double">
+        SELECT  IFNULL(SUM(accrual), 0) accrual FROM finance_account_log
+        WHERE create_date between todayStart and todayEnd and pay_type = 1
+        AND agent_org_id = ${agentId}
     </select>
 
-    <select id="getTotalInCash" parameterType="java.lang.Integer" resultType="java.lang.Double">
-        SELECT total_in_cash  from finance_account where agent_org_id =${agentId}
+    <select id="getDayLastInCashTime" parameterType="java.lang.Integer" resultType="java.util.Date">
+        SELECT create_date FROM finance_account_log
+        WHERE create_date between todayStart and todayEnd AND pay_type = 1
+        AND agent_org_id = ${agentId}
+        ORDER BY create_date DESC
+        LIMIT 0, 1
     </select>
+
+    <select id="getOutCash" parameterType="java.lang.Integer" resultType="java.lang.Double">
+             SELECT  IFNULL(SUM(accrual), 0) accrual FROM finance_account_log
+             WHERE create_date between todayStart and todayEnd and pay_type =-9
+                AND agent_org_id =  ${agentId}
+    </select>
+
+    <select id="getDayToCard" parameterType="java.lang.Integer" resultType="java.lang.Double">
+        SELECT  IFNULL(SUM(accrual), 0) accrual FROM finance_account_log
+        WHERE create_date between todayStart and todayEnd and pay_type = -112
+        AND agent_org_id = ${agentId}
+    </select>
+
+    <select id="getDayApplyOutCash" parameterType="java.lang.Integer" resultType="java.lang.Double">
+        SELECT  IFNULL(SUM(accrual), 0) accrual FROM finance_account_log
+        WHERE create_date between todayStart and todayEnd and pay_type = -114
+        AND agent_org_id = ${agentId}
+    </select>
+
+    <select id="getDayLastApplyOutCashTime" parameterType="java.lang.Integer" resultType="java.util.Date">
+        SELECT  create_date FROM finance_account_log
+        WHERE create_date between todayStart and todayEnd and pay_type = -114
+        AND agent_org_id = ${agentId}
+         ORDER BY create_date DESC
+        LIMIT 0, 1
+    </select>
+
+    <select id="getOpenBankIdsStr" parameterType="java.lang.Integer" resultType="java.lang.String">
+        SELECT bank_ids from agent a left join (
+            select agent_id,GROUP_CONCAT( bank_id ORDER BY bank_id ) bank_ids FROM finance_vitrual_account
+             GROUP BY agent_id)
+           h ON a.id = h.agent_id where a.del_status != -1 and agent_id=${agentId};
+    </select>
+
+    <select id="getAccount" parameterType="java.lang.Integer" resultType="com.dayi.follow.vo.AccountVo">
+        SELECT  useable,frozen,out_frozen,total_in_cash from finance_account where agent_org_id =${agentId}
+    </select>
+
+    <select id="findLoginLog" parameterType="map" resultType="com.dayi.follow.vo.LoginLogVo">
+        select * from  finance_login_log where login_id =${agentId} order by create_date desc  LIMIT #{limitStart},#{limitEnd} ;
+    </select>
+
+
+    <select id="findLevel2ByOrgId" parameterType="java.lang.Integer" resultType="com.dayi.follow.model.follow.Agent">
+        SELECT * from agent where org_id =${orgId} and del_status != -1 and invite_level =1
+    </select>
+
 </mapper>

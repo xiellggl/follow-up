@@ -1,10 +1,8 @@
 package com.dayi.follow.service;
 
 
-import com.dayi.follow.vo.AgentListVo;
-import com.dayi.follow.vo.AgentVo;
+import com.dayi.follow.model.follow.FollowAgent;
 import com.dayi.follow.vo.DetailVo;
-import com.dayi.follow.vo.SearchVo;
 import com.dayi.mybatis.support.Page;
 /**
  * @author xiell
@@ -20,5 +18,9 @@ public interface FollowAgentService {
     String getFollowIdByAgentId(Integer agentId);
 
     DetailVo getDetail(Integer agentId);
+
+    Page findContacts(Page page, Integer agentId);
+
+    FollowAgent getFollowAgentByAgentId(Integer agentId);
 
 }

@@ -1,18 +1,22 @@
 package com.dayi.follow.dao.follow;
 
 import com.dayi.follow.model.follow.AgentContact;
+import com.dayi.follow.model.follow.FollowAgent;
+import com.dayi.follow.vo.AgentContactVo;
 import com.dayi.follow.vo.AgentListVo;
 import com.dayi.follow.vo.SearchVo;
 import com.dayi.mybatis.support.BaseMapper;
+import com.dayi.mybatis.support.Page;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
  * @author xiell
  * @date 2018/11/13
  */
-public interface FollowAgentMapper extends BaseMapper<AgentListVo> {
+public interface FollowAgentMapper extends BaseMapper<FollowAgent> {
 
     List<Integer> getWaitLinkAgentIds(@Param("followUpId") String followUpId);
 
@@ -43,6 +47,12 @@ public interface FollowAgentMapper extends BaseMapper<AgentListVo> {
     String getFollowIdByAgentId(Integer agentId);
 
     //获取联系记录
-    List<AgentContact> findContacts(Integer agentId);
+    Page<AgentContactVo> findContacts(Integer agentId, Integer limitStart, Integer limitEnd);
+
+    //获取分配
+    Date getFollowDate(Integer agentId);
+
+    //获取follow_agent
+    FollowAgent getFollowAgentByAgentId(Integer agentId);
 
 }

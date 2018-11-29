@@ -1,30 +1,25 @@
 package com.dayi.follow.service.impl;
 
 
+import com.dayi.common.util.BizResult;
 import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.dao.dayi.AgentMapper;
+import com.dayi.follow.dao.follow.AgentContactMapper;
 import com.dayi.follow.dao.follow.FollowAgentMapper;
 import com.dayi.follow.dao.follow.FollowUpMapper;
+import com.dayi.follow.model.follow.Agent;
 import com.dayi.follow.model.follow.AgentContact;
 import com.dayi.follow.service.AgentService;
 import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.OrgService;
-import com.dayi.follow.util.CollectionUtil;
 import com.dayi.follow.vo.*;
 import com.dayi.mybatis.support.Page;
-import com.google.common.collect.Lists;
-import org.apache.commons.collections.ListUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.ss.usermodel.Footer;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -42,6 +37,8 @@ public class AgentServiceImpl implements AgentService {
     private FollowAgentMapper followAgentMapper;
     @Resource
     private AgentMapper agentMapper;
+    @Resource
+    private AgentContactMapper agentContactMapper;
     @Resource
     private UserComponent userComponent;
     @Value("${dayi.dataBase}")
@@ -61,7 +58,7 @@ public class AgentServiceImpl implements AgentService {
 
         List<AgentListVo> agents = followAgentMapper.findAgents(searchVo,
                 ids, startStr, endStr, followId, dayiDataBaseStr,
-                (page.getPageNo() - 1) * page.getPageSize(), page.getPageSize());
+                page.getStartRow(), page.getPageSize());
 
         Integer totalCount = followAgentMapper.findAgentsCount(searchVo, ids, startStr, endStr, followId, dayiDataBaseStr);
 
@@ -89,7 +86,7 @@ public class AgentServiceImpl implements AgentService {
 
         List<AgentListVo> agents = followAgentMapper.findTeamAgents(searchVo,
                 ids, startStr, endStr, followIds, dayiDataBaseStr,
-                (page.getPageNo() - 1) * page.getPageSize(), page.getPageSize());
+                page.getStartRow(), page.getPageSize());
 
         Integer totalCount = followAgentMapper.findTeamAgentsCount(searchVo, ids, startStr, endStr, followIds, dayiDataBaseStr);
 
@@ -100,8 +97,18 @@ public class AgentServiceImpl implements AgentService {
     }
 
     @Override
-    public AgentVo get(Integer agentId) {
+    public Agent get(Integer agentId) {
         return agentMapper.get(agentId);
+    }
+
+    @Override
+    public Page<LoginLogVo> findLoginLog(Page page, Integer agentId) {
+        return agentMapper.findLoginLog(agentId, page.getStartRow(), page.getEndRow());
+    }
+
+    @Override
+    public BizResult addContact(AgentContact agentContact) {
+        return 1 == agentContactMapper.add(agentContact) ? BizResult.succ(agentContact) : BizResult.FAIL;
     }
 
     private List<AgentListVo> queryByList(List<AgentListVo> agents) {

@@ -3,7 +3,6 @@ package com.dayi.follow.controller;
 import com.dayi.common.util.BizResult;
 import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.conf.Constants;
-import com.dayi.follow.dao.follow.FollowAgentMapper;
 import com.dayi.follow.enums.AgentCusTypeEnum;
 import com.dayi.follow.enums.AgentIntenTypeEnum;
 import com.dayi.follow.enums.BankTypeEnum;
@@ -17,12 +16,12 @@ import com.dayi.follow.service.FollowUpService;
 import com.dayi.follow.util.CollectionUtil;
 import com.dayi.follow.util.PageUtil;
 import com.dayi.follow.util.StringUtil;
-import com.dayi.follow.vo.*;
+import com.dayi.follow.vo.DetailVo;
+import com.dayi.follow.vo.LoginVo;
+import com.dayi.follow.vo.SearchVo;
 import com.dayi.mybatis.common.util.Misc;
 import com.dayi.mybatis.support.Page;
-import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,9 +29,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -40,8 +36,8 @@ import java.util.List;
  * @date 2018/11/13
  */
 @Controller
-@RequestMapping("/followup/agent")
-public class AgentController {
+@RequestMapping("/followup/team/agent")
+public class TeamAgentController {
     @Resource
     FollowUpService followUpService;
     @Resource
@@ -54,7 +50,7 @@ public class AgentController {
     FollowOrgService followOrgService;
 
     /**
-     * 我的客户-代理商列表
+     * 团队代理商列表
      *
      * @param request
      * @return
@@ -62,12 +58,11 @@ public class AgentController {
     @RequestMapping("/list")
     public String agentList(HttpServletRequest request, Model model, SearchVo searchVo, Page page) {
         LoginVo currVo = userComponent.getCurrUser(request);
-        String followId = currVo.getId();
         page.setPageSize(Constants.SEARCH_PAGE_SIZE);
         //处理银行搜索参数
         searchVo.setBankTypeStr(CollectionUtil.getStr(searchVo.getBankType()));
 
-        page = agentService.findAgentPage(page, searchVo, followId);
+        page = agentService.findTeamAgentPage(page, searchVo, currVo.getId(), currVo.getDeptId());
         //处理银行枚举
         BankTypeEnum[] bankTypes = ArrayUtils.removeElements(BankTypeEnum.values(), BankTypeEnum.Ping_An, BankTypeEnum.Ping_An_Card);
 
@@ -87,7 +82,7 @@ public class AgentController {
         return "uc/customer/agent/list";
     }
     /**
-     * 我的客户-代理商详细
+     * 团队代理商详细
      *
      * @param request
      * @return
@@ -100,9 +95,11 @@ public class AgentController {
 
         String followId = followAgentService.getFollowIdByAgentId(agentId);
 
+        List<String> followIds = followUpService.findIdsByDeptId(currVo.getDeptId());
+
         DetailVo detailVo = new DetailVo();
 
-        if (currVo.getId() == followId) {//客户属于当前登陆者
+        if (followIds.contains(followId)) {//客户属于当前登陆者
             detailVo = followAgentService.getDetail(agentId);//代理商明细
         } else {
             return "redirect:/followup/uc/index";
@@ -118,7 +115,7 @@ public class AgentController {
     }
 
     /**
-     * 代理商登录日志
+     * 团队代理商登录日志
      *
      * @param request
      * @return
@@ -133,9 +130,11 @@ public class AgentController {
 
         String followId = followAgentService.getFollowIdByAgentId(agentId);
 
+        List<String> followIds = followUpService.findIdsByDeptId(currVo.getDeptId());
+
         page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
 
-        if (currVo.getId() == followId) {
+        if (followIds.contains(followId)) {
             page = agentService.findLoginLog(page, agentId);
         } else {
             return "redirect:/followup/uc/index";
@@ -147,7 +146,7 @@ public class AgentController {
     }
 
     /**
-     * 代理商联系记录
+     * 团队代理商联系记录
      *
      * @param request
      * @return
@@ -162,9 +161,11 @@ public class AgentController {
 
         String followId = followAgentService.getFollowIdByAgentId(agentId);
 
+        List<String> followIds = followUpService.findIdsByDeptId(currVo.getDeptId());
+
         page.setPageSize(Constants.CONTACT_PAGE_SIZE);
 
-        if (currVo.getId() == followId) {
+        if (followIds.contains(followId)) {
             page = followAgentService.findContacts(page, agentId);
         } else {
             return "redirect:/followup/uc/index";
@@ -177,53 +178,4 @@ public class AgentController {
         request.setAttribute("pageUrl", pageUrl);
         return "/followup/uc/customer/contact_list";
     }
-
-    /**
-     * 返回添加代理商联系记录所需数据
-     *
-     * @param request
-     * @return
-     */
-    @RequestMapping("/contact/add")
-    public String contactAdd(HttpServletRequest request, Model model) {
-        LoginVo currVo = userComponent.getCurrUser(request);
-
-        Integer agentId = Misc.toInt(request.getParameter("agentId"), 0);// 代理人ID
-
-        String followId = followAgentService.getFollowIdByAgentId(agentId);
-
-        FollowAgent followAgent = new FollowAgent();
-        if (currVo.getId() == followId) {
-            followAgent = followAgentService.getFollowAgentByAgentId(agentId);
-        } else {
-            return "redirect:/followup/uc/index";
-        }
-
-        model.addAttribute("agent", followAgent);
-        return "/followup/uc/customer/contact_list";
-    }
-
-    /**
-     * 添加代理商联系记录
-     *
-     * @param request
-     * @return
-     */
-    @RequestMapping("/contact/add/save")
-    @ResponseBody
-    public BizResult contactAddSave(HttpServletRequest request, AgentContact agentContact) {
-        LoginVo currVo = userComponent.getCurrUser(request);
-
-        String followId = followAgentService.getFollowIdByAgentId(agentContact.getAgentId());
-
-        if (currVo.getId() == followId) {
-            agentContact.setFollowUp(currVo.getName());
-            agentContact.setFlowId(currVo.getId());
-            return agentService.addContact(agentContact);
-        } else {
-            return BizResult.fail("无法操作此代理商！");
-        }
-    }
-
-
 }

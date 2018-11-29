@@ -196,56 +196,7 @@ public class IndexController {
     }
 
 
-    /**
-     * 我的资料 -- 查询
-     */
-    @RequestMapping("/myinfo")
-    public String myInfo(HttpServletRequest request, Model model) {
-        LoginVo currVo = userComponent.getCurrUser(request);
 
-        FollowUp followUp = followUpService.get(currVo.getId());
-
-        Department department = deptService.get(currVo.getDeptId());
-
-        FollowUpVo followUpVo = new FollowUpVo();
-        followUpVo.setName(followUp.getName());
-        followUpVo.setUserName(followUp.getUserName());
-
-        if (department != null) {
-            followUpVo.setDepartment(department);
-            followUpVo.setDeptName(department.getName());
-        }
-
-        followUpVo.setInviteCode(followUp.getInviteCode());
-        followUpVo.setIsAdmin(followUp.getIsAdmin());
-        followUpVo.setIsManager(followUp.getIsManager());
-        followUpVo.setCreateTimeFm(DateUtil.formatDate(followUp.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));
-        followUpVo.setUpdateTimeFm(DateUtil.formatDate(followUp.getUpdateTime(), "yyyy-MM-dd HH:mm:ss"));
-
-        model.addAttribute("followUp", followUpVo);
-        return "uc/myinfo";
-    }
-
-    /**
-     * 我的资料 -- 查询
-     */
-    @RequestMapping("/pwd")
-    public String pwd() {
-        return "uc/pwd";
-    }
-
-    /**
-     * 修改 -- 修改密码
-     */
-    @RequestMapping(value = "/update/pwd")
-    @ResponseBody
-    public BizResult updatePassword(HttpServletRequest request,
-                                    @RequestParam(value = "oldPwd", required = true) String oldPwd,
-                                    @RequestParam(value = "newPwd", required = true) String newPwd,
-                                    @RequestParam(value = "confirmNewPwd", required = true) String confirmNewPwd) {
-        LoginVo currVo = userComponent.getCurrUser(request);
-        return followUpService.editPwd(currVo.getId(), oldPwd, newPwd, confirmNewPwd);
-    }
 
 
 }

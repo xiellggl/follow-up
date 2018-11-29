@@ -6,30 +6,24 @@ import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.dao.dayi.AgentMapper;
 import com.dayi.follow.dao.follow.FollowAgentMapper;
 import com.dayi.follow.dao.follow.FollowUpMapper;
-import com.dayi.follow.enums.FundTypeEnum;
-import com.dayi.follow.model.follow.AgentContact;
+import com.dayi.follow.enums.BankTypeEnum;
+import com.dayi.follow.model.follow.Agent;
+import com.dayi.follow.model.follow.FollowAgent;
 import com.dayi.follow.service.AgentService;
 import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.FollowAgentService;
 import com.dayi.follow.service.OrgService;
 import com.dayi.follow.util.CheckIdCardUtils;
-import com.dayi.follow.util.CollectionUtil;
-import com.dayi.follow.vo.AgentListVo;
-import com.dayi.follow.vo.AgentVo;
-import com.dayi.follow.vo.DetailVo;
-import com.dayi.follow.vo.SearchVo;
+import com.dayi.follow.vo.*;
 import com.dayi.mybatis.support.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 跟进人 业务实现类
@@ -65,7 +59,7 @@ public class FollowAgentServiceImpl implements FollowAgentService {
         if (agentId == null) {
             return detailVo;
         }
-        AgentVo agent = agentMapper.get(agentId);
+        Agent agent = agentMapper.get(agentId);
         if (agent == null) return detailVo;
 
         // 名称
@@ -85,22 +79,19 @@ public class FollowAgentServiceImpl implements FollowAgentService {
         // 身份证
         detailVo.setIdCard(agent.getIdCard());
         // 所在地
-        detailVo.setIdCardAddr(this.getIdCardAddr(agent));
+        detailVo.setIdCardAddr(agent.getIdCardAddr());
         // 可用余额
-        double useableFund = agentMapper.getUseableFund(agentId);
-
-        detailVo.setUseableFund(useableFund);
+        AccountVo account = agentMapper.getAccount(agentId);
+        detailVo.setUseableFund(account.getUseable());
 
         // 实名认证
         detailVo.setIdCard(idCard);
         detailVo.setCardValidDate(agent.getCardValidDate());
         // 总资产
         double agentFund = agentMapper.getAgentFund(agentId);  // 代理资金
-        double frozenFund = agentMapper.getFrozenFund(agentId);//代理冻结资金
-        double outFrozenFund = agentMapper.getOutFrozenFund(agentId);//出金冻结资金
-        double partFund = BigDecimal.valueOf(agentFund).add(BigDecimal.valueOf(frozenFund))
-                .add(BigDecimal.valueOf(outFrozenFund)).doubleValue();
-        double totalFund = BigDecimals.add(useableFund, partFund, 2);
+        double partFund = BigDecimal.valueOf(agentFund).add(BigDecimal.valueOf(account.getFrozen()))
+                .add(BigDecimal.valueOf(account.getOutFrozen())).doubleValue();
+        double totalFund = BigDecimals.add(account.getUseable(), partFund, 2);
         detailVo.setTotalFund(totalFund);
 
         // 是否绑卡
@@ -114,103 +105,83 @@ public class FollowAgentServiceImpl implements FollowAgentService {
         }
 
         // 是否入金
-        detailVo.setInCash(agentMapper.getTotalInCash(agentId));
+        detailVo.setInCash(account.getTotalInCash());
 
-        /* 统计入金/出金/预约出金情况 */
-        Integer intoKey = FundTypeEnum.INTO.getKey();  // 入金
-        Integer outCashKey = FundTypeEnum.OUTCASH.getKey();  // 出金
-        Integer outCashFrozenKey = FundTypeEnum.OUTCASH_FROZEN.getKey();  // 出金预约
 
-        Map<Integer, BigDecimal> accMap = agentDao.calTodaySumAccountLogAccrual(agentId);
+        DateTime time = new DateTime();
+        String todayStrat = time.millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
+        String todayEnd = time.millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
 
-        // 累计入金
-        Date lastInCashDate = agentDao.calTodayLastAccountLogDate(intoKey, agentId);
-        if (accMap != null && !accMap.isEmpty()) {
-            detailVo.setInCash(accMap.get(intoKey));
-        }
-        detailVo.setLastInCashDate(lastInCashDate);
-        // 实际出金
-        if (accMap != null && !accMap.isEmpty()) {
-            detailVo.setOutCash(accMap.get(outCashKey));
-        }
-        // 申请出金日期
-        Date date = agentDao.calTodayLastAccountLogDate(outCashFrozenKey, agentId);
-        if (date != null) {
-            String s = date.toString();
-            String lastOutCashFrozenDateStr = s.substring(0, s.length() - 2);
-            detailVo.setLastOutCashFrozenDateFm(lastOutCashFrozenDateStr);
-        }
+        double dayInCash = agentMapper.getDayInCash(agentId, todayStrat, todayEnd);//当日累计入金
+        Date dayLastInCashTime = agentMapper.getDayLastInCashTime(agentId, todayStrat, todayEnd);//当日最后一笔入金时间
+        detailVo.setDayInCash(dayInCash);
+        detailVo.setDayLastInCashTime(dayLastInCashTime);
+
         // 申请出金
-        if (accMap != null && !accMap.isEmpty()) {
-            detailVo.setOutCashFrozen(accMap.get(outCashFrozenKey));
+        double dayApplyOutCash = agentMapper.getDayApplyOutCash(agentId, todayStrat, todayEnd);
+        detailVo.setDayApplyOutCash(dayApplyOutCash);
+
+        // 申请出金日期
+        Date dayLastApplyOutCashTime = agentMapper.getDayLastApplyOutCashTime(agentId, todayStrat, todayEnd);
+        if (dayLastApplyOutCashTime != null) {
+            String s = dayLastApplyOutCashTime.toString();
+            String dayLastApplyOutCashTimeStr = s.substring(0, s.length() - 2);
+            detailVo.setDayLastApplyOutCashTimeFm(dayLastApplyOutCashTimeStr);
         }
+
+        // 当日实际出金
+        double dayOutCash = agentMapper.getDayOutCash(agentId, todayStrat, todayEnd);
+        double dayToCard = agentMapper.getDayToCard(agentId, todayStrat, todayEnd);
+        detailVo.setDayOutCash(BigDecimals.add(dayOutCash, dayToCard));
+
         //已开通结算银行
-        AgentVo bankHadOpen = getBankHadOpen(agentId);
-        if (bankHadOpen != null) {
-            String bankHadOpenStr = bankHadOpen.getBankIds();
-            if (!StringUtil.isBlank(bankHadOpenStr)) {
-                FinanceAccount.BankType[] values = FinanceAccount.BankType.values();
-                for (FinanceAccount.BankType value : values) {
-                    if (bankHadOpenStr.contains(value.getKey().toString())) {
-                        bankHadOpenStr = bankHadOpenStr.replace(value.getKey().toString(), value.getCname());
-                    }
+        String openBankIdsStr = agentMapper.getOpenBankIdsStr(agentId);
+        if (!StringUtils.isBlank(openBankIdsStr)) {
+            BankTypeEnum[] values = BankTypeEnum.values();
+            for (BankTypeEnum value : values) {
+                if (openBankIdsStr.contains(value.getKey().toString())) {
+                    openBankIdsStr = openBankIdsStr.replace(value.getKey().toString(), value.getCname());
                 }
-                detailVo.setBankHadOpen(bankHadOpenStr);
             }
+            detailVo.setBankOpen(openBankIdsStr);
         }
+
         //分配时间
-        detailVo.setFlowDate(agent.getFlowDate());
+        detailVo.setFollowDate(followAgentMapper.getFollowDate(agentId));
+
         //年龄
-        if (!StringUtil.isBlank(idCard)) {
+        if (!StringUtils.isBlank(idCard)) {
             int age = CheckIdCardUtils.getAgeByIdCard(idCard);
             detailVo.setAge(age);
         }
         //出生月日
-        if (!StringUtil.isBlank(idCard)) {
+        if (!StringUtils.isBlank(idCard)) {
             String month = idCard.substring(10, 12);//月份
             String day = idCard.substring(12, 14);//日
             detailVo.setDateStr(month + "月" + day + "日");
         }
         //状态
-        String statusStr = agent.getStatusStr();
-        detailVo.setStatusStr(statusStr);
-        //代理商客户类型
-        detailVo.setCustomerType(agent.getCustomerType());
-        //代理商意向度
-        detailVo.setCustomerIntentionType(agent.getCustomerIntentionType());
+        Integer status = agent.getStatus();
+        detailVo.setStatus(status);//取statusStr
+
         //协议资金（代理中的资金）
-        detailVo.setAgentFound(BigDecimal.valueOf(amount));
+        detailVo.setAgentFund(agentFund);
+
         //冻结货款
-        BigDecimal freezeFound = account.getFrozen().add(account.getOutFrozen());
-        detailVo.setFreezeFound(freezeFound);
+        double frozenFund = BigDecimals.add(account.getFrozen(), account.getOutFrozen());
+        detailVo.setFrozenFund(frozenFund);
+
         return detailVo;
     }
 
-    /* 私有方法：获取身份证地址所在地 */
-    private String getIdCardAddr(AgentVo agent) {
-        if (agent == null) {
-            return null;
-        }
-        String linkPerson = agent.getLinkPerson();
-        String idCard = agent.getIdCard();
-        // 身份证所在地 -- 特殊处理：由于接口调用要收费，首先判断历史身份证地址如果为空，再调用，并更新数据库字段
-        String idCardAddr = agent.getIdCardAddr();
-        if (StringUtils.isBlank(idCardAddr)) {
-            if (StringUtils.isNotBlank(linkPerson) && StringUtils.isNotBlank(idCard)) { // 调用接口获取
-                idCardAddr = DataCheckAdapter.getIdCardAddr(idCard);
-            }
-            if (StringUtils.isNotBlank(idCardAddr)) {
-                agent.setIdCardAddr(idCardAddr);
-                agentDao.update(agent);
-            }
-        }
-        if (StringUtils.isNotBlank(idCardAddr)) {
-            int cityIndex = idCardAddr.indexOf("市");
-            if (cityIndex != -1) {
-                idCardAddr = idCardAddr.substring(0, cityIndex + 1);  // 只截取到市
-            }
-        }
-        return idCardAddr;
+    @Override
+    public Page findContacts(Page page, Integer agentId) {
+        return followAgentMapper.findContacts(agentId, page.getStartRow(), page.getPageSize());
+    }
+
+    @Override
+    public FollowAgent getFollowAgentByAgentId(Integer agentId) {
+       return  followAgentMapper.getFollowAgentByAgentId(agentId);
     }
 }
 

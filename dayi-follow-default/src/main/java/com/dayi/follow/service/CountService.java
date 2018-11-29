@@ -1,6 +1,7 @@
 package com.dayi.follow.service;
 
 
+import com.dayi.follow.model.follow.Organization;
 import com.dayi.follow.vo.*;
 
 import java.util.Date;
@@ -46,5 +47,9 @@ public interface CountService {
 
     //统计团队创客数据
     OrgDataVo countTeamOrgData(String deptId);
+    //获得创客的有效代理商数量
+    int getValidAgentNum(List<Organization> orgs);
+    //获的创客管理资金
+    double getOrgManageFund(List<Organization> orgs);
 
 }

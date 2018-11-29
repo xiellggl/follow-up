@@ -2,13 +2,11 @@ package com.dayi.follow.service.impl;
 
 
 import com.dayi.follow.component.UserComponent;
-import com.dayi.follow.dao.dayi.AgentMapper;
 import com.dayi.follow.dao.follow.FollowAgentMapper;
 import com.dayi.follow.dao.follow.FollowOrgMapper;
-import com.dayi.follow.dao.follow.FollowUpMapper;
-import com.dayi.follow.service.DeptService;
+import com.dayi.follow.model.follow.OrgContact;
 import com.dayi.follow.service.FollowOrgService;
-import com.dayi.follow.service.OrgService;
+import com.dayi.mybatis.support.Page;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +30,11 @@ public class FollowOrgServiceImpl implements FollowOrgService {
     @Override
     public String getFollowIdByOrgId(Integer orgId) {
         return followOrgMapper.getFollowIdByOrgId(orgId);
+    }
+
+    @Override
+    public Page<OrgContact> findContacts(com.dayi.mybatis.support.Page page, Integer orgId) {
+        return followOrgMapper.findContacts(orgId, page.getStartRow(), page.getPageSize());
     }
 }
 

@@ -4,6 +4,8 @@ package com.dayi.follow.service;
 import com.dayi.common.util.BizResult;
 import com.dayi.follow.model.follow.FollowUp;
 import com.dayi.follow.vo.LoginVo;
+
+import java.util.List;
 /**
  * @author xiell
  * @date 2018/11/12
@@ -40,5 +42,7 @@ public interface FollowUpService {
      * 修改密码
      */
     BizResult editPwd(String id, String oldPwd, String newPwd, String confirmPwd);
+    //
+    List<String> findIdsByDeptId(String deptId);
 
 }
