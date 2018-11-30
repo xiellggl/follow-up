@@ -12,6 +12,7 @@ import com.dayi.follow.model.follow.Role;
 import com.dayi.follow.service.*;
 import com.dayi.follow.util.Md5Util;
 import com.dayi.follow.model.follow.Organization;
+import com.dayi.mybatis.support.Page;
 import com.dayi.user.authorization.authc.AccountInfo;
 import com.dayi.user.authorization.authc.AuthenticationInfo;
 import com.dayi.user.authorization.authc.AuthenticationToken;
@@ -164,6 +165,23 @@ public class FollowUpServiceImpl implements FollowUpService, Realm {
     public List<String> findIdsByDeptId(String deptId) {
         return followUpMapper.findIdsByDeptId(deptId);
     }
+
+    @Override
+    public Page<FollowUp> findPage(Page page) {
+        List<FollowUp> all = followUpMapper.findAll(page.getStartRow(), page.getPageSize());
+        return page.setResults(all);
+    }
+
+    @Override
+    public Page<FollowUp> findAssignSelect(Page page, String followUp, String deptId) {
+        List<String> followIds = this.findIdsByDeptId(deptId);
+        List<FollowUp> followUps = followUpMapper.findAssignSelect(followUp, followIds, page.getStartRow(), page.getEndRow());
+        int num = followUpMapper.countAssignSelect(followUp, followIds);
+        page.setResults(followUps);
+        page.setTotalRecord(num);
+        return page;
+    }
+
 
     @Override
     public String getRealmId() {

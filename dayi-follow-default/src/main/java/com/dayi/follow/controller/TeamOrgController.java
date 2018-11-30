@@ -3,23 +3,15 @@ package com.dayi.follow.controller;
 import com.dayi.common.util.BizResult;
 import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.conf.Constants;
-import com.dayi.follow.enums.AgentCusTypeEnum;
-import com.dayi.follow.enums.AgentIntenTypeEnum;
-import com.dayi.follow.enums.BankTypeEnum;
-import com.dayi.follow.enums.ContactTypeEnum;
-import com.dayi.follow.model.follow.AgentContact;
-import com.dayi.follow.model.follow.FollowAgent;
 import com.dayi.follow.model.follow.OrgContact;
-import com.dayi.follow.service.*;
-import com.dayi.follow.util.CollectionUtil;
+import com.dayi.follow.service.FollowOrgService;
+import com.dayi.follow.service.FollowUpService;
+import com.dayi.follow.service.OrgService;
 import com.dayi.follow.util.PageUtil;
 import com.dayi.follow.util.StringUtil;
-import com.dayi.follow.vo.DetailVo;
 import com.dayi.follow.vo.LoginVo;
-import com.dayi.follow.vo.SearchVo;
 import com.dayi.mybatis.common.util.Misc;
 import com.dayi.mybatis.support.Page;
-import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,14 +19,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @author xiell
  * @date 2018/11/13
  */
 @Controller
-@RequestMapping("/followup/org")
-public class OrgController {
+@RequestMapping("/followup/team/org")
+public class TeamOrgController {
     @Resource
     FollowUpService followUpService;
     @Resource
@@ -55,10 +48,10 @@ public class OrgController {
         LoginVo currVo = userComponent.getCurrUser(request);
         page.setPageSize(Constants.SEARCH_PAGE_SIZE);
 
-        String mobile = request.getParameter("mobile");
+        String followUp = request.getParameter("followUp");
         String inviteCode = request.getParameter("inviteCode");
 
-        page = orgService.findOrgPage(page, mobile, inviteCode, currVo.getId());
+        page = orgService.findTeamOrgPage(page, inviteCode, followUp, currVo.getId(), currVo.getDeptId());
 
         String queryStr = request.getQueryString();//返回地址
         String returnUrl = StringUtil.urlEncode(queryStr);
@@ -87,9 +80,11 @@ public class OrgController {
 
         String followId = followOrgService.getFollowIdByOrgId(orgId);
 
+        List<String> followIds = followUpService.findIdsByDeptId(currVo.getDeptId());
+
         page.setPageSize(Constants.CONTACT_PAGE_SIZE);
 
-        if (currVo.getId() == followId) {
+        if (followIds.contains(followId)) {
             page = followOrgService.findContacts(page, orgId);
         } else {
             return "redirect:/followup/uc/index";
@@ -102,48 +97,4 @@ public class OrgController {
         request.setAttribute("pageUrl", pageUrl);
         return "/followup/uc/customer/contact_list";
     }
-
-    /**
-     * 返回添加创客联系记录所需数据
-     *
-     * @param request
-     * @return
-     */
-    @RequestMapping("/contact/add")
-    @ResponseBody
-    public BizResult contactAdd(HttpServletRequest request) {
-        LoginVo currVo = userComponent.getCurrUser(request);
-
-        Integer orgId = Misc.toInt(request.getParameter("orgId"), 0);// 创客人ID
-
-        String followId = followOrgService.getFollowIdByOrgId(orgId);
-
-        if (currVo.getId() != followId) return BizResult.FAIL;
-        return BizResult.SUCCESS;
-    }
-
-    /**
-     * 添加创客联系记录
-     *
-     * @param request
-     * @return
-     */
-    @RequestMapping("/contact/add/save")
-    @ResponseBody
-    public BizResult contactAddSave(HttpServletRequest request, OrgContact orgContact) {
-        LoginVo currVo = userComponent.getCurrUser(request);
-
-        String followId = followOrgService.getFollowIdByOrgId(orgContact.getOrgId());
-
-        if (currVo.getId() == followId) {
-            orgContact.setFollowUp(currVo.getName());
-            orgContact.setFlowId(currVo.getId());
-
-            return orgService.addContact(orgContact);
-        } else {
-            return BizResult.fail("无法操作此创客！");
-        }
-    }
-
-
 }

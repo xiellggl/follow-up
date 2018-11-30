@@ -104,7 +104,7 @@ public class CountServiceImpl implements CountService {
         SerCusStatusVo serCusStatusVo = new SerCusStatusVo();
 
         //跟进人数量
-        List<FollowUp> followUps = followUpMapper.findByDeptId(deptIds);
+        List<FollowUp> followUps = followUpMapper.findByDeptIds(deptIds);
         serCusStatusVo.setFollowUpNum(followUps.size());
 
         //待分配客户数量

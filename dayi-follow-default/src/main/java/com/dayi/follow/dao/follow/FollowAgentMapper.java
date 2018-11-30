@@ -4,6 +4,7 @@ import com.dayi.follow.model.follow.AgentContact;
 import com.dayi.follow.model.follow.FollowAgent;
 import com.dayi.follow.vo.AgentContactVo;
 import com.dayi.follow.vo.AgentListVo;
+import com.dayi.follow.vo.AssignListVo;
 import com.dayi.follow.vo.SearchVo;
 import com.dayi.mybatis.support.BaseMapper;
 import com.dayi.mybatis.support.Page;
@@ -54,5 +55,17 @@ public interface FollowAgentMapper extends BaseMapper<FollowAgent> {
 
     //获取follow_agent
     FollowAgent getFollowAgentByAgentId(Integer agentId);
+
+    //查找已分配跟进人的代理商
+    List<AssignListVo> findAssignsFollow(Page page, SearchVo searchVo, List<String> followIds, String assistDataBase);
+
+    //统计已分配跟进人的代理商数量
+    long getAssignsFollowNum(SearchVo searchVo, List<String> followIds, String assistDataBase);
+
+    //查找未分配跟进人的代理商
+    List<AssignListVo> findAssignsNoFollow(Page page, SearchVo searchVo, String assistDataBase);
+
+    //统计未分配跟进人的代理商数量
+    long getAssignsNoFollowNum(SearchVo searchVo, String assistDataBase);
 
 }

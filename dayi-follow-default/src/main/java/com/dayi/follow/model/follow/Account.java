@@ -1,4 +1,4 @@
-package com.dayi.follow.vo;
+package com.dayi.follow.model.follow;
 
 import com.dayi.common.util.NameItem;
 
@@ -8,11 +8,13 @@ import java.util.Date;
  * @author xiell
  * @date 2018/11/14
  */
-public class AccountVo {
-    private double useable;
-    private double frozen;
-    private double outFrozen;
-    private double totalInCash;
+public class Account {
+    private double useable;//余额
+    private double frozen;//代理冻结资金
+    private double outFrozen;//出金资金冻结
+    private double totalInCash;//总入金
+    private String bankRealName;//实际的开户行名称
+
 
     public double getUseable() {
         return useable;
@@ -44,5 +46,13 @@ public class AccountVo {
 
     public void setTotalInCash(double totalInCash) {
         this.totalInCash = totalInCash;
+    }
+
+    public String getBankRealName() {
+        return bankRealName;
+    }
+
+    public void setBankRealName(String bankRealName) {
+        this.bankRealName = bankRealName;
     }
 }

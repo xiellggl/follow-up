@@ -1,5 +1,8 @@
 package com.dayi.follow.vo;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -7,22 +10,46 @@ import java.util.List;
  * @date 2018/11/14
  */
 public class SearchVo {
-    private Integer bankSign; //银行是否已签约（0=未签约，1=已签约）
+    //加于我的客户-代理商
     private Integer idCardValidate; //是否实名
-    private Integer inCash; //是否入金
-    private String mobile; //手机号码
-    private String inviteCode;// //邀请码
-    private List<String> bankType;//银行类型，1-中信银行，4-广发银行，5-华夏银行
 
+    private Integer bankSign; //银行是否已签约（0=未签约，1=已签约）
+
+    private List<String> bankType;//银行类型，1-中信银行，4-广发银行，5-华夏银行
     private String bankTypeStr;//银行类型字符串
 
-    private String followUp;// 跟进人
-    private Integer todayInCash; //今日入金状态
-    private Integer waitToLinkToday; //是否查询今日待联系
-    private Integer todayOutCash; //今日出金状态
-    private Integer customerType; //客户类型
     private Integer totalFound; //资产总规模
-    private Integer makerNum; //创客号
+
+    private Integer inCash; //是否入金
+
+    private Integer todayInCash; //今日入金状态
+
+    private Integer todayOutCash; //今日出金状态
+
+    private Integer customerType; //客户类型
+
+    private String mobile; //手机号码
+
+    private String inviteCode;// //邀请码
+
+    //加于团队客户代理商
+    private String followUp;// 跟进人
+
+    //加于首页
+    private Integer waitToLinkToday; //是否查询今日待联系
+
+    //加于代理商分配
+    private String createDate;//注册时间
+    private String createDateStart;//注册时间开始
+    private String createDateEnd;//注册时间结束
+
+    private String cusName;//客户名字
+    private Integer assignStatus;//分配状态
+
+    private String assignDate;//分配时间
+    private String assignDateStart;//分配时间开始
+    private String assignDateEnd;//分配时间结束
+
 
     public String getBankTypeStr() {
         return bankTypeStr;
@@ -128,11 +155,83 @@ public class SearchVo {
         this.totalFound = totalFound;
     }
 
-    public Integer getMakerNum() {
-        return makerNum;
+    public String getCreateDate() {
+        return createDate;
     }
 
-    public void setMakerNum(Integer makerNum) {
-        this.makerNum = makerNum;
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getCusName() {
+        return cusName;
+    }
+
+    public void setCusName(String cusName) {
+        this.cusName = cusName;
+    }
+
+    public Integer getAssignStatus() {
+        return assignStatus;
+    }
+
+    public void setAssignStatus(Integer assignStatus) {
+        this.assignStatus = assignStatus;
+    }
+
+    public String getAssignDate() {
+        return assignDate;
+    }
+
+    public void setAssignDate(String assignDate) {
+        this.assignDate = assignDate;
+    }
+
+    public String getCreateDateStart() {
+        if (!StringUtils.isBlank(createDate)) {
+            String[] split = createDate.split(" - ");
+            createDateStart = split[0];
+        }
+        return createDateStart;
+    }
+
+    public void setCreateDateStart(String createDateStart) {
+        this.createDateStart = createDateStart;
+    }
+
+    public String getCreateDateEnd() {
+        if (!StringUtils.isBlank(createDate)) {
+            String[] split = createDate.split(" - ");
+            createDateEnd = split[1];
+        }
+        return createDateEnd;
+    }
+
+    public void setCreateDateEnd(String createDateEnd) {
+        this.createDateEnd = createDateEnd;
+    }
+
+    public String getAssignDateStart() {
+        if (!StringUtils.isBlank(assignDate)) {
+            String[] split = assignDate.split(" - ");
+            assignDateStart = split[0];
+        }
+        return assignDateStart;
+    }
+
+    public void setAssignDateStart(String assignDateStart) {
+        this.assignDateStart = assignDateStart;
+    }
+
+    public String getAssignDateEnd() {
+        if (!StringUtils.isBlank(assignDate)) {
+            String[] split = assignDate.split(" - ");
+            assignDateEnd = split[1];
+        }
+        return assignDateEnd;
+    }
+
+    public void setAssignDateEnd(String assignDateEnd) {
+        this.assignDateEnd = assignDateEnd;
     }
 }

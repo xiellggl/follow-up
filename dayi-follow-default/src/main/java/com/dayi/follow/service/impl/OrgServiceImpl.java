@@ -8,6 +8,7 @@ import com.dayi.follow.dao.dayi.AgentMapper;
 import com.dayi.follow.dao.dayi.CountMapper;
 import com.dayi.follow.dao.dayi.OrgMapper;
 import com.dayi.follow.dao.follow.FollowOrgMapper;
+import com.dayi.follow.dao.follow.FollowUpMapper;
 import com.dayi.follow.dao.follow.OrgContactMapper;
 import com.dayi.follow.enums.DelStatusEnum;
 import com.dayi.follow.enums.OrgTypeEnum;
@@ -56,6 +57,8 @@ public class OrgServiceImpl implements OrgService {
     private CountService countService;
     @Resource
     private CountMapper countMapper;
+    @Resource
+    private FollowUpMapper followUpMapper;
     @Value("${dayi.dataBase}")
     String dayiDataBaseStr;
 
@@ -119,6 +122,14 @@ public class OrgServiceImpl implements OrgService {
     public Page<OrgListVo> findOrgPage(Page<OrgListVo> page, String mobile, String inviteCode, String followId) {
         List<OrgListVo> orgs = followOrgMapper.findOrgs(mobile, inviteCode, followId, dayiDataBaseStr, page.getStartRow(), page.getPageSize());
 
+        int orgsCount = followOrgMapper.findOrgsCount(mobile, inviteCode, followId, dayiDataBaseStr);
+
+        page.setResults(doOrgMore(orgs));
+        page.setTotalRecord(orgsCount);
+        return page;
+    }
+
+    private List<OrgListVo> doOrgMore(List<OrgListVo> orgs) {
         for (OrgListVo item : orgs) {
             Date expirationDate = item.getExpirationDate();
             if (expirationDate == null) {//如果为空加1年
@@ -152,16 +163,26 @@ public class OrgServiceImpl implements OrgService {
             }
 
             double organizationAssets = BigDecimals.add(oneLevel, twoLevel);
+
             BigDecimal manageFund = BigDecimal.valueOf(organizationAssets);
 
             item.setManageFund(manageFund);//管理资产规模
         }
-        return page.setResults(orgs);
+        return orgs;
     }
 
     @Override
     public Page<OrgListVo> findTeamOrgPage(Page<OrgListVo> page, String inviteCode, String followUp, String followId, String deptId) {
-        return null;
+
+        List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
+        followIds.remove(followId);
+
+        List<OrgListVo> orgs = followOrgMapper.findTeamOrgs(followUp, inviteCode, followIds, dayiDataBaseStr, page.getStartRow(), page.getPageSize());
+
+        int orgsCount = followOrgMapper.findTeamOrgsCount(followUp, inviteCode, followIds, dayiDataBaseStr);
+        page.setResults(doOrgMore(orgs));
+        page.setTotalRecord(orgsCount);
+        return page;
     }
 }
 

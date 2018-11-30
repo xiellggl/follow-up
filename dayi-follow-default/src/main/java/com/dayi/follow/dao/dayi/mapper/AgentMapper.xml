@@ -72,7 +72,7 @@
            h ON a.id = h.agent_id where a.del_status != -1 and agent_id=${agentId};
     </select>
 
-    <select id="getAccount" parameterType="java.lang.Integer" resultType="com.dayi.follow.vo.AccountVo">
+    <select id="getAccount" parameterType="java.lang.Integer" resultType="com.dayi.follow.model.follow.Account">
         SELECT  useable,frozen,out_frozen,total_in_cash from finance_account where agent_org_id =${agentId}
     </select>
 

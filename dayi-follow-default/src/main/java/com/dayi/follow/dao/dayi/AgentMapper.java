@@ -1,6 +1,6 @@
 package com.dayi.follow.dao.dayi;
 
-import com.dayi.follow.vo.AccountVo;
+import com.dayi.follow.model.follow.Account;
 import com.dayi.follow.vo.AgentListVo;
 import com.dayi.follow.model.follow.Agent;
 import com.dayi.follow.vo.LoginLogVo;
@@ -50,7 +50,7 @@ public interface AgentMapper extends BaseMapper<Agent> {
     //获取已开通银行通道类型（字符串形式）
     String getOpenBankIdsStr(Integer agentId);
     //获取代理商的账户
-    AccountVo getAccount(Integer agentId);
+    Account getAccount(Integer agentId);
 
     //获取代理商的账户
     Page<LoginLogVo> findLoginLog(Integer agentId, Integer limitStart, Integer limitEnd);

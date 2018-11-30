@@ -12,9 +12,9 @@ import java.util.Date;
  */
 public class FollowAgent extends BaseModel {
     private String followId;//跟进人ID
-    private String agentId;//代理商ID
+    private Integer agentId;//代理商ID
     private String followUpBefore;//之前跟进人
-    private Date followDateBefore;//跟进人变更时间
+    private Date assignDateBefore;//跟进人变更时间
 
     private Integer customerType;//客户类型
     @Transient
@@ -23,6 +23,12 @@ public class FollowAgent extends BaseModel {
     private Integer cusIntentionType;//客户意向度
     @Transient
     private String cusIntentionTypeStr;//客户意向度字符串
+
+    private String createBy;//创建人
+    private String updateBy;//更新人
+
+    private Date assignDate;//分配时间
+
 
 
     public String getFollowId() {
@@ -33,11 +39,11 @@ public class FollowAgent extends BaseModel {
         this.followId = followId;
     }
 
-    public String getAgentId() {
+    public Integer getAgentId() {
         return agentId;
     }
 
-    public void setAgentId(String agentId) {
+    public void setAgentId(Integer agentId) {
         this.agentId = agentId;
     }
 
@@ -49,12 +55,20 @@ public class FollowAgent extends BaseModel {
         this.followUpBefore = followUpBefore;
     }
 
-    public Date getFollowDateBefore() {
-        return followDateBefore;
+    public Date getAssignDateBefore() {
+        return assignDateBefore;
     }
 
-    public void setFollowDateBefore(Date followDateBefore) {
-        this.followDateBefore = followDateBefore;
+    public void setAssignDateBefore(Date assignDateBefore) {
+        this.assignDateBefore = assignDateBefore;
+    }
+
+    public Date getAssignDate() {
+        return assignDate;
+    }
+
+    public void setAssignDate(Date assignDate) {
+        this.assignDate = assignDate;
     }
 
     public Integer getCustomerType() {
@@ -87,5 +101,21 @@ public class FollowAgent extends BaseModel {
 
     public void setCusIntentionTypeStr(String cusIntentionTypeStr) {
         this.cusIntentionTypeStr = cusIntentionTypeStr;
+    }
+
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+
+    public String getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
     }
 }

@@ -2,13 +2,17 @@ package com.dayi.follow.service.impl;
 
 
 import com.dayi.common.util.BigDecimals;
+import com.dayi.common.util.BizResult;
 import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.dao.dayi.AgentMapper;
 import com.dayi.follow.dao.follow.FollowAgentMapper;
 import com.dayi.follow.dao.follow.FollowUpMapper;
+import com.dayi.follow.enums.AgentCusTypeEnum;
 import com.dayi.follow.enums.BankTypeEnum;
+import com.dayi.follow.model.follow.Account;
 import com.dayi.follow.model.follow.Agent;
 import com.dayi.follow.model.follow.FollowAgent;
+import com.dayi.follow.model.follow.FollowUp;
 import com.dayi.follow.service.AgentService;
 import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.FollowAgentService;
@@ -23,7 +27,10 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 跟进人 业务实现类
@@ -81,7 +88,7 @@ public class FollowAgentServiceImpl implements FollowAgentService {
         // 所在地
         detailVo.setIdCardAddr(agent.getIdCardAddr());
         // 可用余额
-        AccountVo account = agentMapper.getAccount(agentId);
+        Account account = agentMapper.getAccount(agentId);
         detailVo.setUseableFund(account.getUseable());
 
         // 实名认证
@@ -181,7 +188,90 @@ public class FollowAgentServiceImpl implements FollowAgentService {
 
     @Override
     public FollowAgent getFollowAgentByAgentId(Integer agentId) {
-       return  followAgentMapper.getFollowAgentByAgentId(agentId);
+        return followAgentMapper.getFollowAgentByAgentId(agentId);
     }
+
+    @Override
+    public Page findAssignPage(Page page, SearchVo searchVo, String deptId) {
+
+        List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
+        List<AssignListVo> assignListVos = new ArrayList<>();
+
+//        if (searchVo.getAssignStatus() != null) {//都查
+//            assignListVos = followAgentMapper.findAssignsFollow(page, searchVo, followIds, dayiDataBaseStr);
+//            assignListVos.addAll(followAgentMapper.findAssignsNoFollow(page, searchVo, dayiDataBaseStr));
+//        }
+        long num;
+        if (searchVo.getAssignStatus() == 1) {//查已分配
+            assignListVos = followAgentMapper.findAssignsFollow(page, searchVo, followIds, dayiDataBaseStr);
+            num = followAgentMapper.getAssignsFollowNum(searchVo, followIds, dayiDataBaseStr);
+        } else {//查未分配
+            assignListVos = followAgentMapper.findAssignsNoFollow(page, searchVo, dayiDataBaseStr);
+            num = followAgentMapper.getAssignsNoFollowNum(searchVo, dayiDataBaseStr);
+        }
+
+        for (AssignListVo vo : assignListVos) {
+            //遍历取实际开户银行
+            String bankRealName = agentMapper.getAccount(vo.getId()).getBankRealName();
+            vo.setRealBank(bankRealName);
+        }
+
+        page.setResults(assignListVos);
+        page.setTotalRecord(num);
+        return page;
+    }
+
+    @Override
+    public BizResult add(FollowAgent followAgent) {
+
+        FollowAgent followAgentOld = this.getFollowAgentByAgentId(followAgent.getAgentId());
+
+        followAgent.setCreateTime(new Date());
+        followAgent.setUpdateTime(new Date());
+
+        if (followAgentOld == null) {//第一次分配
+            followAgent.setCustomerType(AgentCusTypeEnum.NOT_LINK.getValue());
+        } else {//删除原来的关系
+            followAgent.setAssignDateBefore(followAgentOld.getCreateTime());//之前分配时间
+
+            FollowUp followUp = followUpMapper.get(followAgentOld.getFollowId());
+            followAgent.setFollowUpBefore(followUp.getName());//之前跟进人
+
+            followAgent.setCustomerType(followAgentOld.getCustomerType());
+            followAgent.setCusIntentionType(followAgentOld.getCusIntentionType());
+
+            int delete = followAgentMapper.delete(followAgentOld);
+            if (1 != delete) return BizResult.FAIL;
+
+        }
+        return 1 == followAgentMapper.add(followAgent) ? BizResult.SUCCESS : BizResult.FAIL;
+    }
+
+    @Override
+    public BizResult addBatch(List<FollowAgent> followAgents) {
+        for (FollowAgent followAgent : followAgents) {
+            BizResult add = this.add(followAgent);
+            if (!add.isSucc()) return BizResult.FAIL;
+        }
+        return BizResult.SUCCESS;
+    }
+
+    @Override
+    public BizResult clear(FollowAgent followAgent) {
+        followAgent.setFollowId(null);
+        followAgent.setAssignDate(null);
+        return 1 == followAgentMapper.update(followAgent) ? BizResult.SUCCESS : BizResult.FAIL;
+    }
+
+    @Override
+    public BizResult clearBatch(List<FollowAgent> followAgents) {
+        for (FollowAgent followAgent : followAgents) {
+            BizResult clear = this.clear(followAgent);
+            if (!clear.isSucc()) return BizResult.FAIL;
+        }
+        return BizResult.SUCCESS;
+
+    }
+
 }
 

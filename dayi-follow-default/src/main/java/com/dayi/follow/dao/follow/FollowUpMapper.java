@@ -17,9 +17,17 @@ public interface FollowUpMapper extends BaseMapper<FollowUp> {
     @Select(" select * from follow_up where invite_code =#{inviteCode} ")
     FollowUp getByInviteCode(String inviteCode);
 
-    List<FollowUp> findByDeptId(List<String> deptIds);
+    List<FollowUp> findByDeptIds(List<String> deptIds);
 
     List<String> findIdsByDeptIds(List<String> deptIds);
 
     List<String> findIdsByDeptId(String deptId);
+
+    List<FollowUp> findAll(Integer limitStart, Integer limitEnd);
+
+    int countAll();
+
+    List<FollowUp> findAssignSelect(String followUp, List<String> followIds, Integer limitStart, Integer limitEnd);
+
+    int countAssignSelect(String followUp,List<String> followIds);
 }
