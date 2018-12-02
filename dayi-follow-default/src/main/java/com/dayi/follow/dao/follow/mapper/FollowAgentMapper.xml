@@ -7,7 +7,7 @@
         <result property="content" column="content" />
     </resultMap>
 
-    <resultMap id="BaseResultMap" type="com.dayi.follow.vo.AgentListVo">
+    <resultMap id="BaseResultMap" type="com.dayi.follow.vo.agent.AgentListVo">
         <id property="id" column="id" />
         <!--follow_up-->
         <result property="flowUpInviteCode" column="flowUpInviteCode" />
@@ -295,7 +295,7 @@
     </select>
 
     <!--分页查找团队代理商列表-->
-    <select id="findTeamAgents" resultMap="AgentListVoResultMap" parameterType="map">
+    <select id="findTeamAgents" resultMap="BaseResultMap" parameterType="map">
         <include refid="findAgentsSelect"/>
         <include refid="findAgentsSql"/>
         <include refid="followTeamConditionSql"/>
@@ -346,7 +346,7 @@
         SELECT follow_id from follow_agent where agent_id =${agentId}
     </select>
 
-    <select id="findContacts" resultType="com.dayi.follow.vo.AgentContactVo" parameterType="java.lang.Integer" >
+    <select id="findContacts" resultType="com.dayi.follow.vo.agent.AgentContactVo" parameterType="java.lang.Integer" >
         SELECT * FROM `agent_contact` WHERE agent_id = #{agentId} order by create_date desc LIMIT #{limitStart},#{limitEnd}
     </select>
 
@@ -394,7 +394,7 @@
         </if>
     </sql>
 
-    <select id="findAssignsFollow" parameterType="map" resultType="com.dayi.follow.vo.AssignListVo">
+    <select id="findAssignsFollow" parameterType="map" resultType="com.dayi.follow.vo.agent.AssignListVo">
         SELECT id,link_person,create_date,mobile,bank_name,id_card,bank_account,record_invite_code,audit_date
         from ${assistDataBase}.agent a
         left JOIN (
@@ -432,7 +432,7 @@
         <include refid="assignsFollowCondition"/>
     </select>
 
-    <select id="findAssignsNoFollow" parameterType="map" resultType="com.dayi.follow.vo.AssignListVo">
+    <select id="findAssignsNoFollow" parameterType="map" resultType="com.dayi.follow.vo.agent.AssignListVo">
         SELECT id,link_person,create_date,mobile,bank_name,id_card,bank_account,record_invite_code,audit_date
         from ${assistDataBase}.agent a
         left JOIN (
@@ -451,6 +451,16 @@
         )b on b.agent_id != a.id where 1=1
         <include refid="assignsNoFollowCondition"/>
     </select>
+
+    <select id="findAgentsByFollowId" parameterType="map" resultType="com.dayi.follow.model.follow.Agent">
+        SELECT * from follow_agent a
+        left join (
+            select id from ${assistDataBase}.agent where del_status!=-1
+        )b on b.id =a.agent_id
+        where  b.id is not null   and follow_id =${followId}
+
+    </select>
+
 
 
 

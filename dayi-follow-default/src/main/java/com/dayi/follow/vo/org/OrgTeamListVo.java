@@ -1,4 +1,4 @@
-package com.dayi.follow.vo;
+package com.dayi.follow.vo.org;
 
 import java.math.BigDecimal;
 import java.util.Date;

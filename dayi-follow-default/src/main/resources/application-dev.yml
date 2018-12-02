@@ -1,3 +1,7 @@
+server:
+  jsp-servlet:
+    init-parameters:
+      development: true
 spring:
   datasource:
     follow:

@@ -1,11 +1,8 @@
 package com.dayi.follow.dao.follow;
 
 import com.dayi.follow.vo.DailyVo;
-import com.dayi.follow.vo.IndexVo;
+import com.dayi.follow.vo.index.IndexVo;
 import com.dayi.mybatis.support.BaseMapper;
-import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
 
 /**
  * @author xiell

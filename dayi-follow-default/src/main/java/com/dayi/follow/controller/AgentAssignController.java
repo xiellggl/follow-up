@@ -73,9 +73,9 @@ public class AgentAssignController {
     public String assignSelect(HttpServletRequest request, Model model, Page page) {
         LoginVo currVo = userComponent.getCurrUser(request);
 
-        FollowUp followUp = followUpService.get(currVo.getId());
-
         String followUpStr = request.getParameter("followUp");
+        String followId = request.getParameter("followId");
+        FollowUp followUp = followUpService.get(followId);
 
         page = followUpService.findAssignSelect(page, followUpStr, currVo.getDeptId());
 

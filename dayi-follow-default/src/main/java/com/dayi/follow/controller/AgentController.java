@@ -3,7 +3,6 @@ package com.dayi.follow.controller;
 import com.dayi.common.util.BizResult;
 import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.conf.Constants;
-import com.dayi.follow.dao.follow.FollowAgentMapper;
 import com.dayi.follow.enums.AgentCusTypeEnum;
 import com.dayi.follow.enums.AgentIntenTypeEnum;
 import com.dayi.follow.enums.BankTypeEnum;
@@ -18,11 +17,10 @@ import com.dayi.follow.util.CollectionUtil;
 import com.dayi.follow.util.PageUtil;
 import com.dayi.follow.util.StringUtil;
 import com.dayi.follow.vo.*;
+import com.dayi.follow.vo.agent.DetailVo;
 import com.dayi.mybatis.common.util.Misc;
 import com.dayi.mybatis.support.Page;
-import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,10 +28,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * @author xiell

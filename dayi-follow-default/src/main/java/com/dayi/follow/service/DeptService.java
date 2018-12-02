@@ -12,34 +12,44 @@ import com.dayi.follow.model.follow.Department;
 import java.util.List;
 
 /**
- *  部门 业务接口类
+ * 部门 业务接口类
  */
 public interface DeptService {
 
     /**
-     * 拼写 SQL 条件 -- 通过跟进人所属部门 ID -- 拼写本级不包括其他负责人的跟进人 ID 的 NOT IN 条件语句
+     * 递归查询 -- 指定部门
      */
-     String spellMyDeptManagerFlowIdsNotInsql(Integer deptId, String fieldName, String alias);
-    /**
-     * 拼写 SQL 条件 -- 通过跟进人所属部门 ID -- 拼写所有下级跟进人 ID 的 IN 条件语句
-     */
-     String spellSubFlowIdsInsql(Integer deptId, List<Integer> chargeDeptIds, String fieldName, String alias, boolean isHaveOwn);
+    List<String> getSubDeptIds(String deptId);
 
     /**
      * 递归查询 -- 指定部门
      */
-     List<String> getSubDeptIds(String deptId);
+    List<Department> getSubDept(String deptId);
 
     /**
-     * 获取跟进人信息
+     * 获取部门
      */
     Department get(String deptId);
 
     /**
      * 更新部门
+     *
      * @param department
      * @return
      */
     BizResult updateDept(Department department);
 
+    //获取一级部门
+    List<Department> getTopList();
+
+    //处理树形名称
+    List<Department> doDeptTreeName(List<Department> departments, int depth);
+
+    //添加部门
+    BizResult add(Department department);
+
+    //获取上级和平级部门和不同根的部门
+    List<Department> getEditCanSelectDepts(List<Department>departments,Department department);
+
+    BizResult delete(Department department);
 }

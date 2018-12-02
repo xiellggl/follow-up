@@ -4,6 +4,7 @@ package com.dayi.follow.service.impl;
 import com.dayi.common.util.BigDecimals;
 import com.dayi.follow.dao.dayi.AgentMapper;
 import com.dayi.follow.dao.dayi.CountMapper;
+import com.dayi.follow.dao.dayi.OrgMapper;
 import com.dayi.follow.dao.follow.FollowAgentMapper;
 import com.dayi.follow.dao.follow.FollowOrgMapper;
 import com.dayi.follow.dao.follow.FollowUpMapper;
@@ -17,6 +18,11 @@ import com.dayi.follow.service.CountService;
 import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.OrgService;
 import com.dayi.follow.vo.*;
+import com.dayi.follow.vo.index.FundRankVo;
+import com.dayi.follow.vo.index.SerCusStatusVo;
+import com.dayi.follow.vo.index.SevenInCashVo;
+import com.dayi.follow.vo.index.SevenOpenVo;
+import com.dayi.follow.vo.org.OrgDataVo;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,6 +51,8 @@ public class CountServiceImpl implements CountService {
     private FollowOrgMapper followOrgMapper;
     @Resource
     private DeptService deptService;
+    @Resource
+    private OrgMapper orgMapper;
     @Resource
     private OrgService orgService;
     @Value("${follow.dataBase}")
@@ -206,12 +214,12 @@ public class CountServiceImpl implements CountService {
         double manageFund = 0;//全部机构商资产
         double orgManageFund = 0;//单个机构商的管理资产
         for (Organization orgVo : orgs) {
-            double oneLevel = orgService.getManageFund(orgVo.getId(), 1);//一级代理商资产
+            double oneLevel = orgMapper.getManageFundLevel1(orgVo.getId());//一级代理商资产
 
             double twoLevel = 0;//二级代理商资产
             Integer switchStatus = orgVo.getSwitchStatus();
             if (switchStatus != null && switchStatus.equals(SwitchStatusEnum.OPEN.getKey().intValue())) {//开了二级收益开关
-                twoLevel = orgService.getManageFund(orgVo.getId(), 2);
+                twoLevel = orgMapper.getManageFundLevel2(orgVo.getId());
             }
 
             orgManageFund = BigDecimals.add(oneLevel, twoLevel);

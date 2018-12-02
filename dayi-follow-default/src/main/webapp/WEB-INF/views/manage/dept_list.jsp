@@ -81,9 +81,9 @@
         common.head("manageDept");
         var editDeptFn = function (id,pid) {
             var id = id || 0, pid = pid||0;
-            var url = "/followup/manage/dept/add";
+            var url = "/dept/add";
             if (id > 0) {
-                url = "/followup/manage/dept/update/" + id;
+                url = "/dept/update/" + id;
             }
             var html = "";
 

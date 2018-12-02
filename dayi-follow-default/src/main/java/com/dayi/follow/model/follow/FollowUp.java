@@ -26,15 +26,13 @@ public class FollowUp extends BaseModel implements Principal {
     private String deptId;     // 所属部门ID
     @NotBlank(message = "邀请码不能为空！")
     private String inviteCode;  // 邀请码
-    private Integer isManager;  // 是否负责人：0--否；1--是
-    private Integer isAdmin;    // 是否管理员：0--否；1--是
     private Integer disable;    // 是否启用：1--启用；0--禁用
     @NotNull(message = "请选择二级资产开关状态！")
     private Integer switchStatus; //二级资管状态
     private String channelRemark;//渠道码备注
     private String chargeDeptId;//负责部门id
     private String createBy;    // 创建人
-    private String modifyBy;    // 修改人
+    private String updateBy;    // 修改人
     @NotBlank(message = "角色不能为空！")
     private String roleids;//角色ids
     @NotNull(message = "请选择身份！")
@@ -83,13 +81,6 @@ public class FollowUp extends BaseModel implements Principal {
         return inviteCode;
     }
 
-    public Integer getIsManager() {
-        return isManager;
-    }
-
-    public Integer getIsAdmin() {
-        return isAdmin;
-    }
 
     public Integer getDisable() {
         return disable;
@@ -111,8 +102,8 @@ public class FollowUp extends BaseModel implements Principal {
         return createBy;
     }
 
-    public String getModifyBy() {
-        return modifyBy;
+    public String getUpdateBy() {
+        return updateBy;
     }
 
     //---------------------setter
@@ -161,8 +152,7 @@ public class FollowUp extends BaseModel implements Principal {
         this.createBy = createBy;
     }
 
-    public void setModifyBy(String modifyBy) {
-        this.modifyBy = modifyBy;
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
     }
-
 }

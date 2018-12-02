@@ -13,6 +13,7 @@ import com.dayi.follow.service.AgentService;
 import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.OrgService;
 import com.dayi.follow.vo.*;
+import com.dayi.follow.vo.agent.AgentListVo;
 import com.dayi.mybatis.support.Page;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;

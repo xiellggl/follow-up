@@ -19,9 +19,8 @@ import com.dayi.follow.service.OrgService;
 import com.dayi.follow.util.CheckIdCardUtils;
 import com.dayi.follow.util.StringUtil;
 import com.dayi.follow.util.WordLetterUtil;
-import com.dayi.follow.model.follow.Agent;
 import com.dayi.follow.vo.InviteCodeVo;
-import com.dayi.follow.vo.OrgListVo;
+import com.dayi.follow.vo.org.OrgListVo;
 import com.dayi.follow.model.follow.Organization;
 import com.dayi.mybatis.support.Conditions;
 import com.dayi.mybatis.support.Page;
@@ -108,10 +107,6 @@ public class OrgServiceImpl implements OrgService {
         return orgMapper.getByConditions(conditions);
     }
 
-    @Override
-    public double getManageFund(Integer orgId, Integer level) {
-        return orgMapper.getManageFund(orgId, level);
-    }
 
     @Override
     public BizResult addContact(OrgContact orgContact) {
@@ -154,12 +149,12 @@ public class OrgServiceImpl implements OrgService {
                 item.setValidAgentNum(countMapper.getOrgValidAgentNum(item.getId(), 1));//有效代理商-只算1级
             }
 
-            double oneLevel = orgService.getManageFund(org.getId(), 1);//一级代理商资产
+            double oneLevel = orgMapper.getManageFundLevel1(org.getId());//一级代理商资产
             double twoLevel = 0;//二级代理商资产
 
             Integer secondIncomeSwitch = org.getSecondIncomeSwitch();
             if (secondIncomeSwitch != null && secondIncomeSwitch.equals(SwitchStatusEnum.OPEN.getKey().intValue())) {//如果开了二级收益开关
-                twoLevel = orgService.getManageFund(org.getId(), 2);
+                twoLevel = orgMapper.getManageFundLevel2(org.getId());
             }
 
             double organizationAssets = BigDecimals.add(oneLevel, twoLevel);
@@ -183,6 +178,11 @@ public class OrgServiceImpl implements OrgService {
         page.setResults(doOrgMore(orgs));
         page.setTotalRecord(orgsCount);
         return page;
+    }
+
+    @Override
+    public Organization get(Integer orgId) {
+        return orgMapper.get(orgId);
     }
 }
 

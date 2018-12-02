@@ -14,7 +14,7 @@ public class FollowAgent extends BaseModel {
     private String followId;//跟进人ID
     private Integer agentId;//代理商ID
     private String followUpBefore;//之前跟进人
-    private Date assignDateBefore;//跟进人变更时间
+    private Date followDateBefore;//跟进人变更时间
 
     private Integer customerType;//客户类型
     @Transient
@@ -27,7 +27,7 @@ public class FollowAgent extends BaseModel {
     private String createBy;//创建人
     private String updateBy;//更新人
 
-    private Date assignDate;//分配时间
+    private Date followDate;//分配跟进人时间
 
 
 
@@ -55,20 +55,20 @@ public class FollowAgent extends BaseModel {
         this.followUpBefore = followUpBefore;
     }
 
-    public Date getAssignDateBefore() {
-        return assignDateBefore;
+    public Date getFollowDateBefore() {
+        return followDateBefore;
     }
 
-    public void setAssignDateBefore(Date assignDateBefore) {
-        this.assignDateBefore = assignDateBefore;
+    public void setFollowDateBefore(Date followDateBefore) {
+        this.followDateBefore = followDateBefore;
     }
 
-    public Date getAssignDate() {
-        return assignDate;
+    public Date getFollowDate() {
+        return followDate;
     }
 
-    public void setAssignDate(Date assignDate) {
-        this.assignDate = assignDate;
+    public void setFollowDate(Date followDate) {
+        this.followDate = followDate;
     }
 
     public Integer getCustomerType() {

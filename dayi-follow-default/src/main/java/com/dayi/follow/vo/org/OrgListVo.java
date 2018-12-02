@@ -1,4 +1,4 @@
-package com.dayi.follow.vo;
+package com.dayi.follow.vo.org;
 
 import com.dayi.follow.enums.AgentCusTypeEnum;
 import com.dayi.follow.enums.AgentIntenTypeEnum;

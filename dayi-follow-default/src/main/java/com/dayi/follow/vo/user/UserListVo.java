@@ -1,17 +1,67 @@
-package com.dayi.follow.vo;
+package com.dayi.follow.vo.user;
 
 import com.dayi.follow.model.follow.Department;
 
-public class FollowUpVo {
+import java.util.Date;
+
+public class UserListVo {
     private String name;  // 姓名
     private String userName;    // 账号
     private String inviteCode;  // 邀请码
+
+    private String roles;//角色id
+    private String rolesName;
+
+    private String deptName;
+
+    private Integer disable;//状态
+    private String status;
+
+    private Date createTime;
+    private String createTimeFm;
+
     private Integer isManager;  // 是否负责人：0--否；1--是
     private Integer isAdmin;    // 是否管理员：0--否；1--是
-    private String deptName;
-    private Department department;
-    private String createTimeFm;
-    private String updateTimeFm;
+
+    public String getRolesName() {
+        return rolesName;
+    }
+
+    public void setRolesName(String rolesName) {
+        this.rolesName = rolesName;
+    }
+
+    public Integer getDisable() {
+        return disable;
+    }
+
+    public void setDisable(Integer disable) {
+        this.disable = disable;
+    }
+
+    public String getRoles() {
+        return roles;
+    }
+
+    public void setRoles(String roles) {
+        this.roles = roles;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 
     public String getName() {
         return name;
@@ -61,14 +111,6 @@ public class FollowUpVo {
         this.deptName = deptName;
     }
 
-    public Department getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(Department department) {
-        this.department = department;
-    }
-
     public String getCreateTimeFm() {
         return createTimeFm;
     }
@@ -77,11 +119,4 @@ public class FollowUpVo {
         this.createTimeFm = createTimeFm;
     }
 
-    public String getUpdateTimeFm() {
-        return updateTimeFm;
-    }
-
-    public void setUpdateTimeFm(String updateTimeFm) {
-        this.updateTimeFm = updateTimeFm;
-    }
 }

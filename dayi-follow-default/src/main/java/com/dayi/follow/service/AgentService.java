@@ -5,6 +5,7 @@ import com.dayi.common.util.BizResult;
 import com.dayi.follow.model.follow.Agent;
 import com.dayi.follow.model.follow.AgentContact;
 import com.dayi.follow.vo.*;
+import com.dayi.follow.vo.agent.AgentListVo;
 import com.dayi.mybatis.support.Page;
 /**
  * @author xiell

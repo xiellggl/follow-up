@@ -1,14 +1,11 @@
 package com.dayi.follow.model.follow;
 
 import com.dayi.mybatis.support.BaseModel;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,69 +16,34 @@ import java.util.List;
 public class Department extends BaseModel {
 
     private Integer pid;    // 上级部门ID
+    @NotNull(message = "排序号不能为空！")
     private Integer sortNo; // 排序号（同级）
     @NotBlank(message = "部门名称不能为空！")
     private String name;    // 部门名称
     private String remark;  // 部门描述
+    @NotNull(message = "请选择是否城市服务商！")
     private Integer cityServer = 0; //是否城市服务商-默认不是
     private String cityInviteCode; //城市服务商邀请码
     private Integer personNum;//部门人数
-    @Transient
-    private String treeName;  // 部门名称--树型显示
+    @NotBlank(message = "负责人不能为空！")
+    private String managerId;//负责人id
+
 
     @Transient
-    private String managers;  // 负责人
-    @Transient
-    private List<FollowUp> followUpList = new ArrayList();  // 跟进人
+    private FollowUp manager;  // 负责人
     @Transient
     private Department parentDept;  // 上级部门
     @Transient
     private List<Department> subDeptList = new ArrayList();  // 下级部门
-
-    public Department() {
-    }
-
-    public Department(Integer sortNo, String name, String treeName) {
-        this.sortNo = sortNo;
-        this.name = name;
-        this.treeName = treeName;
-    }
-
-
-    /**
-     * 修改 -- 设置属性
-     */
-    public void setModifyProperty(Department department) {
-        if (department != null) { // 更新页面修改属性值
-            BeanUtils.copyProperties(department, this);
-            if (department.getPid() == null) { // 当选择上级部门为顶级时
-                this.setPid(null);
-            }
-        }
-        this.setUpdateTime(new Date());
-    }
-
-    /* 自定义属性方法 */
-
-    /**
-     * 负责人
-     */
     @Transient
-    public String getManagers() {
-        if (CollectionUtils.isNotEmpty(followUpList)) {
-            managers = "";
-            Integer isManager = null;
-            for (FollowUp followUp : followUpList) {
-                isManager = followUp.getIsManager(); // 是否负责人：0--否；1--是
-                if (isManager != null && isManager == 1) {
-                    managers = managers + followUp.getName() + "，";
-                }
-            }
-            if (StringUtils.isNotBlank(managers)) {
-                managers = managers.substring(0, managers.length() - 1);
-            }
-        }
-        return managers;
+    private String treeName;//树形显示
+
+    public String getTreeName() {
+        return treeName;
+    }
+
+    public void setTreeName(String treeName) {
+        this.treeName = treeName;
     }
 
     public Integer getPersonNum() {
@@ -108,21 +70,6 @@ public class Department extends BaseModel {
         this.cityInviteCode = cityInviteCode;
     }
 
-    public void setManagers(String managers) {
-        this.managers = managers;
-    }
-
-    public String getTreeName() {
-        return treeName;
-    }
-
-    public void setTreeName(String treeName) {
-        this.treeName = treeName;
-    }
-
-    /**
-     * Getter Setter Field
-     */
     public Integer getPid() {
         return pid;
     }
@@ -155,13 +102,6 @@ public class Department extends BaseModel {
         this.remark = remark;
     }
 
-    public List<FollowUp> getFollowUpList() {
-        return followUpList;
-    }
-
-    public void setFollowUpList(List<FollowUp> followUpList) {
-        this.followUpList = followUpList;
-    }
 
     public Department getParentDept() {
         return parentDept;
@@ -177,5 +117,21 @@ public class Department extends BaseModel {
 
     public void setSubDeptList(List<Department> subDeptList) {
         this.subDeptList = subDeptList;
+    }
+
+    public String getManagerId() {
+        return managerId;
+    }
+
+    public void setManagerId(String managerId) {
+        this.managerId = managerId;
+    }
+
+    public FollowUp getManager() {
+        return manager;
+    }
+
+    public void setManager(FollowUp manager) {
+        this.manager = manager;
     }
 }

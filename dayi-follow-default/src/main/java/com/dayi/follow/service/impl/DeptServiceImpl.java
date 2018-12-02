@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -25,73 +26,6 @@ public class DeptServiceImpl implements DeptService {
     @Resource
     DeptMapper deptMapper;
 
-    /**
-     * 拼写 SQL 条件 -- 通过跟进人所属部门 ID -- 拼写本级不包括其他负责人的跟进人 ID 的 NOT IN 条件语句
-     */
-    public String spellMyDeptManagerFlowIdsNotInsql(Integer deptId, String fieldName, String alias) {
-        StringBuffer strBuf = new StringBuffer();
-        if (deptId != null && StringUtils.isNotBlank(fieldName)) {
-            Department dept = deptMapper.get(deptId);
-            if (dept != null) {
-                String fieldStr = StringUtils.isNotBlank(alias) ? (alias + "." + fieldName) : fieldName;
-                String flowUpIds = "";
-                List<FollowUp> flowUpList = dept.getFollowUpList();
-                if (CollectionUtils.isNotEmpty(flowUpList)) {
-                    Integer isManager = null;
-                    for (FollowUp flowUp : flowUpList) {
-                        isManager = flowUp.getIsManager();  // 是否负责人：0--否；1--是
-                        if (isManager != null && isManager == 1) {
-                            flowUpIds = flowUpIds + flowUp.getId() + ",";
-                        }
-                    }
-                }
-                if (StringUtils.isNotBlank(flowUpIds)) {
-                    flowUpIds = flowUpIds.substring(0, flowUpIds.length() - 1);
-                    strBuf.append(" AND ").append(fieldStr).append(" NOT IN (").append(flowUpIds).append(") ");
-                }
-            }
-        }
-        return strBuf.toString();
-    }
-
-
-    /**
-     * 拼写 SQL 条件 -- 通过跟进人所属部门 ID -- 拼写所有下级跟进人 ID 的 IN 条件语句
-     */
-    public String spellSubFlowIdsInsql(Integer deptId, List<Integer> chargeDeptIds, String fieldName, String alias, boolean isHaveOwn) {
-        StringBuffer strBuf = new StringBuffer();
-        List<Department> mysubList = new ArrayList<Department>();
-//        if (StringUtils.isNotBlank(fieldName)) {
-//            if (chargeDeptIds != null && chargeDeptIds.size() != 0) {
-//                for (Integer chargeDeptId : chargeDeptIds) {
-//                    mysubList = this.getSubDepts(chargeDeptId, isHaveOwn, mysubList);
-//                }
-//            }
-//            if (deptId != null) {
-//                mysubList = this.getSubDepts(deptId, isHaveOwn, null);
-//            }
-//            if (CollectionUtils.isNotEmpty(mysubList)) {
-//                String fieldStr = StringUtils.isNotBlank(alias) ? (alias + "." + fieldName) : fieldName;
-//                List<FollowUp> flowUpList = null;
-//                String flowUpIds = "";
-//                for (Department dept : mysubList) {
-//                    flowUpList = dept.getFollowUpList();
-//                    if (CollectionUtils.isNotEmpty(flowUpList)) {
-//                        for (FollowUp flowUp : flowUpList) {
-//                            if (!flowUp.getIsAdmin().equals(1)) { // 排除 管理员 跟进人
-//                                flowUpIds = flowUpIds + flowUp.getId() + ",";
-//                            }
-//                        }
-//                    }
-//                }
-//                if (StringUtils.isNotBlank(flowUpIds)) {
-//                    flowUpIds = flowUpIds.substring(0, flowUpIds.length() - 1);
-//                    strBuf.append(" AND ").append(fieldStr).append(" IN (").append(flowUpIds).append(") ");
-//                }
-//            }
-//        }
-        return strBuf.toString();
-    }
 
     /**
      * 递归查询 -- 指定部门
@@ -113,6 +47,21 @@ public class DeptServiceImpl implements DeptService {
     }
 
     @Override
+    public List<Department> getSubDept(String deptId) {
+        List<Department> deptList = new ArrayList<Department>();
+        if (StringUtils.isBlank(deptId)) return deptList;
+
+        Department me = deptMapper.get(deptId);
+        List<Department> subDeptList = me.getSubDeptList();
+        if (CollectionUtils.isEmpty(subDeptList)) return deptList;
+
+        for (Department dept : subDeptList) {
+            deptList.addAll(this.getSubDept(dept.getId()));
+        }
+        return deptList;
+    }
+
+    @Override
     public Department get(String deptId) {
         return deptMapper.get(deptId);
     }
@@ -127,31 +76,52 @@ public class DeptServiceImpl implements DeptService {
         }
     }
 
-    /* 私有方法：递归查询所有下级部门 */
-    private List<Department> queryAllSubDeptList(List<Department> deptList, Integer ridDeptId, int depth) {
-        List<Department> retList = new ArrayList<>();
-        if (CollectionUtils.isNotEmpty(deptList)) {
-            List<Department> subList = null;
-            Department dept = null;
-            /* 根据级次补充前面缩进图标 */
-            String depthStr = "";
-            for (int i = 0; i < depth; i++) {
-                depthStr = depthStr + "　";
-            }
-            for (int i = 0; i < deptList.size(); i++) {
-                dept = deptList.get(i);
-                /* 修改部门时，需要排除自身及下属所有部门 */
-                if (ridDeptId != null && ridDeptId.equals(dept.getId())) continue;
-                dept.setTreeName(depthStr + dept.getName());
-                retList.add(dept);
-                subList = dept.getSubDeptList();
-                if (CollectionUtils.isNotEmpty(subList)) {
-                    retList.addAll(queryAllSubDeptList(subList, ridDeptId, (depth + 1)));
-                }
-            }
-        }
-        return retList;
+    @Override
+    public List<Department> getTopList() {
+        return deptMapper.getTopList();
+
     }
 
+
+    @Override
+    public BizResult add(Department department) {
+        return 1 == deptMapper.add(department) ? BizResult.SUCCESS : BizResult.FAIL;
+    }
+
+
+    @Override
+    public List<Department> getEditCanSelectDepts(List<Department> departments, Department department) {
+
+        for (Department item : departments) {
+            if (item.getId().equals(department.getId())) {
+                departments.remove(item);
+                return departments;
+            }
+            getEditCanSelectDepts(item.getSubDeptList(), department);
+        }
+        return departments;
+    }
+
+    @Override
+    public BizResult delete(Department department) {
+        return 1 == deptMapper.delete(department) ? BizResult.SUCCESS : BizResult.FAIL;
+    }
+
+
+    @Override
+    public List<Department> doDeptTreeName(List<Department> departments, int depth) {
+        if (departments.isEmpty()) return departments;
+        String prefix = "";
+
+        for (int i = 0; i < depth; i++) {
+            prefix = prefix + "　";
+        }
+
+        for (Department department : departments) {
+            department.setTreeName(prefix + department.getName());
+            doDeptTreeName(department.getSubDeptList(), depth++);
+        }
+        return departments;
+    }
 
 }

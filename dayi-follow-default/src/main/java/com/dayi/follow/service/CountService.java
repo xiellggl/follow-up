@@ -3,10 +3,13 @@ package com.dayi.follow.service;
 
 import com.dayi.follow.model.follow.Organization;
 import com.dayi.follow.vo.*;
+import com.dayi.follow.vo.index.FundRankVo;
+import com.dayi.follow.vo.index.SerCusStatusVo;
+import com.dayi.follow.vo.index.SevenInCashVo;
+import com.dayi.follow.vo.index.SevenOpenVo;
+import com.dayi.follow.vo.org.OrgDataVo;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 /**
  * @author xiell
  * @date 2018/11/12

@@ -1,11 +1,13 @@
 package com.dayi.follow.dao.follow;
 
+import com.dayi.follow.model.follow.Agent;
 import com.dayi.follow.model.follow.AgentContact;
 import com.dayi.follow.model.follow.FollowAgent;
-import com.dayi.follow.vo.AgentContactVo;
-import com.dayi.follow.vo.AgentListVo;
-import com.dayi.follow.vo.AssignListVo;
+import com.dayi.follow.vo.agent.AgentContactVo;
+import com.dayi.follow.vo.agent.AgentListVo;
+import com.dayi.follow.vo.agent.AssignListVo;
 import com.dayi.follow.vo.SearchVo;
+import com.dayi.follow.vo.followup.FollowUpListVo;
 import com.dayi.mybatis.support.BaseMapper;
 import com.dayi.mybatis.support.Page;
 import org.apache.ibatis.annotations.Param;
@@ -67,5 +69,10 @@ public interface FollowAgentMapper extends BaseMapper<FollowAgent> {
 
     //统计未分配跟进人的代理商数量
     long getAssignsNoFollowNum(SearchVo searchVo, String assistDataBase);
+
+    List<Agent> findAgentsByFollowId(String followId);
+
+
+
 
 }

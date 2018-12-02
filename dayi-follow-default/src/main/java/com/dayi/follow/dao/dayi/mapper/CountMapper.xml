@@ -122,7 +122,7 @@
         WHERE  a.del_status != -1 and fa.agent_id is not NULL GROUP BY customer_type
     </select>
     
-    <select id="countCusFundRank" parameterType="java.lang.String" resultType="com.dayi.follow.vo.FundRankVo">
+    <select id="countCusFundRank" parameterType="java.lang.String" resultType="com.dayi.follow.vo.index.FundRankVo">
         SELECT t.type as fundRank,count(a.id) num
         FROM (
             SELECT 1 as type union all  SELECT 2 as type union all
@@ -158,7 +158,7 @@
         )a ON a.id = fam.agent_org_id GROUP BY t.type
     </select>
 
-    <select id="countSevenOpen" parameterType="java.lang.String" resultType="com.dayi.follow.vo.SevenOpenVo">
+    <select id="countSevenOpen" parameterType="java.lang.String" resultType="com.dayi.follow.vo.index.SevenOpenVo">
            select click_date as dateStr, count(a.id)num
               from (  
                   SELECT date_sub(curdate(), interval 1 day) as click_date union all
@@ -180,7 +180,7 @@
               )a on a.id=p.agent GROUP BY m.click_date
     </select>
     
-    <select id="countSevenInCash" parameterType="java.lang.String" resultType="com.dayi.follow.vo.SevenInCashVo">
+    <select id="countSevenInCash" parameterType="java.lang.String" resultType="com.dayi.follow.vo.index.SevenInCashVo">
         select click_date as dateStr,sum(if(ISNULL(a.id),0,accrual))inCash
           from (   
               SELECT date_sub(curdate(), interval 1 day) as click_date union all

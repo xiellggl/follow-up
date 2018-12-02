@@ -1,4 +1,4 @@
-package com.dayi.follow.vo;
+package com.dayi.follow.vo.agent;
 
 import com.dayi.follow.util.CheckIdCardUtils;
 import org.apache.commons.lang3.StringUtils;

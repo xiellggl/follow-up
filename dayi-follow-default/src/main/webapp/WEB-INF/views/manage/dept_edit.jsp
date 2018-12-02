@@ -27,9 +27,12 @@
                             <label class="col-sm-2 control-label no-padding-right">上级部门：</label>
                             <div class="col-xs-12 col-sm-6">
                                 <select name="pid" class="form-control">
-                                    <c:forEach items="${deptList}" var="item" >
-                                        <option value="${item.id}" ${deptVo.pid eq item.id ? 'selected' : ''}>${item.treeName}</option>
-                                    </c:forEach>
+                                    <option></option>
+                                    <%--自增序号，注意scope--%>
+                                    <c:set var="index" value="0" scope="request" />
+                                    <%--记录树的层次，注意scope--%>
+                                    <c:set var="level" value="0" scope="request" />
+                                    <c:import url="dept_edit_item.jsp" />
                                 </select>
                             </div>
                         </div>

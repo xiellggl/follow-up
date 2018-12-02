@@ -8,7 +8,7 @@
          SELECT create_date FROM `finance_login_log` WHERE login_id = #{agentId} ORDER BY create_date DESC LIMIT 1
     </select>
     <!--查找代理商最近代理数据-->
-    <select id="countRecentAgent" resultType="com.dayi.follow.vo.AgentListVo" parameterType="java.lang.Integer">
+    <select id="countRecentAgent" resultType="com.dayi.follow.vo.agent.AgentListVo" parameterType="java.lang.Integer">
             SELECT DATE_FORMAT(create_date, '%Y-%m-%d') recentAgentDate, IFNULL(SUM(amount), 0) recentAgentFund
              FROM protocol WHERE (STATUS = 1 OR STATUS = 2) AND agent = #{agentId}
              GROUP BY recentAgentDate

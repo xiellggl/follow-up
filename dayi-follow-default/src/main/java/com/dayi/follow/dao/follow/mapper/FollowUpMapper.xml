@@ -28,17 +28,12 @@
         andn dept_id =${deptId}
     </select>
 
-    <select id="findAll" parameterType="map" resultType="com.dayi.follow.model.follow.FollowUp">
-        SELECT * from follow_up where is_follow_up !=0 and disable !=0
-        limit ${limitStart},${limitEnd}
-    </select>
 
-    <select id="countAll" resultType="java.lang.Integer">
-        SELECT * from follow_up where is_follow_up !=0 and disable !=0
-    </select>
+
+
 
     <select id="findAssignSelect" parameterType="map" resultType="com.dayi.follow.model.follow.FollowUp">
-         SELECT * from follow_up where is_follow_up !=0 and disable !=0 and id in
+        SELECT * from follow_up where is_follow_up !=0 and disable !=0 and id in
         <foreach item="item" index="index" collection="followIds"
                  open="(" separator="," close=")">
             #{item}
@@ -58,6 +53,72 @@
         <if test="''!=followUp and null!=followUp">
             and name=${followUp}
         </if>
+    </select>
+
+    <select id="findFollowUps" resultType="java.lang.Integer">
+        SELECT *,sum(d.amount)agentFund,count(DISTINCT c.id)agentNum from follow_up a
+        left join (
+            select follow_id,agent_id from follow_agent
+        )b on b.follow_id =a.id
+        LEFT join (
+            select id from agent where del_status!=-1
+        )c on c.id =b.agent_id
+        LEFT join (
+            SELECT agent,amount FROM protocol where status in (1,2)
+        )d on d.agent = c.id
+        left join (
+            SELECT  id from deparment
+        )e on e.id =a.dept_id
+        where a.is_follow_up !=0 and a.disable !=0
+        <if test="''!=mobile and null!=mobile">
+            and a.mobile =${mobile}
+        </if>
+        and a.id in
+        <foreach item="item" index="index" collection="followIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        <if test="''!=inviteCode and null!=inviteCode">
+            and a.invite_code =${inviteCode}
+        </if>
+        GROUP BY a.id
+        limit ${limitStart},${limitEnd}
+    </select>
+
+    <select id="getFollowUpsNum" resultType="java.lang.Integer">
+        SELECT count(0) from follow_up where is_follow_up !=0 and disable !=0
+        <if test="''!=mobile and null!=mobile">
+            and mobile =${mobile}
+        </if>
+
+        and id in
+        <foreach item="item" index="index" collection="followIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+
+        <if test="''!=inviteCode and null!=inviteCode">
+            and inviteCode =${inviteCode}
+        </if>
+    </select>
+
+    <select id="getFollowUpsAgentPart" parameterType="map" resultType="com.dayi.follow.vo.followup.FollowUpListVo">
+        SELECT id from follow_up
+        left join (
+            select follow_id,agent_id,sum(d.amount)agentFund,count(DISTINCT c.id)agentNum from follow_agent
+        )b on b.follow_id =a.id
+        LEFT join (
+            select id from agent where del_status!=-1
+        )c on c.id =b.agent_id
+        LEFT join (
+            SELECT agent,amount FROM protocol where status in (1,2)
+        )d on d.agent = c.id
+        where  a.id in
+        <foreach item="item" index="index" collection="followIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+          GROUP BY a.id
     </select>
 
 

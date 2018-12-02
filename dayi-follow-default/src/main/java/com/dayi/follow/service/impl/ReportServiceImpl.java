@@ -6,8 +6,6 @@ import com.dayi.follow.service.CountService;
 import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.ReportService;
 import com.dayi.follow.vo.DailyVo;
-import com.dayi.follow.vo.OrgDataVo;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 

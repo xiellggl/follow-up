@@ -19,6 +19,9 @@ import com.dayi.follow.service.FollowAgentService;
 import com.dayi.follow.service.OrgService;
 import com.dayi.follow.util.CheckIdCardUtils;
 import com.dayi.follow.vo.*;
+import com.dayi.follow.vo.agent.AgentListVo;
+import com.dayi.follow.vo.agent.AssignListVo;
+import com.dayi.follow.vo.agent.DetailVo;
 import com.dayi.mybatis.support.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -27,7 +30,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -197,10 +199,6 @@ public class FollowAgentServiceImpl implements FollowAgentService {
         List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
         List<AssignListVo> assignListVos = new ArrayList<>();
 
-//        if (searchVo.getAssignStatus() != null) {//都查
-//            assignListVos = followAgentMapper.findAssignsFollow(page, searchVo, followIds, dayiDataBaseStr);
-//            assignListVos.addAll(followAgentMapper.findAssignsNoFollow(page, searchVo, dayiDataBaseStr));
-//        }
         long num;
         if (searchVo.getAssignStatus() == 1) {//查已分配
             assignListVos = followAgentMapper.findAssignsFollow(page, searchVo, followIds, dayiDataBaseStr);
@@ -232,7 +230,7 @@ public class FollowAgentServiceImpl implements FollowAgentService {
         if (followAgentOld == null) {//第一次分配
             followAgent.setCustomerType(AgentCusTypeEnum.NOT_LINK.getValue());
         } else {//删除原来的关系
-            followAgent.setAssignDateBefore(followAgentOld.getCreateTime());//之前分配时间
+            followAgent.setFollowDateBefore(followAgentOld.getCreateTime());//之前分配时间
 
             FollowUp followUp = followUpMapper.get(followAgentOld.getFollowId());
             followAgent.setFollowUpBefore(followUp.getName());//之前跟进人
@@ -259,7 +257,7 @@ public class FollowAgentServiceImpl implements FollowAgentService {
     @Override
     public BizResult clear(FollowAgent followAgent) {
         followAgent.setFollowId(null);
-        followAgent.setAssignDate(null);
+        followAgent.setFollowDate(null);
         return 1 == followAgentMapper.update(followAgent) ? BizResult.SUCCESS : BizResult.FAIL;
     }
 

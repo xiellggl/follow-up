@@ -1,7 +1,7 @@
 package com.dayi.follow.dao.dayi;
 
 import com.dayi.follow.model.follow.Account;
-import com.dayi.follow.vo.AgentListVo;
+import com.dayi.follow.vo.agent.AgentListVo;
 import com.dayi.follow.model.follow.Agent;
 import com.dayi.follow.vo.LoginLogVo;
 import com.dayi.mybatis.support.BaseMapper;

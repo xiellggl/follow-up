@@ -1,12 +1,11 @@
 package com.dayi.follow.conf;
 
 import com.dayi.common.util.Misc;
-import com.dayi.follow.service.FollowUpService;
 import com.dayi.follow.service.impl.FollowUpServiceImpl;
+import com.dayi.follow.service.impl.UserServiceImpl;
 import com.dayi.user.authorization.AuthenticationHandler;
 import com.dayi.user.authorization.AuthorizationManager;
 import com.dayi.user.authorization.realm.Realm;
-import com.dayi.user.authorization.realm.support.SimpleAuthenticationHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -20,18 +19,18 @@ import java.io.IOException;
  * @author xiell
  * @date 2018/11/13
  */
-@Service(value = "followUpAuthenticationHandler")
-public class FollowUpAuthenticationHandler  implements AuthenticationHandler {
+@Service(value = "userAuthenticationHandler")
+public class UserAuthenticationHandler implements AuthenticationHandler {
 
 
-    protected Logger logger = LoggerFactory.getLogger(FollowUpAuthenticationHandler.class);
+    protected Logger logger = LoggerFactory.getLogger(UserAuthenticationHandler.class);
 
     @Resource
-    FollowUpServiceImpl followUpServiceImpl;
+    UserServiceImpl userServiceImpl;
 
     @Override
     public Realm getRealm() {
-        return followUpServiceImpl;
+        return userServiceImpl;
     }
 
     @Override

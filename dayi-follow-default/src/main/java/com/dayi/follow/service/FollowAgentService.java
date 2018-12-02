@@ -2,8 +2,9 @@ package com.dayi.follow.service;
 
 
 import com.dayi.common.util.BizResult;
+import com.dayi.follow.model.follow.Agent;
 import com.dayi.follow.model.follow.FollowAgent;
-import com.dayi.follow.vo.DetailVo;
+import com.dayi.follow.vo.agent.DetailVo;
 import com.dayi.follow.vo.SearchVo;
 import com.dayi.mybatis.support.Page;
 
@@ -36,5 +37,10 @@ public interface FollowAgentService {
     BizResult clear(FollowAgent followAgent);
 
     BizResult clearBatch(List<FollowAgent> followAgents);
+
+
+
+
+
 
 }

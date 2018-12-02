@@ -3,7 +3,7 @@ package com.dayi.follow.service;
 
 import com.dayi.common.util.BizResult;
 import com.dayi.follow.model.follow.OrgContact;
-import com.dayi.follow.vo.OrgListVo;
+import com.dayi.follow.vo.org.OrgListVo;
 import com.dayi.follow.model.follow.Organization;
 import com.dayi.mybatis.support.Page;
 /**
@@ -36,9 +36,6 @@ public interface OrgService {
      */
     Organization getColligateOrgByInviteCode(String inviteCode);
 
-    //获取管理资产
-    double getManageFund(Integer orgId, Integer level);
-
     BizResult addContact(OrgContact orgContact);
 
     /**
@@ -50,6 +47,8 @@ public interface OrgService {
      * 获取代理商列表
      */
     Page<OrgListVo> findTeamOrgPage(Page<OrgListVo> page, String inviteCode, String followUp, String followId, String deptId);
+
+    Organization get(Integer orgId);
 
 
 }

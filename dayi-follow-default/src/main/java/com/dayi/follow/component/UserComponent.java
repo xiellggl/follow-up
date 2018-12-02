@@ -4,6 +4,7 @@ import com.dayi.follow.model.follow.Department;
 import com.dayi.follow.model.follow.FollowUp;
 import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.FollowUpService;
+import com.dayi.follow.service.UserService;
 import com.dayi.follow.vo.LoginVo;
 import com.dayi.user.authorization.AuthorizationManager;
 import com.dayi.user.authorization.authc.AccountInfo;
@@ -19,14 +20,14 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 public class UserComponent {
     @Resource
-    FollowUpService followUpService;
+    UserService userService;
     @Resource
     DeptService deptService;
 
     public LoginVo getCurrUser(HttpServletRequest request) {
         AccountInfo accountInfo = AuthorizationManager.getCurrentLoginUser(request);
         String userId = accountInfo.getUserId();
-        FollowUp followUp = followUpService.get(userId);
+        FollowUp followUp = userService.get(userId);
         if (followUp != null) {
             LoginVo loginVo = new LoginVo();
             String deptId = followUp.getDeptId();

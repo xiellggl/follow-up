@@ -1,10 +1,12 @@
 package com.dayi.follow.dao.dayi;
 
 import com.dayi.follow.vo.*;
-import com.dayi.mybatis.support.BaseMapper;
+import com.dayi.follow.vo.index.FundRankVo;
+import com.dayi.follow.vo.index.SevenInCashVo;
+import com.dayi.follow.vo.index.SevenOpenVo;
+import com.dayi.follow.vo.org.OrgDataVo;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.Date;
 import java.util.List;
 
 /**
