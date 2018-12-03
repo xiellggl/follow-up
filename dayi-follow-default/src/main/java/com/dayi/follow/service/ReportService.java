@@ -6,20 +6,17 @@ package com.dayi.follow.service;
  * @date 2018/11/12
  */
 
-import com.dayi.common.util.BizResult;
-import com.dayi.follow.model.follow.Department;
-import com.dayi.follow.vo.DailyVo;
 
-import java.util.List;
-import java.util.Map;
+import com.dayi.mybatis.support.Page;
 
 /**
- *  部门 业务接口类
+ * 部门 业务接口类
  */
 public interface ReportService {
 
-    DailyVo countDaily(String followId);
+    Page findDailyPage(Page page, String followId, String betweenDate);
 
-    List<DailyVo> countTeamDaily(String deptId);
+    Page findTeamDailyPage(Page page, String deptId, String betweenDate);
+
 
 }

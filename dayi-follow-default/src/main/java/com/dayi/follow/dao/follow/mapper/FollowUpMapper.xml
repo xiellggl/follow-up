@@ -121,5 +121,103 @@
           GROUP BY a.id
     </select>
 
+    <sql id="conditions">
+        <if test="''!=searchVo.followUp and null!=searchVo.followUp">
+            and c.name =#{searchVo.followUp}
+        </if>
+        <if test="''!=searchVo.followUpBefore and null!=searchVo.followUpBefore">
+            and a.follow_up_before =#{searchVo.followUpBefore}
+        </if>
+        <if test="''!=searchVo.cusName and null!=searchVo.cusName">
+            and b.link_person =#{searchVo.cusName}
+        </if>
+        <if test="''!=searchVo.mobile and null!=searchVo.mobile">
+            and b.mobile =#{searchVo.mobile}
+        </if>
+        <if test="''!=searchVo.inviteCode and null!=searchVo.inviteCode">
+            and b.record_invite_code =#{searchVo.inviteCode}
+        </if>
+        <if test="null!=searchVo.changeDateStart and ''!= searchVo.changeDateStart and null!=searchVo.changeDateEnd and ''!= searchVo.changeDateEnd">
+            and a.changeDate BETWEEN #{searchVo.changeDateStart} and #{searchVo.changeDateEnd}
+        </if>
+
+    </sql>
+
+
+    <select id="findAgents" parameterType="map" resultType="com.dayi.follow.vo.followup.FMDetailListVo">
+
+        SELECT a.follow_id,a.follow_up_before,a.assign_date changeDate,a.agent_fund_before agentCargoBefore,
+        a.total_fund_before,b.id,b.link_person,b.mobile,b.create_date,b.record_invite_code,c.name followUp
+        from follow_agent a
+        left join (
+            select * from #{assistDataBase}.agent where del_status !=-1
+        )b on b.id =a.agent_id
+        left join (
+            select * from follow_up where is_follow_up!=0 and disable!=0
+        )c on c.id =a.follow_id
+        where a.disable!=0 and a.follow_id in
+        <foreach item="item" index="index" collection="followIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        <include refid="conditions"/>
+        limit #{limitStart},#{limitEnd}
+
+    </select>
+
+    <select id="findAgentsCount" parameterType="map" resultType="java.lang.Long">
+        SELECT count(0)
+        from follow_agent a
+        left join (
+        select * from #{assistDataBase}.agent where del_status !=-1
+        )b on b.id =a.agent_id
+        left join (
+        select * from follow_up where is_follow_up!=0 and disable!=0
+        )c on c.id =a.follow_id
+        where a.disable!=0 and a.follow_id in
+        <foreach item="item" index="index" collection="followIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        <include refid="conditions"/>
+    </select>
+
+    <select id="findOrgs" parameterType="map" resultType="com.dayi.follow.vo.followup.FMDetailListVo">
+
+        SELECT a.follow_id,a.follow_up_before,a.assign_date changeDate,a.manage_fund_before agentCargoBefore,
+        b.id,b.link_person,b.mobile,b.create_date,b.record_invite_code,c.name followUp
+        from follow_org a
+        left join (
+        select * from #{assistDataBase}.agent where del_status !=-1
+        )b on b.id =a.org_id
+        left join (
+        select * from follow_up where is_follow_up!=0 and disable!=0
+        )c on c.id =a.follow_id
+        where a.disable!=0 and a.follow_id in
+        <foreach item="item" index="index" collection="followIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        <include refid="conditions"/>
+        limit #{limitStart},#{limitEnd}
+
+    </select>
+
+    <select id="findOrgsCount" parameterType="map" resultType="java.lang.Long">
+        SELECT count(0)
+        from follow_org a
+        left join (
+        select * from #{assistDataBase}.organization where del_status !=-1
+        )b on b.id =a.org_id
+        left join (
+        select * from follow_up where is_follow_up!=0 and disable!=0
+        )c on c.id =a.follow_id
+        where a.disable!=0 and a.follow_id in
+        <foreach item="item" index="index" collection="followIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        <include refid="conditions"/>
+    </select>
 
 </mapper>

@@ -240,5 +240,28 @@
         left join (SELECT agent,id from protocol WHERE protocol.`status`=1 GROUP BY agent)p on p.agent = a.id
         WHERE o.id= ${orgId} and o.org_type =4 and o.del_status != -1
     </select>
+
+    <select id="countDaily" resultType="com.dayi.follow.vo.DailyVo" parameterType="java.lang.String">
+        SELECT date(create_date) date,open_account_num openNum,
+        in_cash inCash,in_cash_num inCashNum,
+        out_cash outCash,out_cash_num outCashNum
+        from #{assistDataBase}.follow_up_log ful
+        WHERE  date(create_date) =
+        (select date(max(create_date)) from #{assistDataBase}.follow_up_log)
+        and flow_id =${followId}
+
+    </select>
+
+    <select id="countTeamDaily" resultType="com.dayi.follow.vo.DailyVo" parameterType="java.lang.String">
+        SELECT date(create_date) date,open_account_num openNum,
+        in_cash inCash,in_cash_num inCashNum,
+        out_cash outCash,out_cash_num outCashNum
+        from #{assistDataBase}.follow_up_log a
+        left join (
+        SELECT id,name from #{assistDataBase}.department where id =${deptId}
+        )b on b.id = a.dept_id
+        WHERE b.id is not null and  date(create_date) =
+        (select date(max(create_date)) from #{assistDataBase}.follow_up_log)
+    </select>
     
 </mapper>

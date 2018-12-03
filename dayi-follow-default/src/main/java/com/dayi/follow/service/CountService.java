@@ -50,9 +50,15 @@ public interface CountService {
 
     //统计团队创客数据
     OrgDataVo countTeamOrgData(String deptId);
+
     //获得创客的有效代理商数量
     int getValidAgentNum(List<Organization> orgs);
+
     //获的创客管理资金
     double getOrgManageFund(List<Organization> orgs);
+
+    DailyVo countDaily(String followId);
+
+    List<DailyVo> countTeamDaily(String deptId);
 
 }

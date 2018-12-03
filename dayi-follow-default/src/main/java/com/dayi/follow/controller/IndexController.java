@@ -52,7 +52,7 @@ public class IndexController {
         if (currVo == null) {
             return BizResult.FAIL;
         }
-        DailyVo daily = reportService.countDaily(currVo.getId());
+        DailyVo daily = countService.countDaily(currVo.getId());
         return BizResult.succ(daily);
     }
 
@@ -62,7 +62,7 @@ public class IndexController {
         if (currVo == null) {
             return BizResult.FAIL;
         }
-        List<DailyVo> dailyVos = reportService.countTeamDaily(currVo.getDeptId());
+        List<DailyVo> dailyVos = countService.countTeamDaily(currVo.getDeptId());
         return BizResult.succ(dailyVos);
     }
 
@@ -74,7 +74,7 @@ public class IndexController {
         if (currVo == null) {
             return BizResult.FAIL;
         }
-        DailyVo daily = reportService.countDaily(currVo.getId());
+        DailyVo daily = countService.countDaily(currVo.getId());
         return BizResult.succ(daily);
     }
 
@@ -85,7 +85,7 @@ public class IndexController {
         if (currVo == null) {
             return BizResult.FAIL;
         }
-        List<DailyVo> dailyVos = reportService.countTeamDaily(currVo.getDeptId());
+        List<DailyVo> dailyVos = countService.countTeamDaily(currVo.getDeptId());
         return BizResult.succ(dailyVos);
     }
 

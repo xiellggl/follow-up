@@ -63,5 +63,13 @@ public interface CountMapper {
 
     int getOrgValidAgentNum(Integer orgId,Integer inviteLevel);
 
+    //统计团队日报
+    DailyVo countTeamDaily(String deptId);
+    /**
+     * 统计日报
+     */
+
+    DailyVo countDaily(String followId);
+
 
 }

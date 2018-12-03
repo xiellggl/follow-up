@@ -5,8 +5,11 @@ import com.dayi.common.util.BizResult;
 import com.dayi.follow.model.follow.Agent;
 import com.dayi.follow.model.follow.FollowUp;
 import com.dayi.follow.vo.LoginVo;
+import com.dayi.follow.vo.SearchVo;
+import com.dayi.follow.vo.followup.FMDetailListVo;
 import com.dayi.follow.vo.followup.FollowUpListVo;
 import com.dayi.mybatis.support.Page;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 /**
@@ -33,6 +36,17 @@ public interface FollowUpService {
     //查询全部跟进人
     Page<FollowUp> findAssignSelect(Page page, String followUp, String deptId);
 
-    Page<Agent> findAgentPage(Page page, String deptId, String followId);
+    //查询跟进人管理的代理商明细列表
+    Page<FMDetailListVo> findAgentPage(Page page, SearchVo searchVo, String followId);
+
+    //查询跟进人管理的全部代理商明细列表
+    Page<FMDetailListVo> findAllAgentPage(Page page, SearchVo searchVo, String deptId);
+
+    //查询跟进人管理的创客明细列表
+    Page<FMDetailListVo> findOrgPage(Page page, SearchVo searchVo, String followId);
+
+    //查询跟进人管理的全部创客明细列表
+    Page<FMDetailListVo> findAllOrgPage(Page page, SearchVo searchVo, String deptId);
+
 
 }

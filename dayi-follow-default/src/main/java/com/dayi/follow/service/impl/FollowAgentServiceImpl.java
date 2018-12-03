@@ -91,16 +91,18 @@ public class FollowAgentServiceImpl implements FollowAgentService {
         detailVo.setIdCardAddr(agent.getIdCardAddr());
         // 可用余额
         Account account = agentMapper.getAccount(agentId);
-        detailVo.setUseableFund(account.getUseable());
+        detailVo.setUseableFund(account.getUseable().doubleValue());
 
         // 实名认证
         detailVo.setIdCard(idCard);
         detailVo.setCardValidDate(agent.getCardValidDate());
         // 总资产
         double agentFund = agentMapper.getAgentFund(agentId);  // 代理资金
-        double partFund = BigDecimal.valueOf(agentFund).add(BigDecimal.valueOf(account.getFrozen()))
-                .add(BigDecimal.valueOf(account.getOutFrozen())).doubleValue();
-        double totalFund = BigDecimals.add(account.getUseable(), partFund, 2);
+
+        double partFund = BigDecimal.valueOf(agentFund).add(account.getFrozen())
+                .add(account.getOutFrozen()).doubleValue();
+        double totalFund = BigDecimals.add(account.getUseable().doubleValue(), partFund, 2);
+
         detailVo.setTotalFund(totalFund);
 
         // 是否绑卡
@@ -114,7 +116,7 @@ public class FollowAgentServiceImpl implements FollowAgentService {
         }
 
         // 是否入金
-        detailVo.setInCash(account.getTotalInCash());
+        detailVo.setInCash(account.getTotalInCash().doubleValue());
 
 
         DateTime time = new DateTime();
@@ -177,7 +179,7 @@ public class FollowAgentServiceImpl implements FollowAgentService {
         detailVo.setAgentFund(agentFund);
 
         //冻结货款
-        double frozenFund = BigDecimals.add(account.getFrozen(), account.getOutFrozen());
+        double frozenFund = account.getFrozen().add(account.getOutFrozen()).doubleValue();
         detailVo.setFrozenFund(frozenFund);
 
         return detailVo;

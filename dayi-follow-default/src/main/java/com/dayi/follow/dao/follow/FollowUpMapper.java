@@ -1,6 +1,8 @@
 package com.dayi.follow.dao.follow;
 
 import com.dayi.follow.model.follow.FollowUp;
+import com.dayi.follow.vo.SearchVo;
+import com.dayi.follow.vo.followup.FMDetailListVo;
 import com.dayi.follow.vo.followup.FollowUpListVo;
 import com.dayi.mybatis.support.BaseMapper;
 import org.apache.ibatis.annotations.Select;
@@ -29,5 +31,11 @@ public interface FollowUpMapper extends BaseMapper<FollowUp> {
 
     int countAssignSelect(String followUp, List<String> followIds);
 
-    //List<FollowUpListVo> getFollowUpsAgentPart(List<String> followIds, String assistDataBase);
+    List<FMDetailListVo> findAgents(SearchVo searchVo, List<String> followIds, Integer limitStart, Integer limitEnd, String assistDataBase);
+
+    long findAgentscount(SearchVo searchVo, List<String> followIds, String assistDataBase);
+
+    List<FMDetailListVo> findOrgs(SearchVo searchVo, List<String> followIds, Integer limitStart, Integer limitEnd, String assistDataBase);
+
+    long findOrgscount(SearchVo searchVo, List<String> followIds, String assistDataBase);
 }
