@@ -47,6 +47,7 @@
                             <table class="table table-striped table-bordered table-hover">
                                 <thead>
                                 <tr>
+                                    <th></th>
                                     <th>模块名称</th>
                                     <th class="hidden-sm hidden-xs">状态</th>
                                     <th>功能路径</th>
@@ -57,7 +58,7 @@
                                 <tbody>
                                 <c:if test="${empty topDeptList}">
                                     <tr>
-                                        <td colspan="5" class="no_data">暂无模块，请<a href="javascript:;" data-act="addDept">新增模块</a></td>
+                                        <td colspan="6" class="no_data">暂无模块，请<a href="javascript:;" data-act="addDept">新增模块</a></td>
                                     </tr>
                                 </c:if>
                                 <%--自增序号，注意scope--%>
@@ -171,9 +172,19 @@
                 });
             });
         });
-        $(".fa-chevron-down").on('click', function(event) {
+        $(".fa-chevron-dcu").on('click', function(event) {
             var flag = $(this).attr("data-flag");
             $(".click"+flag).toggle(100);
+            var $this=$(this);
+            if($this.hasClass('fa-chevron-up')){
+                $this.removeClass('fa-chevron-up').addClass('fa-chevron-down');
+            }else{
+                $this.removeClass('fa-chevron-down').addClass('fa-chevron-up');
+            }
+        });
+        $(".fa-chevron-mcu").on('click', function(event) {
+            var flag = $(this).attr("data-flag");
+            $(".link"+flag).toggle(100);
             var $this=$(this);
             if($this.hasClass('fa-chevron-up')){
                 $this.removeClass('fa-chevron-up').addClass('fa-chevron-down');
