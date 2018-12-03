@@ -23,7 +23,7 @@ import java.util.Map;
  * @date 2018/11/13
  */
 @Controller
-@RequestMapping("/followup/module")
+@RequestMapping("/module")
 public class ModuleController {
 
     @Resource
@@ -82,7 +82,7 @@ public class ModuleController {
     /**
      * 列表查询
      */
-    @RequestMapping("/query")
+    @RequestMapping("/list")
     public String list(HttpServletRequest request, Model model) {
         String keyword = request.getParameter("keyword");
         List<Menu> menus = moduleService.queryMenus(null, false, true, new Module(), new PermissionVo());

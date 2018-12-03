@@ -50,6 +50,52 @@ public class SearchVo {
     private String assignDateStart;//分配时间开始
     private String assignDateEnd;//分配时间结束
 
+    //加于跟进人管理的查看明细
+    private String followUpBefore;//之前跟进人
+    private String changeDate;//变更日期
+    private String changeDateStart;//分配时间开始
+    private String changeDateEnd;//分配时间结束
+
+
+    public String getFollowUpBefore() {
+        return followUpBefore;
+    }
+
+    public void setFollowUpBefore(String followUpBefore) {
+        this.followUpBefore = followUpBefore;
+    }
+
+    public String getChangeDate() {
+        return changeDate;
+    }
+
+    public void setChangeDate(String changeDate) {
+        this.changeDate = changeDate;
+    }
+
+    public String getChangeDateStart() {
+        if (!StringUtils.isBlank(changeDate)) {
+            String[] split = changeDate.split(" - ");
+            changeDateStart = split[0];
+        }
+        return changeDateStart;
+    }
+
+    public void setChangeDateStart(String changeDateStart) {
+        this.changeDateStart = changeDateStart;
+    }
+
+    public String getChangeDateEnd() {
+        if (!StringUtils.isBlank(changeDate)) {
+            String[] split = changeDate.split(" - ");
+            changeDateEnd = split[1];
+        }
+        return changeDateEnd;
+    }
+
+    public void setChangeDateEnd(String changeDateEnd) {
+        this.changeDateEnd = changeDateEnd;
+    }
 
     public String getBankTypeStr() {
         return bankTypeStr;

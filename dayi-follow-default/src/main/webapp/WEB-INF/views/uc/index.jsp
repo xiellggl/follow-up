@@ -55,7 +55,7 @@
                                         </h3>
                                         <div class="infobox-container">
                                             <div style="text-align: center; font-size:80px; font-weight: bold; line-height: 100px; width: 200px;">
-                                                <a href="/followup/uc/customer/agent/list?waitToLinkToday=1" class="red">${wLCount.waitLinkNum}</a>
+                                                <a href="/uc/customer/agent/list?waitToLinkToday=1" class="red">${wLCount.waitLinkNum}</a>
                                             </div>
                                         </div>
                                     </div>

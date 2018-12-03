@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
  * @date 2018/11/13
  */
 @Controller
-@RequestMapping("/followup/permission")
+@RequestMapping("/permission")
 public class PermissionController {
     @Resource
     UserComponent userComponent;

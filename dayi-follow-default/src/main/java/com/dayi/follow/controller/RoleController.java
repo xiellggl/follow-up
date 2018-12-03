@@ -2,20 +2,26 @@ package com.dayi.follow.controller;
 
 import com.dayi.common.util.BizResult;
 import com.dayi.follow.component.UserComponent;
+import com.dayi.follow.model.follow.Menu;
+import com.dayi.follow.model.follow.Module;
 import com.dayi.follow.model.follow.Role;
 import com.dayi.follow.service.RoleService;
+import com.dayi.follow.vo.PermissionVo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @author xiell
  * @date 2018/11/13
  */
 @Controller
-@RequestMapping("/followup/role")
+@RequestMapping("/role")
 public class RoleController {
     @Resource
     UserComponent userComponent;
@@ -45,6 +51,14 @@ public class RoleController {
         }
         return roleService.updateRole(role, permissionIds) ? BizResult.SUCCESS : BizResult.FAIL;
 
+    }
+
+    /**
+     * 列表查询
+     */
+    @RequestMapping("/list")
+    public String list(HttpServletRequest request, Model model) {
+        return "";
     }
 
 }

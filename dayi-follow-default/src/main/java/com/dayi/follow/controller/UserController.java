@@ -83,7 +83,7 @@ public class UserController extends BaseController {
             if (StringUtils.isNotBlank(goTo)) {//跳转
                 goToUrl = goTo;
             } else {
-                goToUrl = "/followup/index";
+                goToUrl = "/index";
             }
             return BizResult.succ(goToUrl, "登录成功！");
         }
@@ -93,7 +93,7 @@ public class UserController extends BaseController {
     @RequestMapping("loginout")
     public String loginOut(HttpServletRequest request, HttpServletResponse response) {
         AuthorizationManager.cleanAllAuthenticationInfo(request, response);
-        return "redirect:/followup/login";
+        return "redirect:/user/login";
     }
 
     @RequestMapping(value = "/list")

@@ -228,6 +228,28 @@ public class CountServiceImpl implements CountService {
         return manageFund;
     }
 
+    @Override
+    public List<DailyVo> countTeamDaily(String deptId) {
+        List<DailyVo> dailyVos = new ArrayList<DailyVo>();
+        if (StringUtils.isBlank(deptId)) return dailyVos;
+
+        List<String> deptIds = deptService.getSubDeptIds(deptId);//下级部门id
+        deptIds.add(deptId);//加上自己
+
+        //获取管辖部门（团队）的所有日报，包括KA
+        DailyVo dailyVo = new DailyVo();
+        for (String subDeptId : deptIds) {
+            dailyVo = countMapper.countTeamDaily(deptId);
+            dailyVos.add(dailyVo);
+        }
+        return dailyVos;
+    }
+
+    @Override
+    public DailyVo countDaily(String followId) {
+        return countMapper.countDaily(followId);
+    }
+
 
 }
 

@@ -1,27 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dayi.follow.dao.follow.ReportMapper">
-
-<select id="countDaily" resultType="com.dayi.follow.vo.DailyVo" parameterType="java.lang.String">
-    SELECT date(create_date) date,open_account_num openNum,
-    in_cash inCash,in_cash_num inCashNum,
-    out_cash outCash,out_cash_num outCashNum
-    from follow_up_log ful
-    WHERE  date(create_date) =
-    (select date(max(create_date)) from follow_up_log)
-    and flow_id =${followId}
-
-</select>
-
-    <select id="countTeamDaily" resultType="com.dayi.follow.vo.DailyVo" parameterType="java.lang.String">
-        SELECT date(create_date) date,open_account_num openNum,
-        in_cash inCash,in_cash_num inCashNum,
-        out_cash outCash,out_cash_num outCashNum
-        from follow_up_log a
-        left join (
-          SELECT id,name from department where id =${deptId}
-        )b on b.id = a.dept_id
-        WHERE b.id is not null and  date(create_date) =
-        (select date(max(create_date)) from follow_up_log)
+    <select id="findDailyList" parameterType="map" resultType="com.dayi.follow.vo.report.ReportDailyVo">
+        SELECT * from follow_up_log
+        where follow_id =#{followId}
+        and create_date BETWEEN #{startDate} and #{endDate}
+        ORDER  by create_date desc
+        limit #{limitStart},#{limitEnd}
     </select>
+
+    <select id="findDailyCount" parameterType="map" resultType="java.lang.Long">
+        SELECT count(0) from follow_up_log
+        where follow_id =#{followId}
+        and create_date BETWEEN #{startDate} and #{endDate}
+        ORDER  by create_date desc
+    </select>
+
 </mapper>

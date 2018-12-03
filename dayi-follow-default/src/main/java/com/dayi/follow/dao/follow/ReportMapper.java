@@ -4,17 +4,14 @@ import com.dayi.follow.vo.DailyVo;
 import com.dayi.follow.vo.index.IndexVo;
 import com.dayi.mybatis.support.BaseMapper;
 
+import java.util.List;
+
 /**
  * @author xiell
  * @date 2018/11/13
  */
-public interface ReportMapper extends BaseMapper<IndexVo>{
-    //统计团队日报
-    DailyVo countTeamDaily(String deptId);
-    /**
-     * 统计日报
-     */
+public interface ReportMapper extends BaseMapper<IndexVo> {
 
-    DailyVo countDaily(String followId);
-
+    List<DailyVo> findDailyList(String followId, String startDate, String endDate, Integer limitStart, Integer limitEnd);
+    long findDailyCount(String followId, String startDate, String endDate);
 }
