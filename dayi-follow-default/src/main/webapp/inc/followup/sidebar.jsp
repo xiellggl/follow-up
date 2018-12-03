@@ -212,7 +212,6 @@
             </li>
         </c:if>
         </c:if>
-        <c:if test="${flowUpSession.userName eq 'admin'}"> <%-- 超级管理员 --%>
         <li data-rel="manageLog">
             <a href="javascript:void(0);" class="dropdown-toggle">
                 <i class="menu-icon fa fa-bar-chart-o"></i>
@@ -250,26 +249,26 @@
                 </a>
                 <ul class="submenu">
                     <li data-index="1">
-                        <a href="/followup/sys/module/list">
+                        <a href="/module/list">
                             <i class="menu-icon fa fa-caret-right"></i>
                             模块管理
                         </a>
                     </li>
 
                     <li data-index="2">
-                        <a href="">
+                        <a href="/user/list">
                             <i class="menu-icon fa fa-caret-right"></i>
                             用户管理
                         </a>
                     </li>
                     <li data-index="3">
-                        <a href="">
+                        <a href="/operatelog/list">
                             <i class="menu-icon fa fa-caret-right"></i>
                             系统日志
                         </a>
                     </li>
                     <li data-index="4">
-                        <a href="">
+                        <a href="/role/list">
                             <i class="menu-icon fa fa-caret-right"></i>
                             角色管理
                         </a>
@@ -289,7 +288,6 @@
                 <span class="menu-text">管理员管理</span>
             </a>
         </li>
-        </c:if>
     </ul><!-- 菜单列表结束 -->
 
     <!--菜单栏缩进开始-->

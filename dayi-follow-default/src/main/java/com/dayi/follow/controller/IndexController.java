@@ -23,7 +23,7 @@ import java.util.*;
  * @date 2018/11/13
  */
 @Controller
-@RequestMapping("/followup/index")
+@RequestMapping("/index")
 public class IndexController {
     @Resource
     FollowUpService followUpService;
