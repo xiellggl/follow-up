@@ -47,6 +47,7 @@
                             <table class="table table-striped table-bordered table-hover">
                                 <thead>
                                 <tr>
+                                    <th></th>
                                     <th>模块名称</th>
                                     <th class="hidden-sm hidden-xs">状态</th>
                                     <th>功能路径</th>
@@ -57,7 +58,7 @@
                                 <tbody>
                                 <c:if test="${empty topDeptList}">
                                     <tr>
-                                        <td colspan="5" class="no_data">暂无模块，请<a href="javascript:;" data-act="addDept">新增模块</a></td>
+                                        <td colspan="6" class="no_data">暂无模块，请<a href="javascript:;" data-act="addDept">新增模块</a></td>
                                     </tr>
                                 </c:if>
                                 <%--自增序号，注意scope--%>
@@ -67,12 +68,6 @@
                                 <c:import url="module_item.jsp" />
                                 </tbody>
                             </table>
-                            <%--<select class="select" size="1" name="type" id="type">--%>
-                                <%--<option value="1">表格</option>--%>
-                                <%--<option value="2">折线图</option>--%>
-                            <%--</select>--%>
-                            <%--<div id="shouhou1" style>表格区域</div>--%>
-                            <%--<div id="shouhou2" style>折线图区域</div>--%>
                         </div>
                     </div>
                 </div>
@@ -177,7 +172,7 @@
                 });
             });
         });
-        $(".fa-chevron-down").on('click', function(event) {
+        $(".fa-chevron-dcu").on('click', function(event) {
             var flag = $(this).attr("data-flag");
             $(".click"+flag).toggle(100);
             var $this=$(this);
@@ -187,22 +182,18 @@
                 $this.removeClass('fa-chevron-down').addClass('fa-chevron-up');
             }
         });
-        // $(function() {
-        //     //隐藏div
-        //     $("#shouhou1").show();
-        //     $("#shouhou2").hide();
-        //     //给div添加change事件
-        //     $("#type").change(function() {
-        //         if($(this).val() == 1 ) {
-        //             $("#shouhou1").show();
-        //             $("#shouhou2").hide();
-        //         } else if($(this).val() == 2 ) {
-        //             $("#shouhou2").show();
-        //             $("#shouhou1").hide();+
-        //         }
-        //     })
-        // })
+        $(".fa-chevron-mcu").on('click', function(event) {
+            var flag = $(this).attr("data-flag");
+            $(".link"+flag).toggle(100);
+            var $this=$(this);
+            if($this.hasClass('fa-chevron-up')){
+                $this.removeClass('fa-chevron-up').addClass('fa-chevron-down');
+            }else{
+                $this.removeClass('fa-chevron-down').addClass('fa-chevron-up');
+            }
+        });
     });
 </script>
+
 </body>
 </html>
