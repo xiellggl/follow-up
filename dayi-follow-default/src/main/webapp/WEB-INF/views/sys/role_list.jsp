@@ -33,7 +33,34 @@
                         </small>
                     </h1>
                 </div>
-
+                <div class="col-xs-12">
+                    <div class="row">
+                        <div class="space-6"></div>
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th>角色名称</th>
+                                <th>角色备注</th>
+                                <th>添加时间</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <c:if test="${empty topDeptList}">
+                                <tr>
+                                    <td colspan="6" class="no_data">暂无模块，请<a href="javascript:;" data-act="addDept">新增模块</a></td>
+                                </tr>
+                            </c:if>
+                            <%--自增序号，注意scope--%>
+                            <c:set var="index" value="0" scope="request" />
+                            <%--记录树的层次，注意scope--%>
+                            <c:set var="level" value="0" scope="request" />
+                            <c:import url="role_item.jsp" />
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

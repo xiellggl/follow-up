@@ -34,6 +34,74 @@
                     </h1>
                 </div>
 
+                <div class="row">
+                    <form class="form-horizontal">
+                        <div class="clearfix maintop">
+                            <div class="col-xs-12 col-sm-3 maintop">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="ace-icon fa fa-calendar"></i>
+                                    </span>
+                                    <input type="text" class="form-control admin_sea dates" name="date" value="${param.date}"
+                                           placeholder="日志日期"/>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-4 maintop">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="ace-icon fa fa-check"></i>
+                                    </span>
+                                    <input type="text" name="deptName" class="form-control search-query admin_sea" value="${param.deptName}" placeholder="操作人"/>
+                                    <div class="input-group-btn">
+                                        <button type="submit" class="btn btn-xs btn-purple">
+                                            <span class="ace-icon fa fa-search"></span>
+                                            搜索
+                                        </button>
+                                        <a href="?" class="btn btn-xs btn-info">
+                                            <span class="ace-icon fa fa-globe"></span>
+                                            显示全部
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="space-10"></div>
+                <div class="row" id="listPan">
+                    <div class="col-xs-12">
+                        <table class="table table-striped table-bordered table-hover" >
+                            <thead>
+                            <tr>
+                                <th>操作人</th>
+                                <th>操作模块</th>
+                                <th>操作内容</th>
+                                <th>操作时间</th>
+                                <th>操作IP</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <c:if test="${empty page.items}">
+                            <tr>
+                                <td colspan="8" class="no_data">暂无数据记录</td>
+                            </tr>
+                            </c:if>
+                            <tr>
+                                <td>老陈</td>
+                                <td>首页信息</td>
+                                <td>登录账号</td>
+                                <td>2016-02-20 14:44:43</td>
+                                <td>172.28.13.41</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <c:if test="${not empty page}">
+                            <div class="pagerBar" id="pagerBar">
+                                <common:page2 url="${pageUrl}" type="3"/>
+                            </div>
+                        </c:if>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

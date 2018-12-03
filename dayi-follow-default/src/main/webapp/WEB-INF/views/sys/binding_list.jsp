@@ -44,9 +44,10 @@
                             <table class="table table-striped table-bordered table-hover">
                                 <thead>
                                 <tr>
-                                    <th>模块名称</th>
-                                    <th class="hidden-sm hidden-xs">状态</th>
-                                    <th>功能路径</th>
+                                    <th>功能名称</th>
+                                    <th class="hidden-sm hidden-xs">功能路径</th>
+                                    <th>添加时间</th>
+                                    <th>修改时间</th>
                                     <th>备注</th>
                                     <th>操作</th>
                                 </tr>
@@ -61,7 +62,7 @@
                                 <c:set var="index" value="0" scope="request" />
                                 <%--记录树的层次，注意scope--%>
                                 <c:set var="level" value="0" scope="request" />
-                                <c:import url="module_item.jsp" />
+                                <c:import url="binding_item.jsp" />
                                 </tbody>
                             </table>
                         </div>
