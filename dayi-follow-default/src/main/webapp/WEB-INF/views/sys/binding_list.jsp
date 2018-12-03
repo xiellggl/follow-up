@@ -4,7 +4,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8" />
-    <title>模块管理</title>
+    <title>绑定模块</title>
     <%@include file="/inc/followup/csslink.jsp"%>
 </head>
 <body class="no-skin">

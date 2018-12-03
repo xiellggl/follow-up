@@ -67,12 +67,6 @@
                                 <c:import url="module_item.jsp" />
                                 </tbody>
                             </table>
-                            <%--<select class="select" size="1" name="type" id="type">--%>
-                                <%--<option value="1">表格</option>--%>
-                                <%--<option value="2">折线图</option>--%>
-                            <%--</select>--%>
-                            <%--<div id="shouhou1" style>表格区域</div>--%>
-                            <%--<div id="shouhou2" style>折线图区域</div>--%>
                         </div>
                     </div>
                 </div>
@@ -187,22 +181,8 @@
                 $this.removeClass('fa-chevron-down').addClass('fa-chevron-up');
             }
         });
-        // $(function() {
-        //     //隐藏div
-        //     $("#shouhou1").show();
-        //     $("#shouhou2").hide();
-        //     //给div添加change事件
-        //     $("#type").change(function() {
-        //         if($(this).val() == 1 ) {
-        //             $("#shouhou1").show();
-        //             $("#shouhou2").hide();
-        //         } else if($(this).val() == 2 ) {
-        //             $("#shouhou2").show();
-        //             $("#shouhou1").hide();+
-        //         }
-        //     })
-        // })
     });
 </script>
+
 </body>
 </html>
