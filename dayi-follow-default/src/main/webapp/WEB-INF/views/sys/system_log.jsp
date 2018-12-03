@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
-<%@include file="/inc/taglib.jsp"%>
+<%@include file="/inc/followup/taglib.jsp"%>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>日志管理</title>
     <c:set var="pageName" value="financeUcOrgPage" />
-    <%@include file="/inc/finance/csslink.jsp"%>
+    <%@include file="/inc/followup/csslink.jsp"%>
 </head>
 <body>
 <div class="main-container" id="main-container">
