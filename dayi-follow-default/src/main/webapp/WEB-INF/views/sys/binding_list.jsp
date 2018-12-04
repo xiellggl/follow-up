@@ -37,6 +37,56 @@
                     </a>
                 </div>
 
+                <div class="row">
+                    <form class="form-horizontal" style="max-width: 800px;">
+                        <div class="clearfix maintop">
+                            <div class="col-xs-4 col-sm-3 btn-sespan">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="ace-icon glyphicon glyphicon-phone"></i>
+                                    </span>
+                                    <input type="text" name="filter_LIKEANYWHERES_mobile" class="form-control admin_sea"
+                                           value="${param.filter_LIKEANYWHERES_mobile}" placeholder="功能名称："/>
+                                </div>
+                            </div>
+                            <div class="col-xs-4 col-sm-3 btn-sespan">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="ace-icon fa fa-cog"></i>
+                                    </span>
+                                    <select name="myDeptId" class="form-control admin_sea">
+                                        <option value="">绑定状态：</option>
+                                        <c:forEach var="item" items="${deptList}">
+                                            <option
+                                                    value="${item.id}" ${myDeptId eq item.id?"selected":''}>${item.treeName}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xs-4 col-sm-3 btn-sespan">
+                                <div class="btn-group dropup">
+                                    <button type="submit" class="btn btn-xs btn-purple">
+                                        <span class="ace-icon fa fa-search"></span>
+                                        查询
+                                    </button>
+                                    <button data-toggle="dropdown" class="btn btn-xs btn-info dropdown-toggle hidden visible-xs" aria-expanded="false">
+                                        <span class="ace-icon fa fa-caret-down icon-only"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="./list">绑定功能</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <a href="./list" class="btn btn-xs btn-info hidden-xs">
+                                    <span class="ace-icon fa fa-globe"></span>
+                                    绑定功能
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
                 <div class="col-xs-12">
                     <div class="row">
                         <div class="space-6"></div>
@@ -78,6 +128,13 @@
 
                                 </tbody>
                             </table>
+
+                            <c:if test="${not empty page.items}">
+                                <div class="pagerBar" id="pagerBar">
+                                    <common:page2 url="${pageUrl}" type="3"/>
+                                </div>
+                            </c:if>
+
                         </div>
                     </div>
                 </div>
