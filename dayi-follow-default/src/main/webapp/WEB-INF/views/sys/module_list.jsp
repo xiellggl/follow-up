@@ -59,16 +59,11 @@
 
                                 <c:if test="${empty topDeptList}">
                                     <tr>
-                                        <td colspan="6" class="no_data">暂无角色，请<a href="javascript:;" data-act="addDept">新增角色</a></td>
+                                        <td colspan="6" class="no_data">暂无模块，请<a href="javascript:;" data-act="addDept">新增模块</a></td>
                                     </tr>
                                 </c:if>
 
-                                <%--自增序号，注意scope--%>
-                                <c:set var="index" value="0" scope="request" />
-
-                                <%--记录树的层次，注意scope--%>
-                                <c:set var="level" value="0" scope="request" />
-
+                                <c:forEach var="i" begin="1" end="5">
                                 <tr data-id="${item.id}" data-pid="${item.pid}">
                                     <td> <i class="fa fa-chevron-dcu fa-chevron-down" data-flag="1"></i></td>
                                     <td>&nbsp首页</td>
@@ -120,6 +115,7 @@
                                             <i class="ace-icon fa fa-exchange bigger-130 red"></i></a>
                                     </td>
                                 </tr>
+                                </c:forEach>
 
                                 </tbody>
                             </table>

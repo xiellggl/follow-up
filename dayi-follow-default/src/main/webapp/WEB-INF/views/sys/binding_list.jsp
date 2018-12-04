@@ -33,7 +33,7 @@
                         </small>
                     </h1>
                     <a href="#" class="pull-right">
-                        <span class="btn btn-primary">添加模块</span>
+                        <span class="btn btn-primary">添加功能</span>
                     </a>
                 </div>
 
@@ -56,16 +56,11 @@
 
                                 <c:if test="${empty topDeptList}">
                                     <tr>
-                                        <td colspan="5" class="no_data">暂无模块，请<a href="javascript:;" data-act="addDept">新增模块</a></td>
+                                        <td colspan="5" class="no_data">暂无功能，请<a href="javascript:;" data-act="addDept">新增功能</a></td>
                                     </tr>
                                 </c:if>
 
-                                <%--自增序号，注意scope--%>
-                                <c:set var="index" value="0" scope="request" />
-
-                                <%--记录树的层次，注意scope--%>
-                                <c:set var="level" value="0" scope="request" />
-
+                                <c:forEach var="i" begin="1" end="5">
                                 <tr data-id="${item.id}" data-pid="${item.pid}">
                                     <td>这是功能权限</td>
                                     <td>http://spotnewuc.fiidee.loc/#/admin/member/user </td>
@@ -79,6 +74,7 @@
                                             <i class="ace-icon fa fa-trash-o bigger-130 red"></i></a>
                                     </td>
                                 </tr>
+                                </c:forEach>
 
                                 </tbody>
                             </table>
