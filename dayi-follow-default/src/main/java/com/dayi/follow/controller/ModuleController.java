@@ -36,7 +36,8 @@ public class ModuleController {
     ModuleService moduleService;
 
     /**
-     * 所有菜单
+     * 加载所有菜单
+     * @return
      */
     @RequestMapping("/menus")
     @ResponseBody
@@ -47,10 +48,14 @@ public class ModuleController {
 
     /**
      * 新增模块
+     * @param request
+     * @param module
+     * @return
      */
     @RequestMapping("/add/save")
     @ResponseBody
     public BizResult addSave(HttpServletRequest request, Module module) {
+        // 获取当前用户信息，设置操作人
         AccountInfo accountInfo = AuthorizationManager.getCurrentLoginUser(request);
         if (null == accountInfo) {
             return BizResult.fail("请先登录.");
@@ -65,16 +70,23 @@ public class ModuleController {
      */
     @RequestMapping("/edit")
     @ResponseBody
-    public BizResult edit(Module module) {
-        return BizResult.succ(moduleService.getModule(module.getId()));
+    public BizResult edit(String id) {
+        if (Misc.isEmpty(id)) {
+            return BizResult.fail("请选择要编辑的模块.");
+        }
+        return BizResult.succ(moduleService.getModule(id));
     }
 
     /**
      * 编辑保存模块
+     * @param request
+     * @param module
+     * @return
      */
     @RequestMapping("/edit/save")
     @ResponseBody
     public BizResult save(HttpServletRequest request, Module module) {
+        // 获取当前用户信息，设置操作人
         AccountInfo accountInfo = AuthorizationManager.getCurrentLoginUser(request);
         if (null == accountInfo) {
             return BizResult.fail("请先登录.");
@@ -85,7 +97,9 @@ public class ModuleController {
     }
 
     /**
-     * 删除
+     * 删除模块
+     * @param request
+     * @return
      */
     @RequestMapping("/delete")
     @ResponseBody
@@ -94,14 +108,19 @@ public class ModuleController {
         if (!Misc.isEmpty(ids)) {
             String[] idArr = ids.split(",");
             for (String id : idArr) {
-                moduleService.deleteModule(id);
+                if (!moduleService.deleteModule(id)) {
+                    return BizResult.FAIL;
+                }
             }
         }
         return BizResult.SUCCESS;
     }
 
     /**
-     * 列表查询
+     * 分页查询模块列表
+     * @param moduleSearchVo
+     * @param model
+     * @return
      */
     @RequestMapping("/list")
     public String list(ModuleSearchVo moduleSearchVo, Model model) {
