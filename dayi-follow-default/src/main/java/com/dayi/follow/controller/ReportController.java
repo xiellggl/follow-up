@@ -12,7 +12,9 @@ import com.dayi.follow.service.ReportService;
 import com.dayi.follow.util.PageUtil;
 import com.dayi.follow.util.StringUtil;
 import com.dayi.follow.vo.LoginVo;
+import com.dayi.follow.vo.export.AdminWeekReportExport;
 import com.dayi.follow.vo.export.TeamDailyDetailExport;
+import com.dayi.follow.vo.report.AdminWeekVo;
 import com.dayi.follow.vo.report.ReportDailyVo;
 import com.dayi.mybatis.support.Page;
 import org.apache.commons.lang3.StringUtils;
@@ -165,10 +167,107 @@ public class ReportController extends BaseController {
 
         page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
 
-        page = reportService.findTeamWeek(page, currVo.getDeptId(), date);
+        List<ReportDailyVo> teamWeek = reportService.findTeamWeek(currVo.getDeptId(), date);
 
-        String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
-        request.setAttribute("pageUrl", pageUrl);
+        model.addAttribute("teamWeek", teamWeek);
+        return "/followup/uc/log/mydaily";
+    }
+
+    /**
+     * 周报
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping("/month")
+    public String month(HttpServletRequest request, Model model) {
+        LoginVo currVo = userComponent.getCurrUser(request);
+
+        String date = request.getParameter("date");
+
+        ReportDailyVo week = reportService.getWeek(currVo.getId(), date);
+
+        model.addAttribute("week", week);
+        return "/followup/uc/log/mydaily";
+    }
+
+    /**
+     * 团队周报
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping("/team/month")
+    public String teamMonth(HttpServletRequest request, Page page, Model model) {
+        LoginVo currVo = userComponent.getCurrUser(request);
+
+        String date = request.getParameter("date");
+
+        page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
+
+        List<ReportDailyVo> teamMonth = reportService.findTeamMonth(currVo.getDeptId(), date);
+
+        model.addAttribute("teamMonth", teamMonth);
+        return "/followup/uc/log/mydaily";
+    }
+
+    /**
+     * 管理员周报
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping("/admin/week")
+    public String adminWeek(HttpServletRequest request, Page page, Model model) {
+        LoginVo currVo = userComponent.getCurrUser(request);
+
+        String date = request.getParameter("date");
+
+        page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
+
+        page = reportService.findAdminWeek(page, currVo.getDeptId(), date);
+
+        page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
+        model.addAttribute("page", page);
+        return "/followup/uc/log/mydaily";
+    }
+
+    /**
+     * 管理员周报
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping("/admin/week/export")
+    public void adminWeekExport(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        LoginVo currVo = userComponent.getCurrUser(request);
+
+        String date = request.getParameter("date");
+
+        List<AdminWeekVo> adminWeekVos = reportService.exportAdminWeek(currVo.getDeptId(), date);
+
+        String fileTitle = "资产管理部" + date + "周报";
+        String fileName = fileTitle;
+        AdminWeekReportExport export = new AdminWeekReportExport(fileName, fileTitle, adminWeekVos);
+        export.exportExcel(request, response);
+    }
+
+    /**
+     * 管理员月报
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping("/admin/month")
+    public String adminMonth(HttpServletRequest request, Page page, Model model) {
+        LoginVo currVo = userComponent.getCurrUser(request);
+
+        String date = request.getParameter("date");
+
+        page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
+
+        page = reportService.findAdminMonth(page, currVo.getDeptId(), date);
+
         model.addAttribute("page", page);
         return "/followup/uc/log/mydaily";
     }

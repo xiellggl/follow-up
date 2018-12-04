@@ -33,9 +33,9 @@ public class TeamDailyDetailExport extends AbstractExcel<ReportDailyVo> {
         // 姓名
         column2.setValue(vo.getName());
         // 今日新开户数
-        column3.setValue(vo.getOpenNum());
+        column3.setValue(vo.getOpenAccountNum());
         // 今日创客净增资金规模
-        column4.setValue(vo.getManageFundGrowthFm());
+        column4.setValue(vo.getManageGrowthFundFm());
         // 网银转入总额
         column5.setValue(vo.getInCashFm());
         // 转出到卡总额

@@ -2,10 +2,12 @@ package com.dayi.follow.controller;
 
 import com.dayi.common.util.BizResult;
 import com.dayi.common.util.Misc;
+import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.model.follow.Module;
 import com.dayi.follow.service.ModuleService;
 import com.dayi.follow.model.follow.Menu;
 import com.dayi.follow.service.PermissionService;
+import com.dayi.follow.vo.LoginVo;
 import com.dayi.follow.vo.PermissionVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -29,6 +31,8 @@ public class ModuleController {
     @Resource
     ModuleService moduleService;
     @Resource
+    UserComponent userComponent;
+    @Resource
     PermissionService permissionService;
     /**
      * 所有菜单
@@ -43,7 +47,8 @@ public class ModuleController {
      * 新增模块
      */
     @RequestMapping("/add/save")
-    public BizResult addSave(Module module) {
+    public BizResult addSave(Module module,HttpServletRequest request) {
+        LoginVo currUser = userComponent.getCurrUser(request);
         return moduleService.addModule(module) ? BizResult.SUCCESS : BizResult.FAIL;
     }
 

@@ -210,7 +210,7 @@ public class ModuleServiceImpl implements ModuleService {
 
 
     @Override
-    @Log(target = OperateLog.class, action = BaseLog.LogAction.ADD, what = "模块管理", note = "添加模块",authorName = "")
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.ADD, what = "模块管理", note = "添加模块")
     public boolean addModule(Module module) {
         if (module.getParentid() == null) {
             module.setParentid("");
