@@ -12,6 +12,9 @@ import java.util.List;
  */
 public interface ReportMapper extends BaseMapper<IndexVo> {
 
-    List<DailyVo> findDailyList(String followId, String startDate, String endDate, Integer limitStart, Integer limitEnd);
-    long findDailyCount(String followId, String startDate, String endDate);
+    List<DailyVo> findDaily(List<String> followIds, String startDate, String endDate, Integer limitStart, Integer limitEnd);
+    long findDailyCount(List<String>  followIds, String startDate, String endDate);
+
+    List<DailyVo> findTeamDaily(List<String> followIds, String startDate, String endDate, Integer limitStart, Integer limitEnd);
+    long findTeamDailyCount(List<String>  followIds, String startDate, String endDate);
 }

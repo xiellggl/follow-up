@@ -32,6 +32,9 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public Page findDailyPage(Page page, String followId, String betweenDate) {
+        List<String> followIds = new ArrayList<String>();
+        followIds.add(followId);
+
         String startDate = "";
         String endDate = "";
         if (!StringUtils.isBlank(betweenDate)) {
@@ -40,9 +43,9 @@ public class ReportServiceImpl implements ReportService {
             endDate = DateTime.parse(split[1]).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
         }
 
-        List<DailyVo> dailyList = reportMapper.findDailyList(followId, startDate, endDate, page.getStartRow(), page.getPageSize());
+        List<DailyVo> dailyList = reportMapper.findDaily(followIds, startDate, endDate, page.getStartRow(), page.getPageSize());
 
-        long dailyCount = reportMapper.findDailyCount(followId, startDate, endDate);
+        long dailyCount = reportMapper.findDailyCount(followIds, startDate, endDate);
         page.setResults(dailyList);
         page.setTotalRecord(dailyCount);
         return page;
@@ -50,6 +53,21 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public Page findTeamDailyPage(Page page, String deptId, String betweenDate) {
-        return null;
+        List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
+
+        String startDate = "";
+        String endDate = "";
+        if (!StringUtils.isBlank(betweenDate)) {
+            String[] split = StringUtils.split(betweenDate, ",");
+            startDate = split[0];
+            endDate = DateTime.parse(split[1]).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
+        }
+
+        List<DailyVo> dailyList = reportMapper.findTeamDaily(followIds, startDate, endDate, page.getStartRow(), page.getPageSize());
+
+        long dailyCount = reportMapper.findDailyCount(followIds, startDate, endDate);
+        page.setResults(dailyList);
+        page.setTotalRecord(dailyCount);
+        return page;
     }
 }

@@ -78,7 +78,7 @@ public class ReportController extends BaseController {
 
         page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
 
-        page= reportService.findTeamDaily(page,currVo.getId(),date);
+        page= reportService.findTeamDailyPage(page,currVo.getId(),date);
 
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
         request.setAttribute("pageUrl", pageUrl);
@@ -86,6 +86,31 @@ public class ReportController extends BaseController {
         model.addAttribute("date", date);
         return "/followup/uc/log/mydaily";
     }
+
+    /**
+     * 团队日报
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping("/team/daily/detail")
+    public String teamDailyDetail(HttpServletRequest request, Page page, Model model) {
+        String deptId = request.getParameter("deptId");
+
+        String date = request.getParameter("date");//查询条件
+
+        page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
+
+        page= reportService.findTeamDailyPage(page,deptId,date);
+
+        String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
+        request.setAttribute("pageUrl", pageUrl);
+        model.addAttribute("page", page);
+        model.addAttribute("date", date);
+        return "/followup/uc/log/mydaily";
+    }
+
+
 
 
 

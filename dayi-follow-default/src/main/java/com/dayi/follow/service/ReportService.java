@@ -19,4 +19,9 @@ public interface ReportService {
     Page findTeamDailyPage(Page page, String deptId, String betweenDate);
 
 
+//    Page findDailyPage(Page page, String followId, String betweenDate);
+//
+//    Page findTeamDailyPage(Page page, String deptId, String betweenDate);
+
+
 }
