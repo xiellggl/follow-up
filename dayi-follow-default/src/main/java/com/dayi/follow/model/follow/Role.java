@@ -5,6 +5,10 @@ import com.dayi.common.util.NameItems;
 import com.dayi.mybatis.support.BaseModel;
 import com.dayi.user.authorization.authz.RoleBase;
 
+import javax.persistence.Transient;
+import java.io.Serializable;
+import java.util.List;
+
 
 /**
  * @author xiell
@@ -28,6 +32,9 @@ public class Role extends BaseModel implements RoleBase {
      * 状态（-1=已删除，0=禁用，1=启用）
      */
     private Integer status;
+
+    @Transient
+    private List<Permission> permissionList;
 
     /**
      * 状态 - 已删除
@@ -90,6 +97,11 @@ public class Role extends BaseModel implements RoleBase {
         return this.status == nameItem.id;
     }
 
+    public List<Permission> getPermissionList() {
+        return permissionList;
+    }
 
-
+    public void setPermissionList(List<Permission> permissionList) {
+        this.permissionList = permissionList;
+    }
 }

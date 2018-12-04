@@ -24,6 +24,7 @@
                 </ul><!-- /.breadcrumb -->
             </div>
             <div class="page-content">
+
                 <div class="page-header clearfix">
                     <h1 class="pull-left">
                         您当前操作
@@ -32,7 +33,11 @@
                             角色管理
                         </small>
                     </h1>
+                    <a href="#" class="pull-right">
+                        <span class="btn btn-primary" data-act="addDept">添加角色</span>
+                    </a>
                 </div>
+
                 <div class="col-xs-12">
                     <div class="row">
                         <div class="space-6"></div>
@@ -50,16 +55,11 @@
 
                             <c:if test="${empty topDeptList}">
                                 <tr>
-                                    <td colspan="6" class="no_data">暂无模块，请<a href="javascript:;" data-act="addDept">新增模块</a></td>
+                                    <td colspan="6" class="no_data">暂无角色，请<a href="javascript:;" data-act="addDept">新增角色</a></td>
                                 </tr>
                             </c:if>
 
-                            <%--自增序号，注意scope--%>
-                            <c:set var="index" value="0" scope="request" />
-
-                            <%--记录树的层次，注意scope--%>
-                            <c:set var="level" value="0" scope="request" />
-
+                            <c:forEach var="i" begin="1" end="5">
                             <tr>
                                 <td>资产管理中心总经理</td>
                                 <td>资产管理中心头号人物，神秘而美丽...</td>
@@ -76,9 +76,17 @@
                                         <i class="ace-icon fa fa-trash-o bigger-130 red"></i></a>
                                 </td>
                             </tr>
+                            </c:forEach>
 
                             </tbody>
                         </table>
+
+                        <c:if test="${not empty page.items}">
+                            <div class="pagerBar" id="pagerBar">
+                                <common:page2 url="${pageUrl}" type="3"/>
+                            </div>
+                        </c:if>
+
                     </div>
                 </div>
             </div>

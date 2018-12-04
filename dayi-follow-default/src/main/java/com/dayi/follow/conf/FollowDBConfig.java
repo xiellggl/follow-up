@@ -1,6 +1,7 @@
 package com.dayi.follow.conf;
 
 import com.dayi.mybatis.spring.plus.MybatisSqlSessionFactoryBean;
+import com.dayi.mybatis.spring.plus.plugins.page.PaginationInterceptor;
 import com.dayi.mybatis.spring.spring.SqlSessionFactoryBean;
 import com.dayi.mybatis.support.BaseMapper;
 import org.apache.ibatis.plugin.Interceptor;
@@ -48,6 +49,9 @@ public class FollowDBConfig {
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         Resource[] resource = resolver.getResources("classpath:com/dayi/follow/dao/follow/mapper/*.xml");
         sqlSessionFactoryBean.setMapperLocations(resource);
+
+        sqlSessionFactoryBean.setPlugins(new Interceptor[]{new PaginationInterceptor()});
+        sqlSessionFactoryBean.afterPropertiesSet();
 
         return sqlSessionFactoryBean.getObject();
     }

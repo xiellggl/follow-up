@@ -2,6 +2,7 @@ package com.dayi.follow.service;
 
 
 import com.dayi.follow.model.follow.Role;
+import com.dayi.mybatis.support.Page;
 
 import java.util.List;
 /**
@@ -21,6 +22,12 @@ public interface RoleService {
      */
     Role getRole(String id);
 
+    /**
+     * 根据id查询角色(包括关联的权限)
+     * @param id
+     * @return
+     */
+    Role getById(String id);
 
     /**
      * 添加角色
@@ -38,14 +45,6 @@ public interface RoleService {
      */
     boolean updateRole(Role role, String[] permissionIds);
 
-
-    /**
-     * 删除角色信息
-     * @param id
-     * @return
-     */
-    boolean deleteRole(String id);
-
     /**
      * 根据ids查询角色列表
      *
@@ -53,4 +52,24 @@ public interface RoleService {
      * @return
      */
     List<Role> queryRolesByIds(String roleIds);
+
+    /**
+     * 分页查询角色列表
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
+    Page<Role> searchRole(int pageNo, int pageSize);
+
+    /**
+     * 加载角色菜单(过滤没启用的角色)
+     * @return
+     */
+    List<Role> listAll();
+
+    /**
+     * 删除角色
+     * @param id
+     */
+    boolean delete(String id);
 }

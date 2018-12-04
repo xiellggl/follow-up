@@ -67,6 +67,7 @@
                         </div>
                     </form>
                 </div>
+
                 <div class="space-10"></div>
                 <div class="row" id="listPan">
                     <div class="col-xs-12">
@@ -88,6 +89,7 @@
                             </tr>
                             </c:if>
 
+                            <c:forEach var="i" begin="1" end="5">
                             <tr>
                                 <td>老陈</td>
                                 <td>首页信息</td>
@@ -95,6 +97,7 @@
                                 <td>2016-02-20 14:44:43</td>
                                 <td>172.28.13.41</td>
                             </tr>
+                            </c:forEach>
 
                             </tbody>
                         </table>
