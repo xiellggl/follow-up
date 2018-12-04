@@ -2,8 +2,10 @@ package com.dayi.follow.vo.report;
 
 
 import java.math.BigDecimal;
-
+//管理员月报
 public class AdminMonthVo {
+    private String id;
+
     private String deptName;//部门名称
 
     private String name;//姓名
@@ -82,5 +84,13 @@ public class AdminMonthVo {
 
     public void setManageFundGrowth(BigDecimal manageFundGrowth) {
         this.manageFundGrowth = manageFundGrowth;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

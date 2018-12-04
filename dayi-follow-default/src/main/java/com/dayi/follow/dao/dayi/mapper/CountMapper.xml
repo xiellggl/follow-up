@@ -114,7 +114,7 @@
       WHERE a.del_status != -1 and fa.agent_id is not null
     </select>
 
-    <select id="countCusTypeRatio" parameterType="java.lang.String" resultType="com.dayi.follow.vo.CusTypeRatioVo">
+    <select id="countCusTypeRatio" parameterType="java.lang.String" resultType="com.dayi.follow.vo.index.CusTypeRatioVo">
         SELECT customer_type cusType,count(*)num from agent a
         LEFT JOIN (
           SELECT agent_id from ${assistDataBase}.follow_agent where follow_id =${followId}
@@ -241,7 +241,7 @@
         WHERE o.id= ${orgId} and o.org_type =4 and o.del_status != -1
     </select>
 
-    <select id="countDaily" resultType="com.dayi.follow.vo.DailyVo" parameterType="java.lang.String">
+    <select id="countDaily" resultType="com.dayi.follow.vo.index.DailyVo" parameterType="java.lang.String">
         SELECT date(create_date) date,open_account_num openNum,
         in_cash inCash,in_cash_num inCashNum,
         out_cash outCash,out_cash_num outCashNum
@@ -252,7 +252,7 @@
 
     </select>
 
-    <select id="countTeamDaily" resultType="com.dayi.follow.vo.DailyVo" parameterType="java.lang.String">
+    <select id="countTeamDaily" resultType="com.dayi.follow.vo.index.DailyVo" parameterType="java.lang.String">
         SELECT date(create_date) date,open_account_num openNum,
         in_cash inCash,in_cash_num inCashNum,
         out_cash outCash,out_cash_num outCashNum

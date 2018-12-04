@@ -3,7 +3,7 @@ package com.dayi.follow.vo.followup;
 import com.dayi.follow.model.follow.Department;
 
 import java.util.Date;
-
+//跟进人管理列表
 public class FollowUpListVo {
     private String id;
 

@@ -17,11 +17,7 @@ import com.dayi.follow.model.follow.Organization;
 import com.dayi.follow.service.CountService;
 import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.OrgService;
-import com.dayi.follow.vo.*;
-import com.dayi.follow.vo.index.FundRankVo;
-import com.dayi.follow.vo.index.SerCusStatusVo;
-import com.dayi.follow.vo.index.SevenInCashVo;
-import com.dayi.follow.vo.index.SevenOpenVo;
+import com.dayi.follow.vo.index.*;
 import com.dayi.follow.vo.org.OrgDataVo;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -108,8 +104,8 @@ public class CountServiceImpl implements CountService {
         return statusVo;
     }
 
-    public SerCusStatusVo countSerCusStatus(List<String> deptIds) {
-        SerCusStatusVo serCusStatusVo = new SerCusStatusVo();
+    public AdminCusStatusVo countSerCusStatus(List<String> deptIds) {
+        AdminCusStatusVo serCusStatusVo = new AdminCusStatusVo();
 
         //跟进人数量
         List<FollowUp> followUps = followUpMapper.findByDeptIds(deptIds);

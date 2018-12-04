@@ -1,6 +1,6 @@
-package com.dayi.follow.vo;
+package com.dayi.follow.vo.index;
 
-
+//客户状态
 public class CusStatusVo {
     private long cusNum = 0;  // 客户总数
     private long hadLinkNum = 0;  // 已联系--用户人数

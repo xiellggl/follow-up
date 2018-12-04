@@ -16,9 +16,6 @@ spring:
       max-file-size: 5MB
       max-request-size: -1
 
-mybatis:
-  mapper-locations: classpath:com/dayi/user/manager/**/mapper/*.xml
-
 dayi:
   serverid: 160
   component:

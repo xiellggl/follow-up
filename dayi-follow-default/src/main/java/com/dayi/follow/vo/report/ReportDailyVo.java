@@ -2,13 +2,13 @@ package com.dayi.follow.vo.report;
 
 
 import java.math.BigDecimal;
-
+//日报数据,周报，月报都有用到
 public class ReportDailyVo {
-    //日报数据
+
     private Integer openAccountNum;//新开户数
 
-    private BigDecimal growthFund;//净增
-    private String growthFundFm;//净增（格式化：显示前两位和小数点位，其余用*标识）
+    private BigDecimal growthFund;//资金净增
+    private String growthFundFm;//资金净增（格式化：显示前两位和小数点位，其余用*标识）
 
     private BigDecimal inCash;//入金总额
     private String inCashFm;//入金总额（格式化：显示前两位和小数点位，其余用*标识）

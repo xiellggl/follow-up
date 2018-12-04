@@ -3,7 +3,7 @@ package com.dayi.follow.vo.index;
 
 import com.dayi.follow.enums.AgentCusTypeEnum;
 import com.dayi.follow.enums.FundRankEnum;
-
+//首页资产阶级图
 public class FundRankVo {
     private Integer num;
     private Integer fundRank;

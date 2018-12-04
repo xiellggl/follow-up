@@ -5,10 +5,7 @@ import com.dayi.common.util.DateUtil;
 import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.service.*;
 import com.dayi.follow.vo.*;
-import com.dayi.follow.vo.index.FundRankVo;
-import com.dayi.follow.vo.index.SerCusStatusVo;
-import com.dayi.follow.vo.index.SevenInCashVo;
-import com.dayi.follow.vo.index.SevenOpenVo;
+import com.dayi.follow.vo.index.*;
 import com.dayi.follow.vo.org.OrgDataVo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -168,7 +165,7 @@ public class IndexController {
         //获取下级部门
         List<String> deptIds = deptService.getSubDeptIds(currVo.getDeptId());
 
-        SerCusStatusVo serCusStatus = countService.countSerCusStatus(deptIds);
+        AdminCusStatusVo serCusStatus = countService.countSerCusStatus(deptIds);
         return BizResult.succ(serCusStatus);
     }
 

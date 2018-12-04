@@ -2,7 +2,7 @@ package com.dayi.follow.vo.org;
 
 
 import java.math.BigDecimal;
-
+//创客数据
 public class OrgDataVo {
 
     private Integer orgNum;//KA创客人数

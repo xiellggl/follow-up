@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @date 2018/11/13
  */
 @SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
-@MapperScan(value = {"com.dayi.user.manager.dao"},markerInterface = BaseMapper.class)
 @EnableTransactionManagement
 public class FollowApplication {
 

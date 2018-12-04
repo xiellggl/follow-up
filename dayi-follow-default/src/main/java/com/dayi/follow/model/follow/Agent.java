@@ -9,6 +9,7 @@ import java.util.Date;
  * @date 2018/11/14
  */
 public class Agent {
+    private Integer id;
     private Integer inviteLevel;//邀请等级
     private String idCard;          //身份证号码
     private String linkPerson;      //联系人
@@ -120,5 +121,13 @@ public class Agent {
 
     public void setIdCardAddr(String idCardAddr) {
         this.idCardAddr = idCardAddr;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

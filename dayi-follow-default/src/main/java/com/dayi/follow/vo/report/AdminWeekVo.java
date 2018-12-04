@@ -2,7 +2,7 @@ package com.dayi.follow.vo.report;
 
 
 import java.math.BigDecimal;
-
+//管理员周报
 public class AdminWeekVo {
     private String deptName;//部门名称
 

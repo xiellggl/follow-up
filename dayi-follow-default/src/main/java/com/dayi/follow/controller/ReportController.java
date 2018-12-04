@@ -212,6 +212,27 @@ public class ReportController extends BaseController {
     }
 
     /**
+     * 管理员日报
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping("/admin/daily")
+    public String adminDaily(HttpServletRequest request, Page page, Model model) {
+        LoginVo currVo = userComponent.getCurrUser(request);
+
+        String date = request.getParameter("date");
+        String deptName = request.getParameter("deptName");
+
+        page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
+
+        page = reportService.findAdminDaily(page, currVo.getDeptId(), deptName, date);
+
+        model.addAttribute("page", page);
+        return "/followup/uc/log/mydaily";
+    }
+
+    /**
      * 管理员周报
      *
      * @param request

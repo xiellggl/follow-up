@@ -13,7 +13,7 @@ import java.util.Date;
 /**
  * @author xiell
  * @date 2018/11/14
- * 跟进人管理中的明细列表
+ * 跟进人管理中的明细列表,代理商和创客共用
  */
 public class FMDetailListVo {
     private Integer id;//代理商id

@@ -6,7 +6,6 @@ import com.dayi.follow.dao.follow.ReportMapper;
 import com.dayi.follow.service.CountService;
 import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.ReportService;
-import com.dayi.follow.vo.DailyVo;
 import com.dayi.follow.vo.report.AdminMonthVo;
 import com.dayi.follow.vo.report.AdminWeekVo;
 import com.dayi.follow.vo.report.ReportDailyVo;
@@ -153,6 +152,27 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
+    public Page<AdminWeekVo> findAdminDaily(Page page, String deptId,String deptName, String betweenDate) {
+        String startDate = "";
+        String endDate = "";
+        if (!StringUtils.isBlank(betweenDate)) {
+            String[] split = StringUtils.split(betweenDate, ",");
+            startDate = split[0];
+            endDate = DateTime.parse(split[1]).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
+        }
+
+        List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
+
+        List<ReportDailyVo> adminDaily = reportMapper.findAdminDaily(followIds, deptName, startDate, endDate, page.getStartRow(), page.getPageSize());
+        int num = reportMapper.getAdminDailyNum(followIds, deptName, startDate, endDate);
+
+        page.setResults(adminDaily);
+        page.setTotalRecord(num);
+
+        return page;
+    }
+
+    @Override
     public Page<AdminWeekVo> findAdminWeek(Page page, String deptId, String betweenDate) {
 
         String startDate = "";
@@ -198,35 +218,29 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public Page<ReportDailyVo> findAdminMonth(Page page, String deptId, String month) {
-        String startDate1 = "";//本月第一天
-        String endDate1 = "";
+        String startDate = "";
+        String endDate = "";
 
-        String startDate2 = "";//上月第一天
-        String endDate2 = "";
+        String lastStartDate = "";
         if (!StringUtils.isBlank(month)) {
-            startDate1 = DateTime.parse(month).dayOfMonth().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
-            endDate1 = DateTime.parse(month).dayOfMonth().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
-            startDate2 = DateTime.parse(month).plusMonths(-1).dayOfMonth().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
-            endDate2 = DateTime.parse(month).plusMonths(-1).dayOfMonth().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
+            startDate = DateTime.parse(month).dayOfMonth().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
+            lastStartDate = DateTime.parse(month).dayOfMonth().withMaximumValue().plusDays(-1).toString("yyyy-MM-dd HH:mm:ss");
+            endDate = DateTime.parse(month).dayOfMonth().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
 
         }
 
         List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
 
+        List<AdminMonthVo> list = reportMapper.findAdminMonth(followIds, startDate, endDate, page.getStartRow(), page.getPageSize());//本月
 
-        List<AdminMonthVo> thisMonth = reportMapper.findAdminMonth(followIds, startDate1, endDate1, page.getStartRow(), page.getPageSize());//本月
-
-        List<AdminMonthVo> perMonth = reportMapper.findAdminMonth(followIds, startDate2, endDate2, page.getStartRow(), page.getPageSize());//本月
-
-        int size = followUpLogs.size();
-        List<FollowUpLogVo> preMonthLogs = followUpLogDao.countMonthReport(null, DateUtil.formatDate(preStartDate), DateUtil.formatDate(preEndDate), flowId, deptId);//上月
-        followUpLogs = countRingGrowthRatio(page, followUpLogs, preMonthLogs);//统计环比增长率
-        Date dayStart = DateUtil.getDayStart();
-        if (dayStart.equals(endDate)) {//今天是最后一天
-            followUpLogs = addAgentAssert(followUpLogs);//加上代理商资金规模
+        for (AdminMonthVo vo : list) {
+            //获取管理资产
+            double manageFund = reportMapper.getLastManageFund(vo.getId(), lastStartDate, endDate);
+            vo.setManageFund(BigDecimal.valueOf(manageFund));
+            //获取净增
         }
-        page.setItems(followUpLogs);
-        page.setTotalCount(size);
+
+
         return page;
     }
 

@@ -8,9 +8,7 @@ import org.joda.time.DateTime;
 import java.util.List;
 
 /**
- * 跟进代理商/创客明细 导出
- *
- * @author Zenghl
+ * 跟进人管理，代理商/创客明细导出
  */
 public class FollowUpDetailExport extends AbstractExcel<FMDetailListVo> {
 

@@ -42,6 +42,9 @@ public interface ReportService {
     List<ReportDailyVo> findTeamMonth(String deptId, String month);
 
     //管理员周报
+    Page<AdminWeekVo> findAdminDaily(Page page, String deptId,String deptName, String betweenDate);
+
+    //管理员周报
     Page<AdminWeekVo> findAdminWeek(Page page, String deptId, String betweenDate);
     //管理员周报导出
     List<AdminWeekVo> exportAdminWeek(String deptId, String betweenDate);

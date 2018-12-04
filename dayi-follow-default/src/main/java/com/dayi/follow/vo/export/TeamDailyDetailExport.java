@@ -8,7 +8,7 @@ import com.dayi.follow.vo.report.ReportDailyVo;
 import java.util.List;
 
 /**
- * 销售团队日报 导出
+ * 团队日报详细 导出
  *
  * @author xiell
  */

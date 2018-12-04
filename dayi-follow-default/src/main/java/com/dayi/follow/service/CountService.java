@@ -2,11 +2,7 @@ package com.dayi.follow.service;
 
 
 import com.dayi.follow.model.follow.Organization;
-import com.dayi.follow.vo.*;
-import com.dayi.follow.vo.index.FundRankVo;
-import com.dayi.follow.vo.index.SerCusStatusVo;
-import com.dayi.follow.vo.index.SevenInCashVo;
-import com.dayi.follow.vo.index.SevenOpenVo;
+import com.dayi.follow.vo.index.*;
 import com.dayi.follow.vo.org.OrgDataVo;
 
 import java.util.List;
@@ -43,7 +39,7 @@ public interface CountService {
     List<SevenInCashVo> countSevenInCash(String followId);
 
     //    统计客服的客户状态
-    SerCusStatusVo countSerCusStatus(List<String> deptIds);
+    AdminCusStatusVo countSerCusStatus(List<String> deptIds);
 
     //统计创客数据
     OrgDataVo countOrgData(String followId);

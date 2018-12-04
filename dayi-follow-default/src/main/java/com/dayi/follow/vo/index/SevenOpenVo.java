@@ -1,6 +1,6 @@
 package com.dayi.follow.vo.index;
 
-
+//首页近七天开户
 public class SevenOpenVo {
     private Integer num;
     private String dateStr;

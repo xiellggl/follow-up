@@ -7,7 +7,7 @@ import com.dayi.follow.vo.report.AdminWeekVo;
 import java.util.List;
 
 /**
- * 团队周报 导出
+ * 管理员团队周报 导出
  *
  * @author xiell
  */

@@ -4,7 +4,7 @@ package com.dayi.follow.vo.index;
 import com.dayi.follow.util.Misc;
 
 import java.math.BigDecimal;
-
+//首页近七天入金
 public class SevenInCashVo {
     private BigDecimal inCash;//入金总额
     private String inCashFm;//入金总额（格式化：显示前两位和小数点位，其余用*标识）
