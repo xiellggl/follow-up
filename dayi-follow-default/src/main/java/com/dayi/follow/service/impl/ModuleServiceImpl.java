@@ -12,6 +12,10 @@ import com.dayi.follow.model.follow.OperateLog;
 import com.dayi.follow.model.follow.Permission;
 import com.dayi.follow.service.ModuleService;
 import com.dayi.follow.vo.PermissionVo;
+import com.dayi.follow.vo.sys.ModuleSearchVo;
+import com.dayi.mybatis.support.Conditions;
+import com.dayi.mybatis.support.Page;
+import com.dayi.mybatis.support.ext.Restrictions;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -218,6 +222,9 @@ public class ModuleServiceImpl implements ModuleService {
         module.setUpdateTime(new Date());
         module.setId(moduleMapper.getNewId());
         module.setDelStatus(Module.DEL_STATUS_NO.id);
+        if (null == module.getStatus()) {
+            module.setStatus(Module.STATUS_NORMAL.id);
+        }
         return 1 == moduleMapper.add(module);
     }
 
@@ -271,7 +278,24 @@ public class ModuleServiceImpl implements ModuleService {
         return menus;
     }
 
+    @Override
+    public Page<Module> searchModule(ModuleSearchVo moduleSearchVo) {
+        Page<Module> page = new Page<>();
+        page.setPageNo(moduleSearchVo.getPageNo());
+        page.setPageSize(moduleSearchVo.getPageSize());
 
+        Conditions conditions = new Conditions();
+        String name = moduleSearchVo.getName();
+        Integer status = moduleSearchVo.getStatus();
+        if (!Misc.isEmpty(name)) {
+            conditions.add(Restrictions.like("name", "%" + name + "%"));
+        }
+        if (null != status) {
+            conditions.add(Restrictions.eq("status", status));
+        }
+
+        return moduleMapper.searchByConditions(page, conditions);
+    }
 
 }
 

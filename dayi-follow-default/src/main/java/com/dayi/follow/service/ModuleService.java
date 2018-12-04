@@ -5,6 +5,8 @@ import com.dayi.follow.model.follow.Module;
 import com.dayi.follow.model.follow.Menu;
 import com.dayi.follow.model.follow.Permission;
 import com.dayi.follow.vo.PermissionVo;
+import com.dayi.follow.vo.sys.ModuleSearchVo;
+import com.dayi.mybatis.support.Page;
 
 import java.util.List;
 /**
@@ -83,4 +85,11 @@ public interface ModuleService {
      * @return
      */
     List<Menu> eachMenu(List<Menu> menus, String keyword);
+
+    /**
+     * 查询列表
+     * @param moduleSearchVo
+     * @return
+     */
+    Page<Module> searchModule(ModuleSearchVo moduleSearchVo);
 }
