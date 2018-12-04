@@ -23,6 +23,9 @@ public class ReportDailyVo {
     private String date;//日报日期
     private String deptName;//部门名称
 
+    private String name;//姓名
+
+
     public Integer getOpenNum() {
         return openNum;
     }
@@ -109,5 +112,13 @@ public class ReportDailyVo {
 
     public void setManageFundGrowthFm(String manageFundGrowthFm) {
         this.manageFundGrowthFm = manageFundGrowthFm;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

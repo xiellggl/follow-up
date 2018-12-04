@@ -2,60 +2,96 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dayi.follow.dao.follow.ReportMapper">
     <select id="findDailyList" parameterType="map" resultType="com.dayi.follow.vo.report.ReportDailyVo">
-    SELECT * from follow_up_log
-    where follow_id IN
+    SELECT * from follow_up_log a
+    left join (
+        SELECT id,name deptName from department
+    )b on b.id =a.dept_id
+    where a.follow_id IN
     <foreach item="item" index="index" collection="followIds"
              open="(" separator="," close=")">
         #{item}
     </foreach>
     <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
-        and create_date BETWEEN #{startDate} and #{endDate}
+        and a.create_date BETWEEN #{startDate} and #{endDate}
     </if>
-    ORDER  by create_date desc
+    ORDER  by a.create_date desc
+    <if test="null!=limitStart and null!=limitEnd">
     limit #{limitStart},#{limitEnd}
+    </if>
 </select>
 
     <select id="findDailyCount" parameterType="map" resultType="java.lang.Long">
         SELECT count(0) from follow_up_log
-        where follow_id in
+        left join (
+            SELECT id,name deptName from department
+        )b on b.id =a.dept_id
+        where a.follow_id IN
         <foreach item="item" index="index" collection="followIds"
                  open="(" separator="," close=")">
             #{item}
         </foreach>
         <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
-            and create_date BETWEEN #{startDate} and #{endDate}
+            and a.create_date BETWEEN #{startDate} and #{endDate}
         </if>
-        ORDER  by create_date desc
+        ORDER  by a.create_date desc
     </select>
 
-    <select id="findDailyList" parameterType="map" resultType="com.dayi.follow.vo.report.ReportDailyVo">
-        SELECT date(create_date),fd.name deptName,sum(open_account_num)openAccountNum,
-        sum(manage_fund_growth),sum(in_cash),sum(in_cash_num),
-        sum(out_cash),sum(out_cash_num)
-        from follow_up_log
-        where follow_id IN
-        <foreach item="item" index="index" collection="followIds"
-                 open="(" separator="," close=")">
-            #{item}
-        </foreach>
+    <select id="findTeamDaily" parameterType="map" resultType="com.dayi.follow.vo.report.ReportDailyVo">
+        select date(create_date),fd.name ,sum(open_account_num),sum(manage_fund_growth),
+              sum(in_cash),sum(in_cash_num),sum(out_cash),sum(out_cash_num) from follow_up_log
+        left join (
+              SELECT name,id from follow_dept
+        )fd on fd.id=follow_up_log.dept_id
+        WHERE dept_id= #{deptId}
         <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
             and create_date BETWEEN #{startDate} and #{endDate}
         </if>
-        ORDER  by create_date desc
+
+        GROUP BY date(create_date) ORDER BY createDate desc  ;
         limit #{limitStart},#{limitEnd}
     </select>
 
-    <select id="findDailyCount" parameterType="map" resultType="java.lang.Long">
+    <select id="findTeamDailyCount" parameterType="map" resultType="java.lang.Long">
         SELECT count(0) from follow_up_log
-        where follow_id in
-        <foreach item="item" index="index" collection="followIds"
-                 open="(" separator="," close=")">
-            #{item}
-        </foreach>
+        select date(create_date),fd.name ,sum(open_account_num),sum(manage_fund_growth),
+        sum(in_cash),sum(in_cash_num),sum(out_cash),sum(out_cash_num) from follow_up_log
+        left join (
+        SELECT name,id from follow_dept
+        )fd on fd.id=follow_up_log.dept_id
+        WHERE dept_id= #{deptId}
         <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
             and create_date BETWEEN #{startDate} and #{endDate}
         </if>
-        ORDER  by create_date desc
+        GROUP BY date(create_date) ORDER BY createDate desc  ;
+    </select>
+
+    <select id="getWeek" parameterType="map" resultType="com.dayi.follow.vo.report.ReportDailyVo">
+        SELECT dept_id,b.name deptName,link_person followUpName,flow_id,
+              sum(open_account_num),sum(in_cash),
+              sum(out_cash),sum(manage_fund_growth)
+        from follow_up_log a
+        left join (
+        SELECT id,name from department
+        )b on b.id =a.dept_id
+        where a.follow_id =#{followId}
+        <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
+            and a.create_date BETWEEN #{startDate} and #{endDate}
+        </if>
+    </select>
+
+    <select id="findTeamWeek" parameterType="map" resultType="com.dayi.follow.vo.report.ReportDailyVo">
+        select fd.name ,sum(open_account_num),sum(manage_fund_growth),
+                sum(in_cash),sum(in_cash_num),sum(out_cash),sum(out_cash_num)
+        from follow_up_log a
+        left join (
+            SELECT name,id from follow_dept
+        )b on b.id=a.dept_id
+        WHERE dept_id= #{deptId}
+        <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
+            and create_date BETWEEN #{startDate} and #{endDate}
+        </if>
+        group by flow_id  ORDER BY dept_id asc, flow_id asc
+        limit #{limitStart},#{limitEnd}
     </select>
 
 </mapper>
