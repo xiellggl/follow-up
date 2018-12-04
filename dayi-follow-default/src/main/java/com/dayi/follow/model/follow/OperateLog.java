@@ -8,7 +8,4 @@ import com.dayi.component.model.BaseLog;
  */
 public class OperateLog extends BaseLog {
 
-
-
-
 }
