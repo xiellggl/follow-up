@@ -32,6 +32,9 @@
                             用户管理
                         </small>
                     </h1>
+                    <a href="#" class="pull-right">
+                        <span class="btn btn-primary" data-act="addDept">新增用户</span>
+                    </a>
                 </div>
 
             </div>

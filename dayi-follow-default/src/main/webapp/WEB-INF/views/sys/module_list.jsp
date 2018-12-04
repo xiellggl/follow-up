@@ -42,7 +42,7 @@
                         <div class="space-6"></div>
                         <div>
                             <style>
-                                .click-t{display: none;}
+                                .conceal-tr{display: none;}
                             </style>
                             <table class="table table-striped table-bordered table-hover">
                                 <thead>
@@ -58,7 +58,7 @@
                                 <tbody>
                                 <c:if test="${empty topDeptList}">
                                     <tr>
-                                        <td colspan="6" class="no_data">暂无模块，请<a href="javascript:;" data-act="addDept">新增模块</a></td>
+                                        <td colspan="6" class="no_data">暂无角色，请<a href="javascript:;" data-act="addDept">新增角色</a></td>
                                     </tr>
                                 </c:if>
                                 <%--自增序号，注意scope--%>
@@ -81,9 +81,9 @@
         common.head("system",1);
         var editDeptFn = function (id,pid) {
             var id = id || 0, pid = pid||0;
-            var url = "/followup/manage/dept/add";
+            var url = "/followup/module/add";
             if (id > 0) {
-                url = "/followup/manage/dept/update/" + id;
+                url = "/followup/module/dept/update/" + id;
             }
             var html = "";
 
@@ -99,7 +99,7 @@
             var $modal = $("#myModalEditFollowuper");
             $modal.html(html);
             if (id > 0) {
-                $(".modal-title").html("修改部门");
+                $(".modal-title").html("修改模块");
             }
             var $form = $("#form-id");
             $form.validate({
@@ -130,7 +130,7 @@
                 },
                 submitHandler: function (form) {
                     common.ajax.handle({
-                        url: "/followup/manage/dept/dept/save.json",
+                        url: "/followup/module/edit/save.json",
                         data: $form.serialize(),
                     });
                     return false;
@@ -151,30 +151,19 @@
             editDeptFn(id);
         });
 
-        // 是否城市服务商勾选框
-        $('body').on('change','[name="checkbox"]',function () {
-            var mi = this, ckType = mi.checked?1:0;
-            $(mi).siblings('[name="cityServer"]').val(ckType);
-            var $cityInviteCodeBox = $("#cityInviteCodeBox");
-            if(ckType){
-                $cityInviteCodeBox.show().find('input').removeAttr('disabled');
-            }else{
-                $cityInviteCodeBox.hide().find('input').attr('disabled',"disabled");
-            }
-        });
-
         //删除
         $('[data-act="del"]').on("click",function () {
             var id=$(this).closest("tr").data("id");
             layer.confirm('<p class="tc">确定删除此部门及下属所有部门</p>',{title:"温馨提示"},function () {
                 common.ajax.handle({
-                    url:"/followup/manage/dept/dept/del/"+ id + ".json",
+                    url:"/followup/module/delete/"+ id + ".json",
                 });
             });
         });
+        //展开收起交互
         $(".fa-chevron-dcu").on('click', function(event) {
             var flag = $(this).attr("data-flag");
-            $(".click"+flag).toggle(100);
+            $(".click"+flag).toggle(150);
             var $this=$(this);
             if($this.hasClass('fa-chevron-up')){
                 $this.removeClass('fa-chevron-up').addClass('fa-chevron-down');
@@ -184,7 +173,7 @@
         });
         $(".fa-chevron-mcu").on('click', function(event) {
             var flag = $(this).attr("data-flag");
-            $(".link"+flag).toggle(100);
+            $(".link"+flag).toggle(150);
             var $this=$(this);
             if($this.hasClass('fa-chevron-up')){
                 $this.removeClass('fa-chevron-up').addClass('fa-chevron-down');
