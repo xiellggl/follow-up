@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
  * @date 2018/11/13
  */
 @Controller
-@RequestMapping("/followup/org")
+@RequestMapping("/org")
 public class OrgController {
     @Resource
     FollowUpService followUpService;

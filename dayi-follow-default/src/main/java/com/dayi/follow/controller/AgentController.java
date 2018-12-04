@@ -34,7 +34,7 @@ import javax.servlet.http.HttpServletRequest;
  * @date 2018/11/13
  */
 @Controller
-@RequestMapping("/followup/agent")
+@RequestMapping("/agent")
 public class AgentController {
     @Resource
     FollowUpService followUpService;
