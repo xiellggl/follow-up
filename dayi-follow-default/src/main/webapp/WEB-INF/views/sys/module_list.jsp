@@ -42,7 +42,7 @@
                         <div class="space-6"></div>
                         <div>
                             <style>
-                                .conceal-tr{display: none;}
+                                .conceal-t{display: none;}
                             </style>
                             <table class="table table-striped table-bordered table-hover">
                                 <thead>
@@ -55,6 +55,7 @@
                                     <th>操作</th>
                                 </tr>
                                 </thead>
+
                                 <tbody>
 
                                 <c:if test="${empty topDeptList}">
@@ -63,7 +64,7 @@
                                     </tr>
                                 </c:if>
 
-                                <c:forEach var="i" begin="1" end="5">
+                                <c:forEach var="i" begin="1" end="1">
                                 <tr data-id="${item.id}" data-pid="${item.pid}">
                                     <td> <i class="fa fa-chevron-dcu fa-chevron-down" data-flag="1"></i></td>
                                     <td>&nbsp首页</td>
@@ -83,7 +84,8 @@
                                             <i class="ace-icon fa fa-exchange bigger-130 red"></i></a>
                                     </td>
                                 </tr>
-                                <tr class="conceal-tr click1">
+
+                                <tr  class="conceal-t click1">
                                     <td><i class="fa fa-chevron-mcu fa-chevron-down" data-flag="1"></i></td>
                                     <td>&nbsp&nbsp二级模块</td>
                                     <td>
@@ -102,8 +104,9 @@
                                             <i class="ace-icon fa fa-exchange bigger-130 red"></i></a>
                                     </td>
                                 </tr>
-                                <tr class="conceal-tr link1">
-                                    <td><i class="fa fa-chevron-dc" data-flag="1"></i></td>
+
+                                <tr class="conceal-t link1">
+                                    <td><i class="fa" data-flag="1"></i></td>
                                     <td>&nbsp&nbsp&nbsp这是功能权限3</td>
                                     <td>&nbsp</td>
                                     <td>http://spotnewuc.fiidee.loc/#/admin/member/user </td>
@@ -120,11 +123,11 @@
                                 </tbody>
                             </table>
 
-                            <c:if test="${not empty page.items}">
-                                <div class="pagerBar" id="pagerBar">
-                                    <common:page2 url="${pageUrl}" type="3"/>
-                                </div>
-                            </c:if>
+                            <%--<c:if test="${not empty page.items}">--%>
+                                <%--<div class="pagerBar" id="pagerBar">--%>
+                                    <%--<common:page2 url="${pageUrl}" type="3"/>--%>
+                                <%--</div>--%>
+                            <%--</c:if>--%>
 
                         </div>
                     </div>
@@ -218,10 +221,11 @@
                 });
             });
         });
+
         //展开收起交互
         $(".fa-chevron-dcu").on('click', function(event) {
             var flag = $(this).attr("data-flag");
-            $(".click"+flag).toggle(150);
+            $(".click"+flag).toggle(100);
             var $this=$(this);
             if($this.hasClass('fa-chevron-up')){
                 $this.removeClass('fa-chevron-up').addClass('fa-chevron-down');
@@ -229,9 +233,10 @@
                 $this.removeClass('fa-chevron-down').addClass('fa-chevron-up');
             }
         });
+
         $(".fa-chevron-mcu").on('click', function(event) {
             var flag = $(this).attr("data-flag");
-            $(".link"+flag).toggle(150);
+            $(".link"+flag).toggle(100);
             var $this=$(this);
             if($this.hasClass('fa-chevron-up')){
                 $this.removeClass('fa-chevron-up').addClass('fa-chevron-down');
@@ -239,6 +244,7 @@
                 $this.removeClass('fa-chevron-down').addClass('fa-chevron-up');
             }
         });
+
     });
 </script>
 
