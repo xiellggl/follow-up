@@ -56,16 +56,71 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+
                                 <c:if test="${empty topDeptList}">
                                     <tr>
                                         <td colspan="6" class="no_data">暂无角色，请<a href="javascript:;" data-act="addDept">新增角色</a></td>
                                     </tr>
                                 </c:if>
+
                                 <%--自增序号，注意scope--%>
                                 <c:set var="index" value="0" scope="request" />
+
                                 <%--记录树的层次，注意scope--%>
                                 <c:set var="level" value="0" scope="request" />
-                                <c:import url="module_item.jsp" />
+
+                                <tr data-id="${item.id}" data-pid="${item.pid}">
+                                    <td> <i class="fa fa-chevron-dcu fa-chevron-down" data-flag="1"></i></td>
+                                    <td>&nbsp首页</td>
+                                    <td>
+                                        <a class="state-btn" data-state="1" href="javascript:;" data-id="30" title="" data-original-title="已启用">
+                                            <span class="btn btn-minier btn-yellow">启用</span>
+                                        </a>
+                                    </td>
+                                    <td>http://spotnewuc.fiidee.loc/#/admin/member/user </td>
+                                    <td>管理首页信息</td>
+                                    <td>
+                                        <a href="#"  data-toggle="modal" data-target="#myModalEditFollowuper" data-act="edit" data-toggle="tooltip" title="修改">
+                                            <i class="ace-icon fa fa-pencil bigger-130"></i></a>
+                                        <a href="#" data-act="del" data-toggle="tooltip" title="删除">
+                                            <i class="ace-icon fa fa-trash-o bigger-130 red"></i></a>
+                                        <a href="#" data-act="del" data-toggle="tooltip" title="绑定功能">
+                                            <i class="ace-icon fa fa-exchange bigger-130 red"></i></a>
+                                    </td>
+                                </tr>
+                                <tr class="conceal-tr click1">
+                                    <td><i class="fa fa-chevron-mcu fa-chevron-down" data-flag="1"></i></td>
+                                    <td>&nbsp&nbsp二级模块</td>
+                                    <td>
+                                        <a class="state-btn" data-state="1" href="javascript:;" data-id="30" title="" data-original-title="已启用">
+                                            <span class="btn btn-minier btn-yellow">启用</span>
+                                        </a>
+                                    </td>
+                                    <td>http://spotnewuc.fiidee.loc/#/admin/member/user </td>
+                                    <td>可查看预约联系时间为今天的代理商</td>
+                                    <td>
+                                        <a href="#"  data-toggle="modal" data-target="#myModalEditFollowuper" data-act="edit" data-toggle="tooltip" title="修改">
+                                            <i class="ace-icon fa fa-pencil bigger-130"></i></a>
+                                        <a href="#" data-act="del" data-toggle="tooltip" title="删除">
+                                            <i class="ace-icon fa fa-trash-o bigger-130 red"></i></a>
+                                        <a href="#" data-act="del" data-toggle="tooltip" title="绑定功能">
+                                            <i class="ace-icon fa fa-exchange bigger-130 red"></i></a>
+                                    </td>
+                                </tr>
+                                <tr class="conceal-tr link1">
+                                    <td><i class="fa fa-chevron-dc" data-flag="1"></i></td>
+                                    <td>&nbsp&nbsp&nbsp这是功能权限3</td>
+                                    <td>&nbsp</td>
+                                    <td>http://spotnewuc.fiidee.loc/#/admin/member/user </td>
+                                    <td>可查看不同状态下的代理商数量（适用于业务人员）</td>
+                                    <td>
+                                        <a href="#"  data-toggle="modal" data-target="#myModalEditFollowuper" data-act="edit" data-toggle="tooltip" title="修改">
+                                            <i class="ace-icon fa fa-pencil bigger-130"></i></a>
+                                        <a href="#" data-act="del" data-toggle="tooltip" title="绑定功能">
+                                            <i class="ace-icon fa fa-exchange bigger-130 red"></i></a>
+                                    </td>
+                                </tr>
+
                                 </tbody>
                             </table>
                         </div>

@@ -17,7 +17,7 @@
                         <input type="hidden" name="id" value="${deptVo.id}" />
 
                         <div class="form-group">
-                            <label class="col-sm-2 control-label no-padding-right">*添加功能：</label>
+                            <label class="col-sm-2 control-label no-padding-right">*功能名称：</label>
                             <div class="col-xs-12 col-sm-6">
                                 <input type="text" name="name" value="${deptVo.name}" class="form-control" required/>
                             </div>

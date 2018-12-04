@@ -53,16 +53,33 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+
                                 <c:if test="${empty topDeptList}">
                                     <tr>
                                         <td colspan="5" class="no_data">暂无模块，请<a href="javascript:;" data-act="addDept">新增模块</a></td>
                                     </tr>
                                 </c:if>
+
                                 <%--自增序号，注意scope--%>
                                 <c:set var="index" value="0" scope="request" />
+
                                 <%--记录树的层次，注意scope--%>
                                 <c:set var="level" value="0" scope="request" />
-                                <c:import url="binding_item.jsp" />
+
+                                <tr data-id="${item.id}" data-pid="${item.pid}">
+                                    <td>这是功能权限</td>
+                                    <td>http://spotnewuc.fiidee.loc/#/admin/member/user </td>
+                                    <td>2018/10/18 <br/>17:48 </td>
+                                    <td>2018/10/18 <br/>17:48 </td>
+                                    <td>管理首页信息</td>
+                                    <td>
+                                        <a href="#"  data-toggle="modal" data-target="#myModalEditFollowuper" data-act="edit" data-toggle="tooltip" title="修改">
+                                            <i class="ace-icon fa fa-pencil bigger-130"></i></a>
+                                        <a href="#" data-act="del" data-toggle="tooltip" title="删除">
+                                            <i class="ace-icon fa fa-trash-o bigger-130 red"></i></a>
+                                    </td>
+                                </tr>
+
                                 </tbody>
                             </table>
                         </div>
