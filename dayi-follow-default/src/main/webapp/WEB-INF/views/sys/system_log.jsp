@@ -81,11 +81,13 @@
                             </tr>
                             </thead>
                             <tbody>
+
                             <c:if test="${empty page.items}">
                             <tr>
                                 <td colspan="8" class="no_data">暂无数据记录</td>
                             </tr>
                             </c:if>
+
                             <tr>
                                 <td>老陈</td>
                                 <td>首页信息</td>
@@ -93,6 +95,7 @@
                                 <td>2016-02-20 14:44:43</td>
                                 <td>172.28.13.41</td>
                             </tr>
+
                             </tbody>
                         </table>
                         <c:if test="${not empty page}">
