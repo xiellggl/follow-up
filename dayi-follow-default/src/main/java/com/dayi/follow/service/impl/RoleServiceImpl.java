@@ -9,7 +9,11 @@ import com.dayi.follow.model.follow.OperateLog;
 import com.dayi.follow.model.follow.Role;
 import com.dayi.follow.service.PermissionService;
 import com.dayi.follow.service.RoleService;
+import com.dayi.mybatis.support.Conditions;
+import com.dayi.mybatis.support.Page;
+import com.dayi.mybatis.support.ext.Restrictions;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -27,6 +31,16 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Role getRole(String id) {
         return roleMapper.get(id);
+    }
+
+    @Override
+    public Role getById(String id) {
+        Role role = roleMapper.get(id);
+        // 加载角色关联的权限
+        if (null != role) {
+            role.setPermissionList(permissionService.getPermissionsByRoleId(role.getId()));
+        }
+        return role;
     }
 
     @Override
@@ -63,22 +77,41 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    @Log(target = OperateLog.class, action = BaseLog.LogAction.DELETE, what = "角色管理", note = "删除角色")
-    public boolean deleteRole(String id) {
-        Role role = new Role();
-        role.setId(id);
-        role.setStatus(Role.STATUS_DEL.id);
-        role.setUpdateTime(new Date());
-        return 1 == roleMapper.update(role);
-    }
-
-    @Override
     public List<Role> queryRolesByIds(String roleIds) {
         if (roleIds == null) {
             return new ArrayList<>();
         }
         String[] roleArr = roleIds.split(",");
         return roleMapper.getByIds(Arrays.asList(roleArr));
+    }
+
+    @Override
+    public Page<Role> searchRole(int pageNo, int pageSize) {
+        Page<Role> page = new Page<>();
+        page.setPageNo(pageNo);
+        page.setPageSize(pageSize);
+
+        return roleMapper.search(page);
+    }
+
+    @Override
+    public List<Role> listAll() {
+        Conditions conditions = new Conditions();
+        conditions.add(Restrictions.eq("status", Role.STATUS_NORMAL.id));
+        return roleMapper.searchByConditions(conditions);
+    }
+
+    @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.DELETE, what = "角色管理", note = "角色删除")
+    public boolean delete(String id) {
+        Role role = new Role();
+        role.setId(id);
+        role.setStatus(Role.STATUS_DEL.id);
+        role.setUpdateTime(new Date());
+        if (roleMapper.update(role) == 0) {
+            return false;
+        }
+        return true;
     }
 
 }

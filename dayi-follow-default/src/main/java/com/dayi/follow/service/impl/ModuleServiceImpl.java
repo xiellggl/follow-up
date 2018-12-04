@@ -214,7 +214,7 @@ public class ModuleServiceImpl implements ModuleService {
 
 
     @Override
-    @Log(target = OperateLog.class, action = BaseLog.LogAction.ADD, what = "模块管理", note = "添加模块",authorName = "")
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.ADD, what = "模块管理", note = "添加模块")
     public boolean addModule(Module module) {
         if (module.getParentid() == null) {
             module.setParentid("");
@@ -241,15 +241,14 @@ public class ModuleServiceImpl implements ModuleService {
     @Override
     @Log(target = OperateLog.class, action = BaseLog.LogAction.DELETE, what = "模块管理", note = "模块删除")
     public boolean deleteModule(String id) {
-        Module module = getModule(id);
-        if (null != module) {
-            Module m = new Module();
-            m.setId(id);
-            m.setUpdateTime(new Date());
-            m.setDelStatus(Module.DEL_STATUS_IS.id);
-            return 1 == moduleMapper.update(m);
+        Module module = new Module();
+        module.setId(id);
+        module.setUpdateTime(new Date());
+        module.setDelStatus(Module.DEL_STATUS_IS.id);
+        if (moduleMapper.update(module) == 0) {
+            return false;
         }
-        return false;
+        return true;
     }
 
     /**
