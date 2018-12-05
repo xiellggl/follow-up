@@ -12,6 +12,8 @@ import com.dayi.follow.vo.sys.ModuleSearchVo;
 import com.dayi.mybatis.support.Page;
 import com.dayi.user.authorization.AuthorizationManager;
 import com.dayi.user.authorization.authc.AccountInfo;
+import com.dayi.user.authorization.authc.AuthenticationInfo;
+import com.dayi.user.authorization.authz.AuthorizationInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,26 +40,38 @@ public class ModuleController {
     ModuleService moduleService;
 
     /**
-     * 加载所有菜单
+     * 加载菜单
      * @return
      */
     @RequestMapping("/menus")
     @ResponseBody
-    public BizResult menus() {
-        List<Menu> menus = moduleService.queryMenus("", false, true, new Module(), new PermissionVo());
+    public BizResult menus(HttpServletRequest request) {
+        // 获取权限
+        List<AuthorizationInfo> authorizationInfos = AuthorizationManager.getAuthorizationInfos(request);
+        if (null == authorizationInfos) {
+            return BizResult.fail("请先登录");
+        }
+        List<String> permissionIds = new ArrayList<>(5);
+        for (AuthorizationInfo authorizationInfo : authorizationInfos) {
+            permissionIds.addAll(authorizationInfo.getPermissions());
+        }
+
+        PermissionVo permissionVo =  new PermissionVo();
+        permissionVo.setPermissions(permissionIds);
+        List<Menu> menus = moduleService.queryMenus(permissionVo);
         return BizResult.succ(menus);
     }
 
 
     /**
-     * 加载所有模块
+     * 加载所有模块权限
      * @return
      */
     @RequestMapping("/listAll")
     @ResponseBody
-    public BizResult listAll(Integer status) {
-        List<Module> modules = moduleService.listAll(status);
-        return BizResult.succ(modules);
+    public BizResult listAll(Boolean isOnlyShowEnable) {
+        List<Menu> menus = moduleService.listAll(isOnlyShowEnable);
+        return BizResult.succ(menus);
     }
 
     /**

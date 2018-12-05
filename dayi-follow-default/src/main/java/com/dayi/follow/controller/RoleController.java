@@ -32,8 +32,8 @@ public class RoleController {
      */
     @RequestMapping("/listAll")
     @ResponseBody
-    public BizResult listAll(Integer status) {
-        List<Role> roles = roleService.listAll(status);
+    public BizResult listAll(Boolean isOnlyShowEnable) {
+        List<Role> roles = roleService.listAll(isOnlyShowEnable);
         return BizResult.succ(roles);
     }
 

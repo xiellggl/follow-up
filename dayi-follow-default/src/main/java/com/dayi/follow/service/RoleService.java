@@ -67,7 +67,7 @@ public interface RoleService {
      * 加载角色菜单
      * @return
      */
-    List<Role> listAll(Integer status);
+    List<Role> listAll(Boolean isOnlyShowEnable);
 
     /**
      * 删除角色

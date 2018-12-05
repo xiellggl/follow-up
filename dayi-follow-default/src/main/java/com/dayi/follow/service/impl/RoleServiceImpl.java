@@ -14,7 +14,6 @@ import com.dayi.mybatis.support.Conditions;
 import com.dayi.mybatis.support.Page;
 import com.dayi.mybatis.support.ext.Restrictions;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -113,12 +112,12 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<Role> listAll(Integer status) {
+    public List<Role> listAll(Boolean isOnlyShowEnable) {
         Conditions conditions = new Conditions();
-        if (null != status) {
-            conditions.add(Restrictions.eq("status", status));
+        if (null != isOnlyShowEnable && isOnlyShowEnable) {
+            conditions.add(Restrictions.eq("status", Role.STATUS_NORMAL.id));
         } else {
-            // 默认查询所有角色(包括非启用的角色)
+            // 默认查询所有可用角色(包括非启用的角色)
             conditions.add(Restrictions.ne("status", Role.STATUS_DEL.id));
         }
         return roleMapper.searchByConditions(conditions);
