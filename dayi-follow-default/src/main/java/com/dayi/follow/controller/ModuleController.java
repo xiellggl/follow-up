@@ -3,6 +3,7 @@ package com.dayi.follow.controller;
 import com.dayi.common.util.BizResult;
 import com.dayi.common.util.Misc;
 import com.dayi.follow.model.follow.Module;
+import com.dayi.follow.model.follow.Role;
 import com.dayi.follow.service.ModuleService;
 import com.dayi.follow.model.follow.Menu;
 import com.dayi.follow.service.PermissionService;
@@ -42,8 +43,20 @@ public class ModuleController {
     @RequestMapping("/menus")
     @ResponseBody
     public BizResult menus() {
-        List<Menu> menus=moduleService.queryMenus("", false, true, new Module(), new PermissionVo());
+        List<Menu> menus = moduleService.queryMenus("", false, true, new Module(), new PermissionVo());
         return BizResult.succ(menus);
+    }
+
+
+    /**
+     * 加载所有模块
+     * @return
+     */
+    @RequestMapping("/listAll")
+    @ResponseBody
+    public BizResult listAll(Integer status) {
+        List<Module> modules = moduleService.listAll(status);
+        return BizResult.succ(modules);
     }
 
     /**
@@ -97,6 +110,21 @@ public class ModuleController {
     }
 
     /**
+     * 启用禁用模块
+     * @param id
+     * @param enable
+     * @return
+     */
+    @RequestMapping("/enableModule")
+    @ResponseBody
+    public BizResult enableModule(String id, boolean enable) {
+        if (Misc.isEmpty(id)) {
+            return BizResult.fail("请选择要禁用/启用的模块");
+        }
+        return moduleService.updateStatus(id, enable) ? BizResult.SUCCESS : BizResult.FAIL;
+    }
+
+    /**
      * 删除模块
      * @param request
      * @return
@@ -104,7 +132,7 @@ public class ModuleController {
     @RequestMapping("/delete")
     @ResponseBody
     public BizResult delete(HttpServletRequest request) {
-        String ids = request.getParameter("ids");
+        String ids = request.getParameter("id");
         if (!Misc.isEmpty(ids)) {
             String[] idArr = ids.split(",");
             for (String id : idArr) {

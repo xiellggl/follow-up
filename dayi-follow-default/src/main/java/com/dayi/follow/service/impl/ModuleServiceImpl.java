@@ -6,10 +6,7 @@ import com.dayi.component.annotation.Log;
 import com.dayi.component.model.BaseLog;
 import com.dayi.follow.dao.follow.ModuleMapper;
 import com.dayi.follow.dao.follow.PermissionMapper;
-import com.dayi.follow.model.follow.Menu;
-import com.dayi.follow.model.follow.Module;
-import com.dayi.follow.model.follow.OperateLog;
-import com.dayi.follow.model.follow.Permission;
+import com.dayi.follow.model.follow.*;
 import com.dayi.follow.service.ModuleService;
 import com.dayi.follow.vo.PermissionVo;
 import com.dayi.follow.vo.sys.ModuleSearchVo;
@@ -239,6 +236,23 @@ public class ModuleServiceImpl implements ModuleService {
     }
 
     @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.UPDATE, what = "模块管理", note = "启用禁用模块")
+    public boolean updateStatus(String id, boolean enable) {
+        Module module = new Module();
+        module.setId(id);
+        if (enable) {
+            module.setStatus(Module.STATUS_NORMAL.id);
+        } else {
+            module.setStatus(Module.STATUS_DISABLE.id);
+        }
+        module.setUpdateTime(new Date());
+        if (moduleMapper.update(module) == 0) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     @Log(target = OperateLog.class, action = BaseLog.LogAction.DELETE, what = "模块管理", note = "模块删除")
     public boolean deleteModule(String id) {
         Module module = new Module();
@@ -294,6 +308,18 @@ public class ModuleServiceImpl implements ModuleService {
         }
 
         return moduleMapper.searchByConditions(page, conditions);
+    }
+
+    @Override
+    public List<Module> listAll(Integer status) {
+        Conditions conditions = new Conditions();
+        if (null != status) {
+            conditions.add(Restrictions.eq("status", status));
+        } else {
+            // 默认查询所有角色(包括非启用的角色)
+            conditions.add(Restrictions.ne("status", Role.STATUS_DEL.id));
+        }
+        return moduleMapper.searchByConditions(conditions);
     }
 
 }
