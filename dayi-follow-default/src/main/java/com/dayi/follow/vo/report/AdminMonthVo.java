@@ -20,7 +20,7 @@ public class AdminMonthVo {
 
     private BigDecimal manageFund;//管理资产
 
-    private BigDecimal manageFundGrowth;//管理资产
+    private String ringGrowthRatio;//环比净增
 
     public BigDecimal getInCash() {
         return inCash;
@@ -78,12 +78,12 @@ public class AdminMonthVo {
         this.manageFund = manageFund;
     }
 
-    public BigDecimal getManageFundGrowth() {
-        return manageFundGrowth;
+    public String getRingGrowthRatio() {
+        return ringGrowthRatio;
     }
 
-    public void setManageFundGrowth(BigDecimal manageFundGrowth) {
-        this.manageFundGrowth = manageFundGrowth;
+    public void setRingGrowthRatio(String ringGrowthRatio) {
+        this.ringGrowthRatio = ringGrowthRatio;
     }
 
     public String getId() {

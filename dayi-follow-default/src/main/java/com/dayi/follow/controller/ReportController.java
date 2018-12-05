@@ -1,38 +1,29 @@
 package com.dayi.follow.controller;
 
-import com.dayi.common.util.BizResult;
-import com.dayi.common.util.DateUtil;
 import com.dayi.follow.base.BaseController;
 import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.conf.Constants;
-import com.dayi.follow.model.follow.Department;
 import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.FollowUpService;
 import com.dayi.follow.service.ReportService;
 import com.dayi.follow.util.PageUtil;
-import com.dayi.follow.util.StringUtil;
 import com.dayi.follow.vo.LoginVo;
-import com.dayi.follow.vo.export.AdminWeekReportExport;
+import com.dayi.follow.vo.export.AdminMonthExport;
+import com.dayi.follow.vo.export.AdminWeekExport;
 import com.dayi.follow.vo.export.TeamDailyDetailExport;
+import com.dayi.follow.vo.report.AdminMonthVo;
 import com.dayi.follow.vo.report.AdminWeekVo;
 import com.dayi.follow.vo.report.ReportDailyVo;
 import com.dayi.mybatis.support.Page;
-import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -269,7 +260,7 @@ public class ReportController extends BaseController {
 
         String fileTitle = "资产管理部" + date + "周报";
         String fileName = fileTitle;
-        AdminWeekReportExport export = new AdminWeekReportExport(fileName, fileTitle, adminWeekVos);
+        AdminWeekExport export = new AdminWeekExport(fileName, fileTitle, adminWeekVos);
         export.exportExcel(request, response);
     }
 
@@ -293,5 +284,26 @@ public class ReportController extends BaseController {
         return "/followup/uc/log/mydaily";
     }
 
+
+    /**
+     * 管理员月报
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping("/admin/month/export")
+    public void adminMonth(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        LoginVo currVo = userComponent.getCurrUser(request);
+
+        String date = request.getParameter("date");
+
+        List<AdminMonthVo> adminMonthVos = reportService.exportAdminMonth(currVo.getDeptId(), date);
+
+        String fileTitle = "资产管理部" + date + "周报";
+        String fileName = fileTitle;
+        AdminMonthExport export = new AdminMonthExport(fileName, fileTitle, adminMonthVos);
+        export.exportExcel(request, response);
+
+    }
 
 }

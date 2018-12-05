@@ -226,6 +226,29 @@
         limit #{limitStart},#{limitEnd}
     </select>
 
+    <select id="getAdminMonthNum" parameterType="map" resultType="java.lang.Integer">
+        SELECT count(0)
+        from follow_up_log a
+        LEFT join (
+        SELECT id,name,invite_code from follow_up
+        )b on b.id =a.follow_id
+        left join (
+        SELECT id,name from department
+        )c on c.id =a.dept_id
+        left join (
+        SELECT org_id,follow_id from follow_org
+        )d on d.follow_id =a.follow_id
+        where 1=1
+        <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
+            and create_time BETWEEN '#{startDate}' and '#{endDate}'
+        </if>
+        and a.follow_id in
+        <foreach item="item" index="index" collection="followIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
     <select id="getLastManageFund" parameterType="map" resultType="java.lang.Double">
         SELECT manage_fund, follow_id FROM follow_up_log
         WHERE  create_time BETWEEN '#{startDate}' and '#{endDate}'

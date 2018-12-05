@@ -56,25 +56,27 @@
                             </thead>
                             <tbody>
 
-                            <c:if test="${empty topDeptList}">
+                            <c:if test="${empty page.results}">
                             <tr>
                                 <td colspan="6" class="no_data">暂无用户，请<a href="javascript:;" data-act="addDept">新增用户</a></td>
                             </tr>
                             </c:if>
 
-                            <c:forEach var="i" begin="1" end="5">
+                            <c:if test="${not empty page.results}">
+                            <c:forEach items="${page.results}" var="item">
                             <tr>
-                                <td>老陈</td>
-                                <td>laochen</td>
-                                <td>1314</td>
-                                <td>资产管理中心总经理</td>
-                                <td>资产管理中心</td>
+                                <td>${item.name}</td>
+                                <td>${item.userName}</td>
+                                <td>${item.inviteCode}</td>
+                                <td>${item.rolesName}</td>
+                                <td>${item.department.name}</td>
                                 <td>
+                                        <%--${item.disable}--%>
                                     <a class="state-btn" data-state="1" href="javascript:;" data-id="30" title="" data-original-title="已启用">
                                         <span class="btn btn-minier btn-yellow">启用</span>
                                     </a>
                                 </td>
-                                <td>2018-09-28 14：25</td>
+                                <td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/> </td>
                                 <td>
                                     <a href="#"  data-toggle="modal" data-target="#myModalEditFollowuper" data-act="edit" data-toggle="tooltip" title="修改">
                                         <i class="ace-icon fa fa-pencil bigger-130"></i></a>
@@ -87,11 +89,12 @@
                                 </td>
                             </tr>
                             </c:forEach>
+                            </c:if>
 
                             </tbody>
                         </table>
 
-                        <c:if test="${not empty page.items}">
+                        <c:if test="${not empty page.results}">
                             <div class="pagerBar" id="pagerBar">
                                 <common:page2 url="${pageUrl}" type="3"/>
                             </div>

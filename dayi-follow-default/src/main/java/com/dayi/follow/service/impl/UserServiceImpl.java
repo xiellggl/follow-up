@@ -51,6 +51,8 @@ public class UserServiceImpl implements UserService, Realm {
     @Resource
     RoleService roleService;
     @Resource
+    RoleMapper roleMapper;
+    @Resource
     FollowAgentService followAgentService;
     @Resource
     UserComponent userComponent;
@@ -172,10 +174,26 @@ public class UserServiceImpl implements UserService, Realm {
         if (StringUtils.isBlank(queryDeptId)) followIds = userMapper.findIdsByDeptId(deptId);
         else followIds = userMapper.findIdsByDeptId(queryDeptId);
 
-        List<FollowUp> followUps = userMapper.findUsers(mobile, followIds, inviteCode, page.getStartRow(), page.getPageSize());
+        List<UserVo> users = userMapper.findUsers(mobile, followIds, inviteCode, page.getStartRow(), page.getPageSize());
+
+        for (UserVo vo : users) {
+            //处理角色名称
+            if (StringUtils.isBlank(vo.getRoleids())) break;
+            String[] split = StringUtils.split(vo.getRoleids(), ",");
+            for (String roleId : split) {
+                Role role = roleMapper.get(roleId);
+                if (role == null) break;
+                vo.setRolesName(role.getName() + ",");
+            }
+            //处理最后一个,
+            if (!StringUtils.isBlank(vo.getRolesName())) {
+                vo.setRolesName(vo.getRolesName().substring(0, vo.getRolesName().length() - 1));
+            }
+        }
+
         int num = userMapper.getUsersNum(mobile, followIds, inviteCode);
 
-        page.setResults(followUps);
+        page.setResults(users);
         page.setTotalRecord(num);
         return page;
     }

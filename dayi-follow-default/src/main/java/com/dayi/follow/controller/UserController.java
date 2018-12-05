@@ -108,14 +108,12 @@ public class UserController extends BaseController {
 
         page = userService.findPage(page, currVo.getDeptId(), mobile, queryDeptId, inviteCode);
 
-        List<Department> deptList = deptService.getSubDept(currVo.getDeptId());
+        //List<Department> deptList = deptService.getSubDept(currVo.getDeptId());
 
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
         model.addAttribute("pageUrl", pageUrl);
         model.addAttribute("page", page);
-        model.addAttribute("deptList", deptList);  // 所属部门下拉选择数据
-        model.addAttribute("queryDeptId", queryDeptId);  // 查询条件 -- 所属部门
-        return "/followup/manage/followuper/list";
+        return "sys/user_list";
     }
 
 

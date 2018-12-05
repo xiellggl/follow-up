@@ -7,6 +7,7 @@ package com.dayi.follow.service;
  */
 
 
+import com.dayi.follow.vo.report.AdminMonthVo;
 import com.dayi.follow.vo.report.AdminWeekVo;
 import com.dayi.follow.vo.report.ReportDailyVo;
 import com.dayi.mybatis.support.Page;
@@ -49,7 +50,8 @@ public interface ReportService {
     //管理员周报导出
     List<AdminWeekVo> exportAdminWeek(String deptId, String betweenDate);
 
-    //管理员周报
-    Page<ReportDailyVo> findAdminMonth(Page page, String deptId, String month);
-
+    //管理员月报
+    Page<AdminMonthVo> findAdminMonth(Page page, String deptId, String month);
+    //管理员月报导出
+    List<AdminMonthVo> exportAdminMonth(String deptId, String month);
 }

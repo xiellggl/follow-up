@@ -46,6 +46,9 @@ public interface ReportMapper extends BaseMapper<BaseVo> {
     //管理员月报
     List<AdminMonthVo> findAdminMonth(List<String> followIds, String startDate, String endDate, Integer limitStart, Integer limitEnd);
 
+    //管理员月报
+    int getAdminMonthNum(List<String> followIds, String startDate, String endDate);
+
     //得到月最后一天的管理资金
     double getLastManageFund(String followId, String startDate, String endDate);
 }

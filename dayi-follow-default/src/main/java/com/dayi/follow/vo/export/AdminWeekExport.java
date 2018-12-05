@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author xiell
  */
-public class AdminWeekReportExport extends AbstractExcel<AdminWeekVo> {
+public class AdminWeekExport extends AbstractExcel<AdminWeekVo> {
     // 按照文档列头顺序添加
     private Column column1 = addColumn("团队", 3500);
     private Column column2 = addColumn("姓名", 3500);
@@ -28,7 +28,7 @@ public class AdminWeekReportExport extends AbstractExcel<AdminWeekVo> {
     private Column column13 = addColumn("本周完成新开户", 3500);
     private Column column14 = addColumn("本周完成入金总额", 3500);
 
-    public AdminWeekReportExport(String fileName, String fileTitle, List<AdminWeekVo> datas) {
+    public AdminWeekExport(String fileName, String fileTitle, List<AdminWeekVo> datas) {
         super(fileName, fileTitle, datas);
     }
 

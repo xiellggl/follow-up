@@ -1,7 +1,9 @@
 package com.dayi.follow.dao.follow;
 
 import com.dayi.follow.model.follow.FollowUp;
+import com.dayi.follow.vo.user.UserVo;
 import com.dayi.mybatis.support.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -21,13 +23,13 @@ public interface UserMapper extends BaseMapper<FollowUp> {
 
     List<String> findIdsByDeptIds(List<String> deptIds);
 
-    List<String> findIdsByDeptId(String deptId);
+    List<String> findIdsByDeptId(@Param("deptId") String deptId);
 
-    List<FollowUp> findUsers(String mobile, List<String> followIds, String inviteCode, Integer limitStart, Integer limitEnd);
+    List<UserVo> findUsers(@Param("mobile") String mobile, @Param("followIds") List<String> followIds,
+                           @Param("inviteCode") String inviteCode, @Param("limitStart") Integer limitStart,
+                           @Param("limitEnd") Integer limitEnd);
 
-    int getUsersNum(String mobile, List<String> followIds, String inviteCode);
-
-
+    int getUsersNum(@Param("mobile") String mobile, @Param("followIds") List<String> followIds, @Param("inviteCode") String inviteCode);
 
 
 }

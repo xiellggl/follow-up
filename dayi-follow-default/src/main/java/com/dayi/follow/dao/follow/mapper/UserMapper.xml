@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dayi.follow.dao.follow.UserMapper">
+    <resultMap id="BaseResultMap" type="com.dayi.follow.vo.user.UserVo">
+        <id property="id" column="id"/>
+
+        <result property="name" column="name"/>
+        <result property="userName" column="user_name"/>
+        <result property="inviteCode" column="invite_code"/>
+        <result property="disable" column="disable"/>
+        <result property="createTime" column="create_time"/>
+        <association property="department" javaType="com.dayi.follow.model.follow.Department"
+                     select="com.dayi.follow.dao.follow.DeptMapper.get"
+                     column="dept_id" fetchType="lazy">
+        </association>
+
+    </resultMap>
+
 
     <select id="findByDeptIds" parameterType="java.lang.String" resultType="com.dayi.follow.model.follow.FollowUp">
         SELECT * from follow_up where disable !=0
@@ -25,13 +40,13 @@
 
     <select id="findIdsByDeptId" parameterType="java.lang.String" resultType="java.lang.String">
         SELECT id from follow_up where disable !=0
-        andn dept_id =${deptId}
+        and dept_id =${deptId}
     </select>
 
-    <select id="findUsers" parameterType="map" resultType="com.dayi.follow.model.follow.FollowUp">
+    <select id="findUsers" parameterType="map" resultMap="BaseResultMap">
         SELECT * from follow_up where  disable !=0
         <if test="''!=mobile and null!=mobile">
-            and mobile =${mobile}
+            and mobile =#{mobile}
         </if>
 
         and id in
@@ -41,15 +56,15 @@
         </foreach>
 
         <if test="''!=inviteCode and null!=inviteCode">
-            and inviteCode =${inviteCode}
+            and inviteCode =#{inviteCode}
         </if>
-        limit ${limitStart},${limitEnd}
+        limit #{limitStart},#{limitEnd}
     </select>
 
     <select id="getUsersNum" resultType="java.lang.Integer">
-        SELECT * from follow_up  and disable !=0
+        SELECT count(0) from follow_up  where disable !=0
         <if test="''!=mobile and null!=mobile">
-            and mobile =${mobile}
+            and mobile =#{mobile}
         </if>
 
         and id in
@@ -59,7 +74,7 @@
         </foreach>
 
         <if test="''!=inviteCode and null!=inviteCode">
-            and inviteCode =${inviteCode}
+            and inviteCode =#{inviteCode}
         </if>
     </select>
 

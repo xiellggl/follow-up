@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 public class UserVo {
+    private String id;
     private String name;  // 姓名
     private String userName;    // 账号
     private String inviteCode;  // 邀请码
@@ -13,8 +14,54 @@ public class UserVo {
     private Integer isAdmin;    // 是否管理员：0--否；1--是
     private String deptName;
     private Department department;
+    private Date createTime;
     private String createTimeFm;
     private String updateTimeFm;
+
+    //添加于用户列表
+    private String roleids;
+    private String rolesName;
+    private Integer disable;
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Integer getDisable() {
+        return disable;
+    }
+
+    public void setDisable(Integer disable) {
+        this.disable = disable;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getRoleids() {
+        return roleids;
+    }
+
+    public void setRoleids(String roleids) {
+        this.roleids = roleids;
+    }
+
+    public String getRolesName() {
+        return rolesName;
+    }
+
+    public void setRolesName(String rolesName) {
+        this.rolesName = rolesName;
+    }
 
     public String getName() {
         return name;
