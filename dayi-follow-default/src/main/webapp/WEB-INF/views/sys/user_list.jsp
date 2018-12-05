@@ -89,7 +89,7 @@
                                 </td>
                                 <td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/> </td>
                                 <td>
-                                    <a href="#"  data-toggle="modal" data-target="#myModalEditFollowuper" data-act="edit" data-toggle="tooltip" title="修改">
+                                    <a href="#"  data-toggle="modal" data-target="#myModalEditFollowuper" data-id="${item.id}" data-act="edit" data-toggle="tooltip" title="修改">
                                         <i class="ace-icon fa fa-pencil bigger-130"></i></a>
                                     <a href="#" data-act="del" data-toggle="tooltip" title="删除">
                                         <i class="ace-icon fa fa-trash-o bigger-130 red"></i></a>
@@ -133,7 +133,7 @@
                         aria-hidden="true">×
                 </button>
                 <h4 class="modal-title" id="myModalLabel">
-                    {{id>0?'修改':'添加'}}用户
+                    添加用户
                 </h4>
             </div>
 
@@ -255,12 +255,19 @@
         var editDeptFn = function (id) {
             var id = id || 0;
             var data = {};
-
+            if (id > 0) {
+                alert("id大于0");
+            }else {
+                alert("id小于0");
+            }
             var $modal = $("#myModalEditFollowuper");
             var html = template("tplEditFlowUp", data);
             $modal.html(html).show(300);
             var $form = $modal.find("form");
 
+            if (id > 0) {
+                $(".modal-title").html("修改用户");
+            }
             var url ="/user/add/save.json";
             if (id > 0) {
                 var url ="/user/update/save.json";
@@ -358,17 +365,8 @@
 
         };
 
-        //新增用户
-        $('[data-act="addDept"]').on("click",function () {
-            editDeptFn();
-        });
 
-        //修改用户
-        $('[data-act="edit"]').on("click",function () {
-            var id=$(this).closest("tr").data("id");
-            editDeptFn(id);
-        });
-
+        //新增用户、修改用户
         var $editBtn = $('[data-target="#myModalEditFollowuper"]');
         $editBtn.on("click", function () {
             var id = $(this).data('id') || null;
