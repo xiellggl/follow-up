@@ -4,10 +4,7 @@ package com.dayi.follow.service;
 import com.dayi.follow.model.follow.Module;
 import com.dayi.follow.model.follow.Menu;
 import com.dayi.follow.model.follow.Permission;
-import com.dayi.follow.model.follow.Role;
 import com.dayi.follow.vo.PermissionVo;
-import com.dayi.follow.vo.sys.ModuleSearchVo;
-import com.dayi.mybatis.support.Page;
 
 import java.util.List;
 /**
@@ -23,22 +20,18 @@ public interface ModuleService {
     /**
      * 根据给定起始节点、模块筛选、权限筛选数据来查找菜单
      *
-     * @param rootId                       起始节点
-     * @param isShowDeleteModulePermission 是否显示已删除的的模块权限菜单
-     * @param isShowModuleForNoPermission  是否显示没有权限的模块菜单
-     * @param module                       模块筛选
-     * @param permission                   权限筛选
+     * @param permission 权限筛选
      * @return
      */
-    List<Menu> queryMenus(String rootId, boolean isShowDeleteModulePermission, boolean isShowModuleForNoPermission, Module module, PermissionVo permission);
+    List<Menu> queryMenus(PermissionVo permission);
 
     /**
-     * 返回所有模块
+     * 查询所有模块、权限
      *
-     * @param module
+     * @param isOnlyShowEnable 是否显示只显示启用菜单
      * @return
      */
-    List<Module> findAllModules(Module module);
+    List<Menu> listAll(Boolean isOnlyShowEnable);
 
     /**
      * 返回所有权限
@@ -94,18 +87,4 @@ public interface ModuleService {
      * @return
      */
     List<Menu> eachMenu(List<Menu> menus, String keyword);
-
-    /**
-     * 查询列表
-     * @param moduleSearchVo
-     * @return
-     */
-    Page<Module> searchModule(ModuleSearchVo moduleSearchVo);
-
-    /**
-     * 查询所有模块
-     * @param status
-     * @return
-     */
-    List<Module> listAll(Integer status);
 }

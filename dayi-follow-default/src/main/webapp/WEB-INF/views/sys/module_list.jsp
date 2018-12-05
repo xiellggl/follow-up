@@ -140,9 +140,11 @@
 <%@include file="/inc/followup/script.jsp"%>
 <script>
     seajs.use(["common","validate","template"],function(common,validate,template){
+        //菜单高亮
         common.head("system",1);
-        var editDeptFn = function (id,pid) {
-            var id = id || 0, pid = pid||0;
+
+        var editDeptFn = function (id) {
+            var id = id || 0;
             var url = "/followup/module/add";
             if (id > 0) {
                 url = "/followup/module/dept/update/" + id;

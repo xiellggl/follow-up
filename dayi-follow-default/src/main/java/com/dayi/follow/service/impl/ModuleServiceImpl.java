@@ -9,9 +9,7 @@ import com.dayi.follow.dao.follow.PermissionMapper;
 import com.dayi.follow.model.follow.*;
 import com.dayi.follow.service.ModuleService;
 import com.dayi.follow.vo.PermissionVo;
-import com.dayi.follow.vo.sys.ModuleSearchVo;
 import com.dayi.mybatis.support.Conditions;
-import com.dayi.mybatis.support.Page;
 import com.dayi.mybatis.support.ext.Restrictions;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -30,7 +28,7 @@ public class ModuleServiceImpl implements ModuleService {
     private PermissionMapper permissionMapper;
 
 
-    @Override
+    /*@Override
     public List<Menu> queryMenus(String rootId, boolean isShowDeleteModulePermission, boolean isShowModuleForNoPermission, Module module, PermissionVo permission) {
         //附上正常条件
         if (!isShowDeleteModulePermission) {
@@ -84,17 +82,95 @@ public class ModuleServiceImpl implements ModuleService {
         eachMenu(menuList, rootMenu, isShowModuleForNoPermission);
         Collections.sort(menuList);
         return menuList;
+    }*/
+
+    @Override
+    public List<Menu> queryMenus(PermissionVo permission) {
+        // 菜单
+        List<Menu> menuList = new ArrayList<>();
+
+        // 查询所有模块
+        Conditions conditions = new Conditions();
+        conditions.add(Restrictions.eq("del_status", Module.DEL_STATUS_NO.id));
+        conditions.add(Restrictions.eq("status", Module.STATUS_NORMAL.id));
+        List<Module> rootModule = moduleMapper.searchByConditions(conditions);
+        if (rootModule == null || rootModule.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        // 查询所有权限
+        List<Permission> rootPermission = findAllPermissions(permission);
+        //根据需要，过滤未绑定的权限
+        if (permission != null && permission.getBindStatus() != null) {
+            if (PermissionVo.BIND_STATUS_NORMAL.id == permission.getBindStatus()) {
+                Iterator<Permission> it = rootPermission.iterator();
+                while (it.hasNext()) {
+                    Permission p = it.next();
+                    if (Misc.isEmpty(p.getModuleid()) || "0".equals(p.getModuleid())) {
+                        it.remove();
+                    }
+                }
+            }
+        }
+
+        // 模块转菜单数据
+        List<Menu> rootMenu = modulesToConvertMenu(rootModule);
+        // 权限转菜单数据
+        List<Menu> rootMenu2 = permissionsToConvertMenu(rootPermission);
+        // 合并两个菜单数据作为"原始的数据"
+        rootMenu.addAll(rootMenu2);
+
+        // 筛选出所有起始菜单
+        for (int i = 0; i < rootMenu.size(); i++) {
+            if (Misc.isEmpty(rootMenu.get(i).getParentId()) || "0".equals(rootMenu.get(i).getParentId())) {
+                menuList.add(rootMenu.get(i));
+            }
+        }
+
+        // 为起始菜单设置子菜单，getChild是递归调用的
+        eachMenu(menuList, rootMenu, false);
+        Collections.sort(menuList);
+        return menuList;
     }
 
-    /**
-     * 获取所有模块
-     *
-     * @param module
-     * @return
-     */
     @Override
-    public List<Module> findAllModules(Module module) {
-        return moduleMapper.findList(module);
+    public List<Menu> listAll(Boolean isOnlyShowEnable) {
+        List<Menu> menuList = new ArrayList<>();
+
+        // 所有可用模块
+        Conditions conditions = new Conditions();
+        conditions.add(Restrictions.eq("del_status", Module.DEL_STATUS_NO.id));
+        if (null != isOnlyShowEnable && isOnlyShowEnable) {
+            conditions.add(Restrictions.eq("status", Module.STATUS_NORMAL.id));
+        }
+        List<Module> rootModule = moduleMapper.searchByConditions(conditions);
+        if (rootModule == null || rootModule.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        //所有权限
+        PermissionVo permission = new PermissionVo();
+        permission.setDelStatus(Permission.DEL_STATUS_NO.id);
+        List<Permission> rootPermission = findAllPermissions(permission);
+
+        //模块转菜单数据
+        List<Menu> rootMenu = modulesToConvertMenu(rootModule);
+        //权限转菜单数据
+        List<Menu> rootMenu2 = permissionsToConvertMenu(rootPermission);
+        //合并两个菜单数据作为"原始的数据"
+        rootMenu.addAll(rootMenu2);
+
+        //先找到所有的起始菜单
+        for (int i = 0; i < rootMenu.size(); i++) {
+            if (Misc.isEmpty(rootMenu.get(i).getParentId()) || "0".equals(rootMenu.get(i).getParentId())) {
+                menuList.add(rootMenu.get(i));
+            }
+        }
+
+        // 为起始菜单设置子菜单，getChild是递归调用的
+        eachMenu(menuList, rootMenu, true);
+        Collections.sort(menuList);
+        return menuList;
     }
 
     /**
@@ -255,6 +331,7 @@ public class ModuleServiceImpl implements ModuleService {
     @Override
     @Log(target = OperateLog.class, action = BaseLog.LogAction.DELETE, what = "模块管理", note = "模块删除")
     public boolean deleteModule(String id) {
+        // 删除模块（逻辑删除）
         Module module = new Module();
         module.setId(id);
         module.setUpdateTime(new Date());
@@ -262,6 +339,11 @@ public class ModuleServiceImpl implements ModuleService {
         if (moduleMapper.update(module) == 0) {
             return false;
         }
+
+        // FIXME TODO 模块下的权限取消模块关联
+
+        // FIXME TODO 模块下的权限删除角色关联
+
         return true;
     }
 
@@ -289,37 +371,6 @@ public class ModuleServiceImpl implements ModuleService {
             eachMenu(menu.getChildMenus(), keyword);
         }
         return menus;
-    }
-
-    @Override
-    public Page<Module> searchModule(ModuleSearchVo moduleSearchVo) {
-        Page<Module> page = new Page<>();
-        page.setPageNo(moduleSearchVo.getPageNo());
-        page.setPageSize(moduleSearchVo.getPageSize());
-
-        Conditions conditions = new Conditions();
-        String name = moduleSearchVo.getName();
-        Integer status = moduleSearchVo.getStatus();
-        if (!Misc.isEmpty(name)) {
-            conditions.add(Restrictions.like("name", "%" + name + "%"));
-        }
-        if (null != status) {
-            conditions.add(Restrictions.eq("status", status));
-        }
-
-        return moduleMapper.searchByConditions(page, conditions);
-    }
-
-    @Override
-    public List<Module> listAll(Integer status) {
-        Conditions conditions = new Conditions();
-        if (null != status) {
-            conditions.add(Restrictions.eq("status", status));
-        } else {
-            // 默认查询所有角色(包括非启用的角色)
-            conditions.add(Restrictions.ne("status", Role.STATUS_DEL.id));
-        }
-        return moduleMapper.searchByConditions(conditions);
     }
 
 }

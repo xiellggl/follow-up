@@ -14,9 +14,9 @@ import java.util.List;
 public class PermissionVo extends Permission {
 
     /**
-     * id列(筛选)
+     * 权限(筛选)
      */
-    private List<String> permissionIds;
+    private List<String> permissions;
     /**
      * 是否被模块绑定 1=绑定,0=未绑定
      */
@@ -44,12 +44,11 @@ public class PermissionVo extends Permission {
         this.bindStatus = bindStatus;
     }
 
-    public List<String> getPermissionIds() {
-        return permissionIds;
+    public List<String> getPermissions() {
+        return permissions;
     }
 
-    public void setPermissionIds(List<String> permissionIds) {
-        this.permissionIds = permissionIds;
+    public void setPermissions(List<String> permissions) {
+        this.permissions = permissions;
     }
-
 }

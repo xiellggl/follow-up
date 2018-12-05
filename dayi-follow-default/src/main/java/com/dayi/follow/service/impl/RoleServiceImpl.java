@@ -14,7 +14,6 @@ import com.dayi.mybatis.support.Conditions;
 import com.dayi.mybatis.support.Page;
 import com.dayi.mybatis.support.ext.Restrictions;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -113,12 +112,12 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<Role> listAll(Integer status) {
+    public List<Role> listAll(Boolean isOnlyShowEnable) {
         Conditions conditions = new Conditions();
-        if (null != status) {
-            conditions.add(Restrictions.eq("status", status));
+        if (null != isOnlyShowEnable && isOnlyShowEnable) {
+            conditions.add(Restrictions.eq("status", Role.STATUS_NORMAL.id));
         } else {
-            // 默认查询所有角色(包括非启用的角色)
+            // 默认查询所有可用角色(包括非启用的角色)
             conditions.add(Restrictions.ne("status", Role.STATUS_DEL.id));
         }
         return roleMapper.searchByConditions(conditions);
@@ -127,6 +126,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     @Log(target = OperateLog.class, action = BaseLog.LogAction.DELETE, what = "角色管理", note = "角色删除")
     public boolean delete(String id) {
+        // 删除角色(逻辑删除)
         Role role = new Role();
         role.setId(id);
         role.setStatus(Role.STATUS_DEL.id);
@@ -134,6 +134,12 @@ public class RoleServiceImpl implements RoleService {
         if (roleMapper.update(role) == 0) {
             return false;
         }
+
+        // 删除角色权限关联
+        permissionService.deleteRolePermission(id);
+
+        // FIXME TODO 删除角色用户关联
+
         return true;
     }
 

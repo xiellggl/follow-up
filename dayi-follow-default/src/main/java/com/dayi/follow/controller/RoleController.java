@@ -32,8 +32,8 @@ public class RoleController {
      */
     @RequestMapping("/listAll")
     @ResponseBody
-    public BizResult listAll(Integer status) {
-        List<Role> roles = roleService.listAll(status);
+    public BizResult listAll(Boolean isOnlyShowEnable) {
+        List<Role> roles = roleService.listAll(isOnlyShowEnable);
         return BizResult.succ(roles);
     }
 
@@ -55,14 +55,15 @@ public class RoleController {
 
     /**
      * 编辑角色
+     * @param id
+     * @param model
+     * @return
      */
     @RequestMapping("/edit")
-    @ResponseBody
-    public BizResult edit(String id) {
-        if (Misc.isEmpty(id)) {
-            return BizResult.fail("请选择要编辑的角色.");
-        }
-        return BizResult.succ(roleService.getById(id));
+    public String edit(String id, Model model) {
+        Role role = roleService.getById(id);
+        model.addAttribute("role", role);
+        return "sys/role_compile";
     }
 
     /**

@@ -3,27 +3,21 @@ package com.dayi.follow.controller;
 import com.dayi.common.util.BizResult;
 import com.dayi.common.util.Misc;
 import com.dayi.follow.model.follow.Module;
-import com.dayi.follow.model.follow.Role;
 import com.dayi.follow.service.ModuleService;
 import com.dayi.follow.model.follow.Menu;
-import com.dayi.follow.service.PermissionService;
 import com.dayi.follow.vo.PermissionVo;
-import com.dayi.follow.vo.sys.ModuleSearchVo;
-import com.dayi.mybatis.support.Page;
 import com.dayi.user.authorization.AuthorizationManager;
 import com.dayi.user.authorization.authc.AccountInfo;
-import org.apache.commons.lang3.StringUtils;
+import com.dayi.user.authorization.authz.AuthorizationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author xiell
@@ -37,26 +31,50 @@ public class ModuleController {
     ModuleService moduleService;
 
     /**
-     * 加载所有菜单
+     * 加载菜单
      * @return
      */
     @RequestMapping("/menus")
     @ResponseBody
-    public BizResult menus() {
-        List<Menu> menus = moduleService.queryMenus("", false, true, new Module(), new PermissionVo());
+    public BizResult menus(HttpServletRequest request) {
+        // 获取权限
+        List<AuthorizationInfo> authorizationInfos = AuthorizationManager.getAuthorizationInfos(request);
+        if (null == authorizationInfos) {
+            return BizResult.fail("请先登录");
+        }
+        List<String> permissionIds = new ArrayList<>(5);
+        for (AuthorizationInfo authorizationInfo : authorizationInfos) {
+            permissionIds.addAll(authorizationInfo.getPermissions());
+        }
+
+        PermissionVo permissionVo =  new PermissionVo();
+        permissionVo.setPermissions(permissionIds);
+        List<Menu> menus = moduleService.queryMenus(permissionVo);
         return BizResult.succ(menus);
     }
 
 
     /**
-     * 加载所有模块
+     * 加载所有模块权限
      * @return
      */
     @RequestMapping("/listAll")
     @ResponseBody
-    public BizResult listAll(Integer status) {
-        List<Module> modules = moduleService.listAll(status);
-        return BizResult.succ(modules);
+    public BizResult listAll(Boolean isOnlyShowEnable) {
+        List<Menu> menus = moduleService.listAll(isOnlyShowEnable);
+        return BizResult.succ(menus);
+    }
+
+    /**
+     * 查询模块列表
+     * @param model
+     * @return
+     */
+    @RequestMapping("/list")
+    public String list(Model model) {
+        List<Menu> menus = moduleService.listAll(null);
+        model.addAttribute("menus", menus);
+        return "sys/module_list";
     }
 
     /**
@@ -82,12 +100,10 @@ public class ModuleController {
      * 编辑模块
      */
     @RequestMapping("/edit")
-    @ResponseBody
-    public BizResult edit(String id) {
-        if (Misc.isEmpty(id)) {
-            return BizResult.fail("请选择要编辑的模块.");
-        }
-        return BizResult.succ(moduleService.getModule(id));
+    public String edit(String id, Model model) {
+        Module module = moduleService.getModule(id);
+        model.addAttribute("module", module);
+        return "sys/module_edit";
     }
 
     /**
@@ -142,19 +158,6 @@ public class ModuleController {
             }
         }
         return BizResult.SUCCESS;
-    }
-
-    /**
-     * 分页查询模块列表
-     * @param moduleSearchVo
-     * @param model
-     * @return
-     */
-    @RequestMapping("/list")
-    public String list(ModuleSearchVo moduleSearchVo, Model model) {
-        Page<Module> page = moduleService.searchModule(moduleSearchVo);
-        model.addAttribute("page", page);
-        return "sys/module_list";
     }
 
     /*@RequestMapping("/list")

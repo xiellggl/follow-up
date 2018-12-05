@@ -1,7 +1,5 @@
 package com.dayi.follow.service;
 
-
-import com.dayi.common.util.BizResult;
 import com.dayi.follow.model.follow.Role;
 import com.dayi.mybatis.support.Page;
 
@@ -67,7 +65,7 @@ public interface RoleService {
      * 加载角色菜单
      * @return
      */
-    List<Role> listAll(Integer status);
+    List<Role> listAll(Boolean isOnlyShowEnable);
 
     /**
      * 删除角色

@@ -80,9 +80,9 @@
             <if test="status != null and status != ''">
                 AND status=#{status}
             </if>
-            <if test="permissionIds !=null and permissionIds.size()>0">
-                And id in
-                <foreach collection="permissionIds" item="item" index="index" open="(" separator=","
+            <if test="permissions !=null and permissions.size()>0">
+                And url in
+                <foreach collection="permissions" item="item" index="index" open="(" separator=","
                          close=")">
                     #{item}
                 </foreach>
