@@ -1,6 +1,7 @@
 package com.dayi.follow.service;
 
 
+import com.dayi.common.util.BizResult;
 import com.dayi.follow.model.follow.Role;
 import com.dayi.mybatis.support.Page;
 
@@ -14,6 +15,7 @@ import java.util.List;
  * 跟进人 业务接口类
  */
 public interface RoleService {
+
     /**
      * 根据id查询角色
      *
@@ -62,14 +64,23 @@ public interface RoleService {
     Page<Role> searchRole(int pageNo, int pageSize);
 
     /**
-     * 加载角色菜单(过滤没启用的角色)
+     * 加载角色菜单
      * @return
      */
-    List<Role> listAll();
+    List<Role> listAll(Integer status);
 
     /**
      * 删除角色
      * @param id
      */
     boolean delete(String id);
+
+    /**
+     * 启用/禁用角色
+     * @param id
+     * @param enable
+     * @return
+     */
+    boolean updateStatus(String id, boolean enable);
+
 }

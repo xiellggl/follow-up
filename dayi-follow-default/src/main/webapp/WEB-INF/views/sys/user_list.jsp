@@ -9,7 +9,8 @@
     <c:set var="pageName" value="financeUcOrgPage" />
     <%@include file="/inc/followup/csslink.jsp"%>
 </head>
-<body>
+<body class="no-skin">
+<%@include file="/inc/followup/topbar.jsp"%>
 <div class="main-container" id="main-container">
     <%@include file="/inc/followup/sidebar.jsp"%>
     <div class="main-content">
@@ -109,7 +110,7 @@
 <%@include file="/inc/followup/script.jsp"%>
 <script>
     seajs.use(["common","validate","template"],function(common,validate,template){
-
+        common.head("system",2);
     });
 </script>
 </body>

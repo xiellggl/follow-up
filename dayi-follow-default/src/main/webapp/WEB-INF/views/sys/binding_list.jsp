@@ -3,7 +3,8 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>绑定模块</title>
     <%@include file="/inc/followup/csslink.jsp"%>
 </head>
@@ -129,11 +130,11 @@
                                 </tbody>
                             </table>
 
-                            <c:if test="${not empty page.items}">
-                                <div class="pagerBar" id="pagerBar">
-                                    <common:page2 url="${pageUrl}" type="3"/>
-                                </div>
-                            </c:if>
+                            <%--<c:if test="${not empty page.items}">--%>
+                                <%--<div class="pagerBar" id="pagerBar">--%>
+                                    <%--<common:page2 url="${pageUrl}" type="3"/>--%>
+                                <%--</div>--%>
+                            <%--</c:if>--%>
 
                         </div>
                     </div>

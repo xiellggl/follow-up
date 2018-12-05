@@ -1,6 +1,7 @@
 package com.dayi.follow.service.impl;
 
 
+import com.dayi.common.util.BizResult;
 import com.dayi.common.util.Misc;
 import com.dayi.component.annotation.Log;
 import com.dayi.component.model.BaseLog;
@@ -77,6 +78,23 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.UPDATE, what = "角色管理", note = "启用/禁用角色")
+    public boolean updateStatus(String id, boolean enable) {
+        Role role = new Role();
+        role.setId(id);
+        if (enable) {
+            role.setStatus(Role.STATUS_NORMAL.id);
+        } else {
+            role.setStatus(Role.STATUS_DISABLE.id);
+        }
+        role.setUpdateTime(new Date());
+        if (roleMapper.update(role) == 0) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     public List<Role> queryRolesByIds(String roleIds) {
         if (roleIds == null) {
             return new ArrayList<>();
@@ -95,9 +113,14 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<Role> listAll() {
+    public List<Role> listAll(Integer status) {
         Conditions conditions = new Conditions();
-        conditions.add(Restrictions.eq("status", Role.STATUS_NORMAL.id));
+        if (null != status) {
+            conditions.add(Restrictions.eq("status", status));
+        } else {
+            // 默认查询所有角色(包括非启用的角色)
+            conditions.add(Restrictions.ne("status", Role.STATUS_DEL.id));
+        }
         return roleMapper.searchByConditions(conditions);
     }
 

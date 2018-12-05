@@ -2,8 +2,6 @@ package com.dayi.follow.controller;
 
 import com.dayi.common.util.BizResult;
 import com.dayi.common.util.Misc;
-import com.dayi.follow.component.UserComponent;
-import com.dayi.follow.model.follow.Module;
 import com.dayi.follow.model.follow.Role;
 import com.dayi.follow.service.RoleService;
 import com.dayi.mybatis.support.Page;
@@ -32,11 +30,11 @@ public class RoleController {
      * 加载所有角色
      * @return
      */
-    @RequestMapping("/menus")
+    @RequestMapping("/listAll")
     @ResponseBody
-    public BizResult menus() {
-        List<Role> menus=roleService.listAll();
-        return BizResult.succ(menus);
+    public BizResult listAll(Integer status) {
+        List<Role> roles = roleService.listAll(status);
+        return BizResult.succ(roles);
     }
 
     /**
@@ -81,7 +79,21 @@ public class RoleController {
             return BizResult.fail("保存角色前，请选择一个模块");
         }
         return roleService.updateRole(role, permissionIds) ? BizResult.SUCCESS : BizResult.FAIL;
+    }
 
+    /**
+     * 启用禁用角色
+     * @param id
+     * @param enable
+     * @return
+     */
+    @RequestMapping("/enableRole")
+    @ResponseBody
+    public BizResult enableRole(String id, boolean enable) {
+        if (Misc.isEmpty(id)) {
+            return BizResult.fail("请选择要禁用/启用的角色");
+        }
+        return roleService.updateStatus(id, enable) ? BizResult.SUCCESS : BizResult.FAIL;
     }
 
     /**
@@ -92,7 +104,7 @@ public class RoleController {
     @RequestMapping("/delete")
     @ResponseBody
     public BizResult delete(HttpServletRequest request) {
-        String ids = request.getParameter("ids");
+        String ids = request.getParameter("id");
         if (!Misc.isEmpty(ids)) {
             String[] idArr = ids.split(",");
             for (String id : idArr) {
