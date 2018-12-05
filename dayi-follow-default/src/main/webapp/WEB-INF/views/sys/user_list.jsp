@@ -107,7 +107,7 @@
 <%@include file="/inc/followup/script.jsp"%>
 <script>
     seajs.use(["common","validate","template"],function(common,validate,template){
-
+        common.head("system",2);
     });
 </script>
 </body>
