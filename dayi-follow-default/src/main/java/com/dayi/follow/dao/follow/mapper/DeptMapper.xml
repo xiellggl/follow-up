@@ -6,8 +6,6 @@
 
         <result property="pid" column="pid"/>
 
-        <result property="managerId" column="manager_id"/>
-
         <result property="sortNo" column="sort_no"/>
 
         <result property="name" column="name"/>
@@ -23,11 +21,6 @@
                      column="pid" fetchType="lazy">
 
         </association>
-        <association property="manager" javaType="com.dayi.follow.model.follow.FollowUp"
-                     select="com.dayi.follow.dao.follow.FollowUpMapper.get"
-                     column="manager_id" fetchType="lazy">
-
-        </association>
         <collection property="subDeptList" ofType="com.dayi.follow.model.follow.Department"
                     select="com.dayi.follow.dao.follow.DeptMapper.getSubDepts"
                     column="id" fetchType="lazy">
@@ -35,7 +28,7 @@
     </resultMap>
 
     <select id="getTopList" resultMap="BaseResultMap">
-        SELECT * from department where pid is null ORDER by sort_no asc
+        SELECT * from department where pid is null or pid='' ORDER by sort_no asc
     </select>
 
     <select id="get" resultMap="BaseResultMap" parameterType="java.lang.String">

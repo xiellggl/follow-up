@@ -37,3 +37,18 @@ CREATE TABLE `follow_up`  (
 INSERT into  dayi_follow_all.agent_contact
 (id,agent_id,contact_type,customer_type,customer_intention_type,next_contact_time,flow_id,content,create_date,modify_date)
 SELECT * from dev_dayi_spot.agent_contact
+
+
+#将agent表的跟进人数据，迁移到follow_agent表
+INSERT into  follow_agent (id,follow_id,agent_id,follow_up_before,assign_date_before,
+customer_type,cus_intention_type,assign_date,agent_fund_before,total_fund_before,create_time,update_time)
+SELECT CONCAT(id,'a',IFNULL(flow_id,0)),flow_id,id,follow_up_before,flow_date_before,
+customer_type,customer_intention_type,flow_date,asserts_before,balance_before,create_date,
+modify_date from agent
+
+#复制follow_up表数据
+INSERT into  follow_up (id,dept_id,name,mobile,invite_code,
+user_name,disable,`password`,create_by,update_by,create_time,update_time,switch_status,channel_remark,identity)
+SELECT id,dept_id,link_person,mobile,invite_code,
+user_name,`disable`,`password`,create_by,modify_by,create_date,modify_date,switch_status,channel_remark,1
+from flow_up

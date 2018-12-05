@@ -277,7 +277,7 @@
                 </ul>
         </li>
         <li data-rel="manageDept">
-            <a href="/followup/manage/dept/list">
+            <a href="/dept/list">
                 <i class="menu-icon fa fa-cog"></i>
                 <span class="menu-text">部门管理</span>
             </a>

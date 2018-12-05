@@ -30,7 +30,6 @@ public class FollowUp extends BaseModel implements Principal {
     @NotNull(message = "请选择二级资产开关状态！")
     private Integer switchStatus; //二级资管状态
     private String channelRemark;//渠道码备注
-    private String chargeDeptId;//负责部门id
     private String createBy;    // 创建人
     private String updateBy;    // 修改人
     @NotBlank(message = "角色不能为空！")
@@ -94,9 +93,6 @@ public class FollowUp extends BaseModel implements Principal {
         return channelRemark;
     }
 
-    public String getChargeDeptId() {
-        return chargeDeptId;
-    }
 
     public String getCreateBy() {
         return createBy;
@@ -144,9 +140,6 @@ public class FollowUp extends BaseModel implements Principal {
         this.channelRemark = channelRemark;
     }
 
-    public void setChargeDeptId(String chargeDeptId) {
-        this.chargeDeptId = chargeDeptId;
-    }
 
     public void setCreateBy(String createBy) {
         this.createBy = createBy;
