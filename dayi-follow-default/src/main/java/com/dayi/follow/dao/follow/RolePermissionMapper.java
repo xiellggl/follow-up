@@ -26,7 +26,15 @@ public interface RolePermissionMapper extends BaseMapper<RolePermission> {
      * @param roleid
      * @return
      */
-    String deleteByRoleid(String roleid);
+    int deleteByRoleid(String roleid);
+
+    /**
+     * 根据权限id删除角色权限关联
+     *
+     * @param perId
+     * @return
+     */
+    int deleteByPerId(String perId);
 
     /**
      * 批量插入关系数据

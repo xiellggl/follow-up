@@ -14,9 +14,13 @@
         SELECT * FROM role_permission  WHERE roleid = #{roleid}
     </select>
 
-    <select id="deleteByRoleid" parameterType="java.lang.String">
-        DELETE  FROM role_permission  WHERE roleid = #{roleid}
-    </select>
+    <delete id="deleteByRoleid" parameterType="java.lang.String">
+        DELETE FROM role_permission WHERE roleid = #{roleid}
+    </delete>
+
+    <delete id="deleteByPerId" parameterType="java.lang.String">
+        DELETE FROM role_permission WHERE permissionId = #{perId}
+    </delete>
 
     <insert id="addBatch" parameterType="java.util.List">
         insert into role_permission (id,roleid,permissionid,create_time,update_time)

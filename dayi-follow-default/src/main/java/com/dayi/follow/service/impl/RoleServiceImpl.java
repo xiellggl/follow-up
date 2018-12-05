@@ -126,6 +126,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     @Log(target = OperateLog.class, action = BaseLog.LogAction.DELETE, what = "角色管理", note = "角色删除")
     public boolean delete(String id) {
+        // 删除角色(逻辑删除)
         Role role = new Role();
         role.setId(id);
         role.setStatus(Role.STATUS_DEL.id);
@@ -133,6 +134,12 @@ public class RoleServiceImpl implements RoleService {
         if (roleMapper.update(role) == 0) {
             return false;
         }
+
+        // 删除角色权限关联
+        permissionService.deleteRolePermission(id);
+
+        // FIXME TODO 删除角色用户关联
+
         return true;
     }
 

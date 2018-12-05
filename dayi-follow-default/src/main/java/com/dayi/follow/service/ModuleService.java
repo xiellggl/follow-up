@@ -4,10 +4,7 @@ package com.dayi.follow.service;
 import com.dayi.follow.model.follow.Module;
 import com.dayi.follow.model.follow.Menu;
 import com.dayi.follow.model.follow.Permission;
-import com.dayi.follow.model.follow.Role;
 import com.dayi.follow.vo.PermissionVo;
-import com.dayi.follow.vo.sys.ModuleSearchVo;
-import com.dayi.mybatis.support.Page;
 
 import java.util.List;
 /**
@@ -35,14 +32,6 @@ public interface ModuleService {
      * @return
      */
     List<Menu> listAll(Boolean isOnlyShowEnable);
-
-    /**
-     * 返回所有模块
-     *
-     * @param module
-     * @return
-     */
-    List<Module> findAllModules(Module module);
 
     /**
      * 返回所有权限
@@ -98,11 +87,4 @@ public interface ModuleService {
      * @return
      */
     List<Menu> eachMenu(List<Menu> menus, String keyword);
-
-    /**
-     * 查询列表
-     * @param moduleSearchVo
-     * @return
-     */
-    Page<Module> searchModule(ModuleSearchVo moduleSearchVo);
 }

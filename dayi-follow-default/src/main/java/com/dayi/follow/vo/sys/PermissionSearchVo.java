@@ -1,28 +1,32 @@
 package com.dayi.follow.vo.sys;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.util.Date;
-
 /**
- * 模块列表查询条件封装Vo
+ * 功能列表查询条件封装Vo
  *
  * @author zhoujiakai
- * @date 2018/12/04
+ * @date 2018/12/05
  */
-public class ModuleSearchVo {
+public class PermissionSearchVo {
 
-    /** 页码 */
+    /**
+     * 页码
+     */
     private int pageNo;
 
-    /** 每页条数 */
+    /**
+     * 每页条数
+     */
     private int pageSize;
 
-    /** 功能名称 */
+    /**
+     * 功能名称
+     */
     private String name;
 
-    /** 状态 */
-    private Integer status;
+    /**
+     * 是否已绑定
+     */
+    private Boolean isBinding;
 
     public int getPageNo() {
         return pageNo > 0 ? pageNo : 1;
@@ -48,21 +52,21 @@ public class ModuleSearchVo {
         this.name = name;
     }
 
-    public Integer getStatus() {
-        return status;
+    public Boolean getBinding() {
+        return isBinding;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setBinding(Boolean binding) {
+        isBinding = binding;
     }
 
     @Override
     public String toString() {
-        return "ModuleSearchVo{" +
+        return "PermissionSearchVo{" +
                 "pageNo=" + pageNo +
                 ", pageSize=" + pageSize +
                 ", name='" + name + '\'' +
-                ", status=" + status +
+                ", isBinding=" + isBinding +
                 '}';
     }
 }

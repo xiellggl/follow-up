@@ -1,7 +1,5 @@
 package com.dayi.follow.service;
 
-
-import com.dayi.common.util.BizResult;
 import com.dayi.follow.model.follow.Role;
 import com.dayi.mybatis.support.Page;
 

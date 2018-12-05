@@ -17,6 +17,8 @@ public class RolePermission extends BaseModel {
      */
     private String permissionid;
 
+    public RolePermission() {}
+
     public RolePermission(String id, String roleid, String permissionid) {
         super(id);
         this.roleid = roleid;

@@ -3,6 +3,7 @@ package com.dayi.follow.service;
 import com.dayi.follow.model.follow.Permission;
 import com.dayi.follow.model.follow.RolePermission;
 import com.dayi.follow.vo.PermissionVo;
+import com.dayi.follow.vo.sys.PermissionSearchVo;
 import com.dayi.mybatis.support.Page;
 
 import java.util.List;
@@ -13,8 +14,19 @@ import java.util.List;
  */
 public interface PermissionService {
 
+    /**
+     * 分页条件查询功能列表
+     * @param permissionSearchVo
+     * @return
+     */
+    Page<Permission> searchPermissions(PermissionSearchVo permissionSearchVo);
 
-
+    /**
+     * 根据id查询功能
+     * @param id
+     * @return
+     */
+    Permission get(String id);
 
     /**
      * 批量插入关系数据
@@ -42,16 +54,7 @@ public interface PermissionService {
      *
      * @param roleId
      */
-    void deleteRolePermission(String roleId);
-
-    /**
-     * 分页
-     *
-     * @param page
-     * @param permission
-     * @return
-     */
-    Page<Permission> searchPermissions(Page<Permission> page, PermissionVo permission);
+    boolean deleteRolePermission(String roleId);
 
     /**
      * 绑定功能
@@ -60,7 +63,15 @@ public interface PermissionService {
      * @param permissionIds
      * @return
      */
-    void bindModule(String moduleId, String permissionIds);
+    boolean bindModule(String moduleId, String permissionIds);
+
+    /**
+     * 解绑功能
+     *
+     * @param permissionId
+     * @return
+     */
+    boolean untyingModule(String permissionId);
 
     /**
      * 根据ids查询权限列表
@@ -83,7 +94,6 @@ public interface PermissionService {
      */
     List<Permission> getPermissions();
 
-
     /**
      * 根据角色id,获取权限列表
      *
@@ -92,5 +102,18 @@ public interface PermissionService {
      */
     List<Permission> getPermissionsByRoleId(String roleId);
 
+    /**
+     * 显示/隐藏功能
+     * @param id
+     * @param displace
+     * @return
+     */
+    boolean updateDisplace(String id, boolean displace);
 
+    /**
+     * 删除权限
+     * @param id
+     * @return
+     */
+    boolean delete(String id);
 }

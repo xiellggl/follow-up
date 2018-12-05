@@ -3,30 +3,21 @@ package com.dayi.follow.controller;
 import com.dayi.common.util.BizResult;
 import com.dayi.common.util.Misc;
 import com.dayi.follow.model.follow.Module;
-import com.dayi.follow.model.follow.Role;
 import com.dayi.follow.service.ModuleService;
 import com.dayi.follow.model.follow.Menu;
-import com.dayi.follow.service.PermissionService;
 import com.dayi.follow.vo.PermissionVo;
-import com.dayi.follow.vo.sys.ModuleSearchVo;
-import com.dayi.mybatis.support.Page;
 import com.dayi.user.authorization.AuthorizationManager;
 import com.dayi.user.authorization.authc.AccountInfo;
-import com.dayi.user.authorization.authc.AuthenticationInfo;
 import com.dayi.user.authorization.authz.AuthorizationInfo;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author xiell
@@ -75,6 +66,18 @@ public class ModuleController {
     }
 
     /**
+     * 查询模块列表
+     * @param model
+     * @return
+     */
+    @RequestMapping("/list")
+    public String list(Model model) {
+        List<Menu> menus = moduleService.listAll(null);
+        model.addAttribute("menus", menus);
+        return "sys/module_list";
+    }
+
+    /**
      * 新增模块
      * @param request
      * @param module
@@ -97,12 +100,10 @@ public class ModuleController {
      * 编辑模块
      */
     @RequestMapping("/edit")
-    @ResponseBody
-    public BizResult edit(String id) {
-        if (Misc.isEmpty(id)) {
-            return BizResult.fail("请选择要编辑的模块.");
-        }
-        return BizResult.succ(moduleService.getModule(id));
+    public String edit(String id, Model model) {
+        Module module = moduleService.getModule(id);
+        model.addAttribute("module", module);
+        return "sys/module_edit";
     }
 
     /**
@@ -157,19 +158,6 @@ public class ModuleController {
             }
         }
         return BizResult.SUCCESS;
-    }
-
-    /**
-     * 分页查询模块列表
-     * @param moduleSearchVo
-     * @param model
-     * @return
-     */
-    @RequestMapping("/list")
-    public String list(ModuleSearchVo moduleSearchVo, Model model) {
-        Page<Module> page = moduleService.searchModule(moduleSearchVo);
-        model.addAttribute("page", page);
-        return "sys/module_list";
     }
 
     /*@RequestMapping("/list")

@@ -9,10 +9,7 @@ import com.dayi.follow.dao.follow.PermissionMapper;
 import com.dayi.follow.model.follow.*;
 import com.dayi.follow.service.ModuleService;
 import com.dayi.follow.vo.PermissionVo;
-import com.dayi.follow.vo.sys.ModuleSearchVo;
 import com.dayi.mybatis.support.Conditions;
-import com.dayi.mybatis.support.Order;
-import com.dayi.mybatis.support.Page;
 import com.dayi.mybatis.support.ext.Restrictions;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -177,17 +174,6 @@ public class ModuleServiceImpl implements ModuleService {
     }
 
     /**
-     * 获取所有模块
-     *
-     * @param module
-     * @return
-     */
-    @Override
-    public List<Module> findAllModules(Module module) {
-        return moduleMapper.findList(module);
-    }
-
-    /**
      * 获取所有权限
      *
      * @param permissionVo
@@ -345,6 +331,7 @@ public class ModuleServiceImpl implements ModuleService {
     @Override
     @Log(target = OperateLog.class, action = BaseLog.LogAction.DELETE, what = "模块管理", note = "模块删除")
     public boolean deleteModule(String id) {
+        // 删除模块（逻辑删除）
         Module module = new Module();
         module.setId(id);
         module.setUpdateTime(new Date());
@@ -352,6 +339,11 @@ public class ModuleServiceImpl implements ModuleService {
         if (moduleMapper.update(module) == 0) {
             return false;
         }
+
+        // FIXME TODO 模块下的权限取消模块关联
+
+        // FIXME TODO 模块下的权限删除角色关联
+
         return true;
     }
 
@@ -379,25 +371,6 @@ public class ModuleServiceImpl implements ModuleService {
             eachMenu(menu.getChildMenus(), keyword);
         }
         return menus;
-    }
-
-    @Override
-    public Page<Module> searchModule(ModuleSearchVo moduleSearchVo) {
-        Page<Module> page = new Page<>();
-        page.setPageNo(moduleSearchVo.getPageNo());
-        page.setPageSize(moduleSearchVo.getPageSize());
-
-        Conditions conditions = new Conditions();
-        String name = moduleSearchVo.getName();
-        Integer status = moduleSearchVo.getStatus();
-        if (!Misc.isEmpty(name)) {
-            conditions.add(Restrictions.like("name", "%" + name + "%"));
-        }
-        if (null != status) {
-            conditions.add(Restrictions.eq("status", status));
-        }
-
-        return moduleMapper.searchByConditions(page, conditions);
     }
 
 }
