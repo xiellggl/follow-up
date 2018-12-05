@@ -4,6 +4,7 @@ package com.dayi.follow.service;
 import com.dayi.follow.model.follow.Module;
 import com.dayi.follow.model.follow.Menu;
 import com.dayi.follow.model.follow.Permission;
+import com.dayi.follow.model.follow.Role;
 import com.dayi.follow.vo.PermissionVo;
 import com.dayi.follow.vo.sys.ModuleSearchVo;
 import com.dayi.mybatis.support.Page;
@@ -72,6 +73,14 @@ public interface ModuleService {
     boolean updateModule(Module module);
 
     /**
+     * 启用/禁用模块
+     * @param id
+     * @param enable
+     * @return
+     */
+    boolean updateStatus(String id, boolean enable);
+
+    /**
      * 删除角模块信息
      * @param id
      * @return
@@ -92,4 +101,11 @@ public interface ModuleService {
      * @return
      */
     Page<Module> searchModule(ModuleSearchVo moduleSearchVo);
+
+    /**
+     * 查询所有模块
+     * @param status
+     * @return
+     */
+    List<Module> listAll(Integer status);
 }
