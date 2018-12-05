@@ -22,7 +22,7 @@
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-check"></i>
                                     </span>
-                    <select name="idCardVal">
+                    <select name="idCardValidate">
                         <option value="">实名状态</option>
                         <option value="1"  ${param.idCardValidate=='1'?"selected":''}>已认证</option>
                         <option value="0"  ${param.idCardValidate=='0'?"selected":''}>未认证</option>

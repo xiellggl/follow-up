@@ -22,6 +22,7 @@ import com.dayi.user.authorization.authz.support.SimpleAuthorizationInfo;
 import com.dayi.user.authorization.realm.Realm;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -56,6 +57,8 @@ public class UserServiceImpl implements UserService, Realm {
     FollowAgentService followAgentService;
     @Resource
     UserComponent userComponent;
+    @Value("${dayi.dataBase}")
+    String dayiDataBaseStr;
     /**
      * 黑名单列表
      */
@@ -224,7 +227,7 @@ public class UserServiceImpl implements UserService, Realm {
     public BizResult delete(FollowUp followUp) {
         List<Agent> agents = followAgentMapper.findAgentsByFollowId(followUp.getId());
 
-        List<Organization> orgs = followOrgMapper.findOrgsByfollowId(followUp.getId(), null);
+        List<Organization> orgs = followOrgMapper.findOrgsByfollowId(followUp.getId(), null,dayiDataBaseStr);
 
         if (!agents.isEmpty() || !orgs.isEmpty()) return BizResult.fail("该账号存在跟进客户,无法删除！");
         return 1 == userMapper.delete(followUp) ? BizResult.SUCCESS : BizResult.FAIL;

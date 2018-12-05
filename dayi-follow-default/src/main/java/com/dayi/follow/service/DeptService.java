@@ -52,4 +52,5 @@ public interface DeptService {
     List<Department> getEditCanSelectDepts(List<Department>departments,Department department);
 
     BizResult delete(Department department);
+
 }

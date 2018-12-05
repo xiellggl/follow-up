@@ -32,7 +32,7 @@
                                     <c:set var="index" value="0" scope="request" />
                                     <%--记录树的层次，注意scope--%>
                                     <c:set var="level" value="0" scope="request" />
-                                    <c:import url="dept_edit_item.jsp" />
+                                    <c:import url="dept_select_item.jsp" />
                                 </select>
                             </div>
                         </div>

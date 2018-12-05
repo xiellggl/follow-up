@@ -56,6 +56,7 @@ public class DeptServiceImpl implements DeptService {
         if (CollectionUtils.isEmpty(subDeptList)) return deptList;
 
         for (Department dept : subDeptList) {
+            deptList.add(dept);
             deptList.addAll(this.getSubDept(dept.getId()));
         }
         return deptList;
@@ -107,19 +108,19 @@ public class DeptServiceImpl implements DeptService {
         return 1 == deptMapper.delete(department) ? BizResult.SUCCESS : BizResult.FAIL;
     }
 
-
     @Override
     public List<Department> doDeptTreeName(List<Department> departments, int depth) {
-        if (departments.isEmpty()) return departments;
+        if (departments.isEmpty()) return null;
         String prefix = "";
 
         for (int i = 0; i < depth; i++) {
             prefix = prefix + "　";
         }
 
+        ++depth;
         for (Department department : departments) {
             department.setTreeName(prefix + department.getName());
-            doDeptTreeName(department.getSubDeptList(), depth++);
+            doDeptTreeName(department.getSubDeptList(), depth);
         }
         return departments;
     }

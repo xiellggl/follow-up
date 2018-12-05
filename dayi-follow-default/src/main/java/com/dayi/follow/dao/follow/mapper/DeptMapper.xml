@@ -38,6 +38,10 @@
         SELECT * from department where pid is null ORDER by sort_no asc
     </select>
 
+    <select id="get" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT * from department where id =#{deptId}
+    </select>
+
     <select id="getSubDepts" resultMap="BaseResultMap">
         SELECT * from department where pid =#{deptId}
     </select>

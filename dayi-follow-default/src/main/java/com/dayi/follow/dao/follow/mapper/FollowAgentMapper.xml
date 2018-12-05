@@ -3,7 +3,7 @@
 <mapper namespace="com.dayi.follow.dao.follow.FollowAgentMapper">
 
     <resultMap id="AgentContactResultMap" type="com.dayi.follow.model.follow.AgentContact">
-        <result property="createTime" column="create_date" />
+        <result property="createTime" column="create_time" />
         <result property="content" column="content" />
     </resultMap>
 
@@ -45,11 +45,10 @@
 
     <sql id="findAgentsSelect">
         SELECT
-        a.flow_date ,
+        a.assign_date ,
         a.follow_id ,a.customer_type , a.cus_intention_type,
 
-        b.invite_code flowUpInviteCode,
-        b.id ,b.name,
+        b.invite_code flowUpInviteCode,b.name,
 
 
         c.id, c.link_person , c.bank_name , c.create_date ,
@@ -118,8 +117,8 @@
     </sql>
 
    <sql id="followConditionSql">
-       --         跟进人相关表查询条件
-       -- 归属条件
+--                跟进人相关表查询条件
+--        归属条件
        <if test="null!=followId">
            AND b.id =#{followId}
        </if>
@@ -140,7 +139,7 @@
     <sql id="ConditionQuery">
         -- 页面查询条件
         -- 客户类型
-        <if test="null!=searchVo.customerType and -1!=searchVo.customerType">
+        <if test="null!=searchVo.customerType">
             AND a.customer_type =#{searchVo.customerType}
         </if>
         -- 页面查询条件：跟进人
@@ -162,18 +161,18 @@
         </if>
         -- 下面是页面查询条件
         -- 是否实名认证
-        <if test="null!=searchVo.idCardValidate and -1!=searchVo.idCardValidate">
+        <if test="null!=searchVo.idCardValidate">
             <choose>
                 <when test="1==searchVo.idCardValidate">
-                    AND (c.audit_status IN (1 ,- 3) OR c.cancel_status = 3)
+                    AND c.id_card is not null
                 </when>
                 <otherwise>
-                    AND (c.audit_status NOT IN (1 ,- 3) AND c.cancel_status != 3)
+                    AND c.id_card is  null
                 </otherwise>
             </choose>
         </if>
         -- 是否绑卡
-        <if test="null!=searchVo.bankSign and -1!=searchVo.bankSign">
+        <if test="null!=searchVo.bankSign">
             <if test="0==searchVo.bankSign">
                 AND c.bank_account is null
             </if>
@@ -187,7 +186,7 @@
         </if>
 
         -- 客户总资产
-        <if test="null!=searchVo.totalFound and -1!=searchVo.totalFound">
+        <if test="null!=searchVo.totalFound">
             -- 总资产为0
             <if test="1==searchVo.totalFound">
                 AND IFNULL(d.useable + d.frozen + d.out_frozen + IFNULL(e.amount, 0), 0) = 0
@@ -224,7 +223,7 @@
         </if>
 
         -- 是否入金
-        <if test="-1!=searchVo.inCash">
+        <if test="null!=searchVo.inCash">
             <choose>
                 <when test="1==searchVo.inCash">
                     AND ifnull(d.total_in_cash,0) > 0
@@ -236,7 +235,7 @@
         </if>
 
         -- 今日是否入金
-        <if test=" null!=searchVo.todayInCash and -1!=searchVo.todayInCash">
+        <if test=" null!=searchVo.todayInCash">
             <choose>
                 <when test="1==searchVo.todayInCash">
                     AND ifnull(f.inCash,0) > 0
@@ -248,7 +247,7 @@
         </if>
 
         -- 今日是否出金
-        <if test=" null!=searchVo.todayOutCash and -1!=searchVo.todayOutCash">
+        <if test=" null!=searchVo.todayOutCash">
             <choose>
                 <when test="1==searchVo.todayOutCash">
                     AND ifnull(f.outCash,0) > 0
@@ -268,7 +267,7 @@
             AND c.record_invite_code like CONCAT('%','${searchVo.inviteCode}','%' )
         </if>
         --         根据分配日期排序
-        ORDER BY a.flow_date DESC
+        ORDER BY a.assign_date DESC
     </sql>
     <!--分页-->
     <sql id="pageSql">
@@ -313,19 +312,19 @@
 
     <!--统计待联系代理商id集合-->
     <select id="getWaitLinkAgentIds" resultType="java.lang.Integer" parameterType="string">
-        select ac2.agent_id id FROM ( SELECT max( create_date ) create_date, agent_id
+        select ac2.agent_id id FROM ( SELECT max( create_time ) create_time, agent_id
         FROM agent_contact where 1=1
         <if test="null != followUpId">
             AND flow_id =#{followUpId}
         </if>
         GROUP BY agent_id ) ac1
-        LEFT JOIN ( SELECT create_date, agent_id, next_contact_time FROM agent_contact ) ac2
-        ON ac2.create_date = ac1.create_date
+        LEFT JOIN ( SELECT create_time, agent_id, next_contact_time FROM agent_contact ) ac2
+        ON ac2.create_time = ac1.create_time
         AND ac2.agent_id = ac1.agent_id WHERE next_contact_time = CURDATE()
     </select>
 
     <select id="findLastContact" resultMap="AgentContactResultMap" parameterType="java.lang.Integer" >
-         SELECT create_date,content FROM `agent_contact` WHERE agent_id = #{agentId} ORDER BY create_date DESC LIMIT 1
+         SELECT create_time,content FROM `agent_contact` WHERE agent_id = #{agentId} ORDER BY create_time DESC LIMIT 1
     </select>
 
 
@@ -347,11 +346,11 @@
     </select>
 
     <select id="findContacts" resultType="com.dayi.follow.vo.agent.AgentContactVo" parameterType="java.lang.Integer" >
-        SELECT * FROM `agent_contact` WHERE agent_id = #{agentId} order by create_date desc LIMIT #{limitStart},#{limitEnd}
+        SELECT * FROM `agent_contact` WHERE agent_id = #{agentId} order by create_time desc LIMIT #{limitStart},#{limitEnd}
     </select>
 
     <select id="getFollowDate" parameterType="java.lang.Integer" resultType="java.util.Date">
-        SELECT create_date from follow_agent where agent_id =${agentId}
+        SELECT create_time from follow_agent where agent_id =${agentId}
     </select>
 
     <select id="getFollowAgentByAgentId" parameterType="java.lang.Integer" resultType="com.dayi.follow.model.follow.FollowAgent">
@@ -398,7 +397,7 @@
         SELECT id,link_person,create_date,mobile,bank_name,id_card,bank_account,record_invite_code,audit_date
         from ${assistDataBase}.agent a
         left JOIN (
-            SELECT agent_id,follow_id,create_date followDate from follow_agent where follow_id in
+            SELECT agent_id,follow_id,create_time followDate from follow_agent where follow_id in
             <foreach item="item" index="index" collection="followIds"
                      open="(" separator="," close=")">
                 #{item}
@@ -419,7 +418,7 @@
         SELECT count(0)
         from ${assistDataBase}.agent a
         left JOIN (
-        SELECT agent_id,follow_id,create_date followDate from follow_agent where follow_id in
+        SELECT agent_id,follow_id,create_time followDate from follow_agent where follow_id in
         <foreach item="item" index="index" collection="followIds"
                  open="(" separator="," close=")">
             #{item}

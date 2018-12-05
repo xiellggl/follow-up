@@ -17,6 +17,7 @@ import java.util.Date;
 public class AgentListVo {
     private Integer id;//代理商id
 
+
     private String linkPerson;//姓名
     private String linkPersonFm;//联系人的姓名(格式化：男的：先生，女的：女士）
 

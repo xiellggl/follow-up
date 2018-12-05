@@ -1,5 +1,6 @@
 package com.dayi.follow.vo.followup;
 
+import com.dayi.follow.enums.MemberStatusEnum;
 import com.dayi.follow.model.follow.Department;
 
 import java.util.Date;
@@ -67,6 +68,13 @@ public class FollowUpListVo {
     }
 
     public String getStatus() {
+        if (this.getDisable()!=null){
+            if(this.getDisable().intValue()== MemberStatusEnum.ENABLE.getValue()){
+                return MemberStatusEnum.ENABLE.getName();
+            }else {
+                return MemberStatusEnum.DISABLE.getName();
+            }
+        }
         return status;
     }
 

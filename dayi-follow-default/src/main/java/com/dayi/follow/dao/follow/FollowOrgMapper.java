@@ -21,9 +21,9 @@ public interface FollowOrgMapper extends BaseMapper<FollowOrg> {
     //统计资产规模
     double getTotalFund(@Param("followIds") List<String> followIds);
 
-    List<Organization> findOrgsByfollowId(String followId, String deadline);
+    List<Organization> findOrgsByfollowId(@Param("followId")String followId,@Param("deadline") String deadline,@Param("assistDataBase") String assistDataBase);
 
-    List<Organization> findOrgsByfollowIds(List<String> followIds, String deadline);
+    List<Organization> findOrgsByfollowIds(@Param("followIds")List<String> followIds,@Param("deadline")String deadline);
 
     String getFollowIdByOrgId(Integer orgId);
 

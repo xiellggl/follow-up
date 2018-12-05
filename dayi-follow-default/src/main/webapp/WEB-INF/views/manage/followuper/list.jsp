@@ -43,8 +43,8 @@
                                     <span class="input-group-addon">
                                         <i class="ace-icon glyphicon glyphicon-phone"></i>
                                     </span>
-                                    <input type="text" name="filter_LIKEANYWHERES_mobile" class="form-control admin_sea"
-                                           value="${param.filter_LIKEANYWHERES_mobile}" placeholder="手机号"/>
+                                    <input type="text" name="mobile" class="form-control admin_sea"
+                                           value="${param.mobile}" placeholder="手机号"/>
                                 </div>
                             </div>
                             <div class="col-xs-4 col-sm-3 btn-sespan">
@@ -54,10 +54,11 @@
                                     </span>
                                     <select name="myDeptId" class="form-control admin_sea">
                                         <option value="">所属团队</option>
-                                        <c:forEach var="item" items="${deptList}">
-                                            <option
-                                                value="${item.id}" ${myDeptId eq item.id?"selected":''}>${item.treeName}</option>
-                                        </c:forEach>
+                                            <%--自增序号，注意scope--%>
+                                            <c:set var="index" value="0" scope="request" />
+                                            <%--记录树的层次，注意scope--%>
+                                            <c:set var="level" value="0" scope="request" />
+                                        <c:import url="dept_select_item.jsp" />
                                     </select>
                                 </div>
                             </div>
@@ -66,8 +67,8 @@
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-barcode"></i>
                                     </span>
-                                    <input type="text" name="filter_LIKEANYWHERES_inviteCode" class="form-control admin_sea"
-                                           value="${param.filter_LIKEANYWHERES_inviteCode}" placeholder="邀请码"/>
+                                    <input type="text" name="inviteCode" class="form-control admin_sea"
+                                           value="${inviteCode}" placeholder="邀请码"/>
                                 </div>
                             </div>
                             <div class="col-xs-4 col-sm-3 btn-sespan">
@@ -111,7 +112,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:if test="${empty page.items}">
+                            <c:if test="${empty page.results}">
                                 <tr>
                                     <td colspan="12" class="no_data">暂无跟进人， 请<a href="#" data-toggle="modal"
                                                                                 data-target="#myModalEditFollowuper">新增跟进人</a>
@@ -119,25 +120,25 @@
                                 </tr>
                             </c:if>
 
-                            <c:if test="${not empty page.items}">
-                                <c:forEach items="${page.items}" var="item">
+                            <c:if test="${not empty page.results}">
+                                <c:forEach items="${page.results}" var="item">
                                     <tr data-id="${item.id}">
-                                        <td>${item.linkPerson}</td>
+                                        <td>${item.name}</td>
                                         <td class="hidden-xs">${item.inviteCode}</td>
                                         <td>${item.userName}</td>
                                         <td>${item.deptName}</td>
                                         <td>
                                             <a class="state-btn" data-state="${item.disable}" href="#"
-                                               data-id="${item.id}" title="已${item.statusStr}">
+                                               data-id="${item.id}" title="已${item.status}">
                                                 <span
-                                                    class="btn btn-minier ${item.disable eq 1 ? 'btn-yellow':'btn-danger'}">${item.statusStr}</span>
+                                                    class="btn btn-minier ${item.disable eq 1 ? 'btn-yellow':'btn-danger'}">${item.status}</span>
                                             </a>
                                         </td>
-                                        <td>${item.agentCount}</td>
-                                        <td>${item.orgCount}</td>
-                                        <td class="tr hidden-xs">${item.agentAssertsStr}</td>
-                                        <td class="tr hidden-xs">${item.orgAssertsStr}</td>
-                                        <td class="hidden-sm hidden-xs"><fmt:formatDate value="${item.createDate}"
+                                        <td>${item.agentNum}</td>
+                                        <td>${item.orgNum}</td>
+                                        <td class="tr hidden-xs">${item.agentFund}</td>
+                                        <td class="tr hidden-xs">${item.orgFund}</td>
+                                        <td class="hidden-sm hidden-xs"><fmt:formatDate value="${item.createTime}"
                                                                                         pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                         <td>
                                             <a class="green" href="#" data-toggle="modal"
@@ -155,7 +156,7 @@
                             </c:if>
                             </tbody>
                         </table>
-                        <c:if test="${not empty page.items}">
+                        <c:if test="${not empty page.results}">
                             <div class="pagerBar" id="pagerBar">
                                 <common:page2 url="${pageUrl}" type="3"/>
                             </div>

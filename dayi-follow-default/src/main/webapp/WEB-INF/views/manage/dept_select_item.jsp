@@ -11,7 +11,7 @@
         <%--注意此处，子列表覆盖treeList，在request作用域--%>
         <c:set var="deptList" value="${item.subDeptList}" scope="request" />
         <%--这里递归--%>
-        <c:import url="dept_edit_item.jsp" />
+        <c:import url="dept_select_item.jsp" />
     </c:if>
 </c:forEach>
 <c:set var="level" value="${level - 1}" scope="request" /><!-- 退出时，level-1 -->

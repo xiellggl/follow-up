@@ -53,6 +53,8 @@ public class CountServiceImpl implements CountService {
     private OrgService orgService;
     @Value("${follow.dataBase}")
     String followDataBaseStr;
+    @Value("${dayi.dataBase}")
+    String dayiDataBaseStr;
 
 
 
@@ -143,7 +145,7 @@ public class CountServiceImpl implements CountService {
         OrgDataVo orgDataVo = new OrgDataVo();
         if (StringUtils.isBlank(followId)) return orgDataVo;
 
-        List<Organization> orgVos = followOrgMapper.findOrgsByfollowId(followId, null);
+        List<Organization> orgVos = followOrgMapper.findOrgsByfollowId(followId, null,dayiDataBaseStr);
         orgDataVo.setOrgNum(orgVos.size());
 
         int agentNum = this.getValidAgentNum(orgVos);
@@ -152,7 +154,7 @@ public class CountServiceImpl implements CountService {
 
         DateTime dateTime = DateTime.now();
         String deadline = dateTime.millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
-        List<Organization> yesOrgVos = followOrgMapper.findOrgsByfollowId(followId, deadline);//截至昨天的创客
+        List<Organization> yesOrgVos = followOrgMapper.findOrgsByfollowId(followId, deadline,dayiDataBaseStr);//截至昨天的创客
 
         double manageFund = this.getOrgManageFund(yesOrgVos);
 
