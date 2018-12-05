@@ -9,7 +9,8 @@
     <c:set var="pageName" value="financeUcOrgPage" />
     <%@include file="/inc/followup/csslink.jsp"%>
 </head>
-<body>
+<body class="no-skin">
+<%@include file="/inc/followup/topbar.jsp"%>
 <div class="main-container" id="main-container">
     <%@include file="/inc/followup/sidebar.jsp"%>
     <div class="main-content">
@@ -81,11 +82,11 @@
                             </tbody>
                         </table>
 
-                        <c:if test="${not empty page.items}">
-                            <div class="pagerBar" id="pagerBar">
-                                <common:page2 url="${pageUrl}" type="3"/>
-                            </div>
-                        </c:if>
+                        <%--<c:if test="${not empty page.items}">--%>
+                            <%--<div class="pagerBar" id="pagerBar">--%>
+                                <%--<common:page2 url="${pageUrl}" type="3"/>--%>
+                            <%--</div>--%>
+                        <%--</c:if>--%>
 
                     </div>
                 </div>

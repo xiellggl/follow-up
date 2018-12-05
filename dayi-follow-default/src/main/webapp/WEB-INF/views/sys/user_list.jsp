@@ -9,7 +9,8 @@
     <c:set var="pageName" value="financeUcOrgPage" />
     <%@include file="/inc/followup/csslink.jsp"%>
 </head>
-<body>
+<body class="no-skin">
+<%@include file="/inc/followup/topbar.jsp"%>
 <div class="main-container" id="main-container">
     <%@include file="/inc/followup/sidebar.jsp"%>
     <div class="main-content">
@@ -56,11 +57,11 @@
                             </thead>
                             <tbody>
 
-                            <c:if test="${empty topDeptList}">
-                            <tr>
-                                <td colspan="6" class="no_data">暂无用户，请<a href="javascript:;" data-act="addDept">新增用户</a></td>
-                            </tr>
-                            </c:if>
+                            <%--<c:if test="${empty topDeptList}">--%>
+                            <%--<tr>--%>
+                                <%--<td colspan="6" class="no_data">暂无用户，请<a href="javascript:;" data-act="addDept">新增用户</a></td>--%>
+                            <%--</tr>--%>
+                            <%--</c:if>--%>
 
                             <c:forEach var="i" begin="1" end="5">
                             <tr>
@@ -91,11 +92,11 @@
                             </tbody>
                         </table>
 
-                        <c:if test="${not empty page.items}">
-                            <div class="pagerBar" id="pagerBar">
-                                <common:page2 url="${pageUrl}" type="3"/>
-                            </div>
-                        </c:if>
+                        <%--<c:if test="${not empty page.items}">--%>
+                            <%--<div class="pagerBar" id="pagerBar">--%>
+                                <%--<common:page2 url="${pageUrl}" type="3"/>--%>
+                            <%--</div>--%>
+                        <%--</c:if>--%>
 
                     </div>
                 </div>

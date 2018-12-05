@@ -3,7 +3,8 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>模块管理</title>
     <%@include file="/inc/followup/csslink.jsp"%>
 </head>
