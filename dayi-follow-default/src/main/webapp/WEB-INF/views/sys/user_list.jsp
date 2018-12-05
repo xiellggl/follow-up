@@ -406,6 +406,38 @@
             });
             return false;
         });
+
+        //重置密码
+        $('[data-act="resetpwd"]').on("click", function () {
+            var id = $(this).closest("tr").data("id");
+            var pwd = common.dateFormat(new Date(), "yyyy-MM-dd").replace(/-/g, "");
+            var html = '<div style="text-align: center;padding-top:20px;">新密码：<input type="text" class="input" name="pwd" value="' + pwd + '"></div>'
+            layer.open({
+                type: 1,
+                title: "重置密码",
+                btn: ["保存", "取消"],
+                area: ["300px", "auto"],
+                content: html,
+                yes: function (index, $box) {
+                    var $pwd = $box.find('[name="pwd"]');
+                    if ($pwd.val() == "") {
+                        layer.tips("请输入新密码", $pwd, {tips: 3});
+                        return false;
+                    }
+                    common.ajax.handle({
+                        url: "/user/resetpwd/" + id + ".json",
+                        data: {pwd: $pwd.val()},
+                        succback: function (data) {
+                            common.successMsg(data.msg);
+                            layer.close(index);
+                        }
+                    });
+                }
+            });
+            return false;
+        });
+
+
     });
 </script>
 </body>
