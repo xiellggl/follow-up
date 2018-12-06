@@ -52,3 +52,7 @@ user_name,disable,`password`,create_by,update_by,create_time,update_time,switch_
 SELECT id,dept_id,link_person,mobile,invite_code,
 user_name,`disable`,`password`,create_by,modify_by,create_date,modify_date,switch_status,channel_remark,1
 from flow_up
+
+#复制部门表数据
+insert into department(id,pid,sort_no,name,city_server,city_invite_code,remark,person_num,create_time,update_time)
+SELECT id,pid,sort_no,name,city_server,city_invite_code,remark,person_num,create_date,modify_date from follow_dept

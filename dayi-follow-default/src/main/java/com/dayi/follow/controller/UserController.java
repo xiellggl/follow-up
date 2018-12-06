@@ -165,6 +165,35 @@ public class UserController extends BaseController {
     }
 
     /**
+     * 修改 -- 保存 -- 用户
+     */
+    @RequestMapping("/update")
+    public String updateSave(HttpServletRequest request, @PathVariable String id, Model model) {
+        FollowUp followUp = userService.get(id);
+        List<Department> topDeptList = deptService.getTopList();
+        List<Department> departments = deptService.doDeptTreeName(topDeptList, 0);
+        model.addAttribute("deptList", departments);  // 上级部门下拉选择数据
+        model.addAttribute("followUp", followUp);
+        return "";
+
+
+    }
+
+    /**
+     * 修改 -- 保存 -- 用户
+     */
+    @RequestMapping("/add")
+    public String updateSave(HttpServletRequest request, Model model) {
+        List<Department> topDeptList = deptService.getTopList();
+        List<Department> departments = deptService.doDeptTreeName(topDeptList, 0);
+        model.addAttribute("deptList", departments);  // 上级部门下拉选择数据
+        return "";
+
+
+    }
+
+
+    /**
      * 禁用 -- 用户
      */
     @RequestMapping(value = "/disable/{id}")
