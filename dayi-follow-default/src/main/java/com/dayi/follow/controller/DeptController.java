@@ -69,6 +69,18 @@ public class DeptController extends BaseController {
     }
 
     /**
+     * 获取部门信息
+     */
+    @RequestMapping("/getList/{id}")
+    @ResponseBody
+    public BizResult updateSave(HttpServletRequest request, @PathVariable String id) {
+        Department department = deptService.get(id);
+        List<Department> topList = deptService.getTopList();
+        topList = deptService.getEditCanSelectDepts(topList, department);
+        return BizResult.succ(topList, "操作成功！");
+    }
+
+    /**
      * 修改 -- 部门 -- 初始化页面
      */
     @RequestMapping("/update/{deptId}")
