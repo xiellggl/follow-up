@@ -1,5 +1,6 @@
 package com.dayi.follow.vo.user;
 
+import com.dayi.follow.enums.MemberStatusEnum;
 import com.dayi.follow.model.follow.Department;
 
 import java.util.Date;
@@ -22,6 +23,22 @@ public class UserVo {
     private String roleids;
     private String rolesName;
     private Integer disable;
+    private String status;
+
+    public String getStatus() {
+        if (this.getDisable()!=null){
+            if(this.getDisable().intValue()== MemberStatusEnum.ENABLE.getValue()){
+                return MemberStatusEnum.ENABLE.getName();
+            }else {
+                return MemberStatusEnum.DISABLE.getName();
+            }
+        }
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public Date getCreateTime() {
         return createTime;

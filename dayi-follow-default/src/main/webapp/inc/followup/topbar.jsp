@@ -57,7 +57,7 @@
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a id="btnLogout" href="/followup/loginout"  data-info="你确定要退出吗？">
+                            <a id="btnLogout" href="/user/loginout"  data-info="你确定要退出吗？">
                                 <i class="ace-icon fa fa-power-off"></i>
                                 退出
                             </a>

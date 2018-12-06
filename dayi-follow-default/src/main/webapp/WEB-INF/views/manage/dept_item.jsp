@@ -8,7 +8,6 @@
             <div style="margin-left:${level*2}em;">${item.name}</div>
         </td>
         <td class="hidden-sm hidden-xs">${item.remark}</td>
-        <td>${item.manager.name}</td>
         <td>${item.personNum}</td>
         <td>
             <a href="#"  data-toggle="modal" data-target="#myModalEditFollowuper" data-act="edit" data-toggle="tooltip" title="修改">

@@ -49,13 +49,13 @@
             </a>
             <ul class="submenu">
                 <li data-index="1">
-                    <a href="/followup/agent/list">
+                    <a href="/agent/list">
                         <i class="menu-icon fa fa-caret-right"></i>
                         代理商
                     </a>
                 </li>
                 <li data-index="2">
-                    <a href="/followup/uc/customer/maker/list">
+                    <a href="/org/list">
                         <i class="menu-icon fa fa-caret-right"></i>
                         创客
                     </a>
@@ -277,7 +277,7 @@
                 </ul>
         </li>
         <li data-rel="manageDept">
-            <a href="/followup/manage/dept/list">
+            <a href="/dept/list">
                 <i class="menu-icon fa fa-cog"></i>
                 <span class="menu-text">部门管理</span>
             </a>

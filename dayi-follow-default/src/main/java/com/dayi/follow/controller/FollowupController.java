@@ -25,6 +25,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -54,14 +55,18 @@ public class FollowupController extends BaseController {
 
         page = followUpService.findPage(page, currVo.getDeptId(), mobile, queryDeptId, inviteCode);
 
-        List<Department> deptList = deptService.getSubDept(currVo.getDeptId());
+        Department department = deptService.get(currVo.getDeptId());
+
+        List<Department> deptList = new ArrayList<Department>();
+        deptList.add(department);
+        deptService.doDeptTreeName(deptList, 0);
 
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
         model.addAttribute("pageUrl", pageUrl);
         model.addAttribute("page", page);
         model.addAttribute("deptList", deptList);  // 所属部门下拉选择数据
         model.addAttribute("queryDeptId", queryDeptId);  // 查询条件 -- 所属部门
-        return "/followup/manage/followuper/list";
+        return "manage/followuper/list";
     }
 
 

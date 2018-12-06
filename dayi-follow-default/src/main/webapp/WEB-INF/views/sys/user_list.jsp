@@ -75,16 +75,11 @@
                                 <td>${item.inviteCode}</td>
                                 <td>${item.rolesName}</td>
                                 <td>${item.department.name}</td>
-                                <td><%--${item.disable}--%>
+                                <td>
                                     <a class="state-btn" data-state="${item.disable}" href="#"
-                                       data-id="${item.id}"
-                                       <%--title="已${item.statusStr}"--%>
-                                    >
-                                        <span
-                                                class="btn btn-minier ${item.disable eq 1 ? 'btn-yellow':'btn-danger'}"
-                                        >
-                                                <%--${item.statusStr}--%>
-                                        </span>
+                                       data-id="${item.id}" title="已${item.status}">
+                                                <span
+                                                        class="btn btn-minier ${item.disable eq 1 ? 'btn-yellow':'btn-danger'}">${item.status}</span>
                                     </a>
                                 </td>
                                 <td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/> </td>

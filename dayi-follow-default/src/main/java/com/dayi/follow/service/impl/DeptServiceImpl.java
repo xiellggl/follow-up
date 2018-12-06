@@ -2,6 +2,8 @@ package com.dayi.follow.service.impl;
 
 import com.dayi.common.util.BizResult;
 import com.dayi.follow.dao.follow.DeptMapper;
+import com.dayi.follow.dao.follow.FollowUpMapper;
+import com.dayi.follow.dao.follow.UserMapper;
 import com.dayi.follow.model.follow.Department;
 import com.dayi.follow.model.follow.FollowUp;
 import com.dayi.follow.service.DeptService;
@@ -25,7 +27,8 @@ public class DeptServiceImpl implements DeptService {
 
     @Resource
     DeptMapper deptMapper;
-
+    @Resource
+    UserMapper userMapper;
 
     /**
      * 递归查询 -- 指定部门
@@ -56,6 +59,7 @@ public class DeptServiceImpl implements DeptService {
         if (CollectionUtils.isEmpty(subDeptList)) return deptList;
 
         for (Department dept : subDeptList) {
+            deptList.add(dept);
             deptList.addAll(this.getSubDept(dept.getId()));
         }
         return deptList;
@@ -85,6 +89,8 @@ public class DeptServiceImpl implements DeptService {
 
     @Override
     public BizResult add(Department department) {
+        department.setId(deptMapper.getNewId());
+
         return 1 == deptMapper.add(department) ? BizResult.SUCCESS : BizResult.FAIL;
     }
 
@@ -104,22 +110,38 @@ public class DeptServiceImpl implements DeptService {
 
     @Override
     public BizResult delete(Department department) {
-        return 1 == deptMapper.delete(department) ? BizResult.SUCCESS : BizResult.FAIL;
-    }
+        List<String> userIds = new ArrayList<String>();
+        userIds = userMapper.findIdsByDeptId(department.getId());
+        if (!userIds.isEmpty()) return BizResult.fail("本部门存在用户，无法删除！");
 
+        List<Department> subDeptList = this.getSubDept(department.getId());
+        for (Department department1 : subDeptList) {
+            userIds = userMapper.findIdsByDeptId(department1.getId());
+        }
+        if (userIds.isEmpty()) {
+            for (Department department1 : subDeptList) {
+                deptMapper.delete(department1);
+            }
+            return 1 == deptMapper.delete(department) ? BizResult.SUCCESS : BizResult.FAIL;
+        } else {
+            return BizResult.fail("本部门存在用户，无法删除！");
+        }
+
+    }
 
     @Override
     public List<Department> doDeptTreeName(List<Department> departments, int depth) {
-        if (departments.isEmpty()) return departments;
+        if (departments.isEmpty()) return null;
         String prefix = "";
 
         for (int i = 0; i < depth; i++) {
             prefix = prefix + "　";
         }
 
+        ++depth;
         for (Department department : departments) {
             department.setTreeName(prefix + department.getName());
-            doDeptTreeName(department.getSubDeptList(), depth++);
+            doDeptTreeName(department.getSubDeptList(), depth);
         }
         return departments;
     }

@@ -15,7 +15,7 @@ import java.util.List;
 
 public class Department extends BaseModel {
 
-    private Integer pid;    // 上级部门ID
+    private String pid;    // 上级部门ID
     @NotNull(message = "排序号不能为空！")
     private Integer sortNo; // 排序号（同级）
     @NotBlank(message = "部门名称不能为空！")
@@ -24,13 +24,8 @@ public class Department extends BaseModel {
     @NotNull(message = "请选择是否城市服务商！")
     private Integer cityServer = 0; //是否城市服务商-默认不是
     private String cityInviteCode; //城市服务商邀请码
-    private Integer personNum;//部门人数
-    @NotBlank(message = "负责人不能为空！")
-    private String managerId;//负责人id
+    private Integer personNum = 0;//部门人数
 
-
-    @Transient
-    private FollowUp manager;  // 负责人
     @Transient
     private Department parentDept;  // 上级部门
     @Transient
@@ -70,11 +65,11 @@ public class Department extends BaseModel {
         this.cityInviteCode = cityInviteCode;
     }
 
-    public Integer getPid() {
+    public String getPid() {
         return pid;
     }
 
-    public void setPid(Integer pid) {
+    public void setPid(String pid) {
         this.pid = pid;
     }
 
@@ -117,21 +112,5 @@ public class Department extends BaseModel {
 
     public void setSubDeptList(List<Department> subDeptList) {
         this.subDeptList = subDeptList;
-    }
-
-    public String getManagerId() {
-        return managerId;
-    }
-
-    public void setManagerId(String managerId) {
-        this.managerId = managerId;
-    }
-
-    public FollowUp getManager() {
-        return manager;
-    }
-
-    public void setManager(FollowUp manager) {
-        this.manager = manager;
     }
 }

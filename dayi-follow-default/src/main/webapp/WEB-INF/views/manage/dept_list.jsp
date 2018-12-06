@@ -45,7 +45,6 @@
                                     <tr>
                                         <th>部门名称</th>
                                         <th class="hidden-sm hidden-xs">部门描述</th>
-                                        <th>负责人</th>
                                         <th>部门人数</th>
                                         <th>操作</th>
                                     </tr>
@@ -81,10 +80,7 @@
         common.head("manageDept");
         var editDeptFn = function (id,pid) {
             var id = id || 0, pid = pid||0;
-            var url = "/dept/add";
-            if (id > 0) {
                 url = "/dept/update/" + id;
-            }
             var html = "";
 
            common.ajax.handle({
@@ -98,8 +94,70 @@
             });
             var $modal = $("#myModalEditFollowuper");
             $modal.html(html);
+            $(".modal-title").html("修改部门");
+            var $form = $("#form-id");
+            $form.validate({
+                rules: {
+                    name:"required",
+                    sortNo:{
+                        number:true
+                    },
+                    cityInviteCode:{
+                        required:true,
+                        number:true
+                    }
+                },
+                messages: {
+                    name:"部门名称不能为空",
+                    sortNo:{
+                        number:"请输入数字"
+                    },
+                    cityInviteCode:{
+                        required:'城市服务商不能为空',
+                        number:"请输入数字"
+                    }
+                },
+                errorPlacement: function (error, element) {
+                    var $tipsBox = element.closest(".form-group").find(".tips_box");
+                    if ($tipsBox.length) {
+                        $tipsBox.html(error);
+                    } else {
+                        element.after(error);
+                    }
+                },
+                errorClass: "field-error",
+                success: function (label, element) {
+                    label.remove();
+                    return true;
+                },
+                submitHandler: function (form) {
+                    common.ajax.handle({
+                        url: "/dept/update/save.json",
+                        data: $form.serialize(),
+                    });
+                    return false;
+                }
+            });
+
+
+        };
+        var addDeptFn = function (id,pid) {
+            var url = "/dept/add";
+            var html = "";
+
+            common.ajax.handle({
+                type: "get",
+                url:url,
+                dataType: "html",
+                async: false,
+                succback: function (data) {
+                    html = data;
+                }
+            });
+            var $modal = $("#myModalEditFollowuper");
+            $modal.html(html);
             if (id > 0) {
-                $(".modal-title").html("修改部门");
+                $(".modal-title").html("新增部门");
             }
             var $form = $("#form-id");
             $form.validate({
@@ -138,7 +196,7 @@
                 },
                 submitHandler: function (form) {
                     common.ajax.handle({
-                        url: "/followup/manage/dept/dept/save.json",
+                        url: "/dept/add/save.json",
                         data: $form.serialize(),
                     });
                     return false;
@@ -147,10 +205,9 @@
 
 
         };
-
         //新增部门
         $('[data-act="addDept"]').on("click",function () {
-            editDeptFn();
+            addDeptFn();
         });
 
         //修改
@@ -176,7 +233,7 @@
             var id=$(this).closest("tr").data("id");
             layer.confirm('<p class="tc">确定删除此部门及下属所有部门</p>',{title:"温馨提示"},function () {
                 common.ajax.handle({
-                    url:"/followup/manage/dept/dept/del/"+ id + ".json",
+                    url:"/dept/delete/"+ id + ".json",
                 });
             });
         });

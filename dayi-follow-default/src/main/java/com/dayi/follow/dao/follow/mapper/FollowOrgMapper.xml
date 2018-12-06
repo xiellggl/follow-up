@@ -5,7 +5,7 @@
     <select id="getTotalFund" parameterType="java.lang.String" resultType="java.lang.Double">
         SELECT sum(amount) from follow_org a
         left join (
-          SELECT id from organization where org_type = 4 and del_status !=-1
+          SELECT id from ${assistDataBase}.organization where org_type = 4 and del_status !=-1
         )b on b.id = a.org_id
         left join (
           SELECT agent,amount FROM protocol WHERE 1 = 1 and status in (1,2)
@@ -21,9 +21,9 @@
     <select id="findOrgsByfollowId" parameterType="map" resultType="com.dayi.follow.model.follow.Organization">
         SELECT * from follow_org a
         left join (
-          SELECT * from organization where org_type=4 and del_status !=-1
+          SELECT * from ${assistDataBase}.organization where org_type=4 and del_status !=-1
           <if test="''!=deadline and null!=deadline">
-              and create_date &lt; ${dateStr}
+              and create_date &lt; ${deadline}
           </if>
         )b on b.id = a.org_id
         where follow_id = ${followId} and b.id is not null
@@ -33,9 +33,9 @@
     <select id="findOrgsByfollowIds" parameterType="map" resultType="com.dayi.follow.model.follow.Organization">
         SELECT * from follow_org a
         left join (
-        SELECT * from organization where org_type=4 and del_status !=-1
+        SELECT * from ${assistDataBase}.organization where org_type=4 and del_status !=-1
         <if test="''!=deadline and null!=deadline">
-            and create_date &lt; ${dateStr}
+            and create_date &lt; ${deadline}
         </if>
         )b on b.id = a.org_id
         where  b.id is not null

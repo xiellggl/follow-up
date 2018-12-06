@@ -22,7 +22,7 @@
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-check"></i>
                                     </span>
-                    <select name="idCardVal">
+                    <select name="idCardValidate">
                         <option value="">实名状态</option>
                         <option value="1"  ${param.idCardValidate=='1'?"selected":''}>已认证</option>
                         <option value="0"  ${param.idCardValidate=='0'?"selected":''}>未认证</option>
@@ -67,7 +67,7 @@
                                     <span class="input-group-addon">
                                         <i class="ace-icon glyphicon glyphicon-yen"></i>
                                     </span>
-                    <select name="totalBalance">
+                    <select name="totalFound">
                         <option value="">客户总资产</option>
                         <option value="1" ${param.totalFound eq 1 ? 'selected' : ''}>资产为零</option>
                         <option value="2" ${param.totalFound eq 2 ? 'selected' : ''}>2W以下</option>
@@ -255,7 +255,7 @@
                             <%-- 实名认证 --%>
                         <td>
                             <c:choose>
-                                <c:when test="${!empty idCard }">
+                                <c:when test="${!empty item.idCard }">
                                 <span class="green" data-toggle="tooltip"
                                       title="认证时间：<fmt:formatDate value='${item.cardValidDate}' pattern='yyyy-MM-dd HH:mm:ss'/>">
                                     <i class="ace-icon fa fa-check"></i>

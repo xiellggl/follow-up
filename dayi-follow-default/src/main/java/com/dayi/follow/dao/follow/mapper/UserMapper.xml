@@ -40,7 +40,7 @@
 
     <select id="findIdsByDeptId" parameterType="java.lang.String" resultType="java.lang.String">
         SELECT id from follow_up where disable !=0
-        and dept_id =${deptId}
+        and dept_id =#{deptId}
     </select>
 
     <select id="findUsers" parameterType="map" resultMap="BaseResultMap">
