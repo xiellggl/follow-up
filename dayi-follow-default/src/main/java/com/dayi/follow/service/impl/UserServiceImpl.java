@@ -135,19 +135,14 @@ public class UserServiceImpl implements UserService, Realm {
         if (null == oldDept) {
             return BizResult.fail("原部门不存在.");
         }
-        oldDept.setPersonNum(oldDept.getPersonNum() - 1);
 
         Department newDept = deptMapper.get(followUpEditDto.getDeptId());
         if (null == newDept) {
             return BizResult.fail("所选部门不存在.");
         }
-        newDept.setPersonNum(newDept.getPersonNum() + 1);
 
-        deptMapper.update(oldDept);
-        deptMapper.update(newDept);
-        Department department = deptMapper.get(followUp.getDeptId());
-        department.setPid(followUpVo.getDeptId());
-        doUpdatePerson(department);
+        oldDept.setPid(followUpEditDto.getDeptId());
+        doUpdatePerson(oldDept);
 
         FollowUpEditDto.dtoToEntity(followUpEditDto, followUp);
         followUp.setUpdateTime(new Date());
