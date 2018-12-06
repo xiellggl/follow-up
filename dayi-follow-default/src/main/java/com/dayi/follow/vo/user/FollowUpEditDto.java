@@ -31,7 +31,7 @@ public class FollowUpEditDto extends BaseModel {
      * 是否启用：1--启用；0--禁用
      */
     @NotNull(message = "请选择二级资产开关状态！")
-    private Integer disable;
+    private Integer switchStatus;
 
     /**
      * 角色ids
@@ -83,12 +83,12 @@ public class FollowUpEditDto extends BaseModel {
         this.deptId = deptId;
     }
 
-    public Integer getDisable() {
-        return disable;
+    public Integer getSwitchStatus() {
+        return switchStatus;
     }
 
-    public void setDisable(Integer disable) {
-        this.disable = disable;
+    public void setSwitchStatus(Integer switchStatus) {
+        this.switchStatus = switchStatus;
     }
 
     public String getUpdateBy() {
