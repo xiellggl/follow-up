@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService, Realm {
         Department department = deptService.get(followUp.getDeptId());
 
         doAddPerson(department);
-        return BizResult.FAIL;
+        return BizResult.SUCCESS;
     }
 
 
