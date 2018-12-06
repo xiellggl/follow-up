@@ -57,11 +57,11 @@ public interface PermissionMapper extends BaseMapper<Permission> {
      */
     List<Permission> findList(PermissionVo permissionVo);
 
+
     /**
-     * 返回分页列表
-     * @param page
-     * @param permissionVo
+     * 取消对应模块下的权限关联
+     * @param moduleId
      * @return
      */
-    Page<Permission> findPage(Page<Permission> page, PermissionVo permissionVo);
+    int updateModuleidByMId(String moduleId);
 }
