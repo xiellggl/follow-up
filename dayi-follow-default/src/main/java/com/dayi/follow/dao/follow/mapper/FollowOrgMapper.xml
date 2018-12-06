@@ -26,7 +26,7 @@
               and create_date &lt; ${deadline}
           </if>
         )b on b.id = a.org_id
-        where follow_id = ${followId} and b.id is not null
+        where follow_id = #{followId} and b.id is not null
 
     </select>
 
