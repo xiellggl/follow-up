@@ -4,8 +4,10 @@ import com.dayi.common.util.BizResult;
 import com.dayi.follow.base.BaseController;
 import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.model.follow.Department;
+import com.dayi.follow.model.follow.FollowUp;
 import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.FollowUpService;
+import com.dayi.follow.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,7 +31,8 @@ public class DeptController extends BaseController {
     private DeptService deptService;
     @Resource
     private FollowUpService followUpService;
-
+    @Resource
+    private UserService userService;
     /**
      * 查询 -- 一级部门（前端需自行递归层级部门）
      */
@@ -71,10 +74,12 @@ public class DeptController extends BaseController {
     /**
      * 获取部门信息
      */
-    @RequestMapping("/getList/{id}")
+    @RequestMapping("/getEditList/{userId}")
     @ResponseBody
-    public BizResult updateSave(HttpServletRequest request, @PathVariable String id) {
-        Department department = deptService.get(id);
+    public BizResult getDeptList(HttpServletRequest request, @PathVariable String userId) {
+        FollowUp followUp = userService.get(userId);
+        String deptId = followUp.getDeptId();
+        Department department = deptService.get(deptId);
         List<Department> topList = deptService.getTopList();
         topList = deptService.getEditCanSelectDepts(topList, department);
         return BizResult.succ(topList, "操作成功！");
