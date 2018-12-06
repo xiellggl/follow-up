@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
  * @date 2018/11/16
  */
 
-public class Department extends BaseModel {
+public class Department extends BaseModel{
 
     private String pid;    // 上级部门ID
     @NotNull(message = "排序号不能为空！")

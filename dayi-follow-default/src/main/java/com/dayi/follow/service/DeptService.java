@@ -42,14 +42,10 @@ public interface DeptService {
     //获取一级部门
     List<Department> getTopList();
 
-    //处理树形名称
-    List<Department> doDeptTreeName(List<Department> departments, int depth);
 
     //添加部门
     BizResult add(Department department);
 
-    //获取上级和平级部门和不同根的部门
-    List<Department> getEditCanSelectDepts(List<Department> departments, Department department);
 
     BizResult delete(Department department);
 
@@ -61,4 +57,6 @@ public interface DeptService {
 
     //处理更新部门人数
     void doUpdatePerson(Department department);
+
+    List<Department> getDeptTree(Department department);
 }

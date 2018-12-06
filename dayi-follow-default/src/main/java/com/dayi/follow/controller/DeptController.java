@@ -33,13 +33,14 @@ public class DeptController extends BaseController {
     private FollowUpService followUpService;
     @Resource
     private UserService userService;
+
     /**
      * 查询 -- 一级部门（前端需自行递归层级部门）
      */
     @RequestMapping("/list")
     public String list(HttpServletRequest request, Model model) throws Exception {
-        List<Department> topDeptList = deptService.getTopList();  // 只查询一级部门，页面做递归查询下级
-        model.addAttribute("topDeptList", topDeptList);
+        List<Department> deptTree = deptService.getDeptTree(null);
+        model.addAttribute("deptTree", deptTree);
         return "manage/dept_list";
     }
 
@@ -48,9 +49,8 @@ public class DeptController extends BaseController {
      */
     @RequestMapping("/add")
     public String add(HttpServletRequest request, Model model) {
-        List<Department> topDeptList = deptService.getTopList();
-        List<Department> departments = deptService.doDeptTreeName(topDeptList, 0);
-        model.addAttribute("deptList", departments);  // 上级部门下拉选择数据
+        List<Department> deptTree = deptService.getDeptTree(null);
+        model.addAttribute("deptList", deptTree);  // 上级部门下拉选择数据
         return "manage/dept_edit";
     }
 
@@ -80,8 +80,9 @@ public class DeptController extends BaseController {
         FollowUp followUp = userService.get(userId);
         String deptId = followUp.getDeptId();
         Department department = deptService.get(deptId);
-        List<Department> topList = deptService.getTopList();
-        topList = deptService.getEditCanSelectDepts(topList, department);
+
+        List<Department> topList = deptService.getDeptTree(department);
+
         return BizResult.succ(topList, "操作成功！");
     }
 
@@ -92,14 +93,11 @@ public class DeptController extends BaseController {
     public String update(HttpServletRequest request, Model model, @PathVariable String deptId) {
         Department department = deptService.get(deptId);
 
-        List<Department> departments = deptService.getTopList();
-
-        departments = deptService.getEditCanSelectDepts(departments, department);
-        departments = deptService.doDeptTreeName(departments, 0);
+        List<Department> deptTree = deptService.getDeptTree(department);
 
         model.addAttribute("deptVo", department);
 
-        model.addAttribute("deptList", departments);  // 上级部门下拉选择数据（排除本部门及下属部门）
+        model.addAttribute("deptList", deptTree);  // 上级部门下拉选择数据（排除本部门及下属部门）
         return "manage/dept_edit";
     }
 
