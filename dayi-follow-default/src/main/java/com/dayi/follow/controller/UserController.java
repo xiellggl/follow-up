@@ -202,7 +202,7 @@ public class UserController extends BaseController {
         LoginVo currVo = userComponent.getCurrUser(request);
 
         FollowUp followUp = userService.get(id);
-        if (followUp == null) return BizResult.FAIL;
+        if (followUp == null) return BizResult.fail("用户不存在.");
 
         followUp.setUpdateBy(currVo.getName());
         return userService.disable(followUp);
@@ -217,7 +217,7 @@ public class UserController extends BaseController {
         LoginVo currVo = userComponent.getCurrUser(request);
 
         FollowUp followUp = userService.get(id);
-        if (followUp == null) return BizResult.FAIL;
+        if (followUp == null) return BizResult.fail("用户不存在.");
 
         followUp.setUpdateBy(currVo.getName());
         return userService.enable(followUp);
@@ -248,7 +248,7 @@ public class UserController extends BaseController {
     @ResponseBody
     public BizResult delete(HttpServletRequest request, @PathVariable String id) {
         FollowUp followUp = userService.get(id);
-        if (followUp == null) return BizResult.FAIL;
+        if (followUp == null) return BizResult.fail("用户不存在.");
         return userService.delete(followUp);
     }
 

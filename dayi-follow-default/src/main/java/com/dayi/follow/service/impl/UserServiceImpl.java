@@ -81,6 +81,7 @@ public class UserServiceImpl implements UserService, Realm {
 
     @Override
     public BizResult add(FollowUp followUp) {
+        followUp.setId(userMapper.getNewId());
         if (userMapper.add(followUp) != 1) {
             return BizResult.FAIL;
         }
@@ -240,7 +241,7 @@ public class UserServiceImpl implements UserService, Realm {
 
     @Override
     public BizResult delete(FollowUp followUp) {
-        List<Agent> agents = followAgentMapper.findAgentsByFollowId(followUp.getId());
+        List<Agent> agents = followAgentMapper.findAgentsByFollowId(followUp.getId(), dayiDataBaseStr);
 
         List<Organization> orgs = followOrgMapper.findOrgsByfollowId(followUp.getId(), null, dayiDataBaseStr);
 
