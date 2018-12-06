@@ -57,9 +57,7 @@ public class FollowupController extends BaseController {
 
         Department department = deptService.get(currVo.getDeptId());
 
-        List<Department> deptList = new ArrayList<Department>();
-        deptList.add(department);
-        deptService.doDeptTreeName(deptList, 0);
+        List<Department> deptList = deptService.getDeptTree(department);
 
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
         model.addAttribute("pageUrl", pageUrl);

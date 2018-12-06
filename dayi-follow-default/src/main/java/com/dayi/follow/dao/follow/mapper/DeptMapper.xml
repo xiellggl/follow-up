@@ -18,12 +18,12 @@
         <result property="updateTime" column="updateTime"/>
         <association property="parentDept" javaType="com.dayi.follow.model.follow.Department"
                      select="com.dayi.follow.dao.follow.DeptMapper.get"
-                     column="pid" fetchType="lazy">
+                     column="pid" fetchType="eager">
 
         </association>
         <collection property="subDeptList" ofType="com.dayi.follow.model.follow.Department"
                     select="com.dayi.follow.dao.follow.DeptMapper.getSubDepts"
-                    column="id" fetchType="lazy">
+                    column="id" fetchType="eager">
         </collection>
     </resultMap>
 

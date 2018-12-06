@@ -109,20 +109,6 @@ public class DeptServiceImpl implements DeptService {
         return 1 == deptMapper.add(department) ? BizResult.SUCCESS : BizResult.FAIL;
     }
 
-
-    @Override
-    public List<Department> getEditCanSelectDepts(List<Department> departments, Department department) {
-
-        for (Department item : departments) {
-            if (item.getId().equals(department.getId())) {
-                departments.remove(item);
-                return departments;
-            }
-            getEditCanSelectDepts(item.getSubDeptList(), department);
-        }
-        return departments;
-    }
-
     @Override
     public BizResult delete(Department department) {
         List<String> userIds = new ArrayList<String>();
@@ -189,19 +175,34 @@ public class DeptServiceImpl implements DeptService {
     }
 
     @Override
-    public List<Department> doDeptTreeName(List<Department> departments, int depth) {
-        if (departments.isEmpty()) return null;
-        String prefix = "";
+    public List<Department> getDeptTree(Department department) {
+        List<Department> departments = new ArrayList<Department>();
 
+        List<Department> topList = getTopList();//顶级部门
+
+        for (Department department1 : topList) {
+            if (department != null && department1.getId().equals(department.getId())) break;//排除原来部门
+            this.doRecurs(department1, department, departments, 0);
+        }
+        return departments;
+    }
+
+    private List<Department> doRecurs(Department loopDept, Department originDept, List<Department> departments, int depth) {
+        String prefix = "";
         for (int i = 0; i < depth; i++) {
             prefix = prefix + "　";
         }
+        loopDept.setTreeName(prefix + loopDept.getName());
 
-        ++depth;
-        for (Department department : departments) {
-            department.setTreeName(prefix + department.getName());
-            doDeptTreeName(department.getSubDeptList(), depth);
+        departments.add(loopDept);
+
+        depth++;
+        List<Department> subDeptList = loopDept.getSubDeptList();
+        for (Department department1 : subDeptList) {
+            if (originDept != null && department1.getId().equals(originDept.getId())) break;//排除原来部门
+            doRecurs(department1, originDept, departments, depth);
         }
+
         return departments;
     }
 

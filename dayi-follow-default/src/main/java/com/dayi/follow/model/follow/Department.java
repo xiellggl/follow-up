@@ -1,10 +1,12 @@
 package com.dayi.follow.model.follow;
 
 import com.dayi.mybatis.support.BaseModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +15,7 @@ import java.util.List;
  * @date 2018/11/16
  */
 
-public class Department extends BaseModel {
+public class Department extends BaseModel{
 
     private String pid;    // 上级部门ID
     @NotNull(message = "排序号不能为空！")
@@ -27,8 +29,10 @@ public class Department extends BaseModel {
     private Integer personNum = 0;//部门人数
 
     @Transient
+    @JsonIgnore
     private Department parentDept;  // 上级部门
     @Transient
+    @JsonIgnore
     private List<Department> subDeptList = new ArrayList();  // 下级部门
     @Transient
     private String treeName;//树形显示

@@ -50,16 +50,28 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <c:if test="${empty topDeptList}">
+                                    <c:if test="${empty deptTree}">
                                         <tr>
                                             <td colspan="4" class="no_data">暂无部门，请<a href="javascript:;" data-act="addDept">新增部门</a></td>
                                         </tr>
                                     </c:if>
-                                    <%--自增序号，注意scope--%>
-                                    <c:set var="index" value="0" scope="request" />
-                                    <%--记录树的层次，注意scope--%>
-                                    <c:set var="level" value="0" scope="request" />
-                                    <c:import url="dept_item.jsp" />
+                                    <c:if test="${not empty deptTree}">
+                                    <c:forEach var="item" items="${deptTree}" varStatus="vs">
+                                        <tr data-id="${item.id}" data-pid="${item.pid}">
+                                            <td>
+                                                <div style="margin-left:${level*2}em;">${item.treeName}</div>
+                                            </td>
+                                            <td class="hidden-sm hidden-xs">${item.remark}</td>
+                                            <td>${item.personNum}</td>
+                                            <td>
+                                                <a href="#"  data-toggle="modal" data-target="#myModalEditFollowuper" data-act="edit" data-toggle="tooltip" title="修改">
+                                                    <i class="ace-icon fa fa-pencil bigger-130"></i></a>
+                                                <a href="#" data-act="del" data-toggle="tooltip" title="删除">
+                                                    <i class="ace-icon fa fa-trash-o bigger-130 red"></i></a>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                    </c:if>
                                     </tbody>
                                 </table>
                             </div>

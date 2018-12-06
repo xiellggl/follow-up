@@ -181,9 +181,8 @@ public class UserController extends BaseController {
      */
     @RequestMapping("/add")
     public String updateSave(HttpServletRequest request, Model model) {
-        List<Department> topDeptList = deptService.getTopList();
-        List<Department> departments = deptService.doDeptTreeName(topDeptList, 0);
-        model.addAttribute("deptList", departments);  // 上级部门下拉选择数据
+        List<Department> deptTree = deptService.getDeptTree(null);
+        model.addAttribute("deptList", deptTree);  // 上级部门下拉选择数据
         return "";
 
 

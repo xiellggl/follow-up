@@ -53,12 +53,9 @@
                                         <i class="ace-icon fa fa-cog"></i>
                                     </span>
                                     <select name="myDeptId" class="form-control admin_sea">
-                                        <option value="">所属团队</option>
-                                            <%--自增序号，注意scope--%>
-                                            <c:set var="index" value="0" scope="request" />
-                                            <%--记录树的层次，注意scope--%>
-                                            <c:set var="level" value="0" scope="request" />
-                                        <c:import url="dept_select_item.jsp" />
+                                            <c:forEach items="${deptList}" var="item" >
+                                                <option value="${item.id}" ${deptVo.pid eq item.id ? 'selected' : ''}>${item.treeName}</option>
+                                            </c:forEach>
                                     </select>
                                 </div>
                             </div>
