@@ -1,6 +1,7 @@
 package com.dayi.follow.vo.agent;
 
 import com.dayi.follow.model.follow.Agent;
+import com.dayi.follow.util.Misc;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -33,7 +34,7 @@ public class DetailVo {
 
     private Date createDate;       // 注册时间
 
-    private Date followDate;//分配跟进人时间
+    private Date assignDate;//分配跟进人时间
 
     private Integer status;//状态
     private String statusStr;//状态
@@ -50,7 +51,7 @@ public class DetailVo {
     private double useableFund;  // 可用余额
     private String useableFundFm;      // 可用余额（格式化：显示前两位和小数点位，其余用*标识）
 
-    private BigDecimal recentAgentFund;//最近一天代理金额
+    private double recentAgentFund;//最近一天代理金额
     private String recentAgentFundFm; // 最近代理（格式化：显示前两位和小数点位，其余用*标识）
     private Date recentAgentDate;//最近代理时间
     private String recentAgentDateFm; // 最近代理时间（格式化）
@@ -166,12 +167,12 @@ public class DetailVo {
         this.createDate = createDate;
     }
 
-    public Date getFollowDate() {
-        return followDate;
+    public Date getAssignDate() {
+        return assignDate;
     }
 
-    public void setFollowDate(Date followDate) {
-        this.followDate = followDate;
+    public void setAssignDate(Date assignDate) {
+        this.assignDate = assignDate;
     }
 
     public Integer getStatus() {
@@ -205,6 +206,11 @@ public class DetailVo {
     }
 
     public String getTotalFundFm() {
+        if (this.totalFund != 0) {
+            totalFundFm = Misc.parseMoney(totalFund, 2) + " 元";
+        } else {
+            totalFundFm = "0.00 元";
+        }
         return totalFundFm;
     }
 
@@ -221,6 +227,11 @@ public class DetailVo {
     }
 
     public String getAgentFundFm() {
+        if (this.agentFund != 0) {
+            agentFundFm = Misc.parseMoney(agentFund, 2) + " 元";
+        } else {
+            agentFundFm = "0.00 元";
+        }
         return agentFundFm;
     }
 
@@ -237,6 +248,11 @@ public class DetailVo {
     }
 
     public String getFrozenFundFm() {
+        if (this.frozenFund != 0) {
+            frozenFundFm = Misc.parseMoney(frozenFund, 2) + " 元";
+        } else {
+            frozenFundFm = "0.00 元";
+        }
         return frozenFundFm;
     }
 
@@ -253,6 +269,11 @@ public class DetailVo {
     }
 
     public String getUseableFundFm() {
+        if (this.useableFund != 0) {
+            useableFundFm = Misc.parseMoney(useableFund, 2) + " 元";
+        } else {
+            useableFundFm = "0.00 元";
+        }
         return useableFundFm;
     }
 
@@ -260,15 +281,20 @@ public class DetailVo {
         this.useableFundFm = useableFundFm;
     }
 
-    public BigDecimal getRecentAgentFund() {
+    public double getRecentAgentFund() {
         return recentAgentFund;
     }
 
-    public void setRecentAgentFund(BigDecimal recentAgentFund) {
+    public void setRecentAgentFund(double recentAgentFund) {
         this.recentAgentFund = recentAgentFund;
     }
 
     public String getRecentAgentFundFm() {
+        if (this.recentAgentFund != 0) {
+            recentAgentFundFm = Misc.parseMoney(recentAgentFund, 2) + " 元";
+        } else {
+            recentAgentFundFm = "0.00 元";
+        }
         return recentAgentFundFm;
     }
 
@@ -309,6 +335,11 @@ public class DetailVo {
     }
 
     public String getDayInCashFm() {
+        if (this.dayInCash != 0) {
+            dayInCashFm = Misc.parseMoney(dayInCash, 2) + " 元";
+        } else {
+            dayInCashFm = "0.00 元";
+        }
         return dayInCashFm;
     }
 
@@ -341,6 +372,11 @@ public class DetailVo {
     }
 
     public String getDayOutCashFm() {
+        if (this.dayOutCash != 0) {
+            dayOutCashFm = Misc.parseMoney(dayOutCash, 2) + " 元";
+        } else {
+            dayOutCashFm = "0.00 元";
+        }
         return dayOutCashFm;
     }
 
@@ -357,6 +393,11 @@ public class DetailVo {
     }
 
     public String getDayApplyOutCashFm() {
+        if (this.dayApplyOutCash != 0) {
+            dayApplyOutCashFm = Misc.parseMoney(dayApplyOutCash, 2) + " 元";
+        } else {
+            dayApplyOutCashFm = "0.00 元";
+        }
         return dayApplyOutCashFm;
     }
 

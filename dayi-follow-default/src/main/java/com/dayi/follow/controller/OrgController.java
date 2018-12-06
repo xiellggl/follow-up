@@ -58,7 +58,7 @@ public class OrgController {
 
         request.setAttribute("pageUrl", pageUrl);
         model.addAttribute("page", page);
-        return "uc/customer/agent/list";
+        return "uc/customer/maker/list";
     }
 
     /**

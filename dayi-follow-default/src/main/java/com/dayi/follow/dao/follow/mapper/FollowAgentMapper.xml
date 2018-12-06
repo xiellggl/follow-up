@@ -349,8 +349,8 @@
         SELECT * FROM `agent_contact` WHERE agent_id = #{agentId} order by create_time desc LIMIT #{limitStart},#{limitEnd}
     </select>
 
-    <select id="getFollowDate" parameterType="java.lang.Integer" resultType="java.util.Date">
-        SELECT create_time from follow_agent where agent_id =${agentId}
+    <select id="getAssignDate" parameterType="java.lang.Integer" resultType="java.util.Date">
+        SELECT assign_date from follow_agent where agent_id =${agentId}
     </select>
 
     <select id="getFollowAgentByAgentId" parameterType="java.lang.Integer" resultType="com.dayi.follow.model.follow.FollowAgent">

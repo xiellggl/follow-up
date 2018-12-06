@@ -21,6 +21,8 @@ public class OrgListVo {
     private String linkPerson;//姓名
     private String linkPersonFm;
 
+    private String mobile;//手机号
+
     private Integer age;//年龄
     private String idCard;//身份证
 
@@ -55,6 +57,14 @@ public class OrgListVo {
             linkPersonFm = substring + CheckIdCardUtils.getCnGenderByIdCard(idCard);
         }
         return linkPersonFm;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public void setLinkPersonFm(String linkPersonFm) {

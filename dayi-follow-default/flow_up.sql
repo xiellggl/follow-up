@@ -56,3 +56,10 @@ from flow_up
 #复制部门表数据
 insert into department(id,pid,sort_no,name,city_server,city_invite_code,remark,person_num,create_time,update_time)
 SELECT id,pid,sort_no,name,city_server,city_invite_code,remark,person_num,create_date,modify_date from follow_dept
+
+#将organization表的跟进人数据，迁移到follow_org表
+INSERT into  follow_org (id,follow_id,org_id,follow_up_before,assign_date,
+assign_date_before,manage_fund_before,create_time,update_time)
+SELECT CONCAT(id,'a',IFNULL(flow_id,0)),flow_id,id,follow_up_before,flow_date,
+flow_date_before,asserts_before,create_date,
+modify_date from organization

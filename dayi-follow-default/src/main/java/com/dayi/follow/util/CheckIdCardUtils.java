@@ -463,6 +463,7 @@ public class CheckIdCardUtils extends StringUtils {
      */
     public static int getAgeByIdCard(String idCard) {
         int iAge = 0;
+        if(StringUtils.isBlank(idCard))return iAge;
         if (idCard.length() == CHINA_ID_MIN_LENGTH) {
             idCard = conver15CardTo18(idCard);
         }

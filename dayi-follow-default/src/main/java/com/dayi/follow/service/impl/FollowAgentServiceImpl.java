@@ -158,7 +158,7 @@ public class FollowAgentServiceImpl implements FollowAgentService {
         }
 
         //分配时间
-        detailVo.setFollowDate(followAgentMapper.getFollowDate(agentId));
+        detailVo.setAssignDate(followAgentMapper.getAssignDate(agentId));
 
         //年龄
         if (!StringUtils.isBlank(idCard)) {
