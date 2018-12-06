@@ -58,10 +58,11 @@ public interface CountMapper {
     //统计KA的创客数据
     OrgDataVo countOrgData(List<String> followIds);
 
-    int getOrgValidAgentNum(Integer orgId,Integer inviteLevel);
+    int getOrgValidAgentNum(@Param("orgId") Integer orgId, @Param("inviteLevel") Integer inviteLevel);
 
     //统计团队日报
     DailyVo countTeamDaily(String deptId);
+
     /**
      * 统计日报
      */

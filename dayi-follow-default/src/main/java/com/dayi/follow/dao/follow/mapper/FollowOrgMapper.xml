@@ -60,10 +60,10 @@
     
     <select id="findOrgs" parameterType="map" resultType="com.dayi.follow.vo.org.OrgListVo">
         select a.id, a.link_person ,a.create_date ,a.mobile ,
-                a.expiration_date ,a.maker_num
+                a.expiration_date ,a.maker_num,a.id_card
         from ${assistDataBase}.organization a
         left join (
-            select org_id,create_date from follow_org  where a.follow_id =${followId}
+            select org_id,assign_date from follow_org  where follow_id =#{followId}
         )b on a.id = b.org_id
         where b.org_id is not null
         <if test="''!=inviteCode and null!=inviteCode">
@@ -73,9 +73,26 @@
             and a.mobile =${mobile}
         </if>
 
-        ORDER BY b.create_date DESC
+        ORDER BY b.assign_date DESC
         limit ${limitStart},${limitEnd}
 
+    </select>
+
+    <select id="getOrgsNum" parameterType="map" resultType="java.lang.Integer">
+        select count(0)
+        from ${assistDataBase}.organization a
+        left join (
+        select org_id,assign_date from follow_org  where follow_id =#{followId}
+        )b on a.id = b.org_id
+        where b.org_id is not null
+        <if test="''!=inviteCode and null!=inviteCode">
+            and a.maker_num =${inviteCode}
+        </if>
+        <if test="''!=mobile and null!=mobile">
+            and a.mobile =${mobile}
+        </if>
+
+        ORDER BY b.assign_date DESC
     </select>
 
     <select id="findTeamOrgs" parameterType="map" resultType="com.dayi.follow.vo.org.OrgListVo">

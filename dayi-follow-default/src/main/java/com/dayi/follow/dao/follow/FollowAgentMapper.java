@@ -53,7 +53,7 @@ public interface FollowAgentMapper extends BaseMapper<FollowAgent> {
     Page<AgentContactVo> findContacts(@Param("agentId") Integer agentId, @Param("limitStart") Integer limitStart, @Param("limitEnd") Integer limitEnd);
 
     //获取分配
-    Date getFollowDate(@Param("agentId") Integer agentId);
+    Date getAssignDate(@Param("agentId") Integer agentId);
 
     //获取follow_agent
     FollowAgent getFollowAgentByAgentId(@Param("agentId") Integer agentId);

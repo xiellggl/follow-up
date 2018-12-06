@@ -47,7 +47,7 @@ public class AgentListVo {
     private BigDecimal totalFund;//总资产
     private String totalFundFm; // 总资产（格式化：显示前两位和小数点位，其余用*标识）
 
-    private BigDecimal recentAgentFund;//最近一天代理金额
+    private double recentAgentFund;//最近一天代理金额
     private String recentAgentFundFm; // 最近代理（格式化：显示前两位和小数点位，其余用*标识）
     private Date recentAgentDate;//最近代理时间
     private String recentAgentDateFm; // 最近代理时间（格式化）
@@ -175,7 +175,7 @@ public class AgentListVo {
     }
 
     public String getDayInCashFm() {
-        if(this.dayInCash != null){
+        if (this.dayInCash != null) {
             dayInCashFm = Misc.parseMoney(dayInCash.doubleValue(), 2);
         }
         return dayInCashFm;
@@ -194,7 +194,7 @@ public class AgentListVo {
     }
 
     public String getDayLastInCashTimeFm() {
-        if(dayLastInCashTime != null){
+        if (dayLastInCashTime != null) {
             dayLastInCashTimeFm = new DateTime(dayLastInCashTime).toString("HH:mm:ss");
         }
         return dayLastInCashTimeFm;
@@ -213,7 +213,7 @@ public class AgentListVo {
     }
 
     public String getDayOutCashFm() {
-        if(this.dayOutCash != null){
+        if (this.dayOutCash != null) {
             dayOutCashFm = Misc.parseMoney(dayOutCash.doubleValue(), 2);
         }
         return dayOutCashFm;
@@ -232,7 +232,7 @@ public class AgentListVo {
     }
 
     public String getDayLastOutCashTimeFm() {
-        if(dayLastOutCashTime != null){
+        if (dayLastOutCashTime != null) {
             dayLastOutCashTimeFm = new DateTime(dayLastOutCashTime).toString("HH:mm:ss");
         }
         return dayLastOutCashTimeFm;
@@ -251,7 +251,7 @@ public class AgentListVo {
     }
 
     public String getTotalFundFm() {
-        if(this.totalFund != null){
+        if (this.totalFund != null) {
             totalFundFm = Misc.parseMoney(totalFund.doubleValue(), 2);
         }
         return totalFundFm;
@@ -261,17 +261,17 @@ public class AgentListVo {
         this.totalFundFm = totalFundFm;
     }
 
-    public BigDecimal getRecentAgentFund() {
+    public double getRecentAgentFund() {
         return recentAgentFund;
     }
 
-    public void setRecentAgentFund(BigDecimal recentAgentFund) {
+    public void setRecentAgentFund(double recentAgentFund) {
         this.recentAgentFund = recentAgentFund;
     }
 
     public String getRecentAgentFundFm() {
-        if(this.recentAgentFund != null){
-            recentAgentFundFm = Misc.parseMoney(recentAgentFund.doubleValue(), 2);
+        if (this.recentAgentFund != 0) {
+            recentAgentFundFm = Misc.parseMoney(recentAgentFund, 2);
         }
         return recentAgentFundFm;
     }
@@ -289,7 +289,7 @@ public class AgentListVo {
     }
 
     public String getRecentAgentDateFm() {
-        if(recentAgentDate != null){
+        if (recentAgentDate != null) {
             recentAgentDateFm = new DateTime(recentAgentDate).toString("yyyy-MM-dd HH:mm:ss");
         }
         return recentAgentDateFm;

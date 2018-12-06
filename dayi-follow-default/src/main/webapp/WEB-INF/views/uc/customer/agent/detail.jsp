@@ -170,14 +170,14 @@
         common.head("myCustomer",1);
 
         var $logList = $("#logList");
-        var log_url = "/followup/uc/customer/agent/loginlog?agentId=" + agentId;
+        var log_url = "/agent/loginlog?agentId=" + agentId;
         common.loadPageHTML(log_url, null,$logList);
         common.clickPageFn(log_url, null, $logList);
 
 
 
         var $conList = $("#conList");
-        var con_url = "/followup/uc/customer/agent/contact?agentId=" + agentId;
+        var con_url = "/agent/contact?agentId=" + agentId;
         common.loadPageHTML(con_url, null,$conList);
         common.clickPageFn(con_url, null, $conList);
 
@@ -235,7 +235,7 @@
             },
             submitHandler: function (form) {
                 common.ajax.handle({
-                    url: "/followup/uc/customer/agent/contact/add.json",
+                    url: "/agent/contact/add.json",
                     data: $formEdit.serialize(),
                 });
                 return false;

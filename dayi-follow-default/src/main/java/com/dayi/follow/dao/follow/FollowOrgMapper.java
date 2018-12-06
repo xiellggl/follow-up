@@ -37,7 +37,7 @@ public interface FollowOrgMapper extends BaseMapper<FollowOrg> {
                              @Param("followId") String followId, @Param("assistDataBase") String assistDataBase,
                              @Param("limitStart") Integer limitStart,@Param("limitEnd") Integer limitEnd);
 
-    int findOrgsCount(@Param("mobile") String mobile, @Param("inviteCode") String inviteCode,
+    int getOrgsNum(@Param("mobile") String mobile, @Param("inviteCode") String inviteCode,
                           @Param("followId") String followId, @Param("assistDataBase") String assistDataBase);
 
     List<OrgListVo> findTeamOrgs(@Param("followUp") String followUp, @Param("inviteCode") String inviteCode,

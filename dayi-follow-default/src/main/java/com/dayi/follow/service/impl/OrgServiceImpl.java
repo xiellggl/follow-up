@@ -117,7 +117,7 @@ public class OrgServiceImpl implements OrgService {
     public Page<OrgListVo> findOrgPage(Page<OrgListVo> page, String mobile, String inviteCode, String followId) {
         List<OrgListVo> orgs = followOrgMapper.findOrgs(mobile, inviteCode, followId, dayiDataBaseStr, page.getStartRow(), page.getPageSize());
 
-        int orgsCount = followOrgMapper.findOrgsCount(mobile, inviteCode, followId, dayiDataBaseStr);
+        int orgsCount = followOrgMapper.getOrgsNum(mobile, inviteCode, followId, dayiDataBaseStr);
 
         page.setResults(doOrgMore(orgs));
         page.setTotalRecord(orgsCount);

@@ -19,8 +19,8 @@
                                         <span class="input-group-addon">
                                             <i class="ace-icon fa fa-barcode"></i>
                                         </span>
-                        <input type="text" name="makerNum" class="form-control admin_sea"
-                               value="${param.makerNum}" placeholder="邀请码"/>
+                        <input type="text" name="inviteCode" class="form-control admin_sea"
+                               value="${param.inviteCode}" placeholder="邀请码"/>
                     </div>
                 </div>
             <c:if test="${pageType eq 'team'}">
@@ -78,17 +78,17 @@
             </tr>
             </thead>
             <tbody>
-            <c:if test="${empty page.items}">
+            <c:if test="${empty page.results}">
                 <tr>
                     <td colspan="10" class="no_data">暂无数据</td>
                 </tr>
             </c:if>
 
-            <c:if test="${not empty page.items}">
-                <c:forEach items="${page.items}" var="item" >
+            <c:if test="${not empty page.results}">
+                <c:forEach items="${page.results}" var="item" >
                     <tr>
                             <%-- 名称 --%>
-                        <td><c:if test="${not empty item.linkPersonStr}">${item.linkPersonStr}</c:if></td>
+                        <td><c:if test="${not empty item.linkPersonFm}">${item.linkPersonFm}</c:if></td>
                             <%-- 手机号 --%>
                         <c:if test="${pageType eq 'my'}"><td>${item.mobile}</td></c:if>
                             <%-- 年龄 --%>
@@ -96,15 +96,15 @@
                             <%-- 注册时间 --%>
                         <td class="hidden-sm hidden-xs"><fmt:formatDate value="${item.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                             <%-- 会员期限 --%>
-                        <td>${item.orgDeadLineStr}</td>
+                        <td>${item.deadLineStr}</td>
                             <%-- 管理代理商 --%>
-                        <td>${item.orgDevelopAgentNum}人</td>
+                        <td>${item.agentNum}人</td>
                             <%-- 有效代理商 --%>
-                        <td>${item.orgValidAgentNum}人</td>
+                        <td>${item.validAgentNum}人</td>
                             <%-- 管理资产规模 --%>
-                        <td>${item.orgTotalMoneyFormat}</td>
+                        <td>${item.manageFundFm}</td>
                             <%-- 邀请码 --%>
-                        <td class="hidden-sm hidden-xs">${item.makerNum}</td>
+                        <td class="hidden-sm hidden-xs">${item.inviteCode}</td>
 
                         <c:if test="${pageType eq 'team'}"><td>${item.followUp}</td></c:if>
                          <%-- 操作 --%>
@@ -116,7 +116,7 @@
             </c:if>
             </tbody>
         </table>
-        <c:if test="${not empty page.items}">
+        <c:if test="${not empty page.results}">
             <div class="pagerBar" id="pagerBar">
                 <common:page2 url="${pageUrl}" type="3" />
             </div>
