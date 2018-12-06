@@ -27,31 +27,31 @@ public interface AgentMapper extends BaseMapper<Agent> {
     List<Agent> findLevel2ByOrgId(@Param("orgId") Integer orgId);
 
     //获取代理中的资金
-    double getAgentFund(Integer agentId);
+    double getAgentFund(@Param("agentId")Integer agentId);
 
     //获取当日入金
-    double getDayInCash(Integer agentId, String todayStart, String todayEnd);
+    double getDayInCash(@Param("agentId")Integer agentId, @Param("todayStart")String todayStart,@Param("todayEnd") String todayEnd);
 
     //获取当日最后一笔入金时间
-    Date getDayLastInCashTime(Integer agentId, String todayStart, String todayEnd);
+    Date getDayLastInCashTime(@Param("agentId")Integer agentId, @Param("todayStart")String todayStart,@Param("todayEnd") String todayEnd);
 
     //获取今日出金
-    double getDayOutCash(Integer agentId, String todayStart, String todayEnd);
+    double getDayOutCash(@Param("agentId")Integer agentId,@Param("todayStart") String todayStart,@Param("todayEnd") String todayEnd);
 
     //获取今日转出到卡
-    double getDayToCard(Integer agentId, String todayStart, String todayEnd);
+    double getDayToCard(@Param("agentId")Integer agentId,@Param("todayStart") String todayStart,@Param("todayEnd") String todayEnd);
 
     //获取今日转出申请
-    double getDayApplyOutCash(Integer agentId, String todayStart, String todayEnd);
+    double getDayApplyOutCash(@Param("agentId")Integer agentId,@Param("todayStart") String todayStart,@Param("todayEnd") String todayEnd);
 
     //获取今日最后一笔转出申请时间
-    Date getDayLastApplyOutCashTime(Integer agentId, String todayStart, String todayEnd);
+    Date getDayLastApplyOutCashTime(@Param("agentId")Integer agentId,@Param("todayStart") String todayStart,@Param("todayEnd") String todayEnd);
 
     //获取已开通银行通道类型（字符串形式）
-    String getOpenBankIdsStr(Integer agentId);
+    String getOpenBankIdsStr(@Param("agentId")Integer agentId);
     //获取代理商的账户
-    Account getAccount(Integer agentId);
+    Account getAccount(@Param("agentId")Integer agentId);
 
     //获取代理商的账户
-    Page<LoginLogVo> findLoginLog(Integer agentId, Integer limitStart, Integer limitEnd);
+    Page<LoginLogVo> findLoginLog(@Param("agentId")Integer agentId,@Param("limitStart") Integer limitStart,@Param("limitEnd") Integer limitEnd);
 }

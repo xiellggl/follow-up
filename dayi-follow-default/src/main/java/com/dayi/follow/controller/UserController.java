@@ -165,19 +165,16 @@ public class UserController extends BaseController {
     }
 
     /**
-     * 修改 -- 保存 -- 用户
+     * 获取用户信息
      */
-    @RequestMapping("/update")
-    public String updateSave(HttpServletRequest request, @PathVariable String id, Model model) {
+    @RequestMapping("/get/{id}")
+    @ResponseBody
+    public BizResult updateSave(HttpServletRequest request, @PathVariable String id) {
         FollowUp followUp = userService.get(id);
-        List<Department> topDeptList = deptService.getTopList();
-        List<Department> departments = deptService.doDeptTreeName(topDeptList, 0);
-        model.addAttribute("deptList", departments);  // 上级部门下拉选择数据
-        model.addAttribute("followUp", followUp);
-        return "";
-
-
+        return BizResult.succ(followUp, "操作成功！");
     }
+
+
 
     /**
      * 修改 -- 保存 -- 用户
