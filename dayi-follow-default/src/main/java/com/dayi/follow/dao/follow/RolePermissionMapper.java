@@ -37,6 +37,14 @@ public interface RolePermissionMapper extends BaseMapper<RolePermission> {
     int deleteByPerId(String perId);
 
     /**
+     * 根据模块id删除模块权限关联
+     *
+     * @param moduleId
+     * @return
+     */
+    int deleteByModuleId(String moduleId);
+
+    /**
      * 批量插入关系数据
      * @param list
      */

@@ -13,6 +13,7 @@ import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.UserService;
 import com.dayi.follow.util.Md5Util;
 import com.dayi.follow.util.PageUtil;
+import com.dayi.follow.vo.user.FollowUpEditDto;
 import com.dayi.follow.vo.user.UserVo;
 import com.dayi.follow.vo.LoginVo;
 import com.dayi.mybatis.support.Page;
@@ -151,14 +152,14 @@ public class UserController extends BaseController {
      */
     @RequestMapping("/update/save")
     @ResponseBody
-    public BizResult updateSave(HttpServletRequest request, @Valid FollowUp followUp, BindingResult result) {
+    public BizResult updateSave(HttpServletRequest request, @Valid FollowUpEditDto followUpEditDto, BindingResult result) {
         BizResult bizResult = checkErrors(result);
         if (!bizResult.isSucc()) return bizResult;//参数传入错误
 
         LoginVo currVo = userComponent.getCurrUser(request);
-        followUp.setUpdateBy(currVo.getName());
-        followUp.setUpdateTime(new Date());
-        return userService.update(followUp);
+        followUpEditDto.setUpdateBy(currVo.getName());
+        followUpEditDto.setUpdateTime(new Date());
+        return userService.update(followUpEditDto);
 
 
     }

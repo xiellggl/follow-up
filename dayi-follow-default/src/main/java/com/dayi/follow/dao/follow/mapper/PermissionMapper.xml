@@ -117,9 +117,10 @@
         <include refid="selectListSql"/>
     </select>
 
-    <select id="findPage" resultMap="permissionResultMap">
-        <include refid="selectListByFuzzyNameSql"/>
-        ORDER BY update_time DESC
-    </select>
+    <update id="updateModuleidByMId" parameterType="java.lang.String">
+        update permission
+        set moduleid = ''
+        where moduleid = #{moduleId}
+    </update>
 </mapper>
 

@@ -1,11 +1,11 @@
 package com.dayi.follow.service.impl;
 
-
-import com.dayi.common.util.BizResult;
 import com.dayi.common.util.Misc;
 import com.dayi.component.annotation.Log;
 import com.dayi.component.model.BaseLog;
 import com.dayi.follow.dao.follow.RoleMapper;
+import com.dayi.follow.dao.follow.UserMapper;
+import com.dayi.follow.model.follow.FollowUp;
 import com.dayi.follow.model.follow.OperateLog;
 import com.dayi.follow.model.follow.Role;
 import com.dayi.follow.service.PermissionService;
@@ -13,7 +13,9 @@ import com.dayi.follow.service.RoleService;
 import com.dayi.mybatis.support.Conditions;
 import com.dayi.mybatis.support.Page;
 import com.dayi.mybatis.support.ext.Restrictions;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -23,10 +25,15 @@ import java.util.*;
  */
 @Service
 public class RoleServiceImpl implements RoleService {
+
     @Resource
     RoleMapper roleMapper;
+
     @Resource
     PermissionService permissionService;
+
+    @Resource
+    UserMapper userMapper;
 
     @Override
     public Role getRole(String id) {
@@ -125,6 +132,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     @Log(target = OperateLog.class, action = BaseLog.LogAction.DELETE, what = "角色管理", note = "角色删除")
+    @Transactional
     public boolean delete(String id) {
         // 删除角色(逻辑删除)
         Role role = new Role();
@@ -138,7 +146,22 @@ public class RoleServiceImpl implements RoleService {
         // 删除角色权限关联
         permissionService.deleteRolePermission(id);
 
-        // FIXME TODO 删除角色用户关联
+        // 查询拥有改角色的跟进人用户
+        Conditions conditions = new Conditions();
+        conditions.add(Restrictions.like("roleids", "%" + id + "%"));
+        List<FollowUp> followUps = userMapper.searchByConditions(conditions);
+
+        // 用户删除该角色关联
+        for (FollowUp followUp : followUps) {
+            String[] roleIdArr = followUp.getRoleids().split(",");
+            List<String> roleIds = new ArrayList<>();
+            Arrays.stream(roleIdArr).forEach(arr -> roleIds.add(arr));
+            roleIds.remove(id);
+            followUp.setRoleids(StringUtils.join(roleIds, ","));
+            if (userMapper.update(followUp) == 0) {
+                return false;
+            }
+        }
 
         return true;
     }

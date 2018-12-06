@@ -3,6 +3,7 @@ package com.dayi.follow.service;
 
 import com.dayi.common.util.BizResult;
 import com.dayi.follow.model.follow.FollowUp;
+import com.dayi.follow.vo.user.FollowUpEditDto;
 import com.dayi.follow.vo.user.UserVo;
 import com.dayi.mybatis.support.Page;
 
@@ -40,7 +41,7 @@ public interface UserService {
     /**
      * 更新用户信息
      */
-    BizResult update(FollowUp followUp);
+    BizResult update(FollowUpEditDto followUpEditDto);
 
     /**
      * 修改密码
