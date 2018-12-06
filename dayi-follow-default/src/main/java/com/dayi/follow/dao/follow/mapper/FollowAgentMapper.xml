@@ -456,7 +456,7 @@
         left join (
             select id from ${assistDataBase}.agent where del_status!=-1
         )b on b.id =a.agent_id
-        where  b.id is not null   and follow_id =${followId}
+        where b.id is not null and follow_id = #{followId}
 
     </select>
 
