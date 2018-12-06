@@ -42,8 +42,8 @@
             <tr>
                 <th>实名认证</th>
                 <td>
-                    <c:if test="${detailVo.isCardValid}">
-                        ${detailVo.cardValidDateFm}
+                    <c:if test="${not empty detailVo.idCard}">
+                        <fmt:formatDate value="${detailVo.cardValidDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
                     </c:if>
                 </td>
                 <th>是否绑卡</th>

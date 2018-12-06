@@ -47,16 +47,16 @@ public interface FollowAgentMapper extends BaseMapper<FollowAgent> {
     //统计资产规模
     double getTotalFund(@Param("followIds") List<String> followIds);
 
-    String getFollowIdByAgentId(Integer agentId);
+    String getFollowIdByAgentId(@Param("agentId") Integer agentId);
 
     //获取联系记录
-    Page<AgentContactVo> findContacts(Integer agentId, Integer limitStart, Integer limitEnd);
+    Page<AgentContactVo> findContacts(@Param("agentId") Integer agentId, @Param("limitStart") Integer limitStart, @Param("limitEnd") Integer limitEnd);
 
     //获取分配
-    Date getFollowDate(Integer agentId);
+    Date getFollowDate(@Param("agentId") Integer agentId);
 
     //获取follow_agent
-    FollowAgent getFollowAgentByAgentId(Integer agentId);
+    FollowAgent getFollowAgentByAgentId(@Param("agentId") Integer agentId);
 
     //查找已分配跟进人的代理商
     List<AssignListVo> findAssignsFollow(Page page, SearchVo searchVo, List<String> followIds, String assistDataBase);
@@ -68,11 +68,9 @@ public interface FollowAgentMapper extends BaseMapper<FollowAgent> {
     List<AssignListVo> findAssignsNoFollow(Page page, SearchVo searchVo, String assistDataBase);
 
     //统计未分配跟进人的代理商数量
-    long getAssignsNoFollowNum(SearchVo searchVo, String assistDataBase);
+    long getAssignsNoFollowNum(@Param("searchVo") SearchVo searchVo, @Param("assistDataBase") String assistDataBase);
 
-    List<Agent> findAgentsByFollowId(String followId);
-
-
+    List<Agent> findAgentsByFollowId(@Param("followId") String followId);
 
 
 }

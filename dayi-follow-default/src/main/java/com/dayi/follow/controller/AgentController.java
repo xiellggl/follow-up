@@ -80,6 +80,7 @@ public class AgentController {
         model.addAttribute("bankTypesArr", bankTypesArr);
         return "uc/customer/agent/list";
     }
+
     /**
      * 我的客户-代理商详细
      *
@@ -96,7 +97,7 @@ public class AgentController {
 
         DetailVo detailVo = new DetailVo();
 
-        if (currVo.getId() == followId) {//客户属于当前登陆者
+        if (currVo.getId().equals(followId)) {//客户属于当前登陆者
             detailVo = followAgentService.getDetail(agentId);//代理商明细
         } else {
             return "redirect:/followup/uc/index";
@@ -108,7 +109,7 @@ public class AgentController {
         model.addAttribute("contactTypes", ContactTypeEnum.values());//联系方式
         model.addAttribute("customerIntentionTypes", AgentIntenTypeEnum.values());//客户意向度
         model.addAttribute("returnUrl", returnUrl);//返回代理商进来列表的路径
-        return "/followup/uc/customer/agent/detail";
+        return "uc/customer/agent/detail";
     }
 
     /**
