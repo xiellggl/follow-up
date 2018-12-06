@@ -84,10 +84,8 @@ public class UserServiceImpl implements UserService, Realm {
         }
         //处理部门关系
         Department department = deptService.get(followUp.getDeptId());
-        if (null != department) {
-            department.setPersonNum(department.getPersonNum() + 1);
-            return deptService.updateDept(department);
-        }
+
+        doAddPerson(department);
         return BizResult.FAIL;
     }
 
@@ -128,14 +126,9 @@ public class UserServiceImpl implements UserService, Realm {
     public BizResult update(FollowUp followUpVo) {
         FollowUp followUp = userMapper.get(followUpVo.getId());
 
-        Department oldDept = deptMapper.get(followUp.getDeptId());
-        oldDept.setPersonNum(oldDept.getPersonNum() - 1);
-
-        Department newDept = deptMapper.get(followUpVo.getDeptId());
-        newDept.setPersonNum(newDept.getPersonNum() + 1);
-
-        deptMapper.update(oldDept);
-        deptMapper.update(newDept);
+        Department department = deptMapper.get(followUp.getDeptId());
+        department.setPid(followUpVo.getDeptId());
+        doUpdatePerson(department);
 
         followUp.setName(followUpVo.getName());
         followUp.setMobile(followUpVo.getMobile());
@@ -213,24 +206,40 @@ public class UserServiceImpl implements UserService, Realm {
     public BizResult enable(FollowUp followUp) {
         followUp.setDisable(MemberStatusEnum.ENABLE.getValue());
         followUp.setUpdateTime(new Date());
-        return 1 == userMapper.update(followUp) ? BizResult.SUCCESS : BizResult.FAIL;
+        userMapper.update(followUp);
+
+        Department department = deptMapper.get(followUp.getDeptId());
+
+        this.doAddPerson(department);
+        return BizResult.SUCCESS;
     }
 
     @Override
     public BizResult disable(FollowUp followUp) {
         followUp.setDisable(MemberStatusEnum.DISABLE.getValue());
         followUp.setUpdateTime(new Date());
-        return 1 == userMapper.update(followUp) ? BizResult.SUCCESS : BizResult.FAIL;
+        userMapper.update(followUp);
+
+        Department department = deptService.get(followUp.getDeptId());
+
+        this.doReducePerson(department);
+
+        return BizResult.SUCCESS;
     }
 
     @Override
     public BizResult delete(FollowUp followUp) {
         List<Agent> agents = followAgentMapper.findAgentsByFollowId(followUp.getId());
 
-        List<Organization> orgs = followOrgMapper.findOrgsByfollowId(followUp.getId(), null,dayiDataBaseStr);
+        List<Organization> orgs = followOrgMapper.findOrgsByfollowId(followUp.getId(), null, dayiDataBaseStr);
 
         if (!agents.isEmpty() || !orgs.isEmpty()) return BizResult.fail("该账号存在跟进客户,无法删除！");
-        return 1 == userMapper.delete(followUp) ? BizResult.SUCCESS : BizResult.FAIL;
+        userMapper.delete(followUp);
+
+        Department department = deptService.get(followUp.getDeptId());
+
+        this.doReducePerson(department);
+        return BizResult.SUCCESS;
     }
 
 
@@ -307,6 +316,57 @@ public class UserServiceImpl implements UserService, Realm {
     @Override
     public String getUnAuthenticatedUrl(String s) {
         return "/followup/login";
+    }
+
+    @Override
+    public void doAddPerson(Department department) {
+        if (null != department) {
+            department.setPersonNum(department.getPersonNum() + 1);
+            deptMapper.update(department);
+            Department parentDept = department.getParentDept();
+            //处理上级部门
+            while (parentDept != null) {
+                parentDept.setPersonNum(parentDept.getPersonNum() + 1);
+                deptMapper.update(parentDept);
+                parentDept = parentDept.getParentDept();
+            }
+        }
+    }
+
+    @Override
+    public void doReducePerson(Department department) {
+        if (null != department) {
+            department.setPersonNum(department.getPersonNum() - 1);
+            deptMapper.update(department);
+            Department parentDept = department.getParentDept();
+            //处理上级部门
+            while (parentDept != null) {
+                parentDept.setPersonNum(parentDept.getPersonNum() - 1);
+                deptMapper.update(parentDept);
+                parentDept = parentDept.getParentDept();
+            }
+        }
+    }
+
+    @Override
+    public void doUpdatePerson(Department department) {
+        department.setPersonNum(department.getPersonNum() - 1);
+        deptMapper.update(department);
+
+        Department oldDept = department.getParentDept();
+        while (oldDept != null) {
+            oldDept.setPersonNum(oldDept.getPersonNum() - 1);
+            deptMapper.update(oldDept);
+            oldDept = oldDept.getParentDept();
+        }
+
+        Department newDept = deptMapper.get(department.getPid());
+
+        while (newDept != null) {
+            newDept.setPersonNum(newDept.getPersonNum() + 1);
+            deptMapper.update(newDept);
+            newDept = newDept.getParentDept();
+        }
     }
 }
 

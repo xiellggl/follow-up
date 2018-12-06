@@ -43,6 +43,7 @@ public class DeptServiceImpl implements DeptService {
         if (CollectionUtils.isEmpty(subDeptList)) return deptIdList;
 
         for (Department dept : subDeptList) {
+            deptIdList.add(dept.getId());
             deptIdList.addAll(this.getSubDeptIds(dept.getId()));
         }
 
@@ -73,7 +74,21 @@ public class DeptServiceImpl implements DeptService {
     @Override
     public BizResult updateDept(Department department) {
         department.setUpdateTime(new Date());
-        if (deptMapper.update(department) == 1) {
+        //处理上级部门人数
+        Department department1 = deptMapper.get(department.getId());
+
+        department1.setPid(department.getPid());
+
+        doUpdatePerson(department1);
+
+        //复制属性
+        department1.setName(department.getName());
+        department1.setSortNo(department.getSortNo());
+        department1.setCityServer(department.getCityServer());
+        department1.setCityInviteCode(department.getCityInviteCode());
+        department1.setRemark(department.getRemark());
+
+        if (deptMapper.update(department1) == 1) {
             return BizResult.SUCCESS;
         } else {
             return BizResult.FAIL;
@@ -122,11 +137,55 @@ public class DeptServiceImpl implements DeptService {
             for (Department department1 : subDeptList) {
                 deptMapper.delete(department1);
             }
-            return 1 == deptMapper.delete(department) ? BizResult.SUCCESS : BizResult.FAIL;
+
+            deptMapper.delete(department);
+
+            //处理上级部门人数
+            doReducePerson(department);
+
+            return BizResult.SUCCESS;
         } else {
             return BizResult.fail("本部门存在用户，无法删除！");
         }
 
+    }
+
+    @Override
+    public boolean checkInviteCode(String inviteCode) {
+        Department department = deptMapper.getByInviteCode(inviteCode);
+        if (department == null) return false;
+        return true;
+    }
+
+    @Override
+    public void doReducePerson(Department department) {
+        if (null != department) {
+            Department parentDept = department.getParentDept();
+            //处理上级部门
+            while (parentDept != null) {
+                parentDept.setPersonNum(parentDept.getPersonNum() - department.getPersonNum());
+                deptMapper.update(parentDept);
+                parentDept = parentDept.getParentDept();
+            }
+        }
+    }
+
+    @Override
+    public void doUpdatePerson(Department department) {
+        Department oldDept = department.getParentDept();
+        while (oldDept != null) {
+            oldDept.setPersonNum(oldDept.getPersonNum() - department.getPersonNum());
+            deptMapper.update(oldDept);
+            oldDept = oldDept.getParentDept();
+        }
+
+        Department newDept = deptMapper.get(department.getPid());
+
+        while (newDept != null) {
+            newDept.setPersonNum(newDept.getPersonNum() + department.getPersonNum());
+            deptMapper.update(newDept);
+            newDept = newDept.getParentDept();
+        }
     }
 
     @Override

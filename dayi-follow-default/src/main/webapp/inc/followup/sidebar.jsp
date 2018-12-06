@@ -283,9 +283,9 @@
             </a>
         </li>
         <li data-rel="manageManager">
-            <a href="/followup/manage/manager/list">
+            <a href="/followup/list">
                 <i class="menu-icon fa fa-user"></i>
-                <span class="menu-text">管理员管理</span>
+                <span class="menu-text">跟进人管理</span>
             </a>
         </li>
     </ul><!-- 菜单列表结束 -->
