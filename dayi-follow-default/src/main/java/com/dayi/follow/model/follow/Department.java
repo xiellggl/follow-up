@@ -1,6 +1,7 @@
 package com.dayi.follow.model.follow;
 
 import com.dayi.mybatis.support.BaseModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.Transient;
@@ -28,8 +29,10 @@ public class Department extends BaseModel{
     private Integer personNum = 0;//部门人数
 
     @Transient
+    @JsonIgnore
     private Department parentDept;  // 上级部门
     @Transient
+    @JsonIgnore
     private List<Department> subDeptList = new ArrayList();  // 下级部门
     @Transient
     private String treeName;//树形显示
