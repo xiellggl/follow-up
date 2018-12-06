@@ -47,11 +47,19 @@
     </select>
 
     <select id="getFollowIdByOrgId" parameterType="java.lang.Integer" resultType="java.lang.String">
-        SELECT follow_id from follow_org where org_id =${orgId}
+        SELECT follow_id from follow_org where org_id =#{orgId}
     </select>
 
     <select id="findContacts" resultType="com.dayi.follow.model.follow.OrgContact" parameterType="java.lang.Integer" >
-        SELECT * FROM `org_contact` WHERE agent_id = #{agentId} order by create_date desc LIMIT #{limitStart},#{limitEnd}
+        SELECT * FROM `org_contact` a
+        left join (
+            SELECT id,name followUp from follow_up
+        )b on b.id =a.follow_id
+        WHERE org_id = #{orgId} order by create_time desc LIMIT #{limitStart},#{limitEnd}
+    </select>
+
+    <select id="getContactsNum" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
+        SELECT count(0) FROM `org_contact` WHERE org_id = #{orgId}
     </select>
 
     <select id="getFollowOrgByOrgId" parameterType="java.lang.Integer" resultType="com.dayi.follow.model.follow.FollowOrg">
@@ -60,17 +68,17 @@
     
     <select id="findOrgs" parameterType="map" resultType="com.dayi.follow.vo.org.OrgListVo">
         select a.id, a.link_person ,a.create_date ,a.mobile ,
-                a.expiration_date ,a.maker_num,a.id_card
+                a.expiration_date ,a.maker_num inviteCode,a.id_card
         from ${assistDataBase}.organization a
         left join (
             select org_id,assign_date from follow_org  where follow_id =#{followId}
         )b on a.id = b.org_id
         where b.org_id is not null
         <if test="''!=inviteCode and null!=inviteCode">
-        and a.maker_num =${inviteCode}
+        and a.maker_num like CONCAT('%','${inviteCode}','%' )
         </if>
         <if test="''!=mobile and null!=mobile">
-            and a.mobile =${mobile}
+            and a.mobile like CONCAT('%','${mobile}','%' )
         </if>
 
         ORDER BY b.assign_date DESC
@@ -86,10 +94,10 @@
         )b on a.id = b.org_id
         where b.org_id is not null
         <if test="''!=inviteCode and null!=inviteCode">
-            and a.maker_num =${inviteCode}
+            and a.maker_num like CONCAT('%','${inviteCode}','%')
         </if>
         <if test="''!=mobile and null!=mobile">
-            and a.mobile =${mobile}
+            and a.mobile like CONCAT('%','${mobile}','%')
         </if>
 
         ORDER BY b.assign_date DESC
@@ -100,7 +108,7 @@
         a.expiration_date ,a.maker_num
         from ${assistDataBase}.organization a
         left join (
-            select org_id,follow_id,create_date from follow_org  where a.follow_id in
+            select org_id,follow_id,create_time from follow_org  where follow_id in
             <foreach item="item" index="index" collection="followIds"
                      open="(" separator="," close=")">
                 #{item}
@@ -117,8 +125,32 @@
             and c.id is not null and c.name =${followUp}
         </if>
 
-        ORDER BY b.create_date DESC
+        ORDER BY b.create_time DESC
         limit ${limitStart},${limitEnd}
+    </select>
+
+    <select id="getTeamOrgsNum" parameterType="map" resultType="java.lang.Integer">
+        select count(0)
+        from ${assistDataBase}.organization a
+        left join (
+        select org_id,follow_id,create_time from follow_org  where follow_id in
+        <foreach item="item" index="index" collection="followIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        )b on a.id = b.org_id
+        left join (
+        SELECT id ,name from follow_up
+        )c on c.id =b.follow_id
+        where b.org_id is not null
+        <if test="''!=inviteCode and null!=inviteCode">
+            and a.maker_num =${inviteCode}
+        </if>
+        <if test="''!=followUp and null!=followUp">
+            and c.id is not null and c.name =${followUp}
+        </if>
+
+        ORDER BY b.create_time DESC
     </select>
 
     <sql id="assignsFollowCondition">

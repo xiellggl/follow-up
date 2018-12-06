@@ -104,11 +104,18 @@ public class AgentServiceImpl implements AgentService {
 
     @Override
     public Page<LoginLogVo> findLoginLog(Page page, Integer agentId) {
-        return agentMapper.findLoginLog(agentId, page.getStartRow(), page.getEndRow());
+        List<LoginLogVo> loginLog = agentMapper.findLoginLog(agentId, page.getStartRow(), page.getEndRow());
+        long loginLogNum = agentMapper.getLoginLogNum(agentId);
+        page.setResults(loginLog);
+        page.setTotalRecord(loginLogNum);
+        return page;
     }
 
     @Override
     public BizResult addContact(AgentContact agentContact) {
+        agentContact.setCreateTime(new Date());
+        agentContact.setUpdateTime(new Date());
+        agentContact.setId(agentMapper.getNewId());
         return 1 == agentContactMapper.add(agentContact) ? BizResult.succ(agentContact) : BizResult.FAIL;
     }
 

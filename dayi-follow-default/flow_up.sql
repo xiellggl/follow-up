@@ -33,10 +33,10 @@ CREATE TABLE `follow_up`  (
 
 
 #复制agent_contact数据到新库中
-
-INSERT into  dayi_follow_all.agent_contact
-(id,agent_id,contact_type,customer_type,customer_intention_type,next_contact_time,flow_id,content,create_date,modify_date)
-SELECT * from dev_dayi_spot.agent_contact
+INSERT into  agent_contact
+(id,agent_id,contact_type,customer_type,cus_intention_type,next_contact_time,follow_id,content,create_time,update_time)
+SELECT id,agent_id,contact_type,customer_type,customer_intention_type,next_contact_time,flow_id,content,create_date,modify_date
+from .agent_contact
 
 
 #将agent表的跟进人数据，迁移到follow_agent表
@@ -63,3 +63,7 @@ assign_date_before,manage_fund_before,create_time,update_time)
 SELECT CONCAT(id,'a',IFNULL(flow_id,0)),flow_id,id,follow_up_before,flow_date,
 flow_date_before,asserts_before,create_date,
 modify_date from organization
+
+#复制organization_contact数据到新库中
+INSERT into org_contact (id,org_id,contact_type,content,follow_id,create_time,update_time )
+SELECT id,org_id,contact_type,content,flow_id,create_date,modify_date from dev_dayi_spot.organization_contact

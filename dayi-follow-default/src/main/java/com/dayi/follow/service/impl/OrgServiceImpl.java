@@ -110,6 +110,9 @@ public class OrgServiceImpl implements OrgService {
 
     @Override
     public BizResult addContact(OrgContact orgContact) {
+        orgContact.setCreateTime(new Date());
+        orgContact.setUpdateTime(new Date());
+        orgContact.setId(orgMapper.getNewId());
         return 1 == orgContactMapper.add(orgContact) ? BizResult.succ(orgContact) : BizResult.FAIL;
     }
 
@@ -157,9 +160,7 @@ public class OrgServiceImpl implements OrgService {
                 twoLevel = orgMapper.getManageFundLevel2(org.getId());
             }
 
-            double organizationAssets = BigDecimals.add(oneLevel, twoLevel);
-
-            BigDecimal manageFund = BigDecimal.valueOf(organizationAssets);
+            double manageFund = BigDecimals.add(oneLevel, twoLevel);
 
             item.setManageFund(manageFund);//管理资产规模
         }
@@ -174,7 +175,7 @@ public class OrgServiceImpl implements OrgService {
 
         List<OrgListVo> orgs = followOrgMapper.findTeamOrgs(followUp, inviteCode, followIds, dayiDataBaseStr, page.getStartRow(), page.getPageSize());
 
-        int orgsCount = followOrgMapper.findTeamOrgsCount(followUp, inviteCode, followIds, dayiDataBaseStr);
+        int orgsCount = followOrgMapper.getTeamOrgsNum(followUp, inviteCode, followIds, dayiDataBaseStr);
         page.setResults(doOrgMore(orgs));
         page.setTotalRecord(orgsCount);
         return page;

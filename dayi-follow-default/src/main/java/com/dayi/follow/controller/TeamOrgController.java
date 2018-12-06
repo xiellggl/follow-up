@@ -26,7 +26,7 @@ import java.util.List;
  * @date 2018/11/13
  */
 @Controller
-@RequestMapping("/followup/team/org")
+@RequestMapping("/team/org")
 public class TeamOrgController {
     @Resource
     FollowUpService followUpService;

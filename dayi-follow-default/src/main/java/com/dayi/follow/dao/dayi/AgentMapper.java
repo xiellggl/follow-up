@@ -53,5 +53,7 @@ public interface AgentMapper extends BaseMapper<Agent> {
     Account getAccount(@Param("agentId")Integer agentId);
 
     //获取代理商的账户
-    Page<LoginLogVo> findLoginLog(@Param("agentId")Integer agentId,@Param("limitStart") Integer limitStart,@Param("limitEnd") Integer limitEnd);
+    List<LoginLogVo> findLoginLog(@Param("agentId")Integer agentId,@Param("limitStart") Integer limitStart,@Param("limitEnd") Integer limitEnd);
+    //获取代理商的账户
+    long getLoginLogNum(@Param("agentId")Integer agentId);
 }

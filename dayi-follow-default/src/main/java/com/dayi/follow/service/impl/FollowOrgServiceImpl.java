@@ -44,8 +44,12 @@ public class FollowOrgServiceImpl implements FollowOrgService {
     }
 
     @Override
-    public Page<OrgContact> findContacts(com.dayi.mybatis.support.Page page, Integer orgId) {
-        return followOrgMapper.findContacts(orgId, page.getStartRow(), page.getPageSize());
+    public Page<OrgContact> findContacts(Page page, Integer orgId) {
+        List<OrgContact> contacts = followOrgMapper.findContacts(orgId, page.getStartRow(), page.getPageSize());
+        int contactsNum = followOrgMapper.getContactsNum(orgId);
+        page.setResults(contacts);
+        page.setTotalRecord(contactsNum);
+        return page;
     }
 
     @Override

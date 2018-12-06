@@ -12,6 +12,7 @@ import java.util.Date;
 
 /**
  * 创客列表
+ *
  * @author xiell
  * @date 2018/11/14
  */
@@ -36,7 +37,7 @@ public class OrgListVo {
 
     private Integer validAgentNum;//有效代理商
 
-    private BigDecimal manageFund;//管理资产规模
+    private double manageFund;//管理资产规模
     private String manageFundFm;//管理资产规模
 
     private String inviteCode;//邀请码
@@ -120,6 +121,11 @@ public class OrgListVo {
     }
 
     public String getManageFundFm() {
+        if (this.manageFund != 0) {
+            manageFundFm = Misc.parseMoney(manageFund, 2);
+        } else {
+            manageFundFm = "0.00 元";
+        }
         return manageFundFm;
     }
 
@@ -143,11 +149,11 @@ public class OrgListVo {
         this.followUp = followUp;
     }
 
-    public BigDecimal getManageFund() {
+    public double getManageFund() {
         return manageFund;
     }
 
-    public void setManageFund(BigDecimal manageFund) {
+    public void setManageFund(double manageFund) {
         this.manageFund = manageFund;
     }
 

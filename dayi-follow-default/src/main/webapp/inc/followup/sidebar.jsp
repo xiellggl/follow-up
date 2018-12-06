@@ -93,7 +93,6 @@
                 </ul>
             </li>
         </c:if>
-        <c:if test="${flowUpSession.userName ne 'admin' and flowUpSession.isAdmin ne 1 and flowUpSession.isManager eq 1}">
         <li data-rel="teamCustomer">
             <a href="javascript:void(0);" class="dropdown-toggle">
                 <i class="menu-icon fa fa-users"></i>
@@ -102,13 +101,13 @@
             </a>
             <ul class="submenu">
                 <li data-index="1">
-                    <a href="/followup/uc/customer/team/agent/list">
+                    <a href="/team/agent/list">
                         <i class="menu-icon fa fa-caret-right"></i>
                         代理商
                     </a>
                 </li>
                 <li data-index="2">
-                    <a href="/followup/uc/customer/team/maker/list">
+                    <a href="/team/org/list">
                         <i class="menu-icon fa fa-caret-right"></i>
                         创客
                     </a>
@@ -166,7 +165,6 @@
 
                 </ul>
             </li>
-        </c:if>
 
         <c:if test="${flowUpSession.userName eq 'admin' || flowUpSession.isAdmin eq 1}"> <%-- 超级管理员 或 部门管理员 --%>
         <li data-rel="manageHome">
@@ -215,7 +213,7 @@
         <li data-rel="manageLog">
             <a href="javascript:void(0);" class="dropdown-toggle">
                 <i class="menu-icon fa fa-bar-chart-o"></i>
-                <span class="menu-text">团队报表</span>
+                <span class="menu-text">管理员团队报表</span>
                 <b class="arrow fa fa-angle-down"></b>
             </a>
             <ul class="submenu">

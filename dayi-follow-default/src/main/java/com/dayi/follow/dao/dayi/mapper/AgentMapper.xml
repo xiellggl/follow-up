@@ -77,9 +77,12 @@
     </select>
 
     <select id="findLoginLog" parameterType="map" resultType="com.dayi.follow.vo.LoginLogVo">
-        select * from  finance_login_log where login_id =${agentId} order by create_date desc  LIMIT #{limitStart},#{limitEnd} ;
+        select * from  finance_login_log where login_id =#{agentId} order by create_date desc  LIMIT #{limitStart},#{limitEnd} ;
     </select>
 
+    <select id="getLoginLogNum" parameterType="map" resultType="java.lang.Long">
+        select count(0) from  finance_login_log where login_id =#{agentId};
+    </select>
 
     <select id="findLevel2ByOrgId" parameterType="java.lang.Integer" resultType="com.dayi.follow.model.follow.Agent">
         SELECT * from agent where org_id =${orgId} and del_status != -1 and invite_level =1

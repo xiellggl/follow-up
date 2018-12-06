@@ -1,8 +1,11 @@
 package com.dayi.follow.model.follow;
 
+import com.dayi.follow.enums.ContactTypeEnum;
 import com.dayi.mybatis.support.BaseModel;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author xiell
@@ -10,13 +13,16 @@ import javax.persistence.Transient;
  */
 public class OrgContact extends BaseModel {
     private Integer orgId;//创客ID
+    @NotNull(message = "联系类型不能为空！")
     private Integer contactType;//联系类型
+    @NotBlank(message = "联系内容不能为空！")
     private String content;//内容
-    private String flowId;//跟进人ID
+    private String followId;//跟进人ID
 
     @Transient
     private String followUp;
-
+    @Transient
+    private String contactTypeStr;
     public Integer getOrgId() {
         return orgId;
     }
@@ -41,12 +47,12 @@ public class OrgContact extends BaseModel {
         this.content = content;
     }
 
-    public String getFlowId() {
-        return flowId;
+    public String getFollowId() {
+        return followId;
     }
 
-    public void setFlowId(String flowId) {
-        this.flowId = flowId;
+    public void setFollowId(String followId) {
+        this.followId = followId;
     }
 
     public String getFollowUp() {
@@ -55,5 +61,32 @@ public class OrgContact extends BaseModel {
 
     public void setFollowUp(String followUp) {
         this.followUp = followUp;
+    }
+
+    public String getContactTypeStr() {
+        if (contactType != null) {
+            switch (contactType) {
+                case (1):
+                    contactTypeStr = ContactTypeEnum.PHONE.getName();
+                    break;
+                case (2):
+                    contactTypeStr = ContactTypeEnum.WECHAT.getName();
+                    break;
+                case (3):
+                    contactTypeStr = ContactTypeEnum.QQ.getName();
+                    break;
+                case (4):
+                    contactTypeStr = ContactTypeEnum.EMAIL.getName();
+                    break;
+                case (5):
+                    contactTypeStr = ContactTypeEnum.MESSAGE.getName();
+                    break;
+            }
+        }
+        return contactTypeStr;
+    }
+
+    public void setContactTypeStr(String contactTypeStr) {
+        this.contactTypeStr = contactTypeStr;
     }
 }

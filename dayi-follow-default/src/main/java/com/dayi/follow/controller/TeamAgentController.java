@@ -32,7 +32,7 @@ import java.util.List;
  * @date 2018/11/13
  */
 @Controller
-@RequestMapping("/followup/team/agent")
+@RequestMapping("/team/agent")
 public class TeamAgentController {
     @Resource
     FollowUpService followUpService;

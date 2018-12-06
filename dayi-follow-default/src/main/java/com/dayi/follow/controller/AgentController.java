@@ -1,6 +1,7 @@
 package com.dayi.follow.controller;
 
 import com.dayi.common.util.BizResult;
+import com.dayi.follow.base.BaseController;
 import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.conf.Constants;
 import com.dayi.follow.enums.AgentCusTypeEnum;
@@ -23,11 +24,13 @@ import com.dayi.mybatis.support.Page;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 /**
  * @author xiell
@@ -35,7 +38,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Controller
 @RequestMapping("/agent")
-public class AgentController {
+public class AgentController extends BaseController{
     @Resource
     FollowUpService followUpService;
     @Resource
@@ -130,7 +133,7 @@ public class AgentController {
 
         page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
 
-        if (currVo.getId() == followId) {
+        if (currVo.getId().equals(followId)) {
             page = agentService.findLoginLog(page, agentId);
         } else {
             return "redirect:/followup/uc/index";
@@ -159,7 +162,7 @@ public class AgentController {
 
         page.setPageSize(Constants.CONTACT_PAGE_SIZE);
 
-        if (currVo.getId() == followId) {
+        if (currVo.getId().equals(followId)) {
             page = followAgentService.findContacts(page, agentId);
         } else {
             return "redirect:/followup/uc/index";
@@ -206,14 +209,16 @@ public class AgentController {
      */
     @RequestMapping("/contact/add/save")
     @ResponseBody
-    public BizResult contactAddSave(HttpServletRequest request, AgentContact agentContact) {
+    public BizResult contactAddSave(HttpServletRequest request, @Valid AgentContact agentContact, BindingResult result) {
+        BizResult bizResult = checkErrors(result);
+
+        if (!bizResult.isSucc()) return bizResult;//参数传入错误
         LoginVo currVo = userComponent.getCurrUser(request);
 
         String followId = followAgentService.getFollowIdByAgentId(agentContact.getAgentId());
 
-        if (currVo.getId() == followId) {
-            agentContact.setFollowUp(currVo.getName());
-            agentContact.setFlowId(currVo.getId());
+        if (currVo.getId().equals(followId)) {
+            agentContact.setFollowId(currVo.getId());
             return agentService.addContact(agentContact);
         } else {
             return BizResult.fail("无法操作此代理商！");

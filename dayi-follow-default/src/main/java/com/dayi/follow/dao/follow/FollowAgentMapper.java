@@ -50,7 +50,10 @@ public interface FollowAgentMapper extends BaseMapper<FollowAgent> {
     String getFollowIdByAgentId(@Param("agentId") Integer agentId);
 
     //获取联系记录
-    Page<AgentContactVo> findContacts(@Param("agentId") Integer agentId, @Param("limitStart") Integer limitStart, @Param("limitEnd") Integer limitEnd);
+    List<AgentContactVo> findContacts(@Param("agentId") Integer agentId, @Param("limitStart") Integer limitStart, @Param("limitEnd") Integer limitEnd);
+
+    //获取联系记录
+    int getContactsNum(@Param("agentId") Integer agentId);
 
     //获取分配
     Date getAssignDate(@Param("agentId") Integer agentId);

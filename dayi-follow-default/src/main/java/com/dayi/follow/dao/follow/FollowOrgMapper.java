@@ -21,9 +21,9 @@ public interface FollowOrgMapper extends BaseMapper<FollowOrg> {
     //统计资产规模
     double getTotalFund(@Param("followIds") List<String> followIds);
 
-    List<Organization> findOrgsByfollowId(@Param("followId")String followId,@Param("deadline") String deadline,@Param("assistDataBase") String assistDataBase);
+    List<Organization> findOrgsByfollowId(@Param("followId") String followId, @Param("deadline") String deadline, @Param("assistDataBase") String assistDataBase);
 
-    List<Organization> findOrgsByfollowIds(@Param("followIds")List<String> followIds,@Param("deadline")String deadline);
+    List<Organization> findOrgsByfollowIds(@Param("followIds") List<String> followIds, @Param("deadline") String deadline);
 
     String getFollowIdByOrgId(Integer orgId);
 
@@ -31,20 +31,22 @@ public interface FollowOrgMapper extends BaseMapper<FollowOrg> {
     FollowOrg getFollowOrgByOrgId(Integer orgId);
 
     //获取联系记录
-    Page<OrgContact> findContacts(Integer agentId, Integer limitStart, Integer limitEnd);
+    List<OrgContact> findContacts(@Param("orgId") Integer orgId, @Param("limitStart") Integer limitStart, @Param("limitEnd") Integer limitEnd);
+    //获取联系记录
+    int getContactsNum(@Param("orgId") Integer orgId);
 
     List<OrgListVo> findOrgs(@Param("mobile") String mobile, @Param("inviteCode") String inviteCode,
                              @Param("followId") String followId, @Param("assistDataBase") String assistDataBase,
-                             @Param("limitStart") Integer limitStart,@Param("limitEnd") Integer limitEnd);
+                             @Param("limitStart") Integer limitStart, @Param("limitEnd") Integer limitEnd);
 
     int getOrgsNum(@Param("mobile") String mobile, @Param("inviteCode") String inviteCode,
-                          @Param("followId") String followId, @Param("assistDataBase") String assistDataBase);
+                   @Param("followId") String followId, @Param("assistDataBase") String assistDataBase);
 
     List<OrgListVo> findTeamOrgs(@Param("followUp") String followUp, @Param("inviteCode") String inviteCode,
                                  @Param("followIds") List<String> followIds, @Param("assistDataBase") String assistDataBase,
                                  @Param("limitStart") Integer limitStart, @Param("limitEnd") Integer limitEnd);
 
-    Integer findTeamOrgsCount(@Param("followUp") String followUp, @Param("inviteCode") String inviteCode,
+    Integer getTeamOrgsNum(@Param("followUp") String followUp, @Param("inviteCode") String inviteCode,
                               @Param("followIds") List<String> followIds, @Param("assistDataBase") String assistDataBase);
 
     //查找已分配跟进人的创客

@@ -19,6 +19,7 @@ import com.dayi.follow.service.FollowAgentService;
 import com.dayi.follow.service.OrgService;
 import com.dayi.follow.util.CheckIdCardUtils;
 import com.dayi.follow.vo.*;
+import com.dayi.follow.vo.agent.AgentContactVo;
 import com.dayi.follow.vo.agent.AgentListVo;
 import com.dayi.follow.vo.agent.AssignListVo;
 import com.dayi.follow.vo.agent.DetailVo;
@@ -187,7 +188,11 @@ public class FollowAgentServiceImpl implements FollowAgentService {
 
     @Override
     public Page findContacts(Page page, Integer agentId) {
-        return followAgentMapper.findContacts(agentId, page.getStartRow(), page.getPageSize());
+        List<AgentContactVo> contacts = followAgentMapper.findContacts(agentId, page.getStartRow(), page.getPageSize());
+        int contactsNum = followAgentMapper.getContactsNum(agentId);
+        page.setResults(contacts);
+        page.setTotalRecord(contactsNum);
+        return page;
     }
 
     @Override

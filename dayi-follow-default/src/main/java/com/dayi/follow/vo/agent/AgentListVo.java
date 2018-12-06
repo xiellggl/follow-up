@@ -71,7 +71,7 @@ public class AgentListVo {
 
     private String flowUpInviteCode;//客户跟进人的邀请码
 
-    private Integer flowId;//跟进人id
+    private Integer followId;//跟进人id
 
     public Integer getId() {
         return id;
@@ -425,11 +425,11 @@ public class AgentListVo {
         this.flowUpInviteCode = flowUpInviteCode;
     }
 
-    public Integer getFlowId() {
-        return flowId;
+    public Integer getFollowId() {
+        return followId;
     }
 
-    public void setFlowId(Integer flowId) {
-        this.flowId = flowId;
+    public void setFollowId(Integer followId) {
+        this.followId = followId;
     }
 }
