@@ -2,6 +2,7 @@ package com.dayi.follow.service;
 
 
 import com.dayi.common.util.BizResult;
+import com.dayi.follow.model.follow.Department;
 import com.dayi.follow.model.follow.FollowUp;
 import com.dayi.follow.vo.user.FollowUpEditDto;
 import com.dayi.follow.vo.user.UserVo;
@@ -61,4 +62,13 @@ public interface UserService {
     BizResult disable(FollowUp followUp);
     //删除
     BizResult delete(FollowUp followUp);
+
+    //处理减少部门人数
+    void doReducePerson(Department department);
+
+    //处理添加部门人数
+    void doAddPerson(Department department);
+
+    //处理更新部门人数
+    void doUpdatePerson(Department department);
 }

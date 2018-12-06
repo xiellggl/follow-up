@@ -49,8 +49,16 @@ public interface DeptService {
     BizResult add(Department department);
 
     //获取上级和平级部门和不同根的部门
-    List<Department> getEditCanSelectDepts(List<Department>departments,Department department);
+    List<Department> getEditCanSelectDepts(List<Department> departments, Department department);
 
     BizResult delete(Department department);
 
+    //检查城市服务商邀请码
+    boolean checkInviteCode(String inviteCode);
+
+    //处理减少部门人数
+    void doReducePerson(Department department);
+
+    //处理更新部门人数
+    void doUpdatePerson(Department department);
 }
