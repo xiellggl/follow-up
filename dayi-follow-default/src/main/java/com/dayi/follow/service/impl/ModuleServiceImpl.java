@@ -6,6 +6,7 @@ import com.dayi.component.annotation.Log;
 import com.dayi.component.model.BaseLog;
 import com.dayi.follow.dao.follow.ModuleMapper;
 import com.dayi.follow.dao.follow.PermissionMapper;
+import com.dayi.follow.dao.follow.RolePermissionMapper;
 import com.dayi.follow.model.follow.*;
 import com.dayi.follow.service.ModuleService;
 import com.dayi.follow.vo.PermissionVo;
@@ -13,6 +14,7 @@ import com.dayi.mybatis.support.Conditions;
 import com.dayi.mybatis.support.ext.Restrictions;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -22,10 +24,15 @@ import java.util.*;
  */
 @Service
 public class ModuleServiceImpl implements ModuleService {
+
     @Resource
     private ModuleMapper moduleMapper;
+
     @Resource
     private PermissionMapper permissionMapper;
+
+    @Resource
+    private RolePermissionMapper rolePermissionMapper;
 
 
     /*@Override
@@ -330,6 +337,7 @@ public class ModuleServiceImpl implements ModuleService {
 
     @Override
     @Log(target = OperateLog.class, action = BaseLog.LogAction.DELETE, what = "模块管理", note = "模块删除")
+    @Transactional
     public boolean deleteModule(String id) {
         // 删除模块（逻辑删除）
         Module module = new Module();
@@ -340,9 +348,11 @@ public class ModuleServiceImpl implements ModuleService {
             return false;
         }
 
-        // FIXME TODO 模块下的权限取消模块关联
+        // 删除模块下的权限角色关联
+        rolePermissionMapper.deleteByModuleId(id);
 
-        // FIXME TODO 模块下的权限删除角色关联
+        // 取消模块下的权限关联
+        permissionMapper.updateModuleidByMId(id);
 
         return true;
     }

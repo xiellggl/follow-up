@@ -8,6 +8,7 @@ import com.dayi.follow.enums.MemberStatusEnum;
 import com.dayi.follow.model.follow.*;
 import com.dayi.follow.service.*;
 import com.dayi.follow.util.Md5Util;
+import com.dayi.follow.vo.user.FollowUpEditDto;
 import com.dayi.follow.vo.user.UserVo;
 import com.dayi.mybatis.support.Page;
 import com.dayi.user.authorization.authc.AccountInfo;
@@ -24,6 +25,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -123,18 +125,32 @@ public class UserServiceImpl implements UserService, Realm {
     }
 
     @Override
-    public BizResult update(FollowUp followUpVo) {
-        FollowUp followUp = userMapper.get(followUpVo.getId());
+    public BizResult update(FollowUpEditDto followUpEditDto) {
+        FollowUp followUp = userMapper.get(followUpEditDto.getId());
+        if (null == followUp) {
+            return BizResult.fail("所选用户不存在.");
+        }
 
+        Department oldDept = deptMapper.get(followUp.getDeptId());
+        if (null == oldDept) {
+            return BizResult.fail("原部门不存在.");
+        }
+        oldDept.setPersonNum(oldDept.getPersonNum() - 1);
+
+        Department newDept = deptMapper.get(followUpEditDto.getDeptId());
+        if (null == newDept) {
+            return BizResult.fail("所选部门不存在.");
+        }
+        newDept.setPersonNum(newDept.getPersonNum() + 1);
+
+        deptMapper.update(oldDept);
+        deptMapper.update(newDept);
         Department department = deptMapper.get(followUp.getDeptId());
         department.setPid(followUpVo.getDeptId());
         doUpdatePerson(department);
 
-        followUp.setName(followUpVo.getName());
-        followUp.setMobile(followUpVo.getMobile());
-        followUp.setDeptId(followUpVo.getDeptId());
-        followUp.setRoleids(followUpVo.getRoleids());
-
+        FollowUpEditDto.dtoToEntity(followUpEditDto, followUp);
+        followUp.setUpdateTime(new Date());
         userMapper.update(followUp);
 
         return BizResult.SUCCESS;

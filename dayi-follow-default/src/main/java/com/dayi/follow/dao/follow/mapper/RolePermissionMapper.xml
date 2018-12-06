@@ -22,6 +22,11 @@
         DELETE FROM role_permission WHERE permissionId = #{perId}
     </delete>
 
+    <delete id="deleteByModuleId" parameterType="java.lang.String">
+        DELETE FROM role_permission WHERE permissionid IN
+        (SELECT id FROM permission WHERE moduleid = #{moduleId})
+    </delete>
+
     <insert id="addBatch" parameterType="java.util.List">
         insert into role_permission (id,roleid,permissionid,create_time,update_time)
         values
