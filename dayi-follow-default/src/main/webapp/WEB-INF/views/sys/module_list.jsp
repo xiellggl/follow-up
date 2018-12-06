@@ -87,7 +87,8 @@
                                 </tr>
 
                                 <tr  class="conceal-t click1">
-                                    <td><i class="fa fa-chevron-mcu fa-chevron-down" data-flag="1"></i></td>
+                                    <%--<td><i class="fa fa-chevron-mcu fa-chevron-down" data-flag="1"></i></td>--%>
+                                    <td><i class="fa" data-flag="1"></i></td>
                                     <td>&nbsp&nbsp二级模块</td>
                                     <td>
                                         <a class="state-btn" data-state="1" href="javascript:;" data-id="30" title="" data-original-title="已启用">
@@ -106,7 +107,7 @@
                                     </td>
                                 </tr>
 
-                                <tr class="conceal-t link1">
+                                <tr class="conceal-t click1">
                                     <td><i class="fa" data-flag="1"></i></td>
                                     <td>&nbsp&nbsp&nbsp这是功能权限3</td>
                                     <td>&nbsp</td>
@@ -139,27 +140,41 @@
 </div>
 <%@include file="/inc/followup/script.jsp"%>
 <script>
-    seajs.use(["common","validate","template"],function(common,validate,template){
+    seajs.use(["common","validate","template","addMethod"],function(common,validate,template){
         //菜单高亮
         common.head("system",1);
 
         var editDeptFn = function (id) {
             var id = id || 0;
-            var url = "/followup/module/add";
+            var url = "/module/add/save/save.json";
             if (id > 0) {
-                url = "/followup/module/dept/update/" + id;
+                url = "/module/edit/edit/save.json";
             }
             var html = "";
 
-            common.ajax.handle({
-                type: "get",
-                url:url,
-                dataType: "html",
-                async: false,
-                succback: function (data) {
-                    html = data;
+            if(id > 0){
+                common.ajax.handle({
+                    type: "get",
+                    url:"/module/edit",
+                    dataType: "html",
+                    async: false,
+                    succback: function (data) {
+                        html = data;
+                    }
+                });
+                if (data.id == null) {
+                    common.ajax.handle({
+                        type: "get",
+                        url:"/module/edit",
+                        dataType: "html",
+                        async: false,
+                        succback: function (data) {
+                            html = data;
+                        }
+                    });
                 }
-            });
+            }
+
             var $modal = $("#myModalEditFollowuper");
             $modal.html(html);
             if (id > 0) {
@@ -194,7 +209,7 @@
                 },
                 submitHandler: function (form) {
                     common.ajax.handle({
-                        url: "/followup/module/edit/save.json",
+                        url: url,
                         data: $form.serialize(),
                     });
                     return false;
@@ -237,16 +252,6 @@
             }
         });
 
-        $(".fa-chevron-mcu").on('click', function(event) {
-            var flag = $(this).attr("data-flag");
-            $(".link"+flag).toggle(100);
-            var $this=$(this);
-            if($this.hasClass('fa-chevron-up')){
-                $this.removeClass('fa-chevron-up').addClass('fa-chevron-down');
-            }else{
-                $this.removeClass('fa-chevron-down').addClass('fa-chevron-up');
-            }
-        });
 
     });
 </script>

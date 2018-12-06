@@ -4,9 +4,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>用户管理</title>
-    <c:set var="pageName" value="financeUcOrgPage" />
     <%@include file="/inc/followup/csslink.jsp"%>
 </head>
 <body class="no-skin">
@@ -84,8 +82,11 @@
                                 </td>
                                 <td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/> </td>
                                 <td>
-                                    <a href="#"  data-toggle="modal" data-target="#myModalEditFollowuper" data-id="${item.id}" data-act="edit" data-toggle="tooltip" title="修改">
-                                        <i class="ace-icon fa fa-pencil bigger-130"></i></a>
+                                    <a class="green" href="#" data-toggle="modal"
+                                       data-target="#myModalEditFollowuper" data-id="${item.id}"
+                                       data-toggle="tooltip" title="修改">
+                                        <i class="ace-icon fa fa-pencil bigger-130"></i>
+                                    </a>
                                     <a href="#" data-act="del" data-toggle="tooltip" title="删除">
                                         <i class="ace-icon fa fa-trash-o bigger-130 red"></i></a>
                                     <a href="#" data-act="resetpwd" data-toggle="tooltip"
@@ -118,6 +119,7 @@
      aria-hidden="true">
 </div>
 
+<%@include file="/inc/followup/script.jsp"%>
 <script type="text/html" id="tplEditFlowUp">
 <form class="form-horizontal" autocomplete="off">
     <div class="modal-dialog">
@@ -128,24 +130,28 @@
                         aria-hidden="true">×
                 </button>
                 <h4 class="modal-title" id="myModalLabel">
-                    添加用户
+                    {{id>0?'修改':'添加'}}用户
                 </h4>
             </div>
 
             <div class="modal-body">
                 <div class="row">
                     <div class="col-xs-12">
-                        <input type="hidden" name="id" value="${deptVo.id}" />
+                        {{if id > 0}}
+                        <input type="hidden" name="id" value="{{id}}">
+                        {{/if}}
 
+                        <div class="space-4"></div>
                         <div class="form-group">
                             <label class="col-sm-3  control-label no-padding-right">*用户姓名 ：</label>
                             <div class="col-xs-12 col-sm-6">
-                                <input type="text" name="name" class="form-control" required/>
+                                <input type="text" name="name" value="{{name}}" class="form-control" required/>
                             </div>
                             <div class="help-block col-xs-12 col-sm-reset inline tips_box"></div>
                         </div>
 
-
+                        {{if id==null}}
+                        <div class="space-4"></div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label no-padding-right">*账号 ：</label>
                             <div class="col-xs-12 col-sm-6">
@@ -154,6 +160,7 @@
                             <div class="help-block col-xs-12 col-sm-reset inline tips_box"></div>
                         </div>
 
+                        <div class="space-4"></div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label no-padding-right">*邀请码 ：</label>
                             <div class="col-xs-12 col-sm-6">
@@ -162,6 +169,7 @@
                             <div class="help-block col-xs-12 col-sm-reset inline tips_box"></div>
                         </div>
 
+                        <div class="space-4"></div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label no-padding-right">*密码 ：</label>
                             <div class="col-xs-12 col-sm-6">
@@ -169,37 +177,41 @@
                             </div>
                             <div class="help-block col-xs-12 col-sm-reset inline tips_box"></div>
                         </div>
+                        {{/if}}
 
+                        <div class="space-4"></div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label no-padding-right">*手机号码 ：</label>
                             <div class="col-xs-12 col-sm-6">
-                                <input type="text" name="mobile" class="form-control" required/>
+                                <input type="text" name="mobile"  value="{{mobile}}" class="form-control" required/>
                             </div>
                             <div class="help-block col-xs-12 col-sm-reset inline tips_box"></div>
                         </div>
 
+                        <div class="space-4"></div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label no-padding-right">角色 ：</label>
                             <div class="col-xs-12 col-sm-6">
                                 <select name="pid" class="form-control">
-                                    <c:forEach items="${deptList}" var="item" >
-                                        <option value="${item.id}" ${deptVo.pid eq item.id ? 'selected' : ''}>${item.treeName}</option>
-                                    </c:forEach>
+
                                 </select>
                             </div>
                         </div>
 
+                        <div class="space-4"></div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label no-padding-right">部门 ：</label>
                             <div class="col-xs-12 col-sm-6">
-                                <select name="pid" class="form-control">
-                                    <c:forEach items="${deptList}" var="item" >
-                                        <option value="${item.id}" ${deptVo.pid eq item.id ? 'selected' : ''}>${item.treeName}</option>
+                                <select name="deptId" class="form-control">
+                                    <option value="">请选择所属部门</option>
+                                    <c:forEach items="${deptList}" var="item">
+                                        <option value="${item.id}">${item.treeName}</option>
                                     </c:forEach>
                                 </select>
                             </div>
                         </div>
 
+                        <div class="space-4"></div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label no-padding-right inline">是否负责人： </label>
                             <div class="col-sm-9 inline align-middle" style="padding-top:5px;">
@@ -212,6 +224,7 @@
                             </div>
                         </div>
 
+                        <div class="space-4"></div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label no-padding-right inline">二级资产开关： </label>
                             <div class="col-sm-9 inline align-middle" style="padding-top:5px;">
@@ -239,11 +252,8 @@
     </div>
 </form>
 </script>
-
-
-<%@include file="/inc/followup/script.jsp"%>
 <script>
-    seajs.use(["common","validate","template","addMethod"],function(common,validate,template){
+    seajs.use(["common", "template", "validate", "addMethod"], function (common, template) {
         //菜单高亮
         common.head("system",2);
 
@@ -251,23 +261,32 @@
             var id = id || 0;
             var data = {};
             if (id > 0) {
-                alert("id大于0");
-            }else {
-                alert("id小于0");
+                common.ajax.handle({
+                    url: "/user/get/" + id + ".json",
+                    // url: "/dept/getEditList/" + id + ".json",
+                    async: false,
+                    succback: function (json) {
+                        data = json.result;
+                    }
+                });
+                if (data.id==null) {
+                    return false;
+                }
+
             }
             var $modal = $("#myModalEditFollowuper");
             var html = template("tplEditFlowUp", data);
             $modal.html(html).show(300);
             var $form = $modal.find("form");
 
-            if (id > 0) {
-                $(".modal-title").html("修改用户");
-            }
             var url ="/user/add/save.json";
             if (id > 0) {
                 var url ="/user/update/save.json";
             }
 
+            var $userName = $form.find('[name="userName"]');
+            var $inviteCode = $form.find('[name="inviteCode"]');
+            $form.find('[name="deptId"]').val(data.deptId);
             $form.validate({
                 rules: {
                     //用户姓名：
@@ -418,7 +437,7 @@
                         return false;
                     }
                     common.ajax.handle({
-                        url: "/user/resetpwd/" + id + ".json",
+                        url: "/user//resetpwd/" + id + ".json",
                         data: {pwd: $pwd.val()},
                         succback: function (data) {
                             common.successMsg(data.msg);
