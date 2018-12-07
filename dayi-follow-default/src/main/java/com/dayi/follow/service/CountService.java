@@ -55,6 +55,6 @@ public interface CountService {
 
     DailyVo countDaily(String followId);
 
-    List<DailyVo> countTeamDaily(String deptId);
+    DailyVo countTeamDaily(String deptId);
 
 }

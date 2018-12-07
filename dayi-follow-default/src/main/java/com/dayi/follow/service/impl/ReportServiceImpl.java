@@ -13,6 +13,7 @@ import com.dayi.mybatis.support.Page;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -48,11 +49,8 @@ public class ReportServiceImpl implements ReportService {
             endDate = DateTime.parse(split[1]).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
         }
 
-        List<ReportDailyVo> dailyList = reportMapper.findDaily(followIds, startDate, endDate, page.getStartRow(), page.getPageSize());
+        page = reportMapper.findDaily(page, followIds, startDate, endDate);
 
-        long dailyCount = reportMapper.findDailyCount(followIds, startDate, endDate);
-        page.setResults(dailyList);
-        page.setTotalRecord(dailyCount);
         return page;
     }
 
@@ -67,34 +65,32 @@ public class ReportServiceImpl implements ReportService {
             endDate = DateTime.parse(split[1]).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
         }
 
-        List<ReportDailyVo> dailyList = reportMapper.findTeamDaily(deptId, startDate, endDate, page.getStartRow(), page.getPageSize());
+        page = reportMapper.findTeamDaily(page, deptId, startDate, endDate);
 
-        long dailyCount = reportMapper.findTeamDailyCount(deptId, startDate, endDate);
-        page.setResults(dailyList);
-        page.setTotalRecord(dailyCount);
         return page;
     }
 
     @Override
-    public Page findTeamDailyDetail(Page page, String deptId) {
+    public Page findTeamDailyDetail(Page page, String deptId, String date) {
+        if (StringUtils.isBlank(deptId) || StringUtils.isBlank(date)) return page;
+        String startDate = DateTime.parse(date).millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
+        String endDate = DateTime.parse(date).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
 
-        List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
-
-        List<ReportDailyVo> daily = reportMapper.findDaily(followIds, null, null, page.getStartRow(), page.getPageSize());
-        long dailyCount = reportMapper.findDailyCount(followIds, null, null);
-        page.setResults(daily);
-        page.setTotalRecord(dailyCount);
+        page = reportMapper.findTeamDailyDetail(page, deptId, startDate, endDate);
         return page;
 
     }
 
     @Override
-    public List<ReportDailyVo> exportTeamDailyDetail(String deptId) {
+    public List<ReportDailyVo> exportTeamDailyDetail(String deptId, String date) {
+        List<ReportDailyVo> list = new ArrayList<ReportDailyVo>();
+        if (StringUtils.isBlank(deptId) || StringUtils.isBlank(date)) return list;
 
-        List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
+        String startDate = DateTime.parse(date).millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
+        String endDate = DateTime.parse(date).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
 
-        List<ReportDailyVo> dailyList = reportMapper.findDaily(followIds, null, null, null, null);
-        return dailyList;
+        list = reportMapper.findTeamDailyDetailList(deptId, startDate, endDate);
+        return list;
 
     }
 
@@ -108,7 +104,9 @@ public class ReportServiceImpl implements ReportService {
             startDate = split[0];
             endDate = DateTime.parse(split[1]).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
         }
-        return reportMapper.getWeek(followId, startDate, endDate);
+        ReportDailyVo week = reportMapper.getWeek(followId, startDate, endDate);
+        week.setGrowthFund(week.getInCash().subtract(week.getOutCash()));
+        return week;
     }
 
     //团队周报
@@ -152,7 +150,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public Page<AdminWeekVo> findAdminDaily(Page page, String deptId, String deptName, String betweenDate) {
+    public Page<ReportDailyVo> findAdminDaily(Page page, String deptId, String deptName, String betweenDate) {
         String startDate = "";
         String endDate = "";
         if (!StringUtils.isBlank(betweenDate)) {
@@ -163,13 +161,17 @@ public class ReportServiceImpl implements ReportService {
 
         List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
 
-        List<ReportDailyVo> adminDaily = reportMapper.findAdminDaily(followIds, deptName, startDate, endDate, page.getStartRow(), page.getPageSize());
-        int num = reportMapper.getAdminDailyNum(followIds, deptName, startDate, endDate);
-
-        page.setResults(adminDaily);
-        page.setTotalRecord(num);
+        page = reportMapper.findAdminDaily(page, followIds, deptName, startDate, endDate);
 
         return page;
+    }
+
+    @Override
+    public Page findAdminDailyDetail(Page page, String deptId, String date) {
+        if (StringUtils.isBlank(date)) return page;
+        String startDate = DateTime.parse(date).millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
+        String endDate = DateTime.parse(date).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
+        return reportMapper.findAdminDailyDetail(page, deptId, startDate, endDate);
     }
 
     @Override
@@ -185,14 +187,13 @@ public class ReportServiceImpl implements ReportService {
 
         List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
 
-        List<ReportDailyVo> sum = reportMapper.findAdminWeekSum(followIds, startDate, endDate, page.getStartRow(), page.getPageSize());
-
-        int count = reportMapper.findAdminWeekCount(followIds, startDate, endDate);
+        page = reportMapper.findAdminWeekSum(page, followIds, startDate, endDate);
 
         page.setPageSize(page.getPageSize() * 5);
-        List<ReportDailyVo> per = reportMapper.findAdminWeekPer(followIds, startDate, endDate, page.getStartRow(), page.getPageSize());
-        page.setResults(mergeData(sum, per));
-        page.setTotalRecord(count);
+        Page<ReportDailyVo> per = reportMapper.findAdminWeekPer(page, followIds, startDate, endDate);
+
+        page.setResults(mergeData(page.getResults(), per.getResults()));
+
         return page;
 
     }
@@ -210,10 +211,10 @@ public class ReportServiceImpl implements ReportService {
 
         List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
 
-        List<ReportDailyVo> sum = reportMapper.findAdminWeekSum(followIds, startDate, endDate, null, null);
+        Page<ReportDailyVo> sum = reportMapper.findAdminWeekSum(null, followIds, startDate, endDate);
 
-        List<ReportDailyVo> per = reportMapper.findAdminWeekPer(followIds, startDate, endDate, null, null);
-        return mergeData(sum, per);
+        Page<ReportDailyVo> per = reportMapper.findAdminWeekPer(null, followIds, startDate, endDate);
+        return mergeData(sum.getResults(), per.getResults());
     }
 
     @Override
@@ -227,11 +228,8 @@ public class ReportServiceImpl implements ReportService {
 
         List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
 
-        List<AdminMonthVo> list = reportMapper.findAdminMonth(followIds, startDate, endDate, page.getStartRow(), page.getPageSize());//本月
-        int num = reportMapper.getAdminMonthNum(followIds, startDate, endDate);
-
-        page.setResults(countGrowthRatio(list, month));
-        page.setTotalRecord(num);
+        page = reportMapper.findAdminMonth(page, followIds, startDate, endDate);//本月
+        page.setResults(countGrowthRatio(page.getResults(), month));
         return page;
     }
 
@@ -247,8 +245,8 @@ public class ReportServiceImpl implements ReportService {
 
         List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
 
-        List<AdminMonthVo> list = reportMapper.findAdminMonth(followIds, startDate, endDate, null, null);//本月
-        return countGrowthRatio(list, month);
+        Page<AdminMonthVo> page = reportMapper.findAdminMonth(null, followIds, startDate, endDate);//本月
+        return countGrowthRatio(page.getResults(), month);
     }
 
     private List<AdminMonthVo> countGrowthRatio(List<AdminMonthVo> list, String month) {
@@ -337,16 +335,36 @@ public class ReportServiceImpl implements ReportService {
             BigDecimal subtracts = BigDecimals.subtracts(item.getInCash().doubleValue(), item.getOutCash().doubleValue());
             item.setGrowthFund(subtracts); //计算本周资金净增
 
-            sum.setOpenAccountNum(sum.getOpenAccountNum() + item.getOpenAccountNum());//开户数
+            if (sum.getOpenAccountNum() == null) {
+                sum.setOpenAccountNum(0 + item.getOpenAccountNum());//开户数
+            } else {
+                sum.setOpenAccountNum(sum.getOpenAccountNum() + item.getOpenAccountNum());//开户数
+            }
 
-            double inCash = BigDecimals.add(sum.getInCash().doubleValue(), item.getInCash().doubleValue());//入金
-            sum.setInCash(BigDecimal.valueOf(inCash));
+            if (sum.getInCash() == null) {
+                sum.setInCash(BigDecimal.ZERO.add(item.getInCash()));//入金
+            } else {
+                sum.setInCash(sum.getInCash().add(item.getInCash()));//入金
+            }
 
-            double outCash = BigDecimals.add(sum.getOutCash().doubleValue(), item.getOutCash().doubleValue());//出金
-            sum.setOutCash(BigDecimal.valueOf(outCash));
+            if (sum.getOutCash() == null) {
+                sum.setOutCash(BigDecimal.ZERO.add(item.getOutCash()));//出金
+            } else {
+                sum.setOutCash(sum.getOutCash().add(item.getOutCash()));//出金
+            }
 
-            double manageGrowthFund = BigDecimals.add(sum.getOutCash().doubleValue(), item.getOutCash().doubleValue());//管理资金净增
-            sum.setManageGrowthFund(BigDecimal.valueOf(manageGrowthFund));
+            if (sum.getManageGrowthFund() == null) {
+                sum.setManageGrowthFund(BigDecimal.ZERO.add(item.getManageGrowthFund()));//管理资金净增
+            } else {
+                sum.setManageGrowthFund(sum.getManageGrowthFund().add(item.getManageGrowthFund()));//管理资金净增
+            }
+
+            if (sum.getGrowthFund() == null) {
+                sum.setGrowthFund(BigDecimal.ZERO.add(item.getGrowthFund()));//资金净增
+            } else {
+                sum.setGrowthFund(sum.getGrowthFund().add(item.getGrowthFund()));//资金净增
+            }
+
         }
         sum.setName("团队总计");
         items.add(sum);

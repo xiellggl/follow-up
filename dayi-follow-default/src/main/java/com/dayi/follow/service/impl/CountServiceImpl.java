@@ -57,8 +57,6 @@ public class CountServiceImpl implements CountService {
     String dayiDataBaseStr;
 
 
-
-
     @Override
     public long getAgentNumWait2Link(String followId, String dateStr) {
         return countMapper.getAgentNumWait2Link(followId, dateStr, followDataBaseStr);
@@ -94,20 +92,22 @@ public class CountServiceImpl implements CountService {
         List<String> followIds = new ArrayList<String>();
         followIds.add(followId);
 
-        statusVo.setCusNum(countMapper.getCusNum(followIds));// 跟进用户总数
-        statusVo.setHadLinkNum(countMapper.getLinkCusNum(followIds));   // 已联系--用户人数
-        statusVo.setHadRealNameNum(countMapper.getNameCusNum(followIds));// 已实名认证--用户人数
-        statusVo.setHadSignNum(countMapper.getCardCusNum(followIds));// 已绑卡--用户人数
-        statusVo.setHadInCashNum(countMapper.getInCashCusNum(followIds));// 已入金--用户人数
-        statusVo.setHadAgentNum(countMapper.getAgentCusNum(followIds));// 已代理--用户人数
-        statusVo.setNoFundNum(countMapper.getNoFundCusNum(followIds));// 总资产为零--用户人数
-        statusVo.setHadLostNum(countMapper.getLostCusNum(followIds)); //流失客户
+        statusVo.setCusNum(countMapper.getCusNum(followIds, followDataBaseStr));// 跟进用户总数
+        statusVo.setHadLinkNum(countMapper.getLinkCusNum(followIds, followDataBaseStr));   // 已联系--用户人数
+        statusVo.setHadRealNameNum(countMapper.getNameCusNum(followIds, followDataBaseStr));// 已实名认证--用户人数
+        statusVo.setHadSignNum(countMapper.getCardCusNum(followIds, followDataBaseStr));// 已绑卡--用户人数
+        statusVo.setHadInCashNum(countMapper.getInCashCusNum(followIds, followDataBaseStr));// 已入金--用户人数
+        statusVo.setHadAgentNum(countMapper.getAgentCusNum(followIds, followDataBaseStr));// 已代理--用户人数
+        statusVo.setNoFundNum(countMapper.getNoFundCusNum(followIds, followDataBaseStr));// 总资产为零--用户人数
+        statusVo.setHadLostNum(countMapper.getLostCusNum(followIds, followDataBaseStr)); //流失客户
 
         return statusVo;
     }
 
     public AdminCusStatusVo countSerCusStatus(List<String> deptIds) {
         AdminCusStatusVo serCusStatusVo = new AdminCusStatusVo();
+
+        if (deptIds.isEmpty()) return serCusStatusVo;
 
         //跟进人数量
         List<FollowUp> followUps = followUpMapper.findByDeptIds(deptIds);
@@ -124,17 +124,17 @@ public class CountServiceImpl implements CountService {
         serCusStatusVo.setFollowCusNum(followCusNum);
 
         //已认证客户数量
-        long nameCusNum = countMapper.getNameCusNum(followIds);
+        long nameCusNum = countMapper.getNameCusNum(followIds,followDataBaseStr);
         //已绑卡客户数量
-        long cardCusNum = countMapper.getCardCusNum(followIds);
+        long cardCusNum = countMapper.getCardCusNum(followIds,followDataBaseStr);
         //已代理客户数量
-        long agentCusNum = countMapper.getAgentCusNum(followIds);
+        long agentCusNum = countMapper.getAgentCusNum(followIds,followDataBaseStr);
         serCusStatusVo.setNameNum(nameCusNum);
         serCusStatusVo.setCardNum(cardCusNum);
         serCusStatusVo.setAgentNum(agentCusNum);
         //资产总规模
-        double agentTotalFund = followAgentMapper.getTotalFund(followIds);
-        double orgTotalFund = followOrgMapper.getTotalFund(followIds);
+        double agentTotalFund = followAgentMapper.getTotalFund(followIds,dayiDataBaseStr);
+        double orgTotalFund = followOrgMapper.getTotalFund(followIds,dayiDataBaseStr);
         serCusStatusVo.setTotalFund(BigDecimals.add(agentTotalFund, orgTotalFund));
 
         return serCusStatusVo;
@@ -145,7 +145,7 @@ public class CountServiceImpl implements CountService {
         OrgDataVo orgDataVo = new OrgDataVo();
         if (StringUtils.isBlank(followId)) return orgDataVo;
 
-        List<Organization> orgVos = followOrgMapper.findOrgsByfollowId(followId, null,dayiDataBaseStr);
+        List<Organization> orgVos = followOrgMapper.findOrgsByfollowId(followId, null, dayiDataBaseStr);
         orgDataVo.setOrgNum(orgVos.size());
 
         int agentNum = this.getValidAgentNum(orgVos);
@@ -154,7 +154,7 @@ public class CountServiceImpl implements CountService {
 
         DateTime dateTime = DateTime.now();
         String deadline = dateTime.millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
-        List<Organization> yesOrgVos = followOrgMapper.findOrgsByfollowId(followId, deadline,dayiDataBaseStr);//截至昨天的创客
+        List<Organization> yesOrgVos = followOrgMapper.findOrgsByfollowId(followId, deadline, dayiDataBaseStr);//截至昨天的创客
 
         double manageFund = this.getOrgManageFund(yesOrgVos);
 
@@ -175,7 +175,7 @@ public class CountServiceImpl implements CountService {
 
         List<String> followIds = followUpMapper.findIdsByDeptIds(deptIds);
 
-        List<Organization> orgVos = followOrgMapper.findOrgsByfollowIds(followIds, null);
+        List<Organization> orgVos = followOrgMapper.findOrgsByfollowIds(followIds, null,dayiDataBaseStr);
         orgDataVo.setOrgNum(orgVos.size());
 
         int agentNum = this.getValidAgentNum(orgVos);
@@ -183,13 +183,14 @@ public class CountServiceImpl implements CountService {
 
         DateTime dateTime = DateTime.now();
         String deadline = dateTime.millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
-        List<Organization> yesOrgVos = followOrgMapper.findOrgsByfollowIds(followIds, deadline);//截至昨天的创客
+        List<Organization> yesOrgVos = followOrgMapper.findOrgsByfollowIds(followIds, deadline,dayiDataBaseStr);//截至昨天的创客
 
         double manageFund = this.getOrgManageFund(yesOrgVos);
 
         orgDataVo.setManageFund(BigDecimal.valueOf(manageFund).setScale(2, BigDecimal.ROUND_HALF_UP));
         return orgDataVo;
     }
+
     @Override
     public int getValidAgentNum(List<Organization> orgs) {
         int num = 0;
@@ -207,6 +208,7 @@ public class CountServiceImpl implements CountService {
         }
         return agentNum;
     }
+
     @Override
     public double getOrgManageFund(List<Organization> orgs) {
         double manageFund = 0;//全部机构商资产
@@ -227,25 +229,17 @@ public class CountServiceImpl implements CountService {
     }
 
     @Override
-    public List<DailyVo> countTeamDaily(String deptId) {
-        List<DailyVo> dailyVos = new ArrayList<DailyVo>();
-        if (StringUtils.isBlank(deptId)) return dailyVos;
+    public DailyVo countTeamDaily(String deptId) {
 
         List<String> deptIds = deptService.getSubDeptIds(deptId);//下级部门id
         deptIds.add(deptId);//加上自己
-
         //获取管辖部门（团队）的所有日报，包括KA
-        DailyVo dailyVo = new DailyVo();
-        for (String subDeptId : deptIds) {
-            dailyVo = countMapper.countTeamDaily(deptId);
-            dailyVos.add(dailyVo);
-        }
-        return dailyVos;
+        return countMapper.countTeamDaily(deptIds, followDataBaseStr);
     }
 
     @Override
     public DailyVo countDaily(String followId) {
-        return countMapper.countDaily(followId);
+        return countMapper.countDaily(followId, followDataBaseStr);
     }
 
 

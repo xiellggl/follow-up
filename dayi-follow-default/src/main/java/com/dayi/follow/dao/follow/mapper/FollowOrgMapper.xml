@@ -2,13 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dayi.follow.dao.follow.FollowOrgMapper">
 
-    <select id="getTotalFund" parameterType="java.lang.String" resultType="java.lang.Double">
-        SELECT sum(amount) from follow_org a
+    <select id="getTotalFund" parameterType="map" resultType="java.lang.Double">
+        SELECT ifnull(sum(amount),0) from follow_org a
         left join (
           SELECT id from ${assistDataBase}.organization where org_type = 4 and del_status !=-1
         )b on b.id = a.org_id
         left join (
-          SELECT agent,amount FROM protocol WHERE 1 = 1 and status in (1,2)
+          SELECT agent,amount FROM ${assistDataBase}.protocol WHERE 1 = 1 and status in (1,2)
         )c on c.agent = a.org_id
         where b.id is not null and  c.agent is not NULL
         and a.follow_id in
@@ -23,7 +23,7 @@
         left join (
           SELECT * from ${assistDataBase}.organization where org_type=4 and del_status !=-1
           <if test="''!=deadline and null!=deadline">
-              and create_date &lt; ${deadline}
+              and create_date &lt; #{deadline}
           </if>
         )b on b.id = a.org_id
         where follow_id = #{followId} and b.id is not null
@@ -35,7 +35,7 @@
         left join (
         SELECT * from ${assistDataBase}.organization where org_type=4 and del_status !=-1
         <if test="''!=deadline and null!=deadline">
-            and create_date &lt; ${deadline}
+            and create_date &lt; #{deadline}
         </if>
         )b on b.id = a.org_id
         where  b.id is not null
@@ -115,14 +115,14 @@
             </foreach>
         )b on a.id = b.org_id
         left join (
-            SELECT id ,name from follow_up
+            SELECT id ,name from follow_up where disable!=0
         )c on c.id =b.follow_id
         where b.org_id is not null
         <if test="''!=inviteCode and null!=inviteCode">
-            and a.maker_num =${inviteCode}
+            and a.maker_num like CONCAT('%','${inviteCode}','%')
         </if>
         <if test="''!=followUp and null!=followUp">
-            and c.id is not null and c.name =${followUp}
+            and c.id is not null and c.name like CONCAT('%','${followUp}','%')
         </if>
 
         ORDER BY b.create_time DESC
@@ -140,14 +140,14 @@
         </foreach>
         )b on a.id = b.org_id
         left join (
-        SELECT id ,name from follow_up
+        SELECT id ,name from follow_up where disable!=0
         )c on c.id =b.follow_id
         where b.org_id is not null
         <if test="''!=inviteCode and null!=inviteCode">
-            and a.maker_num =${inviteCode}
+            and a.maker_num like CONCAT('%','${inviteCode}','%')
         </if>
         <if test="''!=followUp and null!=followUp">
-            and c.id is not null and c.name =${followUp}
+            and c.id is not null and c.name like CONCAT('%','${followUp}','%')
         </if>
 
         ORDER BY b.create_time DESC

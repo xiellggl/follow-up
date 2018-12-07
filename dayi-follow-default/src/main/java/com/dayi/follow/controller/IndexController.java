@@ -59,8 +59,8 @@ public class IndexController {
         if (currVo == null) {
             return BizResult.FAIL;
         }
-        List<DailyVo> dailyVos = countService.countTeamDaily(currVo.getDeptId());
-        return BizResult.succ(dailyVos);
+        DailyVo dailyVo = countService.countTeamDaily(currVo.getDeptId());
+        return BizResult.succ(dailyVo);
     }
 
     @RequestMapping("ka/personal/daily")
@@ -82,8 +82,8 @@ public class IndexController {
         if (currVo == null) {
             return BizResult.FAIL;
         }
-        List<DailyVo> dailyVos = countService.countTeamDaily(currVo.getDeptId());
-        return BizResult.succ(dailyVos);
+        DailyVo dailyVo = countService.countTeamDaily(currVo.getDeptId());
+        return BizResult.succ(dailyVo);
     }
 
     @RequestMapping("cus/status")
@@ -150,11 +150,11 @@ public class IndexController {
         if (currVo == null) {
             return BizResult.FAIL;
         }
-        List<SevenInCashVo> sevenOpenVos = countService.countSevenInCash(currVo.getId());
-        return BizResult.succ(sevenOpenVos);
+        List<SevenInCashVo> inCashVos = countService.countSevenInCash(currVo.getId());
+        return BizResult.succ(inCashVos);
     }
 
-    @RequestMapping("ser/cus/status")
+    @RequestMapping("admin/cus/status")
     @ResponseBody
     public BizResult serCusStatus(HttpServletRequest request) {//客服的客户状态,即原来系统的管理员
         LoginVo currVo = userComponent.getCurrUser(request);

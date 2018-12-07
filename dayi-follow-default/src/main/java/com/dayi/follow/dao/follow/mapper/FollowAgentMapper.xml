@@ -48,7 +48,7 @@
         a.assign_date ,
         a.follow_id ,a.customer_type , a.cus_intention_type,
 
-        b.invite_code flowUpInviteCode,b.name,
+        b.invite_code flowUpInviteCode,b.name followUp,
 
 
         c.id, c.link_person , c.bank_name , c.create_date ,
@@ -144,7 +144,7 @@
         </if>
         -- 页面查询条件：跟进人
         <if test=" ''!=searchVo.followUp and null!=searchVo.followUp">
-            AND b.follow_up like like '%#{searchVo.followUp}%'
+            AND b.name  like CONCAT('%','${searchVo.followUp}','%')
         </if>
 
         --         大易相关表查询条件
@@ -331,7 +331,7 @@
     <select id="getTotalFund" parameterType="java.lang.String" resultType="java.lang.Double">
         SELECT sum(amount) from follow_agent a
         left join (
-        SELECT agent,amount FROM protocol WHERE 1 = 1 and status in (1,2)
+        SELECT agent,amount FROM ${assistDataBase}.protocol WHERE 1 = 1 and status in (1,2)
         )b on b.agent = a.agent_id
         where b.agent is not NULL
         and a.follow_id in

@@ -25,10 +25,10 @@ public interface ReportService {
     Page findTeamDaily(Page page, String deptId, String betweenDate);
 
     //团队日报详情
-    Page findTeamDailyDetail(Page page, String deptId);
+    Page findTeamDailyDetail(Page page, String deptId,String date);
 
     //导出团队日报详情
-    List<ReportDailyVo> exportTeamDailyDetail(String deptId);
+    List<ReportDailyVo> exportTeamDailyDetail(String deptId,String date);
 
     //个人周报
     ReportDailyVo getWeek(String followId, String betweenDate);
@@ -42,16 +42,21 @@ public interface ReportService {
     //团队月报
     List<ReportDailyVo> findTeamMonth(String deptId, String month);
 
-    //管理员周报
-    Page<AdminWeekVo> findAdminDaily(Page page, String deptId,String deptName, String betweenDate);
+    //管理员日报
+    Page<ReportDailyVo> findAdminDaily(Page page, String deptId, String deptName, String betweenDate);
+
+    //管理员日报详情
+    Page findAdminDailyDetail(Page page, String deptId, String date);
 
     //管理员周报
     Page<AdminWeekVo> findAdminWeek(Page page, String deptId, String betweenDate);
+
     //管理员周报导出
     List<AdminWeekVo> exportAdminWeek(String deptId, String betweenDate);
 
     //管理员月报
     Page<AdminMonthVo> findAdminMonth(Page page, String deptId, String month);
+
     //管理员月报导出
     List<AdminMonthVo> exportAdminMonth(String deptId, String month);
 }

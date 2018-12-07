@@ -177,6 +177,8 @@ public class AgentListVo {
     public String getDayInCashFm() {
         if (this.dayInCash != null) {
             dayInCashFm = Misc.parseMoney(dayInCash.doubleValue(), 2);
+        }else {
+            dayInCashFm="0.00元";
         }
         return dayInCashFm;
     }

@@ -34,9 +34,8 @@
 
     <!-- 菜单列表开始 -->
     <ul class="nav nav-list" id="navSide">
-        <c:if test="${flowUpSession.userName ne 'admin' and flowUpSession.isAdmin ne 1}">
         <li data-rel="home">
-            <a href="/followup/uc/index">
+            <a href="/index">
                 <i class="menu-icon fa fa-home"></i>
                 <span class="menu-text">首页</span>
             </a>
@@ -62,8 +61,6 @@
                 </li>
             </ul>
         </li>
-        </c:if>
-        <c:if test="${flowUpSession.userName ne 'admin' and flowUpSession.isAdmin ne 1 and flowUpSession.isManager ne 1}">
             <li data-rel="myLog">
                 <a href="javascript:void(0);" class="dropdown-toggle">
                     <i class="menu-icon fa fa-bar-chart-o"></i>
@@ -92,7 +89,6 @@
 
                 </ul>
             </li>
-        </c:if>
         <li data-rel="teamCustomer">
             <a href="javascript:void(0);" class="dropdown-toggle">
                 <i class="menu-icon fa fa-users"></i>
@@ -114,29 +110,7 @@
                 </li>
             </ul>
         </li>
-            <c:if test="${flowUpSession.deptName eq '客户服务组'}">
-                <li data-rel="followuperAssign">
-                    <a href="javascript:void(0);" class="dropdown-toggle">
-                        <i class="menu-icon fa fa-users"></i>
-                        <span class="menu-text">跟进人分配</span>
-                        <b class="arrow fa fa-angle-down"></b>
-                    </a>
-                    <ul class="submenu">
-                        <li data-index="1">
-                            <a href="/followup/manage/followuper/assign/list">
-                                <i class="menu-icon fa fa-caret-right"></i>
-                                代理商
-                            </a>
-                        </li>
-                        <li data-index="2">
-                            <a href="/followup/manage/followuper/assign/list?flowTypeTab=2">
-                                <i class="menu-icon fa fa-caret-right"></i>
-                                创客
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            </c:if>
+
             <li data-rel="teamLog">
                 <a href="javascript:void(0);" class="dropdown-toggle">
                     <i class="menu-icon fa fa-bar-chart-o"></i>
@@ -165,14 +139,6 @@
 
                 </ul>
             </li>
-
-        <c:if test="${flowUpSession.userName eq 'admin' || flowUpSession.isAdmin eq 1}"> <%-- 超级管理员 或 部门管理员 --%>
-        <li data-rel="manageHome">
-            <a href="/followup/manage/index">
-                <i class="menu-icon fa fa-home"></i>
-                <span class="menu-text">首页</span>
-            </a>
-        </li>
         <li data-rel="followuperAssign">
             <a href="javascript:void(0);" class="dropdown-toggle">
                 <i class="menu-icon fa fa-users"></i>
@@ -194,22 +160,9 @@
                 </li>
             </ul>
         </li>
-        <li data-rel="followuper">
-            <a href="/followup/manage/followuper/list">
-                <i class="menu-icon fa fa-cogs"></i>
-                <span class="menu-text">跟进人管理</span>
-            </a>
-        </li>
 
-        <c:if test="${flowUpSession.isAdmin eq 1}">
-            <li data-rel="manageLog">
-                <a href="/followup/manage/log/daily/list">
-                    <i class="menu-icon fa fa-bar-chart-o"></i>
-                    <span class="menu-text">团队日报</span>
-                </a>
-            </li>
-        </c:if>
-        </c:if>
+
+
         <li data-rel="manageLog">
             <a href="javascript:void(0);" class="dropdown-toggle">
                 <i class="menu-icon fa fa-bar-chart-o"></i>

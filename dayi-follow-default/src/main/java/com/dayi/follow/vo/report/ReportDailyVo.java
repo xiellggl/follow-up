@@ -1,6 +1,8 @@
 package com.dayi.follow.vo.report;
 
 
+import com.dayi.follow.util.Misc;
+
 import java.math.BigDecimal;
 //日报数据,周报，月报都有用到
 public class ReportDailyVo {
@@ -45,6 +47,11 @@ public class ReportDailyVo {
     }
 
     public String getInCashFm() {
+        if (this.inCash != null) {
+            inCashFm = Misc.parseMoney(inCash.doubleValue(), 2);
+        }else {
+            inCashFm="0.00";
+        }
         return inCashFm;
     }
 
@@ -69,6 +76,11 @@ public class ReportDailyVo {
     }
 
     public String getGrowthFundFm() {
+        if (this.growthFund != null) {
+            growthFundFm = Misc.parseMoney(growthFund.doubleValue(), 2);
+        }else {
+            growthFundFm="0.00";
+        }
         return growthFundFm;
     }
 
@@ -85,6 +97,11 @@ public class ReportDailyVo {
     }
 
     public String getOutCashFm() {
+        if (this.outCash != null) {
+            outCashFm = Misc.parseMoney(outCash.doubleValue(), 2);
+        }else {
+            outCashFm="0.00";
+        }
         return outCashFm;
     }
 
@@ -133,6 +150,11 @@ public class ReportDailyVo {
     }
 
     public String getManageGrowthFundFm() {
+        if (this.manageGrowthFund != null) {
+            manageGrowthFundFm = Misc.parseMoney(manageGrowthFund.doubleValue(), 2);
+        }else {
+            manageGrowthFundFm="0.00";
+        }
         return manageGrowthFundFm;
     }
 

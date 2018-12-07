@@ -45,7 +45,7 @@ public interface FollowAgentMapper extends BaseMapper<FollowAgent> {
 
 
     //统计资产规模
-    double getTotalFund(@Param("followIds") List<String> followIds);
+    double getTotalFund(@Param("followIds") List<String> followIds,@Param("assistDataBase") String assistDataBase);
 
     String getFollowIdByAgentId(@Param("agentId") Integer agentId);
 

@@ -67,3 +67,7 @@ modify_date from organization
 #复制organization_contact数据到新库中
 INSERT into org_contact (id,org_id,contact_type,content,follow_id,create_time,update_time )
 SELECT id,org_id,contact_type,content,flow_id,create_date,modify_date from dev_dayi_spot.organization_contact
+
+#复制follow_up_log数据到新库中
+INSERT into follow_up_log (id,follow_id,dept_id,open_account_num,in_cash,in_cash_num,out_cash,manage_growth_fund,manage_fund,out_cash_num,create_time,update_time )
+SELECT id,flow_id,dept_id,open_account_num,in_cash,in_cash_num,out_cash,manage_asset_growth,manage_asset,out_cash_num,create_date,modify_date from follow_up_log

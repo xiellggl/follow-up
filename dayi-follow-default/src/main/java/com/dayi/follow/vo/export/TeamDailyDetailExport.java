@@ -39,9 +39,9 @@ public class TeamDailyDetailExport extends AbstractExcel<ReportDailyVo> {
         // 网银转入总额
         column5.setValue(vo.getInCashFm());
         // 转出到卡总额
-        column6.setValue(vo.getOutCashFm());
+        column6.setValue(vo.getInCashNum());
         // 入金人数
-        column7.setValue(vo.getInCashNum());
+        column7.setValue(vo.getOutCashFm());
         // 出金人数
         column8.setValue(vo.getOutCashNum());
     }

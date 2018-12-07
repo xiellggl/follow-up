@@ -9,8 +9,8 @@ public class DailyVo {
     private BigDecimal inCash;//入金总额
     private String inCashFm;//入金总额（格式化：显示前两位和小数点位，其余用*标识）
     private Integer inCashNum;//入金人数
-    private BigDecimal applyOutCash;//提现转出总额
-    private String applyOutCashFm;//提现转出总额（格式化：显示前两位和小数点位，其余用*标识）
+    private BigDecimal outCash;//提现转出总额
+    private String outCashFm;//提现转出总额（格式化：显示前两位和小数点位，其余用*标识）
     private Integer outCashNum;//出金人数
 
     private String date;//日报日期
@@ -49,20 +49,20 @@ public class DailyVo {
         this.inCashNum = inCashNum;
     }
 
-    public BigDecimal getApplyOutCash() {
-        return applyOutCash;
+    public BigDecimal getOutCash() {
+        return outCash;
     }
 
-    public void setApplyOutCash(BigDecimal applyOutCash) {
-        this.applyOutCash = applyOutCash;
+    public void setOutCash(BigDecimal outCash) {
+        this.outCash = outCash;
     }
 
-    public String getApplyOutCashFm() {
-        return applyOutCashFm;
+    public String getOutCashFm() {
+        return outCashFm;
     }
 
-    public void setApplyOutCashFm(String applyOutCashFm) {
-        this.applyOutCashFm = applyOutCashFm;
+    public void setOutCashFm(String outCashFm) {
+        this.outCashFm = outCashFm;
     }
 
     public Integer getOutCashNum() {

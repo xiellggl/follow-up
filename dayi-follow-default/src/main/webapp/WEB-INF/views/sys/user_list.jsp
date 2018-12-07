@@ -437,7 +437,7 @@
                         return false;
                     }
                     common.ajax.handle({
-                        url: "/user//resetpwd/" + id + ".json",
+                        url: "/user/resetpwd/" + id + ".json",
                         data: {pwd: $pwd.val()},
                         succback: function (data) {
                             common.successMsg(data.msg);

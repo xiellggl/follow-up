@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dayi.follow.dao.dayi.CountMapper">
 
-    <select id="getCusNum" parameterType="map" resultType="java.lang.Integer">
-            SELECT count(b.id)  from dayi_follow_all.follow_agent a
+    <select id="getCusNum" parameterType="map" resultType="java.lang.Long">
+            SELECT count(b.id)  from ${assistDataBase}.follow_agent a
             left join (SELECT id FROM agent  where del_status != -1) b on b.id = a.agent_id
             WHERE  a.follow_id in
             <foreach item="item" index="index" collection="followIds"
@@ -13,8 +13,8 @@
 
     </select>
 
-    <select id="getLinkCusNum" parameterType="map" resultType="java.lang.Integer">
-        SELECT count(b.id)  from dayi_follow_all.follow_agent a
+    <select id="getLinkCusNum" parameterType="map" resultType="java.lang.Long">
+        SELECT count(b.id)  from ${assistDataBase}.follow_agent a
           left join (SELECT id FROM agent  where del_status != -1) b on b.id = a.agent_id
         WHERE a.customer_type !=1 and a.follow_id in
         <foreach item="item" index="index" collection="followIds"
@@ -24,8 +24,8 @@
 
     </select>
 
-    <select id="getNameCusNum" parameterType="map" resultType="java.lang.Integer">
-        SELECT count(b.id)  from dayi_follow_all.follow_agent a
+    <select id="getNameCusNum" parameterType="map" resultType="java.lang.Long">
+        SELECT count(b.id)  from ${assistDataBase}.follow_agent a
         left join (SELECT id from agent where (audit_status IN (1 ,- 3) OR cancel_status = 3) and del_status != -1) b
         on b.id = a.agent_id
         WHERE  a.follow_id IN
@@ -35,8 +35,8 @@
         </foreach>
     </select>
 
-    <select id="getCardCusNum" parameterType="map" resultType="java.lang.Integer">
-        SELECT count(b.id)  from dayi_follow_all.follow_agent a
+    <select id="getCardCusNum" parameterType="map" resultType="java.lang.Long">
+        SELECT count(b.id)  from ${assistDataBase}.follow_agent a
         left join ( SELECT  id FROM agent WHERE bank_account is not null and del_status != -1) b on b.id = a.agent_id
         WHERE  a.follow_id IN
         <foreach item="item" index="index" collection="followIds"
@@ -45,8 +45,8 @@
         </foreach>
     </select>
 
-    <select id="getInCashCusNum" parameterType="map" resultType="java.lang.Integer">
-        SELECT count(b.id)  from dayi_follow_all.follow_agent a
+    <select id="getInCashCusNum" parameterType="map" resultType="java.lang.Long">
+        SELECT count(b.id)  from ${assistDataBase}.follow_agent a
         left join (
           SELECT b1.id  FROM agent b1
           LEFT JOIN finance_account b2 ON b1.account_id = b2.id WHERE b2.total_in_cash > 0  and b1.del_status != -1
@@ -58,8 +58,8 @@
         </foreach>
     </select>
 
-    <select id="getAgentCusNum" parameterType="map" resultType="java.lang.Integer">
-        SELECT count(b.id)  from dayi_follow_all.follow_agent a
+    <select id="getAgentCusNum" parameterType="map" resultType="java.lang.Long">
+        SELECT count(b.id)  from ${assistDataBase}.follow_agent a
         left join (
           SELECT id FROM agent b1, (SELECT DISTINCT agent FROM protocol ) b2 WHERE b1.id = b2.agent and b1.del_status != -1
         ) b on b.id = a.agent_id
@@ -70,8 +70,8 @@
         </foreach>
     </select>
 
-    <select id="getNoFundCusNum" parameterType="map" resultType="java.lang.Integer">
-        SELECT count(b.id)  from dayi_follow_all.follow_agent a
+    <select id="getNoFundCusNum" parameterType="map" resultType="java.lang.Long">
+        SELECT count(b.id)  from ${assistDataBase}.follow_agent a
         left join (
             SELECT b1.id FROM agent b1 LEFT JOIN finance_account b2 ON b1.account_id = b2.id
               LEFT JOIN (
@@ -86,8 +86,8 @@
         </foreach>
     </select>
 
-    <select id="getLostCusNum" parameterType="map" resultType="java.lang.Integer">
-        SELECT count(b.id)  from dayi_follow_all.follow_agent a
+    <select id="getLostCusNum" parameterType="map" resultType="java.lang.Long">
+        SELECT count(b.id)  from ${assistDataBase}.follow_agent a
         left join (SELECT id from agent WHERE del_status != -1) b on b.id = a.agent_id
         WHERE  a.customer_type =5 and  a.follow_id IN
         <foreach item="item" index="index" collection="followIds"
@@ -96,16 +96,16 @@
         </foreach>
     </select>
 
-    <select id="getAgentNumWait2Link" parameterType="map" resultType="java.lang.Integer">
+    <select id="getAgentNumWait2Link" parameterType="map" resultType="java.lang.Long">
       select count( ac.agent_id ) num FROM agent a
       left join (
           SELECT  ac2.agent_id
              FROM (
-                SELECT max( create_date ) create_date, agent_id FROM ${assistDataBase}.agent_contact GROUP BY agent_id
+                SELECT max( create_time ) create_time, agent_id FROM ${assistDataBase}.agent_contact GROUP BY agent_id
              ) ac1
              LEFT JOIN (
-              SELECT create_date, agent_id, next_contact_time FROM ${assistDataBase}.agent_contact
-             ) ac2 ON ac2.create_date = ac1.create_date
+              SELECT create_time, agent_id, next_contact_time FROM ${assistDataBase}.agent_contact
+             ) ac2 ON ac2.create_time = ac1.create_time
              AND ac2.agent_id = ac1.agent_id WHERE next_contact_time =${dateStr}
       ) ac ON ac.agent_id = a.id
       left join (
@@ -221,8 +221,8 @@
         where del_status != -1 and org_type=${orgType}
     </select>
 
-    <select id="getFollowCusNum">
-        SELECT * from follow_agent where follow_id in
+    <select id="getFollowCusNum" resultType="java.lang.Long" parameterType="map">
+        SELECT count(0) from ${assistDataBase}.follow_agent where follow_id in
         <foreach item="item" index="index" collection="followUpIds"
                  open="(" separator="," close=")">
             #{item}
@@ -242,26 +242,30 @@
     </select>
 
     <select id="countDaily" resultType="com.dayi.follow.vo.index.DailyVo" parameterType="java.lang.String">
-        SELECT date(create_date) date,open_account_num openNum,
-        in_cash inCash,in_cash_num inCashNum,
-        out_cash outCash,out_cash_num outCashNum
-        from #{assistDataBase}.follow_up_log ful
-        WHERE  date(create_date) =
-        (select date(max(create_date)) from #{assistDataBase}.follow_up_log)
-        and flow_id =${followId}
+        SELECT date(create_time) date,open_account_num openNum,
+        in_cash ,in_cash_num ,
+        out_cash ,out_cash_num
+        from ${assistDataBase}.follow_up_log ful
+        WHERE  date(create_time) =
+        (select date(max(create_time)) from ${assistDataBase}.follow_up_log)
+        and follow_id =#{followId}
 
     </select>
 
     <select id="countTeamDaily" resultType="com.dayi.follow.vo.index.DailyVo" parameterType="java.lang.String">
-        SELECT date(create_date) date,open_account_num openNum,
-        in_cash inCash,in_cash_num inCashNum,
-        out_cash outCash,out_cash_num outCashNum
-        from #{assistDataBase}.follow_up_log a
+        SELECT date(create_time) date,sum(open_account_num )openNum,
+        sum(in_cash)inCash ,sum(in_cash_num)inCashNum ,
+        sum(out_cash)outCash ,sum(out_cash_num)outCashNum
+        from ${assistDataBase}.follow_up_log a
         left join (
-        SELECT id,name from #{assistDataBase}.department where id =${deptId}
+        SELECT id,name from ${assistDataBase}.department where id IN
+        <foreach item="item" index="index" collection="deptIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
         )b on b.id = a.dept_id
-        WHERE b.id is not null and  date(create_date) =
-        (select date(max(create_date)) from #{assistDataBase}.follow_up_log)
+        WHERE b.id is not null and  date(create_time) =
+        (select date(max(create_time)) from ${assistDataBase}.follow_up_log)
     </select>
     
 </mapper>

@@ -4,6 +4,8 @@ import com.dayi.follow.base.BaseVo;
 import com.dayi.follow.vo.report.AdminMonthVo;
 import com.dayi.follow.vo.report.ReportDailyVo;
 import com.dayi.mybatis.support.BaseMapper;
+import com.dayi.mybatis.support.Page;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -13,42 +15,37 @@ import java.util.List;
  */
 public interface ReportMapper extends BaseMapper<BaseVo> {
 
-    List<ReportDailyVo> findDaily(List<String> followIds, String startDate, String endDate, Integer limitStart, Integer limitEnd);
+    Page<ReportDailyVo> findDaily(Page page, @Param("followIds") List<String> followIds, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
-    long findDailyCount(List<String> followIds, String startDate, String endDate);
+    Page<ReportDailyVo> findTeamDaily(Page page, @Param("deptId") String deptId, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
-    List<ReportDailyVo> findTeamDaily(String deptId, String startDate, String endDate, Integer limitStart, Integer limitEnd);
+    Page<ReportDailyVo> findTeamDailyDetail(Page page, @Param("deptId") String deptId, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
-    long findTeamDailyCount(String deptId, String startDate, String endDate);
+    List<ReportDailyVo> findTeamDailyDetailList(@Param("deptId") String deptId, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
+    ReportDailyVo getWeek(@Param("followId") String followId, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
-    ReportDailyVo getWeek(String followId, String startDate, String endDate);
+    List<ReportDailyVo> findTeamWeek(@Param("deptId") String deptId, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
-    List<ReportDailyVo> findTeamWeek(String deptId, String startDate, String endDate);
+    ReportDailyVo getMonth(@Param("followId") String followId, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
-    ReportDailyVo getMonth(String followId, String startDate, String endDate);
+    List<ReportDailyVo> findTeamMonth(@Param("deptId") String deptId, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
-    List<ReportDailyVo> findTeamMonth(String deptId, String startDate, String endDate);
+    //管理员日报
+    Page<ReportDailyVo> findAdminDaily(Page page, @Param("followIds") List<String> followIds, @Param("deptName") String deptName, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
-    List<ReportDailyVo> findAdminDaily(List<String> followIds, String deptName, String startDate, String endDate, Integer limitStart, Integer limitEnd);
-
-    int getAdminDailyNum(List<String> followIds, String deptName, String startDate, String endDate);
-
-    //管理员周报
-    List<ReportDailyVo> findAdminWeekSum(List<String> followIds, String startDate, String endDate, Integer limitStart, Integer limitEnd);
+    //管理员日报详情
+    Page<ReportDailyVo> findAdminDailyDetail(Page page, @Param("deptId") String deptId, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
     //管理员周报
-    int findAdminWeekCount(List<String> followIds, String startDate, String endDate);
+    Page<ReportDailyVo> findAdminWeekSum(Page page, @Param("followIds") List<String> followIds, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
     //管理员周报
-    List<ReportDailyVo> findAdminWeekPer(List<String> followIds, String startDate, String endDate, Integer limitStart, Integer limitEnd);
+    Page<ReportDailyVo> findAdminWeekPer(Page page, @Param("followIds") List<String> followIds, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
     //管理员月报
-    List<AdminMonthVo> findAdminMonth(List<String> followIds, String startDate, String endDate, Integer limitStart, Integer limitEnd);
-
-    //管理员月报
-    int getAdminMonthNum(List<String> followIds, String startDate, String endDate);
+    Page<AdminMonthVo> findAdminMonth(Page page, @Param("followIds") List<String> followIds, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
     //得到月最后一天的管理资金
-    double getLastManageFund(String followId, String startDate, String endDate);
+    double getLastManageFund(@Param("followId") String followId, @Param("startDate") String startDate, @Param("endDate") String endDate);
 }

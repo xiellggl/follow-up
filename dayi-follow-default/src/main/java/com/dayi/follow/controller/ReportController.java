@@ -15,6 +15,7 @@ import com.dayi.follow.vo.report.AdminMonthVo;
 import com.dayi.follow.vo.report.AdminWeekVo;
 import com.dayi.follow.vo.report.ReportDailyVo;
 import com.dayi.mybatis.support.Page;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -77,13 +78,13 @@ public class ReportController extends BaseController {
 
         page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
 
-        page = reportService.findTeamDaily(page, currVo.getId(), date);
+        page = reportService.findTeamDaily(page, currVo.getDeptId(), date);
 
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
         request.setAttribute("pageUrl", pageUrl);
         model.addAttribute("page", page);
         model.addAttribute("date", date);
-        return "/followup/uc/log/mydaily";
+        return "/uc/log/mydaily";
     }
 
     /**
@@ -92,13 +93,16 @@ public class ReportController extends BaseController {
      * @param request
      * @return
      */
-    @RequestMapping("/team/detail/")
+    @RequestMapping("/team/daily/detail")
     public String teamDailyDetail(HttpServletRequest request, Page page, Model model) {
-        String deptId = request.getParameter("deptId");
+
+        LoginVo currUser = userComponent.getCurrUser(request);
+
+        String date = request.getParameter("date");
 
         page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
 
-        page = reportService.findTeamDailyDetail(page, deptId);
+        page = reportService.findTeamDailyDetail(page, currUser.getDeptId(), date);
 
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
         request.setAttribute("pageUrl", pageUrl);
@@ -107,7 +111,7 @@ public class ReportController extends BaseController {
     }
 
     /**
-     * 团队日报详情
+     * 团队日报详情导出
      *
      * @param request
      * @return
@@ -115,9 +119,9 @@ public class ReportController extends BaseController {
     @RequestMapping("/team/detail/export")
     public void teamDetailExport(HttpServletRequest request, HttpServletResponse response) throws IOException {
         LoginVo currVo = userComponent.getCurrUser(request);
-        String deptId = request.getParameter("deptId");
+        String date = request.getParameter("date");
 
-        List<ReportDailyVo> reportDailyVos = reportService.exportTeamDailyDetail(deptId);
+        List<ReportDailyVo> reportDailyVos = reportService.exportTeamDailyDetail(currVo.getDeptId(), date);
 
         String fileTitle = "团队日报详情";
         String fileName = currVo.getName() + "-" + fileTitle + new DateTime().toString("yyyy-MM-dd HH:mm:ss");
@@ -219,6 +223,29 @@ public class ReportController extends BaseController {
 
         page = reportService.findAdminDaily(page, currVo.getDeptId(), deptName, date);
 
+        model.addAttribute("page", page);
+        return "/followup/uc/log/mydaily";
+    }
+
+    /**
+     * 管理员日报详情
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping("/admin/daily/detail")
+    public String adminDailyDetail(HttpServletRequest request, Page page, Model model) {
+        String deptId = request.getParameter("deptId");
+        String date = request.getParameter("date");
+
+        if (StringUtils.isBlank(deptId) || StringUtils.isBlank(date)) return "";//必须同时满足
+
+        page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
+
+        page = reportService.findAdminDailyDetail(page, deptId, date);
+
+        String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
+        request.setAttribute("pageUrl", pageUrl);
         model.addAttribute("page", page);
         return "/followup/uc/log/mydaily";
     }

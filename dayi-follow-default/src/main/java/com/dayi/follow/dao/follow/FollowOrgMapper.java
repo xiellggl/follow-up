@@ -19,11 +19,11 @@ import java.util.List;
 public interface FollowOrgMapper extends BaseMapper<FollowOrg> {
 
     //统计资产规模
-    double getTotalFund(@Param("followIds") List<String> followIds);
+    double getTotalFund(@Param("followIds") List<String> followIds,@Param("assistDataBase") String assistDataBase);
 
     List<Organization> findOrgsByfollowId(@Param("followId") String followId, @Param("deadline") String deadline, @Param("assistDataBase") String assistDataBase);
 
-    List<Organization> findOrgsByfollowIds(@Param("followIds") List<String> followIds, @Param("deadline") String deadline);
+    List<Organization> findOrgsByfollowIds(@Param("followIds") List<String> followIds, @Param("deadline") String deadline, @Param("assistDataBase") String assistDataBase);
 
     String getFollowIdByOrgId(Integer orgId);
 
