@@ -215,10 +215,19 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label no-padding-right inline">是否负责人： </label>
                             <div class="col-sm-9 inline align-middle" style="padding-top:5px;">
-                                <label style="margin-right: 15px;">
-                                    <input type="radio" name="principal" value="0">否</label>
-                                <label>
-                                    <input type="radio" name="principal" value="1"> 是</label>
+                                <div class="radio">
+
+                                    <label>
+                                        <input class="ace" type="radio" name="principal" value="0" checked/>
+                                    <span class="lbl">否</span>
+                                    </label>
+
+                                    <label>
+                                        <input class="ace" type="radio" name="principal" value="1">
+                                        <span class="lbl">是</span>
+                                    </label>
+
+                                </div>
                             </div>
                         </div>
 
@@ -226,10 +235,19 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label no-padding-right inline">二级资产开关： </label>
                             <div class="col-sm-9 inline align-middle" style="padding-top:5px;">
-                                <label style="margin-right: 15px;">
-                                    <input type="radio" name="property" value="0">开启</label>
-                                <label>
-                                    <input type="radio" name="property" value="1"> 关闭</label>
+
+                                <div class="radio">
+
+                                    <label>
+                                        <input class="ace" type="radio" name="property" value="0" checked/>
+                                        <span class="lbl">开启</span>
+                                    </label>
+                                    <label>
+                                        <input class="ace" type="radio" name="property" value="1">
+                                        <span class="lbl">关闭</span>
+                                    </label>
+
+                                </div>
                             </div>
                         </div>
 

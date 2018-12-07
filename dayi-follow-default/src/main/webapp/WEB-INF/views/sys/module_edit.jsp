@@ -53,7 +53,7 @@
                             <div class="col-xs-12 col-sm-6">
                                 <div class="radio">
                                     <label>
-                                        <input name="module_state" type="radio" class="ace">
+                                        <input name="module_state" type="radio" class="ace" checked/>
                                         <span class="lbl">禁用</span>
                                     </label>
                                     <label>
