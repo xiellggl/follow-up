@@ -34,13 +34,14 @@
                         </small>
                     </h1>
                     <a href="#" class="pull-right">
-                        <span class="btn btn-primary">添加功能</span>
+                        <span class="btn btn-primary" data-toggle="modal" data-target="#myModalEditFollowuper">添加功能</span>
                     </a>
                 </div>
 
                 <div class="row">
                     <form class="form-horizontal" style="max-width: 800px;">
                         <div class="clearfix maintop">
+
                             <div class="col-xs-4 col-sm-3 btn-sespan">
                                 <div class="input-group">
                                     <span class="input-group-addon">
@@ -50,6 +51,7 @@
                                            value="${param.filter_LIKEANYWHERES_mobile}" placeholder="功能名称："/>
                                 </div>
                             </div>
+
                             <div class="col-xs-4 col-sm-3 btn-sespan">
                                 <div class="input-group">
                                     <span class="input-group-addon">
@@ -64,6 +66,7 @@
                                     </select>
                                 </div>
                             </div>
+
                             <div class="col-xs-4 col-sm-3 btn-sespan">
                                 <div class="btn-group dropup">
                                     <button type="submit" class="btn btn-xs btn-purple">
@@ -85,6 +88,7 @@
                                 </a>
                             </div>
                         </div>
+
                     </form>
                 </div>
 
@@ -107,7 +111,13 @@
 
                                 <c:if test="${empty topDeptList}">
                                     <tr>
-                                        <td colspan="5" class="no_data">暂无功能，请<a href="javascript:;" data-act="addDept">新增功能</a></td>
+                                        <td colspan="6" class="no_data">暂无功能，请
+                                            <a href="javascript:;" data-toggle="modal"
+                                               data-target="#myModalEditFollowuper"
+                                               data-toggle="tooltip" title="新增功能">
+                                                新增功能
+                                            </a>
+                                        </td>
                                     </tr>
                                 </c:if>
 
@@ -119,8 +129,11 @@
                                     <td>2018/10/18 <br/>17:48 </td>
                                     <td>管理首页信息</td>
                                     <td>
-                                        <a href="#"  data-toggle="modal" data-target="#myModalEditFollowuper" data-act="edit" data-toggle="tooltip" title="修改">
-                                            <i class="ace-icon fa fa-pencil bigger-130"></i></a>
+                                        <a href="#" data-id="1" data-toggle="modal"
+                                           data-target="#myModalEditFollowuper"
+                                           data-toggle="tooltip" title="修改">
+                                            <i class="ace-icon fa fa-pencil bigger-130"></i>
+                                        </a>
                                         <a href="#" data-act="del" data-toggle="tooltip" title="删除">
                                             <i class="ace-icon fa fa-trash-o bigger-130 red"></i></a>
                                     </td>
@@ -143,16 +156,22 @@
         </div>
     </div>
 </div>
+
+<%--编辑模块模态框（Modal）--%>
+<div class="modal fade in" id="myModalEditFollowuper" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
 <%@include file="/inc/followup/script.jsp"%>
 <script>
-    seajs.use(["common","validate","template"],function(common,validate,template){
+    seajs.use(["common","validate","template",],function(common,validate,template){
+        //菜单高亮
         common.head("system",1);
+
+        //添加、编辑功能方法
         var editDeptFn = function (id,pid) {
-            var id = id || 0, pid = pid||0;
-            var url = "/followup/manage/dept/add";
-            if (id > 0) {
-                url = "/followup/manage/dept/update/" + id;
-            }
+            var id = id || 0;
+            var url = "/permission/edit";
+            // if (id > 0) {
+            //     url = "/permission/update/" + id;
+            // }
             var html = "";
 
             common.ajax.handle({
@@ -167,21 +186,38 @@
             var $modal = $("#myModalEditFollowuper");
             $modal.html(html);
             if (id > 0) {
-                $(".modal-title").html("修改部门");
+                $(".modal-title").html("修改功能");
             }
             var $form = $("#form-id");
             $form.validate({
                 rules: {
-                    name:"required",
-                    sortNo:{
+                    module_name:"required",
+                    module_id:{
+
+                    },
+                    module_sort:{
+                        required:true,
                         number:true
-                    }
+                    },
+                    module_state:{
+
+                    },
+                    module_path:"required"
                 },
                 messages: {
-                    name:"模块名称不能为空",
-                    sortNo:{
+                    module_name:"模块名称不能为空",
+                    module_id:{
+
+                    },
+                    module_sort:{
+                        required:"模块排序不能为空",
                         number:"请输入数字"
-                    }
+                    },
+                    module_state:{
+
+                    },
+                    module_path: "功能路径不能为空"
+
                 },
                 errorPlacement: function (error, element) {
                     var $tipsBox = element.closest(".form-group").find(".tips_box");
@@ -198,8 +234,8 @@
                 },
                 submitHandler: function (form) {
                     common.ajax.handle({
-                        url: "/followup/manage/dept/dept/save.json",
-                        data: $form.serialize(),
+                        url: "/permission/edit/save.json",
+                        data: $form.serialize()
                     });
                     return false;
                 }
@@ -208,40 +244,26 @@
 
         };
 
-        //新增模块
-        $('[data-act="addDept"]').on("click",function () {
-            editDeptFn();
-        });
-
-        //修改
-        $('[data-act="edit"]').on("click",function () {
-            var id=$(this).closest("tr").data("id");
+        //新增、编辑功能按钮
+        var $editBtn = $('[data-target="#myModalEditFollowuper"]');
+        $editBtn.on("click", function () {
+            var id = $(this).data('id') || null;
             editDeptFn(id);
-        });
-
-        // 是否城市服务商勾选框
-        $('body').on('change','[name="checkbox"]',function () {
-            var mi = this, ckType = mi.checked?1:0;
-            $(mi).siblings('[name="cityServer"]').val(ckType);
-            var $cityInviteCodeBox = $("#cityInviteCodeBox");
-            if(ckType){
-                $cityInviteCodeBox.show().find('input').removeAttr('disabled');
-            }else{
-                $cityInviteCodeBox.hide().find('input').attr('disabled',"disabled");
-            }
         });
 
         //删除
         $('[data-act="del"]').on("click",function () {
             var id=$(this).closest("tr").data("id");
-            layer.confirm('<p class="tc">确定删除此部门及下属所有部门</p>',{title:"温馨提示"},function () {
+            layer.confirm('<p class="tc">是否删除该功能？</p>',{title:"温馨提示"},function () {
                 common.ajax.handle({
-                    url:"/followup/manage/dept/dept/del/"+ id + ".json",
+                    url:"/module/delete/"+ id + ".json",
                 });
             });
         });
 
+
     });
 </script>
+
 </body>
 </html>

@@ -6,7 +6,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>角色管理</title>
-    <c:set var="pageName" value="financeUcOrgPage" />
     <%@include file="/inc/followup/csslink.jsp"%>
 </head>
 <body class="no-skin">
@@ -35,7 +34,7 @@
                         </small>
                     </h1>
                     <a href="#" class="pull-right">
-                        <span class="btn btn-primary" data-act="addDept">添加角色</span>
+                        <span class="btn btn-primary" data-toggle="modal" data-target="#myModalEditFollowuper">添加角色</span>
                     </a>
                 </div>
 
@@ -56,7 +55,13 @@
 
                             <c:if test="${empty topDeptList}">
                                 <tr>
-                                    <td colspan="6" class="no_data">暂无角色，请<a href="javascript:;" data-act="addDept">新增角色</a></td>
+                                    <td colspan="6" class="no_data">暂无角色，请
+                                        <a href="javascript:;" data-toggle="modal"
+                                           data-target="#myModalEditFollowuper"
+                                           data-toggle="tooltip" title="新增功能">
+                                            新增功能
+                                        </a>
+                                    </td>
                                 </tr>
                             </c:if>
 
@@ -71,8 +76,11 @@
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="#"  data-toggle="modal" data-target="#myModalEditFollowuper" data-act="edit" data-toggle="tooltip" title="编辑">
-                                        <i class="ace-icon fa fa-pencil bigger-130"></i></a>
+                                    <a href="#" data-id="1" data-toggle="modal"
+                                       data-target="#myModalEditFollowuper"
+                                       data-toggle="tooltip" title="修改">
+                                        <i class="ace-icon fa fa-pencil bigger-130"></i>
+                                    </a>
                                     <a href="#" data-act="del" data-toggle="tooltip" title="删除">
                                         <i class="ace-icon fa fa-trash-o bigger-130 red"></i></a>
                                 </td>
@@ -94,11 +102,91 @@
         </div>
     </div>
 </div>
+
+<%--编辑模块模态框（Modal）--%>
+<div class="modal fade in" id="myModalEditFollowuper" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
 <%@include file="/inc/followup/script.jsp"%>
 <script>
     seajs.use(["common","validate","template"],function(common,validate,template){
+        //菜单高亮
         common.head("system",4);
+
+        //添加、编辑角色方法
+        var editDeptFn = function (id,pid) {
+            var id = id || 0;
+            var url = "/role/edit";
+            // if (id > 0) {
+            //     url = "/permission/update/" + id;
+            // }
+            var html = "";
+
+            common.ajax.handle({
+                type: "get",
+                url:url,
+                dataType: "html",
+                async: false,
+                succback: function (data) {
+                    html = data;
+                }
+            });
+            var $modal = $("#myModalEditFollowuper");
+            $modal.html(html);
+            if (id > 0) {
+                    $(".modal-title").html("编辑角色");
+            }
+            var $form = $("#form-id");
+
+            $form.validate({
+                rules: {
+                    role_name:"required"
+                },
+                messages: {
+                    role_name:"角色名称不能为空"
+                },
+                errorPlacement: function (error, element) {
+                    var $tipsBox = element.closest(".form-group").find(".tips_box");
+                    if ($tipsBox.length) {
+                        $tipsBox.html(error);
+                    } else {
+                        element.after(error);
+                    }
+                },
+                errorClass: "field-error",
+                success: function (label, element) {
+                    label.remove();
+                    return true;
+                },
+                submitHandler: function (form) {
+                    common.ajax.handle({
+                        url: "/role/edit/save.json",
+                        data: $form.serialize()
+                    });
+                    return false;
+                }
+            });
+
+
+        };
+
+        //新增、编辑功能按钮
+        var $editBtn = $('[data-target="#myModalEditFollowuper"]');
+        $editBtn.on("click", function () {
+            var id = $(this).data('id') || null;
+            editDeptFn(id);
+        });
+
+        //删除
+        $('[data-act="del"]').on("click",function () {
+            var id=$(this).closest("tr").data("id");
+            layer.confirm('<p class="tc">是否删除该角色？</p>',{title:"温馨提示"},function () {
+                common.ajax.handle({
+                    url:"/module/delete/"+ id + ".json",
+                });
+            });
+        });
+
     });
+
 </script>
 </body>
 </html>
