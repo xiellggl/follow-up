@@ -39,32 +39,60 @@
                             <style>
                                 .conceal-tr{display: none;}
                             </style>
-                                <label class="col-sm-2 control-label no-padding-right">权限控制：</label>
-                            <div class="col-xs-12 col-sm-6">
-                            <dl>
-                                <dd>
-                                    <dl>
-                                        <dt>
-                                            <label><input type="checkbox"><span>会员管理</span></label>
-                                            <i class="fa fa-chevron-dcu fa-chevron-down" data-flag="1"></i>
-                                        </dt>
-                                        <dd class="last conceal-tr click1" style="">
-                                            <label title="在线会员">
+                            <label class="col-sm-2 control-label no-padding-right">权限控制：</label>
+                            <div class="col-xs-12 col-sm-9">
 
-                                                <input type="checkbox" name="permissionId" value="2340ca71006602a1">
+                                <dl>
+                                    <dd>
+                                        <dl>
+                                            <dt>
+                                                <label>
+                                                    <input name="form-field-checkbox" type="checkbox" class="ace">
+                                                    <span class="lbl">这是模块一</span>
+                                                </label>
+                                                <i class="fa fa-chevron-dcu fa-chevron-down" data-flag="1"></i>
+                                            </dt>
+                                            <dd class="last conceal-tr click1" style="">
+                                                <label title="这是模块一的第一个功能">
 
-                                                <span>在线会员</span>
-                                            </label>
-                                            <label title="在线会员查询">
+                                                    <input name="form-field-checkbox" type="checkbox" class="ace">
 
-                                                <input type="checkbox" name="permissionId" value="2340ca71006603a1">
+                                                    <span class="lbl">这是模块一的第一个功能</span>
+                                                </label>
+                                                <label title="这是模块一的所有功能">
 
-                                                <span>在线会员查询</span>
-                                            </label>
-                                        </dd>
-                                    </dl>
-                                </dd>
-                            </dl>
+                                                    <input name="form-field-checkbox" type="checkbox" class="ace">
+
+                                                    <span class="lbl">这是模块一的所有功能</span>
+                                                </label>
+                                            </dd>
+                                        </dl>
+                                        <dl>
+                                            <dt>
+                                                <label>
+                                                    <input name="form-field-checkbox" type="checkbox" class="ace">
+                                                    <span class="lbl">这是模块二</span>
+                                                </label>
+                                                <i class="fa fa-chevron-dcu fa-chevron-down" data-flag="2"></i>
+                                            </dt>
+                                            <dd class="last conceal-tr click2" style="">
+                                                <label title="这是模块二的第一个功能">
+
+                                                    <input name="form-field-checkbox" type="checkbox" class="ace">
+
+                                                    <span class="lbl">这是模块二的第一个功能</span>
+                                                </label>
+                                                <label title="这是模块二的所有功能">
+
+                                                    <input name="form-field-checkbox" type="checkbox" class="ace">
+
+                                                    <span class="lbl">这是模块二的所有功能</span>
+                                                </label>
+                                            </dd>
+                                        </dl>
+                                    </dd>
+                                </dl>
+
                             </div>
                             <div class="help-block col-xs-12 col-sm-reset inline tips_box"></div>
                         </div>
