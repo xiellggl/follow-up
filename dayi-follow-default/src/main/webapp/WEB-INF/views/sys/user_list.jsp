@@ -216,11 +216,9 @@
                             <label class="col-sm-3 control-label no-padding-right inline">是否负责人： </label>
                             <div class="col-sm-9 inline align-middle" style="padding-top:5px;">
                                 <label style="margin-right: 15px;">
-                                    <input type="radio" name="isManager" value="0"
-                                           {{id==null||isManager==0?'checked':''}}/>否</label>
+                                    <input type="radio" name="principal" value="0">否</label>
                                 <label>
-                                    <input type="radio" name="isManager" value="1"
-                                           {{isManager==1?'checked':''}}/> 是</label>
+                                    <input type="radio" name="principal" value="1"> 是</label>
                             </div>
                         </div>
 
@@ -229,11 +227,9 @@
                             <label class="col-sm-3 control-label no-padding-right inline">二级资产开关： </label>
                             <div class="col-sm-9 inline align-middle" style="padding-top:5px;">
                                 <label style="margin-right: 15px;">
-                                    <input type="radio" name="isManager" value="0"
-                                           {{id==null||isManager==0?'checked':''}}/>开启</label>
+                                    <input type="radio" name="property" value="0">开启</label>
                                 <label>
-                                    <input type="radio" name="isManager" value="1"
-                                           {{isManager==1?'checked':''}}/> 关闭</label>
+                                    <input type="radio" name="property" value="1"> 关闭</label>
                             </div>
                         </div>
 
@@ -257,13 +253,13 @@
         //菜单高亮
         common.head("system",2);
 
+        //新增，修改用户方法
         var editDeptFn = function (id) {
             var id = id || 0;
             var data = {};
             if (id > 0) {
                 common.ajax.handle({
                     url: "/user/get/" + id + ".json",
-                    // url: "/dept/getEditList/" + id + ".json",
                     async: false,
                     succback: function (json) {
                         data = json.result;
@@ -370,7 +366,7 @@
                 submitHandler: function (form) {
                     common.ajax.handle({
                         url: url,
-                        data: $form.serialize(),
+                        data: $form.serialize()
                     });
                     return false;
                 }
@@ -392,7 +388,7 @@
             var id=$(this).closest("tr").data("id");
             layer.confirm('<p class="tc">确定删除此用户</p>',{title:"温馨提示"},function () {
                 common.ajax.handle({
-                    url:"/user/delete/"+ id + ".json",
+                    url:"/user/delete/"+ id + ".json"
                 });
             });
         });

@@ -34,7 +34,7 @@
                         </small>
                     </h1>
                     <a href="#" class="pull-right">
-                    <span class="btn btn-primary" data-act="addDept">添加模块</span>
+                    <span class="btn btn-primary" data-toggle="modal" data-target="#myModalEditFollowuper">添加模块</span>
                     </a>
                 </div>
 
@@ -61,7 +61,13 @@
 
                                 <c:if test="${empty topDeptList}">
                                     <tr>
-                                        <td colspan="6" class="no_data">暂无模块，请<a href="javascript:;" data-act="addDept">新增模块</a></td>
+                                        <td colspan="6" class="no_data">暂无模块，请
+                                            <a href="javascript:;" data-toggle="modal"
+                                               data-target="#myModalEditFollowuper"
+                                               data-toggle="tooltip" title="新增模块">
+                                                新增模块
+                                            </a>
+                                        </td>
                                     </tr>
                                 </c:if>
 
@@ -77,8 +83,11 @@
                                     <td>http://spotnewuc.fiidee.loc/#/admin/member/user </td>
                                     <td>管理首页信息</td>
                                     <td>
-                                        <a href="#"  data-toggle="modal" data-target="#myModalEditFollowuper" data-act="edit" data-toggle="tooltip" title="修改">
-                                            <i class="ace-icon fa fa-pencil bigger-130"></i></a>
+                                        <a href="#" data-id="1" data-toggle="modal"
+                                           data-target="#myModalEditFollowuper"
+                                           data-toggle="tooltip" title="修改">
+                                            <i class="ace-icon fa fa-pencil bigger-130"></i>
+                                        </a>
                                         <a href="#" data-act="del" data-toggle="tooltip" title="删除">
                                             <i class="ace-icon fa fa-trash-o bigger-130 red"></i></a>
                                         <a href="#" data-act="del" data-toggle="tooltip" title="绑定功能">
@@ -92,32 +101,30 @@
                                     <td>&nbsp&nbsp二级模块</td>
                                     <td>
                                         <a class="state-btn" data-state="1" href="javascript:;" data-id="30" title="" data-original-title="已启用">
-                                            <span class="btn btn-minier btn-yellow">启用</span>
+                                            <span class="btn btn-minier btn-yellow">显示</span>
                                         </a>
                                     </td>
                                     <td>http://spotnewuc.fiidee.loc/#/admin/member/user </td>
                                     <td>可查看预约联系时间为今天的代理商</td>
                                     <td>
-                                        <a href="#"  data-toggle="modal" data-target="#myModalEditFollowuper" data-act="edit" data-toggle="tooltip" title="修改">
-                                            <i class="ace-icon fa fa-pencil bigger-130"></i></a>
-                                        <a href="#" data-act="del" data-toggle="tooltip" title="删除">
+                                        <a href="#" data-act="del" data-toggle="tooltip" title="解除绑定">
                                             <i class="ace-icon fa fa-trash-o bigger-130 red"></i></a>
-                                        <a href="#" data-act="del" data-toggle="tooltip" title="绑定功能">
-                                            <i class="ace-icon fa fa-exchange bigger-130 red"></i></a>
                                     </td>
                                 </tr>
 
                                 <tr class="conceal-t click1">
                                     <td><i class="fa" data-flag="1"></i></td>
                                     <td>&nbsp&nbsp&nbsp这是功能权限3</td>
-                                    <td>&nbsp</td>
+                                    <td>
+                                        <a class="state-btn" data-state="1" href="javascript:;" data-id="30" title="" data-original-title="已启用">
+                                            <span class="btn btn-minier btn-yellow">隐藏</span>
+                                        </a>
+                                    </td>
                                     <td>http://spotnewuc.fiidee.loc/#/admin/member/user </td>
                                     <td>可查看不同状态下的代理商数量（适用于业务人员）</td>
                                     <td>
-                                        <a href="#"  data-toggle="modal" data-target="#myModalEditFollowuper" data-act="edit" data-toggle="tooltip" title="修改">
-                                            <i class="ace-icon fa fa-pencil bigger-130"></i></a>
-                                        <a href="#" data-act="del" data-toggle="tooltip" title="绑定功能">
-                                            <i class="ace-icon fa fa-exchange bigger-130 red"></i></a>
+                                        <a href="#" data-act="del" data-toggle="tooltip" title="解除绑定">
+                                            <i class="ace-icon fa fa-trash-o bigger-130 red"></i></a>
                                     </td>
                                 </tr>
                                 </c:forEach>
@@ -138,43 +145,33 @@
         </div>
     </div>
 </div>
+
+<%--编辑模块模态框（Modal）--%>
+<div class="modal fade in" id="myModalEditFollowuper" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
 <%@include file="/inc/followup/script.jsp"%>
 <script>
-    seajs.use(["common","validate","template","addMethod"],function(common,validate,template){
+    seajs.use(["common","validate","template",],function(common,validate,template){
         //菜单高亮
-        common.head("system",1);
 
-        var editDeptFn = function (id) {
+        common.head("system",1);
+        //添加、编辑模块方法
+        var editDeptFn = function (id,pid) {
             var id = id || 0;
-            var url = "/module/add/save/save.json";
-            if (id > 0) {
-                url = "/module/edit/edit/save.json";
-            }
+            var url = "/module/edit";
+            // if (id > 0) {
+            //     url = "/module/update/" + id;
+            // }
             var html = "";
 
-            if(id > 0){
-                common.ajax.handle({
-                    type: "get",
-                    url:"/module/edit",
-                    dataType: "html",
-                    async: false,
-                    succback: function (data) {
-                        html = data;
-                    }
-                });
-                if (data.id == null) {
-                    common.ajax.handle({
-                        type: "get",
-                        url:"/module/edit",
-                        dataType: "html",
-                        async: false,
-                        succback: function (data) {
-                            html = data;
-                        }
-                    });
+            common.ajax.handle({
+                type: "get",
+                url:url,
+                dataType: "html",
+                async: false,
+                succback: function (data) {
+                    html = data;
                 }
-            }
-
+            });
             var $modal = $("#myModalEditFollowuper");
             $modal.html(html);
             if (id > 0) {
@@ -183,16 +180,33 @@
             var $form = $("#form-id");
             $form.validate({
                 rules: {
-                    name:"required",
-                    sortNo:{
+                    module_name:"required",
+                    module_id:{
+
+                    },
+                    module_sort:{
+                        required:true,
                         number:true
-                    }
+                    },
+                    module_state:{
+
+                    },
+                    module_path:"required"
                 },
                 messages: {
-                    name:"模块名称不能为空",
-                    sortNo:{
+                    module_name:"模块名称不能为空",
+                    module_id:{
+
+                    },
+                    module_sort:{
+                        required:"模块排序不能为空",
                         number:"请输入数字"
-                    }
+                    },
+                    module_state:{
+
+                    },
+                    module_path: "功能路径不能为空"
+
                 },
                 errorPlacement: function (error, element) {
                     var $tipsBox = element.closest(".form-group").find(".tips_box");
@@ -209,8 +223,8 @@
                 },
                 submitHandler: function (form) {
                     common.ajax.handle({
-                        url: url,
-                        data: $form.serialize(),
+                        url: "/module/edit/save.json",
+                        data: $form.serialize()
                     });
                     return false;
                 }
@@ -219,23 +233,19 @@
 
         };
 
-        //新增模块
-        $('[data-act="addDept"]').on("click",function () {
-            editDeptFn();
-        });
-
-        //修改
-        $('[data-act="edit"]').on("click",function () {
-            var id=$(this).closest("tr").data("id");
+        //新增、编辑功能按钮
+        var $editBtn = $('[data-target="#myModalEditFollowuper"]');
+        $editBtn.on("click", function () {
+            var id = $(this).data('id') || null;
             editDeptFn(id);
         });
 
         //删除
         $('[data-act="del"]').on("click",function () {
             var id=$(this).closest("tr").data("id");
-            layer.confirm('<p class="tc">确定删除此部门及下属所有部门</p>',{title:"温馨提示"},function () {
+            layer.confirm('<p class="tc">是否删除该模块？</p>',{title:"温馨提示"},function () {
                 common.ajax.handle({
-                    url:"/followup/module/delete/"+ id + ".json",
+                    url:"/module/delete/"+ id + ".json"
                 });
             });
         });
