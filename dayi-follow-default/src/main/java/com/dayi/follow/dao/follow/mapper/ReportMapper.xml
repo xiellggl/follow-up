@@ -102,13 +102,16 @@
     </select>
 
     <select id="getMonth" parameterType="map" resultType="com.dayi.follow.vo.report.ReportDailyVo">
-        SELECT dept_id,b.name deptName,link_person followUpName,flow_id,
-        sum(open_account_num),sum(in_cash),
-        sum(out_cash),sum(manage_fund_growth)
+        SELECT dept_id,b.name deptName,c.name ,follow_id,
+        sum(open_account_num)openAccountNum,sum(in_cash)inCash,
+        sum(out_cash)outCash,sum(manage_growth_fund)manageGrowthFund
         from follow_up_log a
         left join (
         SELECT id,name from department
         )b on b.id =a.dept_id
+        left join(
+            SELECT id,name from follow_up
+        )c on c.id=a.follow_id
         where a.follow_id =#{followId}
         <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
             and a.create_time BETWEEN #{startDate} and #{endDate}
@@ -116,12 +119,16 @@
     </select>
 
     <select id="findTeamMonth" parameterType="map" resultType="com.dayi.follow.vo.report.ReportDailyVo">
-        select follow_id,dept_id,fd.name ,sum(open_account_num),sum(manage_fund_growth),
-        sum(in_cash),sum(in_cash_num),sum(out_cash),sum(out_cash_num)
+        select follow_id,dept_id,b.name deptName,c.name,sum(open_account_num)openAccountNum,
+                sum(manage_growth_fund)manageGrowthFund,
+                sum(in_cash)inCash,sum(out_cash)outCash
         from follow_up_log a
         left join (
-        SELECT name,id from department
+            SELECT name,id from department
         )b on b.id=a.dept_id
+        left join(
+            SELECT id,name from follow_up
+        )c on c.id =a.follow_id
         WHERE dept_id= #{deptId}
         <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
             and create_time BETWEEN #{startDate} and #{endDate}
@@ -131,24 +138,24 @@
 
 
     <select id="findAdminWeekPer" parameterType="map" resultType="com.dayi.follow.vo.report.ReportDailyVo">
-     	SELECT date,flow_id flowId,sum(num1)openAccountNum,sum(num2)inCash,e.id deptId
+     	SELECT date,follow_id,sum(num1)openAccountNum,sum(num2)inCash,e.id deptId
         from  (
-                SELECT date,flow_id,if(date=createDate,openNum,0)num1,if(date=createDate,inCashNum,0)num2,d.id
+                SELECT date,follow_id,if(date=createDate,openNum,0)num1,if(date=createDate,inCashNum,0)num2,d.id
                 from (
                         SELECT #{startDate} date
-                        union SELECT DATE_ADD('#{startDate}',INTERVAL 1 day)
-                        union SELECT DATE_ADD('#{startDate}',INTERVAL 2 day)
-                        union SELECT DATE_ADD('#{startDate}',INTERVAL 3 day)
-                        union SELECT DATE_ADD('#{startDate}',INTERVAL 4 day)
+                        union SELECT DATE_ADD(#{startDate},INTERVAL 1 day)
+                        union SELECT DATE_ADD(#{startDate},INTERVAL 2 day)
+                        union SELECT DATE_ADD(#{startDate},INTERVAL 3 day)
+                        union SELECT DATE_ADD(#{startDate},INTERVAL 4 day)
                 )a
                 cross  join (
-                        SELECT date(create_time)createDate,flow_id ,sum(open_account_num)openNum,sum(in_cash)inCashNum,c.id
+                        SELECT date(create_time)createDate,follow_id ,sum(open_account_num)openNum,sum(in_cash)inCashNum,c.id
                         from follow_up_log b
                         left join (
-                                SELECT id from follow_dept
+                                SELECT id from department
                         )c on b.dept_id=c.id  WHERE 1=1
                         <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
-                            and date(create_time) BETWEEN '#{startDate}' and '#{endDate}'
+                            and date(create_time) BETWEEN #{startDate} and #{endDate}
                         </if>
                         <if test="null!=followIds and 0!=followIds.size()">
                             and follow_id in
@@ -157,14 +164,14 @@
                                 #{item}
                             </foreach>
                         </if>
-                        GROUP BY  flow_id,date(create_time)
+                        GROUP BY  follow_id,date(create_time)
                  )d
-         )e GROUP BY flowId,date ORDER BY deptId asc, flowId asc,date asc
+         )e GROUP BY follow_id,date ORDER BY deptId asc, follow_id asc,date asc
     </select>
 
     <select id="findAdminWeekSum" parameterType="map" resultType="com.dayi.follow.vo.report.ReportDailyVo">
         SELECT dept_id,b.name deptName,c.name,follow_id,
-              sum(open_account_num),sum(in_cash)inCash
+              sum(open_account_num)openAccountNum,sum(in_cash)inCash
         from follow_up_log a
         left join (
             SELECT name,id from department
@@ -173,7 +180,30 @@
             SELECT name,id FROM follow_up
         )c on c.id =a.follow_id where 1=1
         <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
-         and date(create_time) BETWEEN '#{startDate}' and '#{endDate}'
+         and date(create_time) BETWEEN #{startDate} and #{endDate}
+        </if>
+        <if test="null!=followIds and 0!=followIds.size()">
+            and follow_id in
+            <foreach item="item" index="index" collection="followIds"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        group by follow_id  ORDER BY dept_id asc, follow_id asc
+    </select>
+
+    <select id="findAdminWeekSumList" parameterType="map" resultType="com.dayi.follow.vo.report.ReportDailyVo">
+        SELECT dept_id,b.name deptName,c.name,follow_id,
+        sum(open_account_num)openAccountNum,sum(in_cash)inCash
+        from follow_up_log a
+        left join (
+        SELECT name,id from department
+        )b on b.id=a.dept_id
+        left join (
+        SELECT name,id FROM follow_up
+        )c on c.id =a.follow_id where 1=1
+        <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
+            and date(create_time) BETWEEN #{startDate} and #{endDate}
         </if>
         <if test="null!=followIds and 0!=followIds.size()">
             and follow_id in
@@ -199,7 +229,31 @@
         )d on d.follow_id =a.follow_id
         where 1=1
         <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
-            and create_time BETWEEN '#{startDate}' and '#{endDate}'
+            and create_time BETWEEN #{startDate} and #{endDate}
+        </if>
+        and a.follow_id in
+        <foreach item="item" index="index" collection="followIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        ORDER BY c.id asc , a.follow_id asc
+    </select>
+
+    <select id="findAdminMonthList" parameterType="map" resultType="com.dayi.follow.vo.report.AdminMonthVo">
+        SELECT a.follow_id,c.name deptName,b.name,b.invite_code,sum(d.org_id)orgNum,sum(open_account_num)openNum,sum(in_cash)inCash
+        from follow_up_log a
+        LEFT join (
+        SELECT id,name,invite_code from follow_up
+        )b on b.id =a.follow_id
+        left join (
+        SELECT id,name from department
+        )c on c.id =a.dept_id
+        left join (
+        SELECT org_id,follow_id from follow_org
+        )d on d.follow_id =a.follow_id
+        where 1=1
+        <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
+            and create_time BETWEEN #{startDate} and #{endDate}
         </if>
         and a.follow_id in
         <foreach item="item" index="index" collection="followIds"
@@ -210,24 +264,24 @@
     </select>
 
     <select id="getLastManageFund" parameterType="map" resultType="java.lang.Double">
-        SELECT manage_fund, follow_id FROM follow_up_log
-        WHERE  create_time BETWEEN '#{startDate}' and '#{endDate}'
+        SELECT IFNULL(sum(manage_fund),0) FROM follow_up_log
+        WHERE  create_time BETWEEN #{startDate} and #{endDate}
         and follow_id=#{followId}
     </select>
 
     <select id="findAdminDaily" parameterType="map" resultType="com.dayi.follow.vo.report.ReportDailyVo">
-        SELECT date(create_time)createDate,b.name deptName,dept_id ,sum(open_account_num),
-                sum(manage_fund_growth),sum(in_cash),sum(in_cash_num),
-                sum(out_cash),sum(out_cash_num)
+        SELECT date(create_time)date,b.name deptName,dept_id ,sum(open_account_num)openAccountNum,
+                sum(manage_growth_fund)manageGrowthFund,sum(in_cash)inCash,sum(in_cash_num)inCashNum,
+                sum(out_cash)outCash,sum(out_cash_num)outCashNum
         from follow_up_log  a
         left join(
-            SELECT name,id from follow_dept
+            SELECT name,id from department
         )b on b.id=a.dept_id  WHERE 1=1
         <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
-            and a.create_time BETWEEN '#{startDate}' and '#{endDate}'
+            and a.create_time BETWEEN #{startDate} and #{endDate}
         </if>
         <if test="''!=deptName and null!=deptName">
-            and b.name =#{deptName}
+            and b.name like CONCAT('%','${deptName}','%' )
         </if>
         and a.follow_id in
         <foreach item="item" index="index" collection="followIds"
@@ -238,14 +292,18 @@
     </select>
 
     <select id="findAdminDailyDetail" parameterType="map" resultType="com.dayi.follow.vo.report.ReportDailyVo">
-        SELECT date(create_time)createDate,b.name deptName,dept_id ,open_account_num,
-        manage_fund_growth,in_cash,in_cash_num,
+        SELECT date(create_time)date,b.name deptName,c.name,dept_id ,open_account_num,
+        manage_growth_fund,in_cash,in_cash_num,
         out_cash,out_cash_num
         from follow_up_log  a
         left join(
-        SELECT name,id from follow_dept
-        )b on b.id=a.dept_id  WHERE 1=1
-        and a.create_time BETWEEN '#{startDate}' and '#{endDate}'
+            SELECT name,id from department
+        )b on b.id=a.dept_id
+        left join(
+            SELECT id,name FROM follow_up
+        )c on c.id=a.follow_id
+        WHERE 1=1
+        and a.create_time BETWEEN #{startDate} and #{endDate}
         and a.dept_id=#{deptId}
         ORDER BY create_time desc
     </select>

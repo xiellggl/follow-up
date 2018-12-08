@@ -4,6 +4,7 @@ package com.dayi.follow.service;
 import com.dayi.common.util.BizResult;
 import com.dayi.follow.model.follow.Agent;
 import com.dayi.follow.model.follow.FollowAgent;
+import com.dayi.follow.vo.agent.AssignListVo;
 import com.dayi.follow.vo.agent.DetailVo;
 import com.dayi.follow.vo.SearchVo;
 import com.dayi.mybatis.support.Page;
@@ -28,7 +29,7 @@ public interface FollowAgentService {
 
     FollowAgent getFollowAgentByAgentId(Integer agentId);
 
-    Page findAssignPage(Page page, SearchVo searchVo, String deptId);
+    Page findAssignPage(Page<AssignListVo> page, SearchVo searchVo, String deptId);
 
     BizResult add(FollowAgent followAgent);
 

@@ -34,7 +34,7 @@ import java.util.List;
  * @date 2018/11/13
  */
 @Controller
-@RequestMapping("/followup/agent/assign")
+@RequestMapping("/agent/assign")
 public class AgentAssignController {
     @Resource
     FollowUpService followUpService;

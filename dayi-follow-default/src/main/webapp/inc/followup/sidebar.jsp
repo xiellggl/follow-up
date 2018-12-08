@@ -147,13 +147,13 @@
             </a>
             <ul class="submenu">
                 <li data-index="1">
-                    <a href="/followup/manage/followuper/assign/list">
+                    <a href="/agent/assign/list">
                         <i class="menu-icon fa fa-caret-right"></i>
                         代理商
                     </a>
                 </li>
                 <li data-index="2">
-                    <a href="/followup/manage/followuper/assign/list?flowTypeTab=2">
+                    <a href="/org/assign/list?flowTypeTab=2">
                         <i class="menu-icon fa fa-caret-right"></i>
                         创客
                     </a>

@@ -25,10 +25,20 @@ public class ReportDailyVo {
     private String date;//日报日期
     private String deptName;//部门名称
 
+    private String deptId;//部门id
+
     private String name;//姓名
 
     private BigDecimal manageGrowthFund;//管理资金净增
     private String manageGrowthFundFm;//管理资金净增
+
+    public String getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(String deptId) {
+        this.deptId = deptId;
+    }
 
     public Integer getOpenAccountNum() {
         return openAccountNum;

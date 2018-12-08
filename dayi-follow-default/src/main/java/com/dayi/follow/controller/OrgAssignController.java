@@ -27,7 +27,7 @@ import java.util.List;
  * @date 2018/11/13
  */
 @Controller
-@RequestMapping("/followup/org/assign")
+@RequestMapping("/org/assign")
 public class OrgAssignController {
     @Resource
     FollowUpService followUpService;

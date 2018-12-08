@@ -12,6 +12,9 @@ import com.dayi.follow.vo.report.AdminWeekVo;
 import com.dayi.follow.vo.report.ReportDailyVo;
 import com.dayi.mybatis.support.Page;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -52,11 +55,11 @@ public interface ReportService {
     Page<AdminWeekVo> findAdminWeek(Page page, String deptId, String betweenDate);
 
     //管理员周报导出
-    List<AdminWeekVo> exportAdminWeek(String deptId, String betweenDate);
+    List<AdminWeekVo> findAdminWeekList(String deptId,  String betweenDate);
 
     //管理员月报
     Page<AdminMonthVo> findAdminMonth(Page page, String deptId, String month);
 
     //管理员月报导出
-    List<AdminMonthVo> exportAdminMonth(String deptId, String month);
+    List<AdminMonthVo> findAdminMonthList(String deptId, String month);
 }

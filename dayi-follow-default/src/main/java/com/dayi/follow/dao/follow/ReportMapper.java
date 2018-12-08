@@ -41,10 +41,16 @@ public interface ReportMapper extends BaseMapper<BaseVo> {
     Page<ReportDailyVo> findAdminWeekSum(Page page, @Param("followIds") List<String> followIds, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
     //管理员周报
+    List<ReportDailyVo> findAdminWeekSumList(@Param("followIds") List<String> followIds, @Param("startDate") String startDate, @Param("endDate") String endDate);
+
+    //管理员周报
     Page<ReportDailyVo> findAdminWeekPer(Page page, @Param("followIds") List<String> followIds, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
     //管理员月报
     Page<AdminMonthVo> findAdminMonth(Page page, @Param("followIds") List<String> followIds, @Param("startDate") String startDate, @Param("endDate") String endDate);
+
+    //管理员月报
+    List<AdminMonthVo> findAdminMonthList( @Param("followIds") List<String> followIds, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
     //得到月最后一天的管理资金
     double getLastManageFund(@Param("followId") String followId, @Param("startDate") String startDate, @Param("endDate") String endDate);

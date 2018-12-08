@@ -4,7 +4,7 @@ package com.dayi.follow.vo.report;
 import java.math.BigDecimal;
 //管理员月报
 public class AdminMonthVo {
-    private String id;
+    private String followId;
 
     private String deptName;//部门名称
 
@@ -86,11 +86,11 @@ public class AdminMonthVo {
         this.ringGrowthRatio = ringGrowthRatio;
     }
 
-    public String getId() {
-        return id;
+    public String getFollowId() {
+        return followId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setFollowId(String followId) {
+        this.followId = followId;
     }
 }

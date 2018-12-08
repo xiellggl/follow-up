@@ -26,7 +26,6 @@ public class AdminWeekVo {
     private Integer openNum;  // 周有效新开户
 
     private BigDecimal inCash;//入金总额
-    private String inCashFm;//入金总额（格式化：显示前两位和小数点位，其余用*标识）
 
     public Integer getOpenNum() {
         return openNum;
@@ -42,14 +41,6 @@ public class AdminWeekVo {
 
     public void setInCash(BigDecimal inCash) {
         this.inCash = inCash;
-    }
-
-    public String getInCashFm() {
-        return inCashFm;
-    }
-
-    public void setInCashFm(String inCashFm) {
-        this.inCashFm = inCashFm;
     }
 
     public Integer getMonOpen() {

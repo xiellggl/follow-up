@@ -15,8 +15,10 @@ import com.dayi.follow.vo.report.AdminMonthVo;
 import com.dayi.follow.vo.report.AdminWeekVo;
 import com.dayi.follow.vo.report.ReportDailyVo;
 import com.dayi.mybatis.support.Page;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -169,7 +171,7 @@ public class ReportController extends BaseController {
     }
 
     /**
-     * 周报
+     * 月报
      *
      * @param request
      * @return
@@ -180,14 +182,14 @@ public class ReportController extends BaseController {
 
         String date = request.getParameter("date");
 
-        ReportDailyVo week = reportService.getWeek(currVo.getId(), date);
+        ReportDailyVo month = reportService.getMonth(currVo.getId(), date);
 
-        model.addAttribute("week", week);
+        model.addAttribute("month", month);
         return "/followup/uc/log/mydaily";
     }
 
     /**
-     * 团队周报
+     * 团队月报
      *
      * @param request
      * @return
@@ -238,8 +240,6 @@ public class ReportController extends BaseController {
         String deptId = request.getParameter("deptId");
         String date = request.getParameter("date");
 
-        if (StringUtils.isBlank(deptId) || StringUtils.isBlank(date)) return "";//必须同时满足
-
         page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
 
         page = reportService.findAdminDailyDetail(page, deptId, date);
@@ -262,6 +262,12 @@ public class ReportController extends BaseController {
 
         String date = request.getParameter("date");
 
+        if (StringUtils.isBlank(date)) {
+            String one = DateTime.now().plusWeeks(-1).withDayOfWeek(1).toString("yyyy-MM-dd");
+            String five = DateTime.now().plusWeeks(-1).withDayOfWeek(5).toString("yyyy-MM-dd");
+            date = one + " - " + five;
+        }
+
         page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
 
         page = reportService.findAdminWeek(page, currVo.getDeptId(), date);
@@ -283,11 +289,19 @@ public class ReportController extends BaseController {
 
         String date = request.getParameter("date");
 
-        List<AdminWeekVo> adminWeekVos = reportService.exportAdminWeek(currVo.getDeptId(), date);
+        if (StringUtils.isBlank(date)) {
+            String one = DateTime.now().plusWeeks(-1).withDayOfWeek(1).toString("yyyy-MM-dd");
+            String five = DateTime.now().plusWeeks(-1).withDayOfWeek(5).toString("yyyy-MM-dd");
+            date = one + " - " + five;
+        }
 
-        String fileTitle = "资产管理部" + date + "周报";
+        String[] split = date.split(" - ");
+        String fileTitle = "资产管理部" + split[0] + "至" + split[1] + "周报";
+
+        List<AdminWeekVo> adminWeekList = reportService.findAdminWeekList(currVo.getDeptId(),date);
+
         String fileName = fileTitle;
-        AdminWeekExport export = new AdminWeekExport(fileName, fileTitle, adminWeekVos);
+        AdminWeekExport export = new AdminWeekExport(fileName, fileTitle, adminWeekList);
         export.exportExcel(request, response);
     }
 
@@ -304,6 +318,8 @@ public class ReportController extends BaseController {
         String date = request.getParameter("date");
 
         page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
+
+        if (StringUtils.isBlank(date)) date = DateTime.now().plusMonths(-1).toString("yyyy-MM");
 
         page = reportService.findAdminMonth(page, currVo.getDeptId(), date);
 
@@ -324,9 +340,11 @@ public class ReportController extends BaseController {
 
         String date = request.getParameter("date");
 
-        List<AdminMonthVo> adminMonthVos = reportService.exportAdminMonth(currVo.getDeptId(), date);
+        if (StringUtils.isBlank(date)) date = DateTime.now().plusMonths(-1).toString("yyyy-MM");
 
-        String fileTitle = "资产管理部" + date + "周报";
+        List<AdminMonthVo> adminMonthVos = reportService.findAdminMonthList(currVo.getDeptId(), date);
+
+        String fileTitle = "资产管理部" + date + "月报";
         String fileName = fileTitle;
         AdminMonthExport export = new AdminMonthExport(fileName, fileTitle, adminMonthVos);
         export.exportExcel(request, response);

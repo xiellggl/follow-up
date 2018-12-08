@@ -45,7 +45,7 @@ public interface FollowAgentMapper extends BaseMapper<FollowAgent> {
 
 
     //统计资产规模
-    double getTotalFund(@Param("followIds") List<String> followIds,@Param("assistDataBase") String assistDataBase);
+    double getTotalFund(@Param("followIds") List<String> followIds, @Param("assistDataBase") String assistDataBase);
 
     String getFollowIdByAgentId(@Param("agentId") Integer agentId);
 
@@ -62,20 +62,12 @@ public interface FollowAgentMapper extends BaseMapper<FollowAgent> {
     FollowAgent getFollowAgentByAgentId(@Param("agentId") Integer agentId);
 
     //查找已分配跟进人的代理商
-    List<AssignListVo> findAssignsFollow(Page page, SearchVo searchVo, List<String> followIds, String assistDataBase);
-
-    //统计已分配跟进人的代理商数量
-    long getAssignsFollowNum(SearchVo searchVo, List<String> followIds, String assistDataBase);
+    Page<AssignListVo> findAssignsFollow(Page page, @Param("searchVo") SearchVo searchVo, @Param("followIds") List<String> followIds, @Param("assistDataBase") String assistDataBase);
 
     //查找未分配跟进人的代理商
-    List<AssignListVo> findAssignsNoFollow(Page page, SearchVo searchVo, String assistDataBase);
-
-    //统计未分配跟进人的代理商数量
-    long getAssignsNoFollowNum(@Param("searchVo") SearchVo searchVo, @Param("assistDataBase") String assistDataBase);
+    Page<AssignListVo> findAssignsNoFollow(Page page, @Param("searchVo") SearchVo searchVo, @Param("assistDataBase") String assistDataBase);
 
     List<Agent> findAgentsByFollowId(@Param("followId") String followId, @Param("assistDataBase") String dayiDataBaseStr);
-
-
 
 
 }

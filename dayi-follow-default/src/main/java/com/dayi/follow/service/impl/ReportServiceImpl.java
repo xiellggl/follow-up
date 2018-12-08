@@ -6,6 +6,7 @@ import com.dayi.follow.dao.follow.ReportMapper;
 import com.dayi.follow.service.CountService;
 import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.ReportService;
+import com.dayi.follow.vo.export.AdminWeekExport;
 import com.dayi.follow.vo.report.AdminMonthVo;
 import com.dayi.follow.vo.report.AdminWeekVo;
 import com.dayi.follow.vo.report.ReportDailyVo;
@@ -13,10 +14,17 @@ import com.dayi.mybatis.support.Page;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.BeanUtils;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOError;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -132,8 +140,9 @@ public class ReportServiceImpl implements ReportService {
             startDate = DateTime.parse(month).dayOfMonth().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
             endDate = DateTime.parse(month).dayOfMonth().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
         }
-
-        return reportMapper.getMonth(followId, startDate, endDate);
+        ReportDailyVo monthVo = reportMapper.getMonth(followId, startDate, endDate);
+        monthVo.setGrowthFund(monthVo.getInCash().subtract(monthVo.getOutCash()));
+        return monthVo;
 
     }
 
@@ -154,7 +163,7 @@ public class ReportServiceImpl implements ReportService {
         String startDate = "";
         String endDate = "";
         if (!StringUtils.isBlank(betweenDate)) {
-            String[] split = StringUtils.split(betweenDate, ",");
+            String[] split = betweenDate.split(" - ");
             startDate = split[0];
             endDate = DateTime.parse(split[1]).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
         }
@@ -168,7 +177,9 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public Page findAdminDailyDetail(Page page, String deptId, String date) {
-        if (StringUtils.isBlank(date)) return page;
+
+        if (StringUtils.isBlank(deptId) || StringUtils.isBlank(date)) return page;//必须同时满足
+
         String startDate = DateTime.parse(date).millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
         String endDate = DateTime.parse(date).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
         return reportMapper.findAdminDailyDetail(page, deptId, startDate, endDate);
@@ -176,21 +187,21 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public Page<AdminWeekVo> findAdminWeek(Page page, String deptId, String betweenDate) {
+        if (StringUtils.isBlank(betweenDate)) return page;
 
-        String startDate = "";
-        String endDate = "";
-        if (!StringUtils.isBlank(betweenDate)) {
-            String[] split = StringUtils.split(betweenDate, ",");
-            startDate = split[0];
-            endDate = DateTime.parse(split[1]).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
-        }
+        String[] split = betweenDate.split(" - ");
+        String startDate = split[0];
+        String endDate = DateTime.parse(split[1]).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
 
         List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
 
         page = reportMapper.findAdminWeekSum(page, followIds, startDate, endDate);
 
-        page.setPageSize(page.getPageSize() * 5);
-        Page<ReportDailyVo> per = reportMapper.findAdminWeekPer(page, followIds, startDate, endDate);
+        Page per = new Page();
+        per.setPageNo(page.getPageNo());
+        per.setPageSize(page.getPageSize() * 5);
+
+        per = reportMapper.findAdminWeekPer(per, followIds, startDate, endDate);
 
         page.setResults(mergeData(page.getResults(), per.getResults()));
 
@@ -199,32 +210,31 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public List<AdminWeekVo> exportAdminWeek(String deptId, String betweenDate) {
+    public List<AdminWeekVo> findAdminWeekList(String deptId, String betweenDate) {
+        List<AdminWeekVo> list = new ArrayList<>();
 
-        String startDate = "";
-        String endDate = "";
-        if (!StringUtils.isBlank(betweenDate)) {
-            String[] split = StringUtils.split(betweenDate, ",");
-            startDate = split[0];
-            endDate = DateTime.parse(split[1]).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
-        }
+        if (StringUtils.isBlank(betweenDate)) return list;
+
+        String[] split = betweenDate.split(" - ");
+        String startDate = split[0];
+        String endDate = DateTime.parse(split[1]).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
 
         List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
 
-        Page<ReportDailyVo> sum = reportMapper.findAdminWeekSum(null, followIds, startDate, endDate);
+        List<ReportDailyVo> sum = reportMapper.findAdminWeekSumList(followIds, startDate, endDate);
 
-        Page<ReportDailyVo> per = reportMapper.findAdminWeekPer(null, followIds, startDate, endDate);
-        return mergeData(sum.getResults(), per.getResults());
+        Page page = new Page();
+        page.setPageSize(sum.size() * 5);
+        Page<ReportDailyVo> per = reportMapper.findAdminWeekPer(page, followIds, startDate, endDate);
+        return mergeData(sum, per.getResults());
+
     }
 
     @Override
     public Page<AdminMonthVo> findAdminMonth(Page page, String deptId, String month) {
-        String startDate = "";
-        String endDate = "";
-        if (!StringUtils.isBlank(month)) {
-            startDate = DateTime.parse(month).toString("yyyy-MM-dd HH:mm:ss");//本月开始
-            endDate = DateTime.parse(month).dayOfMonth().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");//本月结束
-        }
+        if (StringUtils.isBlank(month)) return page;
+        String startDate = DateTime.parse(month).toString("yyyy-MM-dd HH:mm:ss");//本月开始
+        String endDate = DateTime.parse(month).dayOfMonth().withMaximumValue().millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");//本月结束
 
         List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
 
@@ -234,19 +244,17 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public List<AdminMonthVo> exportAdminMonth(String deptId, String month) {
-        String startDate = "";
-        String endDate = "";
+    public List<AdminMonthVo> findAdminMonthList(String deptId, String month) {
+        List<AdminMonthVo> list = new ArrayList<>();
+        if (StringUtils.isBlank(month)) return list;
 
-        if (!StringUtils.isBlank(month)) {
-            startDate = DateTime.parse(month).toString("yyyy-MM-dd HH:mm:ss");//本月开始
-            endDate = DateTime.parse(month).dayOfMonth().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");//本月结束
-        }
+        String startDate = DateTime.parse(month).toString("yyyy-MM-dd HH:mm:ss");//本月开始
+        String endDate = DateTime.parse(month).dayOfMonth().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");//本月结束
 
         List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
 
-        Page<AdminMonthVo> page = reportMapper.findAdminMonth(null, followIds, startDate, endDate);//本月
-        return countGrowthRatio(page.getResults(), month);
+        List<AdminMonthVo> monthList = reportMapper.findAdminMonthList(followIds, startDate, endDate);//本月
+        return countGrowthRatio(monthList, month);
     }
 
     private List<AdminMonthVo> countGrowthRatio(List<AdminMonthVo> list, String month) {
@@ -255,20 +263,20 @@ public class ReportServiceImpl implements ReportService {
         String date3 = "";
         String date4 = "";
         if (!StringUtils.isBlank(month)) {
-            date1 = DateTime.parse(month).dayOfMonth().withMaximumValue().plusDays(-1).plusSeconds(1).toString("yyyy-MM-dd HH:mm:ss");//本月最后一天开始
-            date2 = DateTime.parse(month).dayOfMonth().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");//本月结束
+            date1 = DateTime.parse(month).dayOfMonth().withMaximumValue().millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");//本月最后一天开始
+            date2 = DateTime.parse(month).dayOfMonth().withMaximumValue().millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");//本月结束
 
-            date3 = DateTime.parse(month).plusMonths(-1).dayOfMonth().withMaximumValue().plusDays(-1).plusSeconds(1).toString("yyyy-MM-dd HH:mm:ss");//上月最后一天开始
-            date4 = DateTime.parse(month).plusMonths(-1).dayOfMonth().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");//上月结束
+            date3 = DateTime.parse(month).plusMonths(-1).dayOfMonth().withMaximumValue().millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");//上月最后一天开始
+            date4 = DateTime.parse(month).plusMonths(-1).dayOfMonth().withMaximumValue().millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");//上月结束
         }
         for (AdminMonthVo vo : list) {
-            double manageFund1 = reportMapper.getLastManageFund(vo.getId(), date1, date2);//当月最后一天管理资产
-            vo.setManageFund(BigDecimal.valueOf(manageFund1));
+            double manageFund1 = reportMapper.getLastManageFund(vo.getFollowId(), date1, date2);//当月最后一天管理资产
+            vo.setManageFund(BigDecimal.valueOf(manageFund1).setScale(2));
             if (manageFund1 == 0) {
                 vo.setRingGrowthRatio("暂无数据");
                 break;
             }
-            double manageFund2 = reportMapper.getLastManageFund(vo.getId(), date3, date4);//上月最后一天管理资产
+            double manageFund2 = reportMapper.getLastManageFund(vo.getFollowId(), date3, date4);//上月最后一天管理资产
             if (manageFund2 == 0) {
                 vo.setRingGrowthRatio("上月无数据");
                 break;

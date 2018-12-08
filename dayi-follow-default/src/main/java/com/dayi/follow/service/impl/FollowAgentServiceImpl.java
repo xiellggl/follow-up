@@ -201,28 +201,24 @@ public class FollowAgentServiceImpl implements FollowAgentService {
     }
 
     @Override
-    public Page findAssignPage(Page page, SearchVo searchVo, String deptId) {
+    public Page findAssignPage(Page<AssignListVo> page, SearchVo searchVo, String deptId) {
 
         List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
-        List<AssignListVo> assignListVos = new ArrayList<>();
 
-        long num;
-        if (searchVo.getAssignStatus() == 1) {//查已分配
-            assignListVos = followAgentMapper.findAssignsFollow(page, searchVo, followIds, dayiDataBaseStr);
-            num = followAgentMapper.getAssignsFollowNum(searchVo, followIds, dayiDataBaseStr);
-        } else {//查未分配
-            assignListVos = followAgentMapper.findAssignsNoFollow(page, searchVo, dayiDataBaseStr);
-            num = followAgentMapper.getAssignsNoFollowNum(searchVo, dayiDataBaseStr);
+        if (searchVo.getAssignStatus() == null || searchVo.getAssignStatus() != 1) {//查未分配
+            page = followAgentMapper.findAssignsNoFollow(page, searchVo, dayiDataBaseStr);
+        } else {//查已分配
+            page = followAgentMapper.findAssignsFollow(page, searchVo, followIds, dayiDataBaseStr);
         }
 
-        for (AssignListVo vo : assignListVos) {
+        for (AssignListVo vo : page.getResults()) {
             //遍历取实际开户银行
-            String bankRealName = agentMapper.getAccount(vo.getId()).getBankRealName();
+            Account account = agentMapper.getAccount(vo.getId());
+            if (account == null) continue;
+            String bankRealName = account.getBankRealName();
             vo.setRealBank(bankRealName);
         }
 
-        page.setResults(assignListVos);
-        page.setTotalRecord(num);
         return page;
     }
 
