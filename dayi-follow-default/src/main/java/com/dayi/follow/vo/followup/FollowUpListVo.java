@@ -4,7 +4,7 @@ import com.dayi.follow.enums.MemberStatusEnum;
 import com.dayi.follow.model.follow.Department;
 
 import java.util.Date;
-//跟进人管理列表
+//跟进人列表
 public class FollowUpListVo {
     private String id;
 
@@ -26,6 +26,26 @@ public class FollowUpListVo {
 
     private Date createTime;
     private String createTimeFm;
+
+    //加于客户分配的跟进人列表
+    private String mobile;
+    private int cusNum;
+
+    public int getCusNum() {
+        return cusNum;
+    }
+
+    public void setCusNum(int cusNum) {
+        this.cusNum = cusNum;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
 
     public String getName() {
         return name;

@@ -366,19 +366,19 @@
             and a.create_date BETWEEN ${searchVo.createDateStart} and ${searchVo.createDateEnd}
         </if>
         <if test="''!=searchVo.mobile and null!=searchVo.mobile">
-            and a.mobile=${searchVo.mobile}
+            and a.mobile like CONCAT('%','${searchVo.mobile}','%')
         </if>
         <if test="''!=searchVo.cusName and null!=searchVo.cusName">
-            and a.link_person=${searchVo.cusName}
+            and a.link_person like CONCAT('%','${searchVo.cusName}','%')
         </if>
         <if test="null!=searchVo.assignDateStart and ''!= searchVo.assignDateStart and null!=searchVo.assignDateEnd and ''!= searchVo.assignDateEnd">
-            and b.followDate BETWEEN ${searchVo.assignDateStart} and ${searchVo.assignDateEnd}
+            and b.assign_date BETWEEN ${searchVo.assignDateStart} and ${searchVo.assignDateEnd}
         </if>
         <if test="''!=searchVo.followUp and null!=searchVo.followUp">
-            and c.name=${searchVo.followUp}
+            and c.name like CONCAT('%','${searchVo.followUp}','%')
         </if>
         <if test="''!=searchVo.inviteCode and null!=searchVo.inviteCode">
-            and a.record_invite_code=${searchVo.inviteCode}
+            and a.record_invite_code like CONCAT('%','${searchVo.inviteCode}','%')
         </if>
     </sql>
 
@@ -387,30 +387,31 @@
             and a.create_date BETWEEN #{searchVo.createDateStart} and #{searchVo.createDateEnd}
         </if>
         <if test="''!=searchVo.mobile and null!=searchVo.mobile">
-            and a.mobile=#{searchVo.mobile}
+            and a.mobile like CONCAT('%','${searchVo.mobile}','%')
         </if>
         <if test="''!=searchVo.cusName and null!=searchVo.cusName">
-            and a.link_person=#{searchVo.cusName}
+            and a.link_person like CONCAT('%','${searchVo.cusName}','%')
         </if>
         <if test="''!=searchVo.inviteCode and null!=searchVo.inviteCode">
-            and a.record_invite_code=#{searchVo.inviteCode}
+            and a.record_invite_code  like CONCAT('%','${searchVo.inviteCode}','%')
         </if>
     </sql>
 
     <select id="findAssignsFollow" parameterType="map" resultType="com.dayi.follow.vo.agent.AssignListVo">
-        SELECT id,link_person,create_date,mobile,bank_name,id_card,bank_account,record_invite_code,audit_date
+        SELECT a.id,link_person,create_date,mobile,bank_name bank,id_card,bank_account,
+                record_invite_code inviteCode,audit_date,c.name followUp,b.assign_date
         from ${assistDataBase}.agent a
         left JOIN (
-            SELECT agent_id,follow_id,create_time followDate from follow_agent where follow_id in
+            SELECT agent_id,follow_id,assign_date from follow_agent where follow_id in
             <foreach item="item" index="index" collection="followIds"
                      open="(" separator="," close=")">
                 #{item}
             </foreach>
         )b on b.agent_id =a.id
         LEFT JOIN (
-            SELECT id,name followUp from follow_up
+            SELECT id,name  from follow_up
         )c on c.id = b.follow_id
-        where b.agent_id is not null and c.id is not null
+        where b.follow_id is not null and c.id is not null
 
        <include refid="assignsFollowCondition"/>
         order by a.audit_date desc
@@ -426,7 +427,7 @@
         left join(
             SELECT id,name from follow_up
         )c on c.id =b.follow_id
-        where b.agent_id is null
+        where b.follow_id is null
         <include refid="assignsNoFollowCondition"/>
         order by a.audit_date desc
     </select>
@@ -438,6 +439,20 @@
         )b on b.id =a.agent_id
         where b.id is not null and follow_id = #{followId}
 
+    </select>
+
+    <select id="getAgentNum" parameterType="map" resultType="java.lang.Integer">
+        SELECT count(b.id)  from follow_agent a
+        left join (SELECT id FROM ${assistDataBase}.agent  where del_status != -1) b on b.id = a.agent_id
+        WHERE  a.follow_id =#{followId}
+    </select>
+
+    <select id="getOrgNum" parameterType="map" resultType="java.lang.Integer">
+        SELECT count(b.id)  from follow_org a
+        left join (
+            SELECT id FROM ${assistDataBase}.organization  where del_status != -1 and org_type = 4
+        ) b on b.id = a.org_id
+        WHERE  a.follow_id =#{followId}
     </select>
 
 

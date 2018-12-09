@@ -73,7 +73,7 @@
     </select>
 
     <select id="getAccount" parameterType="java.lang.Integer" resultType="com.dayi.follow.model.follow.Account">
-        SELECT  useable,frozen,out_frozen,total_in_cash,cargo_interest,cargo_interest_puchas from finance_account where agent_org_id =#{agentId}
+        SELECT  useable,frozen,out_frozen,total_in_cash,cargo_interest,cargo_interest_puchas,bank_real_name from finance_account where agent_org_id =#{agentId}
     </select>
 
     <select id="findLoginLog" parameterType="map" resultType="com.dayi.follow.vo.LoginLogVo">

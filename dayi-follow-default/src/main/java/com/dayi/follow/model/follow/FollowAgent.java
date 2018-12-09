@@ -1,9 +1,12 @@
 package com.dayi.follow.model.follow;
 
 import com.dayi.mybatis.support.BaseModel;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -11,12 +14,14 @@ import java.util.Date;
  * @date 2018/7/20
  */
 public class FollowAgent extends BaseModel {
+    @NotBlank(message = "请选择跟进人！")
     private String followId;//跟进人ID
+    @NotNull(message = "请选择代理商！")
     private Integer agentId;//代理商ID
     private String followUpBefore;//之前跟进人
-    private Date followDateBefore;//跟进人变更时间
+    private Date assignDateBefore;//跟进人变更时间
 
-    private Integer customerType;//客户类型
+    private Integer customerType = 1;//客户类型
     @Transient
     private String customerTypeStr;//客户类型字符串
 
@@ -24,12 +29,34 @@ public class FollowAgent extends BaseModel {
     @Transient
     private String cusIntentionTypeStr;//客户意向度字符串
 
-    private String createBy;//创建人
-    private String updateBy;//更新人
+    private BigDecimal agentFundBefore;//变更跟进人前代理资金
+    private BigDecimal totalFundBefore;//变更跟进人前总资产
 
-    private Date followDate;//分配跟进人时间
+    private Date assignDate;//分配跟进人时间
 
+    public BigDecimal getAgentFundBefore() {
+        return agentFundBefore;
+    }
 
+    public void setAgentFundBefore(BigDecimal agentFundBefore) {
+        this.agentFundBefore = agentFundBefore;
+    }
+
+    public BigDecimal getTotalFundBefore() {
+        return totalFundBefore;
+    }
+
+    public void setTotalFundBefore(BigDecimal totalFundBefore) {
+        this.totalFundBefore = totalFundBefore;
+    }
+
+    public Date getAssignDateBefore() {
+        return assignDateBefore;
+    }
+
+    public void setAssignDateBefore(Date assignDateBefore) {
+        this.assignDateBefore = assignDateBefore;
+    }
 
     public String getFollowId() {
         return followId;
@@ -55,20 +82,13 @@ public class FollowAgent extends BaseModel {
         this.followUpBefore = followUpBefore;
     }
 
-    public Date getFollowDateBefore() {
-        return followDateBefore;
+
+    public Date getAssignDate() {
+        return assignDate;
     }
 
-    public void setFollowDateBefore(Date followDateBefore) {
-        this.followDateBefore = followDateBefore;
-    }
-
-    public Date getFollowDate() {
-        return followDate;
-    }
-
-    public void setFollowDate(Date followDate) {
-        this.followDate = followDate;
+    public void setAssignDate(Date assignDate) {
+        this.assignDate = assignDate;
     }
 
     public Integer getCustomerType() {
@@ -101,21 +121,5 @@ public class FollowAgent extends BaseModel {
 
     public void setCusIntentionTypeStr(String cusIntentionTypeStr) {
         this.cusIntentionTypeStr = cusIntentionTypeStr;
-    }
-
-    public String getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
-    }
-
-    public String getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy;
     }
 }

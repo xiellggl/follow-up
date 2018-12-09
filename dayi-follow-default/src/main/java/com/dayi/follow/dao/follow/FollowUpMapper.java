@@ -5,6 +5,7 @@ import com.dayi.follow.vo.SearchVo;
 import com.dayi.follow.vo.followup.FMDetailListVo;
 import com.dayi.follow.vo.followup.FollowUpListVo;
 import com.dayi.mybatis.support.BaseMapper;
+import com.dayi.mybatis.support.Page;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -30,8 +31,7 @@ public interface FollowUpMapper extends BaseMapper<FollowUp> {
 
     int getFollowUpsNum(@Param("mobile") String mobile, @Param("followIds") List<String> followIds, @Param("inviteCode") String inviteCode);
 
-    List<FollowUp> findAssignSelect(@Param("followUp") String followUp, @Param("followIds") List<String> followIds,
-                                    @Param("limitStart") Integer limitStart, @Param("limitEnd") Integer limitEnd);
+    Page<FollowUpListVo> findAssignSelect(Page page,@Param("followUp") String followUp, @Param("followIds") List<String> followIds);
 
     int countAssignSelect(@Param("followUp") String followUp, @Param("followIds") List<String> followIds);
 

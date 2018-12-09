@@ -27,30 +27,14 @@
         and dept_id =${deptId}
     </select>
 
-
-
-
-
-    <select id="findAssignSelect" parameterType="map" resultType="com.dayi.follow.model.follow.FollowUp">
+    <select id="findAssignSelect" parameterType="map" resultType="com.dayi.follow.vo.followup.FollowUpListVo">
         SELECT * from follow_up where identity =1 and disable !=0 and id in
         <foreach item="item" index="index" collection="followIds"
                  open="(" separator="," close=")">
             #{item}
         </foreach>
         <if test="''!=followUp and null!=followUp">
-            and name=${followUp}
-        </if>
-        limit ${limitStart},${limitEnd}
-    </select>
-
-    <select id="countAssignSelect" parameterType="map" resultType="int">
-        SELECT count(0) from follow_up where identity =1 and disable !=0 and id in
-        <foreach item="item" index="index" collection="followIds"
-                 open="(" separator="," close=")">
-            #{item}
-        </foreach>
-        <if test="''!=followUp and null!=followUp">
-            and name=#{followUp}
+            and name like CONCAT('%','${followUp}','%' )
         </if>
     </select>
 

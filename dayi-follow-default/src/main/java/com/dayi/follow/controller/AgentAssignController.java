@@ -1,8 +1,10 @@
 package com.dayi.follow.controller;
 
 import com.dayi.common.util.BizResult;
+import com.dayi.follow.base.BaseController;
 import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.conf.Constants;
+import com.dayi.follow.enums.AgentCusTypeEnum;
 import com.dayi.follow.model.follow.Agent;
 import com.dayi.follow.model.follow.FollowAgent;
 import com.dayi.follow.model.follow.FollowUp;
@@ -18,12 +20,15 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -35,7 +40,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/agent/assign")
-public class AgentAssignController {
+public class AgentAssignController extends BaseController{
     @Resource
     FollowUpService followUpService;
     @Resource
@@ -91,19 +96,25 @@ public class AgentAssignController {
      */
     @RequestMapping("/save")
     @ResponseBody
-    public BizResult assignSave(HttpServletRequest request, @RequestParam("agentId") Integer agentId, @RequestParam("followId") String followId) {
-        FollowAgent followAgent = new FollowAgent();
+    public BizResult assignSave(HttpServletRequest request, @Valid FollowAgent followAgent, BindingResult result) {
+        BizResult bizResult = checkErrors(result);
 
-        FollowUp followUp = followUpService.get(followId);
-        if (followUp == null) return BizResult.FAIL;
-
-        Agent agent = agentService.get(agentId);
-        if (agent == null) return BizResult.FAIL;
-
-        followAgent.setAgentId(agentId);
-        followAgent.setFollowId(followId);
+        if (!bizResult.isSucc()) return bizResult;//参数传入错误
 
         return followAgentService.add(followAgent);
+    }
+
+    /**
+     * 跟进人分配 -- 代理商  -- 清除分配
+     */
+    @RequestMapping("/clear")
+    @ResponseBody
+    public BizResult assignClear(HttpServletRequest request, @RequestParam Integer id) {
+        FollowAgent followAgent = followAgentService.getFollowAgentByAgentId(id);
+
+        if (followAgent == null) return BizResult.FAIL;
+
+        return followAgentService.clear(followAgent);
     }
 
     /**
@@ -129,22 +140,7 @@ public class AgentAssignController {
 
     }
 
-    /**
-     * 跟进人分配 -- 代理商  -- 清除分配
-     */
-    @RequestMapping("/clear")
-    @ResponseBody
-    public BizResult assignClear(HttpServletRequest request, @RequestParam Integer id) {
-        FollowAgent followAgent = followAgentService.getFollowAgentByAgentId(id);
 
-        if (followAgent == null) return BizResult.FAIL;
-        LoginVo currVo = userComponent.getCurrUser(request);
-
-        followAgent.setUpdateBy(currVo.getName());
-        followAgent.setUpdateTime(new Date());
-
-        return followAgentService.clear(followAgent);
-    }
 
     /**
      * 跟进人分配 -- 代理商  -- 清除分配
@@ -152,17 +148,12 @@ public class AgentAssignController {
     @RequestMapping("/clear/batch")
     @ResponseBody
     public BizResult assignClear(HttpServletRequest request, @RequestParam String ids) {
-        LoginVo currVo = userComponent.getCurrUser(request);
-
         List<FollowAgent> followAgents = new ArrayList<FollowAgent>();
 
         String[] split = StringUtils.split(ids, ",");
         for (String s : split) {
             FollowAgent followAgent = followAgentService.getFollowAgentByAgentId(Integer.valueOf(s));
             if (followAgent == null) return BizResult.FAIL;
-
-            followAgent.setUpdateBy(currVo.getName());
-            followAgent.setUpdateTime(new Date());
             followAgents.add(followAgent);
         }
         return followAgentService.clearBatch(followAgents);

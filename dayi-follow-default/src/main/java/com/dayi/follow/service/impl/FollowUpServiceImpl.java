@@ -76,7 +76,7 @@ public class FollowUpServiceImpl implements FollowUpService {
         List<FollowUpListVo> followUps = followUpMapper.findFollowUps(mobile, followIds, inviteCode, page.getStartRow(), page.getPageSize(), dayiDataBaseStr);
 
         for (FollowUpListVo vo : followUps) {
-            List<Organization> orgs = followOrgMapper.findOrgsByfollowId(vo.getId(), null,dayiDataBaseStr);
+            List<Organization> orgs = followOrgMapper.findOrgsByfollowId(vo.getId(), null, dayiDataBaseStr);
             vo.setOrgNum(orgs.size());
 
             double orgFund = countService.getOrgManageFund(orgs);
@@ -91,12 +91,15 @@ public class FollowUpServiceImpl implements FollowUpService {
     }
 
     @Override
-    public Page<FollowUp> findAssignSelect(Page page, String followUp, String deptId) {
+    public Page<FollowUpListVo> findAssignSelect(Page<FollowUpListVo> page, String followUp, String deptId) {
         List<String> followIds = this.findIdsByDeptId(deptId);
-        List<FollowUp> followUps = followUpMapper.findAssignSelect(followUp, followIds, page.getStartRow(), page.getEndRow());
-        int num = followUpMapper.countAssignSelect(followUp, followIds);
-        page.setResults(followUps);
-        page.setTotalRecord(num);
+        page = followUpMapper.findAssignSelect(page, followUp, followIds);
+
+        for (FollowUpListVo vo : page.getResults()) {
+            int agentNum = followAgentMapper.getAgentNum(vo.getId(), dayiDataBaseStr);
+            int orgNum = followAgentMapper.getOrgNum(vo.getId(), dayiDataBaseStr);
+            vo.setCusNum(agentNum + orgNum);
+        }
         return page;
     }
 

@@ -67,7 +67,11 @@ public interface FollowAgentMapper extends BaseMapper<FollowAgent> {
     //查找未分配跟进人的代理商
     Page<AssignListVo> findAssignsNoFollow(Page page, @Param("searchVo") SearchVo searchVo, @Param("assistDataBase") String assistDataBase);
 
-    List<Agent> findAgentsByFollowId(@Param("followId") String followId, @Param("assistDataBase") String dayiDataBaseStr);
+    List<Agent> findAgentsByFollowId(@Param("followId") String followId, @Param("assistDataBase") String assistDataBase);
 
+    //获取跟进代理商数量
+    int getAgentNum(@Param("followId") String followId, @Param("assistDataBase") String assistDataBase);
 
+    //获取跟进创客数量
+    int getOrgNum(@Param("followId") String followId, @Param("assistDataBase") String assistDataBase);
 }
