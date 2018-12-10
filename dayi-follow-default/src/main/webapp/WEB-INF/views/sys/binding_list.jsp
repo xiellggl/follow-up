@@ -161,7 +161,7 @@
 <div class="modal fade in" id="myModalEditFollowuper" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
 <%@include file="/inc/followup/script.jsp"%>
 <script>
-    seajs.use(["common","validate","template",],function(common,validate,template){
+    seajs.use(["common","validate","template"],function(common,validate,template){
         //菜单高亮
         common.head("system",1);
 

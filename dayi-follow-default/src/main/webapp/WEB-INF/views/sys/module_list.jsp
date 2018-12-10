@@ -4,7 +4,6 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>模块管理</title>
     <%@include file="/inc/followup/csslink.jsp"%>
 </head>
@@ -42,9 +41,6 @@
                     <div class="row">
                         <div class="space-6"></div>
                         <div>
-                            <style>
-                                .conceal-t{display: none;}
-                            </style>
                             <table class="table table-striped table-bordered table-hover">
                                 <thead>
                                 <tr>
@@ -78,14 +74,13 @@
                                 <c:forEach var="i" begin="1" end="1">
 
                                 <tr data-id="${item.id}" data-pid="${item.pid}">
-                                    <%--<td> <i class="fa fa-chevron-dcu fa-chevron-down" data-flag="1"></i></td>--%>
                                     <td>
                                         <label class="ui_checkbox">
                                         <input type="checkbox" name="permission" value="2340ca71006623a1" data-param="{type:1}" autocomplete="off">
                                         </label>
                                     </td>
                                     <td>&nbsp首页</td>
-                                    <td><a class="btn btn-minier btn-purple" data-ac="eye" data-id="30" data-flag="30">展开</a></td>
+                                    <td><a class="btn aaa btn-minier btn-purple" data-ac="eye" data-id="a30" data-flag="30">展开</a></td>
                                     <td>
                                         <a class="state-btn" data-state="1" href="javascript:;" data-id="30" title="" data-original-title="已启用">
                                             <span class="btn btn-minier btn-yellow">启用</span>
@@ -106,15 +101,15 @@
                                     </td>
                                 </tr>
 
-                                <tr  class="conceal-t click30">
-                                    <%--<td><i class="fa fa-chevron-mcu fa-chevron-down" data-flag="1"></i></td>--%>
+                                <tr  class="conceal-t link30">
                                     <th>
                                         <label class="ui_checkbox"><input type="checkbox" name="permission" value="2340ca71006623a1" data-param="{type:1}" autocomplete="off">
                                         </label>
                                     </th>
                                     <td>&nbsp&nbsp二级模块</td>
-                                    <td></td>
-                                    <td>
+                                    <td><a class="btn aaa btn-minier btn-purple" data-ac="eve" data-id="aa30" data-flag="30">展开</a></td>
+
+                                        <td>
                                         <a class="state-btn" data-state="1" href="javascript:;" data-id="30" title="" data-original-title="已启用">
                                             <span class="btn btn-minier btn-yellow">显示</span>
                                         </a>
@@ -127,7 +122,7 @@
                                     </td>
                                 </tr>
 
-                                <tr class="conceal-t click30">
+                                <tr class="conceal-t king30">
                                     <th>
                                         <label class="ui_checkbox"><input type="checkbox" name="permission" value="2340ca71006623a1" data-param="{type:1}" autocomplete="off">
                                         </label>
@@ -171,8 +166,12 @@
 <script>
     seajs.use(["common","validate","template",],function(common,validate,template){
         //菜单高亮
-
         common.head("system",1);
+
+        var elements = $('tr[class*=link]'),elementf =$('tr[class*=king]');
+        elements.css("display","none");
+        elementf.css("display","none");
+
         //添加、编辑模块方法
         var editDeptFn = function (id,pid) {
             var id = id || 0;
@@ -270,9 +269,9 @@
         });
 
         //展开收起交互
-        $('[data-ac="eye"]').on('click', function(event) {
+        $(".aaa").on('click', function(event) {
             var flag = $(this).attr("data-flag");
-            $(".click"+flag).toggle(100);
+            var acg = $(this).attr("data-ac");
             var $this=$(this);
             var me = this;
             var id = $(this).data('id');
@@ -283,9 +282,14 @@
                 me.ip = 1;
             }
             this.innerHTML = ['展开','收起'][me.ip];
+            if(acg=="eye"){
+                $(".link"+flag)[['fadeOut','fadeIn'][me.ip]]();
+            }
+            if(acg=="eve"){
+                $(".king"+flag)[['fadeOut','fadeIn'][me.ip]]();
+            }
+
         });
-
-
     });
 </script>
 <%--<script type="text/javascript">--%>
@@ -325,6 +329,8 @@
                 <%--});--%>
 
             <%--}--%>
+
+
         <%--});--%>
 
     <%--});--%>
