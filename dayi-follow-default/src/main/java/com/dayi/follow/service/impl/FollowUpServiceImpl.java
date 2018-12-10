@@ -117,6 +117,26 @@ public class FollowUpServiceImpl implements FollowUpService {
     }
 
     @Override
+    public List<FMDetailListVo> findAgentList(SearchVo searchVo, String followId) {
+        List<String> followIds = new ArrayList<String>();
+        followIds.add(followId);
+
+        List<FMDetailListVo> agentList = followUpMapper.findAgentList(searchVo, followIds, dayiDataBaseStr);
+
+        return  doAgentMore(agentList);
+    }
+
+    @Override
+    public List<FMDetailListVo> findOrgList(SearchVo searchVo, String followId) {
+        List<String> followIds = new ArrayList<String>();
+        followIds.add(followId);
+
+        List<FMDetailListVo> orgList = followUpMapper.findOrgList(searchVo, followIds, dayiDataBaseStr);
+
+        return  doAgentMore(orgList);
+    }
+
+    @Override
     public Page<FMDetailListVo> findAllAgentPage(Page page, SearchVo searchVo, String deptId) {
 
         List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
@@ -126,6 +146,15 @@ public class FollowUpServiceImpl implements FollowUpService {
         page.setResults(doAgentMore(page.getResults()));
 
         return page;
+    }
+
+    @Override
+    public List<FMDetailListVo> findAllAgentList(SearchVo searchVo, String deptId) {
+        List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
+
+        List<FMDetailListVo> agentList = followUpMapper.findAgentList(searchVo, followIds, dayiDataBaseStr);
+
+        return doAgentMore(agentList);
     }
 
     @Override
@@ -150,6 +179,15 @@ public class FollowUpServiceImpl implements FollowUpService {
         page.setResults(doOrgMore(page.getResults()));
 
         return page;
+    }
+
+    @Override
+    public List<FMDetailListVo> findAllOrgList(SearchVo searchVo, String deptId) {
+        List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
+
+        List<FMDetailListVo> orgList = followUpMapper.findOrgList(searchVo, followIds, dayiDataBaseStr);
+
+        return doAgentMore(orgList);
     }
 
     private List<FMDetailListVo> doAgentMore(List<FMDetailListVo> agents) {

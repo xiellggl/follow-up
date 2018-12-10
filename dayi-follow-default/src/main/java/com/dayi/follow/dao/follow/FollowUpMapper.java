@@ -36,6 +36,12 @@ public interface FollowUpMapper extends BaseMapper<FollowUp> {
     Page<FMDetailListVo> findAgents(Page page,@Param("searchVo") SearchVo searchVo, @Param("followIds") List<String> followIds,
                                     @Param("assistDataBase") String assistDataBase);
 
+    List<FMDetailListVo> findAgentList(@Param("searchVo") SearchVo searchVo, @Param("followIds") List<String> followIds,
+                                    @Param("assistDataBase") String assistDataBase);
+
     Page<FMDetailListVo> findOrgs(Page page,@Param("searchVo") SearchVo searchVo, @Param("followIds") List<String> followIds,
+                                  @Param("assistDataBase") String assistDataBase);
+
+    List<FMDetailListVo> findOrgList(@Param("searchVo") SearchVo searchVo, @Param("followIds") List<String> followIds,
                                   @Param("assistDataBase") String assistDataBase);
 }
