@@ -57,4 +57,6 @@ public interface CountService {
 
     DailyVo countTeamDaily(String deptId);
 
+    boolean countFollowUpLog();
+
 }

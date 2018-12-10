@@ -123,7 +123,7 @@ public class FollowUpServiceImpl implements FollowUpService {
 
         List<FMDetailListVo> agentList = followUpMapper.findAgentList(searchVo, followIds, dayiDataBaseStr);
 
-        return  doAgentMore(agentList);
+        return doAgentMore(agentList);
     }
 
     @Override
@@ -133,7 +133,7 @@ public class FollowUpServiceImpl implements FollowUpService {
 
         List<FMDetailListVo> orgList = followUpMapper.findOrgList(searchVo, followIds, dayiDataBaseStr);
 
-        return  doAgentMore(orgList);
+        return doAgentMore(orgList);
     }
 
     @Override
@@ -188,6 +188,11 @@ public class FollowUpServiceImpl implements FollowUpService {
         List<FMDetailListVo> orgList = followUpMapper.findOrgList(searchVo, followIds, dayiDataBaseStr);
 
         return doAgentMore(orgList);
+    }
+
+    @Override
+    public List<FollowUp> findAll() {
+        return followUpMapper.findAll();
     }
 
     private List<FMDetailListVo> doAgentMore(List<FMDetailListVo> agents) {

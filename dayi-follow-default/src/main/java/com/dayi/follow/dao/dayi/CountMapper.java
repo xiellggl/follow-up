@@ -69,5 +69,7 @@ public interface CountMapper {
 
     DailyVo countDaily(@Param("followId") String followId, @Param("assistDataBase") String assistDataBase);
 
+    DailyVo countFollowUpLog(String followId, String dateStart, String dateEnd);
+
 
 }

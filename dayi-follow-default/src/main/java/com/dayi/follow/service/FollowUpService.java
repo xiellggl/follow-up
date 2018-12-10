@@ -59,5 +59,8 @@ public interface FollowUpService {
     //查询跟进人管理的全部代理商明细列表-不分页
     List<FMDetailListVo> findAllOrgList(SearchVo searchVo, String deptId);
 
+    //查询所有跟进人
+    List<FollowUp> findAll();
+
 
 }

@@ -5,14 +5,12 @@ import com.dayi.common.util.BigDecimals;
 import com.dayi.follow.dao.dayi.AgentMapper;
 import com.dayi.follow.dao.dayi.CountMapper;
 import com.dayi.follow.dao.dayi.OrgMapper;
-import com.dayi.follow.dao.follow.FollowAgentMapper;
-import com.dayi.follow.dao.follow.FollowOrgMapper;
-import com.dayi.follow.dao.follow.FollowUpMapper;
-import com.dayi.follow.dao.follow.ReportMapper;
+import com.dayi.follow.dao.follow.*;
 import com.dayi.follow.enums.OrgTypeEnum;
 import com.dayi.follow.enums.SwitchStatusEnum;
 import com.dayi.follow.model.follow.Department;
 import com.dayi.follow.model.follow.FollowUp;
+import com.dayi.follow.model.follow.FollowUpLog;
 import com.dayi.follow.model.follow.Organization;
 import com.dayi.follow.service.CountService;
 import com.dayi.follow.service.DeptService;
@@ -25,6 +23,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.lang.annotation.Retention;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -49,6 +48,8 @@ public class CountServiceImpl implements CountService {
     private DeptService deptService;
     @Resource
     private OrgMapper orgMapper;
+    @Resource
+    private FollowUpLogMapper followUpLogMapper;
     @Resource
     private OrgService orgService;
     @Value("${follow.dataBase}")
@@ -124,17 +125,17 @@ public class CountServiceImpl implements CountService {
         serCusStatusVo.setFollowCusNum(followCusNum);
 
         //已认证客户数量
-        long nameCusNum = countMapper.getNameCusNum(followIds,followDataBaseStr);
+        long nameCusNum = countMapper.getNameCusNum(followIds, followDataBaseStr);
         //已绑卡客户数量
-        long cardCusNum = countMapper.getCardCusNum(followIds,followDataBaseStr);
+        long cardCusNum = countMapper.getCardCusNum(followIds, followDataBaseStr);
         //已代理客户数量
-        long agentCusNum = countMapper.getAgentCusNum(followIds,followDataBaseStr);
+        long agentCusNum = countMapper.getAgentCusNum(followIds, followDataBaseStr);
         serCusStatusVo.setNameNum(nameCusNum);
         serCusStatusVo.setCardNum(cardCusNum);
         serCusStatusVo.setAgentNum(agentCusNum);
         //资产总规模
-        double agentTotalFund = followAgentMapper.getTotalFund(followIds,dayiDataBaseStr);
-        double orgTotalFund = followOrgMapper.getTotalFund(followIds,dayiDataBaseStr);
+        double agentTotalFund = followAgentMapper.getTotalFund(followIds, dayiDataBaseStr);
+        double orgTotalFund = followOrgMapper.getTotalFund(followIds, dayiDataBaseStr);
         serCusStatusVo.setTotalFund(BigDecimals.add(agentTotalFund, orgTotalFund));
 
         return serCusStatusVo;
@@ -175,7 +176,7 @@ public class CountServiceImpl implements CountService {
 
         List<String> followIds = followUpMapper.findIdsByDeptIds(deptIds);
 
-        List<Organization> orgVos = followOrgMapper.findOrgsByfollowIds(followIds, null,dayiDataBaseStr);
+        List<Organization> orgVos = followOrgMapper.findOrgsByfollowIds(followIds, null, dayiDataBaseStr);
         orgDataVo.setOrgNum(orgVos.size());
 
         int agentNum = this.getValidAgentNum(orgVos);
@@ -183,7 +184,7 @@ public class CountServiceImpl implements CountService {
 
         DateTime dateTime = DateTime.now();
         String deadline = dateTime.millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
-        List<Organization> yesOrgVos = followOrgMapper.findOrgsByfollowIds(followIds, deadline,dayiDataBaseStr);//截至昨天的创客
+        List<Organization> yesOrgVos = followOrgMapper.findOrgsByfollowIds(followIds, deadline, dayiDataBaseStr);//截至昨天的创客
 
         double manageFund = this.getOrgManageFund(yesOrgVos);
 
@@ -235,6 +236,56 @@ public class CountServiceImpl implements CountService {
         deptIds.add(deptId);//加上自己
         //获取管辖部门（团队）的所有日报，包括KA
         return countMapper.countTeamDaily(deptIds, followDataBaseStr);
+    }
+
+    @Override
+    public boolean countFollowUpLog() {
+        List<FollowUp> followUps = followUpMapper.findAll();
+        for (FollowUp followUp : followUps) {
+            //统计昨天23:30:01到今天23:30:00的数据
+            String stratTime = DateTime.now().plusDays(-1).millisOfDay().withMaximumValue()
+                    .plusMinutes(-30).plusSeconds(2).toString("yyyy-MM-dd HH:mm:ss");
+
+            String endTime = DateTime.now().plusDays(1).millisOfDay().withMinimumValue()
+                    .plusMinutes(-30).toString("yyyy-MM-dd HH:mm:ss");
+
+            DailyVo dailyVo = countMapper.countFollowUpLog(followUp.getId(), stratTime, endTime);
+
+            FollowUpLog followUpLog = new FollowUpLog();
+            followUpLog.setFollowId(followUp.getId());
+            followUpLog.setDeptId(followUp.getDeptId());
+            followUpLog.setCreateTime(new Date());
+            followUpLog.setUpdateTime(new Date());
+            followUpLog.setOpenAccountNum(dailyVo.getOpenNum());
+            followUpLog.setInCash(dailyVo.getInCash());
+            followUpLog.setInCashNum(dailyVo.getInCashNum());
+            followUpLog.setOutCash(dailyVo.getOutCash());
+            followUpLog.setOutCashNum(dailyVo.getOutCashNum());
+
+            endTime = DateTime.now().plusDays(1).millisOfDay().withMinimumValue()
+                    .plusMinutes(-30).toString("yyyy-MM-dd HH:mm:ss");
+
+            List<Organization> orgs = followOrgMapper.findOrgsByfollowId(followUp.getId(), endTime, dayiDataBaseStr);
+
+            double manageFund = this.getOrgManageFund(orgs);
+            followUpLog.setManageFund(BigDecimal.valueOf(manageFund));
+
+            stratTime = DateTime.now().plusDays(-2).millisOfDay().withMaximumValue()
+                    .plusMinutes(-30).plusSeconds(2).toString("yyyy-MM-dd HH:mm:ss");
+
+            endTime = DateTime.now().millisOfDay().withMinimumValue().plusMinutes(-30)
+                    .toString("yyyy-MM-dd HH:mm:ss");
+
+            FollowUpLog log = followUpLogMapper.getLog(followUp.getId(), stratTime, endTime);
+
+            if (log == null) {
+                followUpLog.setManageGrowthFund(BigDecimal.valueOf(manageFund));
+            } else {
+                followUpLog.setManageGrowthFund(BigDecimal.valueOf(manageFund).subtract(log.getManageFund()));
+            }
+            followUpLogMapper.add(followUpLog);
+        }
+        return true;
     }
 
     @Override

@@ -210,4 +210,8 @@
         </if>
     </select>
 
+    <select id="findAll" resultType="com.dayi.follow.model.follow.FollowUp">
+        SELECT * from follow_up where disable!=0 and identity=1
+    </select>
+
 </mapper>

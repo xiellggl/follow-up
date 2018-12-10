@@ -44,4 +44,6 @@ public interface FollowUpMapper extends BaseMapper<FollowUp> {
 
     List<FMDetailListVo> findOrgList(@Param("searchVo") SearchVo searchVo, @Param("followIds") List<String> followIds,
                                   @Param("assistDataBase") String assistDataBase);
+
+    List<FollowUp> findAll();
 }
