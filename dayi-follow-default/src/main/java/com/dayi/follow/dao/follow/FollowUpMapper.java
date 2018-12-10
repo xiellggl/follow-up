@@ -33,19 +33,9 @@ public interface FollowUpMapper extends BaseMapper<FollowUp> {
 
     Page<FollowUpListVo> findAssignSelect(Page page,@Param("followUp") String followUp, @Param("followIds") List<String> followIds);
 
-    int countAssignSelect(@Param("followUp") String followUp, @Param("followIds") List<String> followIds);
-
-    List<FMDetailListVo> findAgents(@Param("searchVo") SearchVo searchVo, @Param("followIds") List<String> followIds,
-                                    @Param("limitStart") Integer limitStart, @Param("limitEnd") Integer limitEnd,
+    Page<FMDetailListVo> findAgents(Page page,@Param("searchVo") SearchVo searchVo, @Param("followIds") List<String> followIds,
                                     @Param("assistDataBase") String assistDataBase);
 
-    long findAgentscount(@Param("searchVo") SearchVo searchVo, @Param("followIds") List<String> followIds,
-                         @Param("assistDataBase") String assistDataBase);
-
-    List<FMDetailListVo> findOrgs(@Param("searchVo") SearchVo searchVo, @Param("followIds") List<String> followIds,
-                                  @Param("limitStart") Integer limitStart, @Param("limitEnd") Integer limitEnd,
+    Page<FMDetailListVo> findOrgs(Page page,@Param("searchVo") SearchVo searchVo, @Param("followIds") List<String> followIds,
                                   @Param("assistDataBase") String assistDataBase);
-
-    long findOrgscount(@Param("searchVo") SearchVo searchVo, @Param("followIds") List<String> followIds,
-                       @Param("assistDataBase") String assistDataBase);
 }
