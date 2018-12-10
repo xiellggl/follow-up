@@ -23,10 +23,9 @@ public class Department extends BaseModel{
     @NotBlank(message = "部门名称不能为空！")
     private String name;    // 部门名称
     private String remark;  // 部门描述
-    @NotNull(message = "请选择是否城市服务商！")
-    private Integer cityServer = 0; //是否城市服务商-默认不是
+    private Integer cityServer; //是否城市服务商-默认不是
     private String cityInviteCode; //城市服务商邀请码
-    private Integer personNum = 0;//部门人数
+    private Integer personNum;//部门人数
 
     @Transient
     @JsonIgnore

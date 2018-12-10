@@ -21,7 +21,7 @@ public class FollowAgent extends BaseModel {
     private String followUpBefore;//之前跟进人
     private Date assignDateBefore;//跟进人变更时间
 
-    private Integer customerType = 1;//客户类型
+    private Integer customerType;//客户类型
     @Transient
     private String customerTypeStr;//客户类型字符串
 

@@ -68,5 +68,5 @@ public interface UserService {
     void doAddPerson(Department department);
 
     //处理更新部门人数
-    void doUpdatePerson(Department department);
+    void doUpdatePerson(Department oldDept, String newId);
 }

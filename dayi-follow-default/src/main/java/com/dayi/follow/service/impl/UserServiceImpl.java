@@ -22,6 +22,7 @@ import com.dayi.user.authorization.authz.RolePermissionResult;
 import com.dayi.user.authorization.authz.support.SimpleAuthorizationInfo;
 import com.dayi.user.authorization.realm.Realm;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.jdbc.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -81,6 +82,7 @@ public class UserServiceImpl implements UserService, Realm {
     @Override
     public BizResult add(FollowUp followUp) {
         followUp.setId(userMapper.getNewId());
+        followUp.setDisable(MemberStatusEnum.ENABLE.getValue());
         if (userMapper.add(followUp) != 1) {
             return BizResult.FAIL;
         }
@@ -141,13 +143,12 @@ public class UserServiceImpl implements UserService, Realm {
         }
 
         if (!userEditDto.getDeptId().equals(followUp.getDeptId())) {//如果部门有更改
-            oldDept.setPid(userEditDto.getDeptId());
-            doUpdatePerson(oldDept);
+            doUpdatePerson(oldDept, userEditDto.getDeptId());
         }
 
         UserEditDto.dtoToEntity(userEditDto, followUp);
         followUp.setUpdateTime(new Date());
-        userMapper.update(followUp);
+        userMapper.updateAll(followUp);
 
         return BizResult.SUCCESS;
     }
@@ -172,7 +173,7 @@ public class UserServiceImpl implements UserService, Realm {
             followUp.setPassword(Md5Util.md5(followUp.getUserName(), newPwd));
         }
 
-        return 1 == userMapper.update(followUp) ? BizResult.SUCCESS : BizResult.FAIL;
+        return 1 == userMapper.updateAll(followUp) ? BizResult.SUCCESS : BizResult.FAIL;
     }
 
     @Override
@@ -210,7 +211,7 @@ public class UserServiceImpl implements UserService, Realm {
     public BizResult resetPwd(FollowUp followUp, String newPwd) {
         followUp.setPassword(Md5Util.md5(followUp.getUserName(), newPwd));
         followUp.setUpdateTime(new Date());
-        return 1 == userMapper.update(followUp) ? BizResult.SUCCESS : BizResult.FAIL;
+        return 1 == userMapper.updateAll(followUp) ? BizResult.SUCCESS : BizResult.FAIL;
 
     }
 
@@ -218,7 +219,7 @@ public class UserServiceImpl implements UserService, Realm {
     public BizResult enable(FollowUp followUp) {
         followUp.setDisable(MemberStatusEnum.ENABLE.getValue());
         followUp.setUpdateTime(new Date());
-        userMapper.update(followUp);
+        userMapper.updateAll(followUp);
 
         Department department = deptMapper.get(followUp.getDeptId());
 
@@ -230,7 +231,7 @@ public class UserServiceImpl implements UserService, Realm {
     public BizResult disable(FollowUp followUp) {
         followUp.setDisable(MemberStatusEnum.DISABLE.getValue());
         followUp.setUpdateTime(new Date());
-        userMapper.update(followUp);
+        userMapper.updateAll(followUp);
 
         Department department = deptService.get(followUp.getDeptId());
 
@@ -334,12 +335,12 @@ public class UserServiceImpl implements UserService, Realm {
     public void doAddPerson(Department department) {
         if (null != department) {
             department.setPersonNum(department.getPersonNum() + 1);
-            deptMapper.update(department);
+            deptMapper.updateAll(department);
             Department parentDept = department.getParentDept();
             //处理上级部门
             while (parentDept != null) {
                 parentDept.setPersonNum(parentDept.getPersonNum() + 1);
-                deptMapper.update(parentDept);
+                deptMapper.updateAll(parentDept);
                 parentDept = parentDept.getParentDept();
             }
         }
@@ -349,34 +350,36 @@ public class UserServiceImpl implements UserService, Realm {
     public void doReducePerson(Department department) {
         if (null != department) {
             department.setPersonNum(department.getPersonNum() - 1);
-            deptMapper.update(department);
+            deptMapper.updateAll(department);
             Department parentDept = department.getParentDept();
             //处理上级部门
             while (parentDept != null) {
                 parentDept.setPersonNum(parentDept.getPersonNum() - 1);
-                deptMapper.update(parentDept);
+                deptMapper.updateAll(parentDept);
                 parentDept = parentDept.getParentDept();
             }
         }
     }
 
+    /**
+     * @Description: 传新部门对象，数据可能是旧的，所以传id
+     * @Params: [department, newId]
+     * @return: void
+     * @Author: xiell
+     * @Date: 2018/12/10
+     */
     @Override
-    public void doUpdatePerson(Department department) {
-        department.setPersonNum(department.getPersonNum() - 1);
-        deptMapper.update(department);
-
-        Department oldDept = department.getParentDept();
+    public void doUpdatePerson(Department oldDept, String newId) {
         while (oldDept != null) {
             oldDept.setPersonNum(oldDept.getPersonNum() - 1);
-            deptMapper.update(oldDept);
+            deptMapper.updateAll(oldDept);
             oldDept = oldDept.getParentDept();
         }
 
-        Department newDept = deptMapper.get(department.getPid());
-
+        Department newDept = deptMapper.get(newId);
         while (newDept != null) {
             newDept.setPersonNum(newDept.getPersonNum() + 1);
-            deptMapper.update(newDept);
+            deptMapper.updateAll(newDept);
             newDept = newDept.getParentDept();
         }
     }

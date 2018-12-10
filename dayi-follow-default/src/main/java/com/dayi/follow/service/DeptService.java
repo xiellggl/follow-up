@@ -56,7 +56,7 @@ public interface DeptService {
     void doReducePerson(Department department);
 
     //处理更新部门人数
-    void doUpdatePerson(Department department);
+    void doUpdatePerson(Department department,String newPId);
 
     List<Department> getDeptTree(Department department);
 }

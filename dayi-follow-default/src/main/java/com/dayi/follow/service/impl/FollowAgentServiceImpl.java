@@ -250,6 +250,7 @@ public class FollowAgentServiceImpl implements FollowAgentService {
                         add(account.getFrozen()).add(account.getUseable()).add(account.getOutFrozen());
                 followAgent.setTotalFundBefore(totalFund);
             }
+            followAgent.setCustomerType(AgentCusTypeEnum.NOT_LINK.getValue());
 
         } else {//更新
             FollowUp oldFollowUp = followUpMapper.get(followAgent.getFollowId());
