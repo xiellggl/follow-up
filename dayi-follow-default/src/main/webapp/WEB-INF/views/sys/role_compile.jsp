@@ -50,7 +50,7 @@
                                                     <input name="form-field-checkbox" type="checkbox" class="ace">
                                                     <span class="lbl">这是模块一</span>
                                                 </label>
-                                                <i class="fa fa-chevron-dcu fa-chevron-down" data-flag="1"></i>
+                                                <a class="btn btn-minier btn-purple" data-ac="eye" data-id="1" data-flag="1">展开</a>
                                             </dt>
                                             <dd class="last conceal-tr click1" style="">
                                                 <label title="这是模块一的第一个功能">
@@ -73,7 +73,7 @@
                                                     <input name="form-field-checkbox" type="checkbox" class="ace">
                                                     <span class="lbl">这是模块二</span>
                                                 </label>
-                                                <i class="fa fa-chevron-dcu fa-chevron-down" data-flag="2"></i>
+                                                <a class="btn btn-minier btn-purple" data-ac="eye" data-id="2" data-flag="2">展开</a>
                                             </dt>
                                             <dd class="last conceal-tr click2" style="">
                                                 <label title="这是模块二的第一个功能">
@@ -114,15 +114,19 @@
 
 <script>
     //展开收起交互
-    $(".fa-chevron-dcu").on('click', function(event) {
+    $('[data-ac="eye"]').on('click', function(event) {
         var flag = $(this).attr("data-flag");
-        $(".click"+flag).toggle(150);
+        $(".click"+flag).toggle(100);
         var $this=$(this);
-        if($this.hasClass('fa-chevron-up')){
-            $this.removeClass('fa-chevron-up').addClass('fa-chevron-down');
+        var me = this;
+        var id = $(this).data('id');
+        var curr = this.innerHTML;
+        if(curr === '收起'){
+            me.ip = 0;
         }else{
-            $this.removeClass('fa-chevron-down').addClass('fa-chevron-up');
+            me.ip = 1;
         }
+        this.innerHTML = ['展开','收起'][me.ip];
     });
 </script>
 </body>

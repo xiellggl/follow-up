@@ -48,8 +48,12 @@
                             <table class="table table-striped table-bordered table-hover">
                                 <thead>
                                 <tr>
-                                    <th></th>
+                                    <th>
+                                    <label class="ui_checkbox"><input type="checkbox" name="permission" value="2340ca71006623a1" data-param="{type:1}" autocomplete="off">
+                                    </label>
+                                    </th>
                                     <th>模块名称</th>
+                                    <th>操作</th>
                                     <th class="hidden-sm hidden-xs">状态</th>
                                     <th>功能路径</th>
                                     <th>备注</th>
@@ -61,7 +65,7 @@
 
                                 <c:if test="${empty topDeptList}">
                                     <tr>
-                                        <td colspan="6" class="no_data">暂无模块，请
+                                        <td colspan="7" class="no_data">暂无模块，请
                                             <a href="javascript:;" data-toggle="modal"
                                                data-target="#myModalEditFollowuper"
                                                data-toggle="tooltip" title="新增模块">
@@ -72,9 +76,16 @@
                                 </c:if>
 
                                 <c:forEach var="i" begin="1" end="1">
+
                                 <tr data-id="${item.id}" data-pid="${item.pid}">
-                                    <td> <i class="fa fa-chevron-dcu fa-chevron-down" data-flag="1"></i></td>
+                                    <%--<td> <i class="fa fa-chevron-dcu fa-chevron-down" data-flag="1"></i></td>--%>
+                                    <td>
+                                        <label class="ui_checkbox">
+                                        <input type="checkbox" name="permission" value="2340ca71006623a1" data-param="{type:1}" autocomplete="off">
+                                        </label>
+                                    </td>
                                     <td>&nbsp首页</td>
+                                    <td><a class="btn btn-minier btn-purple" data-ac="eye" data-id="30" data-flag="30">展开</a></td>
                                     <td>
                                         <a class="state-btn" data-state="1" href="javascript:;" data-id="30" title="" data-original-title="已启用">
                                             <span class="btn btn-minier btn-yellow">启用</span>
@@ -95,10 +106,14 @@
                                     </td>
                                 </tr>
 
-                                <tr  class="conceal-t click1">
+                                <tr  class="conceal-t click30">
                                     <%--<td><i class="fa fa-chevron-mcu fa-chevron-down" data-flag="1"></i></td>--%>
-                                    <td><i class="fa" data-flag="1"></i></td>
+                                    <th>
+                                        <label class="ui_checkbox"><input type="checkbox" name="permission" value="2340ca71006623a1" data-param="{type:1}" autocomplete="off">
+                                        </label>
+                                    </th>
                                     <td>&nbsp&nbsp二级模块</td>
+                                    <td></td>
                                     <td>
                                         <a class="state-btn" data-state="1" href="javascript:;" data-id="30" title="" data-original-title="已启用">
                                             <span class="btn btn-minier btn-yellow">显示</span>
@@ -112,9 +127,13 @@
                                     </td>
                                 </tr>
 
-                                <tr class="conceal-t click1">
-                                    <td><i class="fa" data-flag="1"></i></td>
+                                <tr class="conceal-t click30">
+                                    <th>
+                                        <label class="ui_checkbox"><input type="checkbox" name="permission" value="2340ca71006623a1" data-param="{type:1}" autocomplete="off">
+                                        </label>
+                                    </th>
                                     <td>&nbsp&nbsp&nbsp这是功能权限3</td>
+                                    <td></td>
                                     <td>
                                         <a class="state-btn" data-state="1" href="javascript:;" data-id="30" title="" data-original-title="已启用">
                                             <span class="btn btn-minier btn-yellow">隐藏</span>
@@ -251,20 +270,65 @@
         });
 
         //展开收起交互
-        $(".fa-chevron-dcu").on('click', function(event) {
+        $('[data-ac="eye"]').on('click', function(event) {
             var flag = $(this).attr("data-flag");
             $(".click"+flag).toggle(100);
             var $this=$(this);
-            if($this.hasClass('fa-chevron-up')){
-                $this.removeClass('fa-chevron-up').addClass('fa-chevron-down');
+            var me = this;
+            var id = $(this).data('id');
+            var curr = this.innerHTML;
+            if(curr === '收起'){
+                me.ip = 0;
             }else{
-                $this.removeClass('fa-chevron-down').addClass('fa-chevron-up');
+                me.ip = 1;
             }
+            this.innerHTML = ['展开','收起'][me.ip];
         });
 
 
     });
 </script>
+<%--<script type="text/javascript">--%>
+    <%--/** ⚠️ 模版页不要用单行注释(异步请求会把后边的所有内容注释掉) */--%>
+    <%--seajs.use('main',function(fn){--%>
 
+        <%--fn.main(function(box,form,layout){--%>
+
+            <%--form.submit();--%>
+
+            <%--/** 展开收起交互 */--%>
+            <%--layout.on('click','[data-ac=eye]',function(){--%>
+
+                <%--var me = this, id = $(this).data('id'), curr = this.innerHTML;--%>
+
+                <%--if(curr === '收起'){--%>
+                    <%--me.ip = 0;--%>
+                    <%--eye(id);--%>
+                <%--}else{--%>
+                    <%--me.ip = 1;--%>
+                <%--}--%>
+
+                <%--this.innerHTML = ['展开','收起'][me.ip];--%>
+
+                <%--layout.find('.p'+id)[['fadeOut','fadeIn'][me.ip]]();--%>
+
+            <%--});--%>
+
+            <%--/** 展开收起交互 */--%>
+            <%--function eye(fid,eid){--%>
+
+                <%--$(layout.find('.p'+fid+' [data-ac=eye]')).each(function(i,btn){--%>
+                    <%--if(btn.innerHTML === '收起'&&$(btn).data('id') !== eid){--%>
+                        <%--$(btn).click();--%>
+                        <%--eye($(btn).data('id'));--%>
+                    <%--}--%>
+                <%--});--%>
+
+            <%--}--%>
+        <%--});--%>
+
+    <%--});--%>
+
+<%--</script>--%>
 </body>
 </html>

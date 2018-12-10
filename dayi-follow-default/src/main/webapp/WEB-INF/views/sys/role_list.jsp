@@ -58,8 +58,8 @@
                                     <td colspan="6" class="no_data">暂无角色，请
                                         <a href="javascript:;" data-toggle="modal"
                                            data-target="#myModalEditFollowuper"
-                                           data-toggle="tooltip" title="新增功能">
-                                            新增功能
+                                           data-toggle="tooltip" title="新增角色">
+                                            新增角色
                                         </a>
                                     </td>
                                 </tr>
