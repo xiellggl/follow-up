@@ -71,6 +71,10 @@
                                     </tr>
                                 </c:if>
 
+                                <style>
+                                    .conceal-t{display: none;}
+                                </style>
+
                                 <c:forEach var="i" begin="1" end="1">
 
                                 <tr data-id="${item.id}" data-pid="${item.pid}">
@@ -141,6 +145,76 @@
                                             <i class="ace-icon fa fa-trash-o bigger-130 red"></i></a>
                                     </td>
                                 </tr>
+
+                                    <tr data-id="${item.id}" data-pid="${item.pid}">
+                                        <td>
+                                            <label class="ui_checkbox">
+                                                <input type="checkbox" name="permission" value="2340ca71006623a1" data-param="{type:1}" autocomplete="off">
+                                            </label>
+                                        </td>
+                                        <td>&nbsp首页</td>
+                                        <td><a class="btn aaa btn-minier btn-purple" data-ac="eye" data-id="a55" data-flag="55">展开</a></td>
+                                        <td>
+                                            <a class="state-btn" data-state="1" href="javascript:;" data-id="55" title="" data-original-title="已启用">
+                                                <span class="btn btn-minier btn-yellow">启用</span>
+                                            </a>
+                                        </td>
+                                        <td>http://spotnewuc.fiidee.loc/#/admin/member/user </td>
+                                        <td>管理首页信息</td>
+                                        <td>
+                                            <a href="#" data-id="1" data-toggle="modal"
+                                               data-target="#myModalEditFollowuper"
+                                               data-toggle="tooltip" title="修改">
+                                                <i class="ace-icon fa fa-pencil bigger-130"></i>
+                                            </a>
+                                            <a href="#" data-act="del" data-toggle="tooltip" title="删除">
+                                                <i class="ace-icon fa fa-trash-o bigger-130 red"></i></a>
+                                            <a href="#" data-act="del" data-toggle="tooltip" title="绑定功能">
+                                                <i class="ace-icon fa fa-exchange bigger-130 red"></i></a>
+                                        </td>
+                                    </tr>
+
+                                    <tr  class="conceal-t link55">
+                                        <th>
+                                            <label class="ui_checkbox"><input type="checkbox" name="permission" value="2340ca71006623a1" data-param="{type:1}" autocomplete="off">
+                                            </label>
+                                        </th>
+                                        <td>&nbsp&nbsp二级模块</td>
+                                        <td><a class="btn aaa btn-minier btn-purple" data-ac="eve" data-id="aa55" data-flag="55">展开</a></td>
+
+                                        <td>
+                                            <a class="state-btn" data-state="1" href="javascript:;" data-id="55" title="" data-original-title="已启用">
+                                                <span class="btn btn-minier btn-yellow">显示</span>
+                                            </a>
+                                        </td>
+                                        <td>http://spotnewuc.fiidee.loc/#/admin/member/user </td>
+                                        <td>可查看预约联系时间为今天的代理商</td>
+                                        <td>
+                                            <a href="#" data-act="del" data-toggle="tooltip" title="解除绑定">
+                                                <i class="ace-icon fa fa-trash-o bigger-130 red"></i></a>
+                                        </td>
+                                    </tr>
+
+                                    <tr class="conceal-t king55">
+                                        <th>
+                                            <label class="ui_checkbox"><input type="checkbox" name="permission" value="2340ca71006623a1" data-param="{type:1}" autocomplete="off">
+                                            </label>
+                                        </th>
+                                        <td>&nbsp&nbsp&nbsp这是功能权限3</td>
+                                        <td></td>
+                                        <td>
+                                            <a class="state-btn" data-state="1" href="javascript:;" data-id="30" title="" data-original-title="已启用">
+                                                <span class="btn btn-minier btn-yellow">隐藏</span>
+                                            </a>
+                                        </td>
+                                        <td>http://spotnewuc.fiidee.loc/#/admin/member/user </td>
+                                        <td>可查看不同状态下的代理商数量（适用于业务人员）</td>
+                                        <td>
+                                            <a href="#" data-act="del" data-toggle="tooltip" title="解除绑定">
+                                                <i class="ace-icon fa fa-trash-o bigger-130 red"></i></a>
+                                        </td>
+                                    </tr>
+
                                 </c:forEach>
 
                                 </tbody>
@@ -168,9 +242,9 @@
         //菜单高亮
         common.head("system",1);
 
-        var elements = $('tr[class*=link]'),elementf =$('tr[class*=king]');
-        elements.css("display","none");
-        elementf.css("display","none");
+        // var elements = $('tr[class*=link]'),elementf =$('tr[class*=king]');
+        // elements.css("display","none");
+        // elementf.css("display","none");
 
         //添加、编辑模块方法
         var editDeptFn = function (id,pid) {
@@ -272,9 +346,8 @@
         $(".aaa").on('click', function(event) {
             var flag = $(this).attr("data-flag");
             var acg = $(this).attr("data-ac");
-            var $this=$(this);
-            var me = this;
             var id = $(this).data('id');
+            var me = this;
             var curr = this.innerHTML;
             if(curr === '收起'){
                 me.ip = 0;
@@ -282,10 +355,10 @@
                 me.ip = 1;
             }
             this.innerHTML = ['展开','收起'][me.ip];
-            if(acg=="eye"){
+            if(acg==="eye"){
                 $(".link"+flag)[['fadeOut','fadeIn'][me.ip]]();
             }
-            if(acg=="eve"){
+            if(acg==="eve"){
                 $(".king"+flag)[['fadeOut','fadeIn'][me.ip]]();
             }
 
