@@ -63,7 +63,7 @@
     </select>
 
     <select id="getFollowOrgByOrgId" parameterType="java.lang.Integer" resultType="com.dayi.follow.model.follow.FollowOrg">
-        SELECT * from follow_org where agent_id =${orgId}
+        SELECT * from follow_org where org_id =#{orgId}
     </select>
     
     <select id="findOrgs" parameterType="map" resultType="com.dayi.follow.vo.org.OrgListVo">
@@ -158,93 +158,64 @@
             and a.create_date BETWEEN ${searchVo.createDateStart} and ${searchVo.createDateEnd}
         </if>
         <if test="''!=searchVo.mobile and null!=searchVo.mobile">
-            and a.mobile=${searchVo.mobile}
+            and a.mobile like CONCAT('%','${searchVo.mobile}','%')
         </if>
         <if test="''!=searchVo.cusName and null!=searchVo.cusName">
-            and a.link_person=${searchVo.cusName}
+            and a.link_person like CONCAT('%','${searchVo.cusName}','%')
         </if>
         <if test="null!=searchVo.assignDateStart and ''!= searchVo.assignDateStart and null!=searchVo.assignDateEnd and ''!= searchVo.assignDateEnd">
-            and b.followDate BETWEEN ${searchVo.assignDateStart} and ${searchVo.assignDateEnd}
+            and b.assign_date BETWEEN ${searchVo.assignDateStart} and ${searchVo.assignDateEnd}
         </if>
         <if test="''!=searchVo.followUp and null!=searchVo.followUp">
-            and c.name=${searchVo.followUp}
+            and c.name like CONCAT('%','${searchVo.followUp}','%')
         </if>
         <if test="''!=searchVo.inviteCode and null!=searchVo.inviteCode">
-            and a.record_invite_code=${searchVo.inviteCode}
+            and a.maker_num like CONCAT('%','${searchVo.inviteCode}','%')
         </if>
     </sql>
 
     <sql id="assignsNoFollowCondition">
         <if test="null!=searchVo.createDateStart and ''!= searchVo.createDateStart and null!=searchVo.createDateEnd and ''!= searchVo.createDateEnd">
-            and a.create_date BETWEEN ${searchVo.createDateStart} and ${searchVo.createDateEnd}
+            and a.create_date BETWEEN #{searchVo.createDateStart} and #{searchVo.createDateEnd}
         </if>
         <if test="''!=searchVo.mobile and null!=searchVo.mobile">
-            and a.mobile=${searchVo.mobile}
+            and a.mobile like CONCAT('%','${searchVo.mobile}','%')
         </if>
         <if test="''!=searchVo.cusName and null!=searchVo.cusName">
-            and a.link_person=${searchVo.cusName}
+            and a.link_person like CONCAT('%','${searchVo.cusName}','%')
         </if>
         <if test="''!=searchVo.inviteCode and null!=searchVo.inviteCode">
-            and a.record_invite_code=${searchVo.inviteCode}
+            and a.maker_num  like CONCAT('%','${searchVo.inviteCode}','%')
         </if>
     </sql>
 
     <select id="findAssignsFollow" parameterType="map" resultType="com.dayi.follow.vo.agent.AssignListVo">
-        SELECT id,link_person,create_date,mobile,bank_name,id_card,bank_account,record_invite_code,audit_date
+        SELECT a.id,link_person,create_date,mobile,bank_name bank,id_card,c.name followUp,bank_account,maker_num inviteCode,b.assign_date
         from ${assistDataBase}.organization a
         left JOIN (
-        SELECT org_id,follow_id,create_date followDate from follow_org where follow_id in
+        SELECT org_id,follow_id, assign_date from follow_org where follow_id in
         <foreach item="item" index="index" collection="followIds"
                  open="(" separator="," close=")">
             #{item}
         </foreach>
         )b on b.org_id =a.id
         LEFT JOIN (
-        SELECT id,name followUp from follow_up
+        SELECT id,name  from follow_up
         )c on c.id = b.follow_id
         where b.org_id is not null and c.id is not null
-
         <include refid="assignsFollowCondition"/>
-
         order by a.audit_date desc
-        limit ${limitStart},${limitEnd}
-    </select>
-
-    <select id="getAssignsFollowNum" parameterType="map" resultType="java.lang.Long">
-        SELECT count(0)
-        from ${assistDataBase}.organization a
-        left JOIN (
-        SELECT org_id,follow_id,create_date followDate from follow_org where follow_id in
-        <foreach item="item" index="index" collection="followIds"
-                 open="(" separator="," close=")">
-            #{item}
-        </foreach>
-        )b on b.org_id =a.id
-        LEFT JOIN (
-        SELECT id,name followUp from follow_up
-        )c on c.id = b.follow_id
-        where b.org_id is not null and c.id is not null
-        <include refid="assignsFollowCondition"/>
     </select>
 
     <select id="findAssignsNoFollow" parameterType="map" resultType="com.dayi.follow.vo.agent.AssignListVo">
-        SELECT id,link_person,create_date,mobile,bank_name,id_card,bank_account,record_invite_code,audit_date
+        SELECT a.id,link_person,create_date,mobile,bank_name bank,id_card,bank_account,maker_num inviteCode,audit_date
         from ${assistDataBase}.organization a
         left JOIN (
         SELECT org_id from follow_org
-        )b on b.org_id != a.id where 1=1
+        )b on b.org_id = a.id
+        where b.org_id is null
         <include refid="assignsNoFollowCondition"/>
         order by a.audit_date desc
-        limit ${limitStart},${limitEnd}
-    </select>
-
-    <select id="getAssignsNoFollowNum" parameterType="map" resultType="java.lang.Long">
-        SELECT count(0)
-        from ${assistDataBase}.organization a
-        left JOIN (
-        SELECT org_id from follow_org
-        )b on b.org_id != a.id where 1=1
-        <include refid="assignsNoFollowCondition"/>
     </select>
 
 </mapper>

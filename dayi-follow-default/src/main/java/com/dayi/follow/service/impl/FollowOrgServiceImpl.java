@@ -1,15 +1,18 @@
 package com.dayi.follow.service.impl;
 
 
+import com.dayi.common.util.BigDecimals;
 import com.dayi.common.util.BizResult;
 import com.dayi.follow.component.UserComponent;
+import com.dayi.follow.dao.dayi.AgentMapper;
+import com.dayi.follow.dao.dayi.OrgMapper;
 import com.dayi.follow.dao.follow.FollowAgentMapper;
 import com.dayi.follow.dao.follow.FollowOrgMapper;
 import com.dayi.follow.dao.follow.FollowUpMapper;
-import com.dayi.follow.model.follow.FollowOrg;
-import com.dayi.follow.model.follow.FollowUp;
-import com.dayi.follow.model.follow.OrgContact;
+import com.dayi.follow.model.follow.*;
+import com.dayi.follow.service.CountService;
 import com.dayi.follow.service.FollowOrgService;
+import com.dayi.follow.service.OrgService;
 import com.dayi.follow.vo.agent.AssignListVo;
 import com.dayi.follow.vo.SearchVo;
 import com.dayi.mybatis.support.Page;
@@ -17,6 +20,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,6 +36,14 @@ public class FollowOrgServiceImpl implements FollowOrgService {
     private FollowOrgMapper followOrgMapper;
     @Resource
     private FollowUpMapper followUpMapper;
+    @Resource
+    private OrgService orgService;
+    @Resource
+    private OrgMapper orgMapper;
+    @Resource
+    private AgentMapper agentMapper;
+    @Resource
+    private CountService countService;
     @Resource
     private UserComponent userComponent;
     @Value("${dayi.dataBase}")
@@ -53,23 +65,53 @@ public class FollowOrgServiceImpl implements FollowOrgService {
     }
 
     @Override
-    public BizResult add(FollowOrg followOrg) {
+    public BizResult add(FollowOrg followOrgVo) {
+        FollowUp followUp = followUpMapper.get(followOrgVo.getFollowId());
+        if (followUp == null) return BizResult.FAIL;
 
-        FollowOrg followOrgOld = this.getFollowOrgByOrgId(followOrg.getOrgId());
+        Organization org = orgMapper.get(followOrgVo.getOrgId());
+        if (org == null) return BizResult.FAIL;
 
-        followOrgOld.setCreateTime(new Date());
-        followOrgOld.setUpdateTime(new Date());
+        FollowOrg followOrg = followOrgMapper.getFollowOrgByOrgId(followOrgVo.getOrgId());
+        if (followOrg == null) {//创建
+            followOrg = new FollowOrg();
+            followOrg.setId(followOrgMapper.getNewId());
+            followOrg.setOrgId(followOrgVo.getOrgId());
+            followOrg.setFollowId(followOrgVo.getFollowId());
+            followOrg.setAssignDate(new Date());
+            followOrg.setCreateTime(new Date());
+            followOrg.setUpdateTime(new Date());
 
-        if (followOrgOld == null) {//第一次分配
-        } else {//删除原来的关系
-            followOrg.setFollowDateBefore(followOrgOld.getCreateTime());//之前分配时间
+            double level1 = orgMapper.getManageFundLevel1(org.getId());
+            double level2 = 0;
+            if (org.getSwitchStatus() != null && org.getSwitchStatus().equals(1)) {//计算2级
+                level2 = orgMapper.getManageFundLevel2(org.getId());
+            }
 
-            FollowUp followUp = followUpMapper.get(followOrgOld.getFollowId());
-            followOrg.setFollowUpBefore(followUp.getName());//之前跟进人
+            followOrg.setManageFundBefore(BigDecimal.valueOf(BigDecimals.add(level1, level2)));
+        } else {//更新
+            FollowUp oldFollowUp = followUpMapper.get(followOrg.getFollowId());
+            if (oldFollowUp != null) {//当前有跟进人
+                followOrg.setFollowUpBefore(oldFollowUp.getName());
+                followOrg.setAssignDateBefore(followOrg.getAssignDate());
 
-            int delete = followOrgMapper.delete(followOrgOld);
-            if (1 != delete) return BizResult.FAIL;
+                double level1 = orgMapper.getManageFundLevel1(org.getId());
+                double level2 = 0;
+                if (org.getSwitchStatus() != null && org.getSwitchStatus().equals(1)) {//计算2级
+                    level2 = orgMapper.getManageFundLevel2(org.getId());
+                }
+                followOrg.setManageFundBefore(BigDecimal.valueOf(BigDecimals.add(level1, level2)));
 
+            } else {
+                //如何当前没有跟进人，而followOrg又不为空，说明原来有跟进人，被清除分配过，而清除分配时又会更新以下信息
+                followOrg.setFollowUpBefore(followOrg.getFollowUpBefore());
+                followOrg.setAssignDateBefore(followOrg.getAssignDateBefore());
+                followOrg.setManageFundBefore(followOrg.getManageFundBefore());
+            }
+            followOrg.setFollowId(followOrgVo.getFollowId());
+            followOrg.setAssignDate(new Date());
+            followOrg.setUpdateTime(new Date());
+            return 1 == followOrgMapper.updateAll(followOrg) ? BizResult.SUCCESS : BizResult.FAIL;
         }
         return 1 == followOrgMapper.add(followOrg) ? BizResult.SUCCESS : BizResult.FAIL;
     }
@@ -85,9 +127,26 @@ public class FollowOrgServiceImpl implements FollowOrgService {
 
     @Override
     public BizResult clear(FollowOrg followOrg) {
+        Organization org = orgMapper.get(followOrg.getOrgId());
+        if (org == null) return BizResult.FAIL;
+
+        FollowUp followUp = followUpMapper.get(followOrg.getFollowId());
+        if (followUp != null) {
+            followOrg.setFollowUpBefore(followUp.getName());
+        }
         followOrg.setFollowId(null);
-        followOrg.setFollowDate(null);
-        return 1 == followOrgMapper.update(followOrg) ? BizResult.SUCCESS : BizResult.FAIL;
+        followOrg.setAssignDateBefore(followOrg.getAssignDate());
+        followOrg.setAssignDate(null);
+
+        double level1 = orgMapper.getManageFundLevel1(org.getId());
+        double level2 = 0;
+        if (org.getSwitchStatus() != null && org.getSwitchStatus().equals(1)) {//计算2级
+            level2 = orgMapper.getManageFundLevel2(org.getId());
+        }
+        followOrg.setManageFundBefore(BigDecimal.valueOf(BigDecimals.add(level1, level2)));
+        followOrg.setUpdateTime(new Date());
+
+        return 1 == followOrgMapper.updateAll(followOrg) ? BizResult.SUCCESS : BizResult.FAIL;
     }
 
     @Override
@@ -108,19 +167,13 @@ public class FollowOrgServiceImpl implements FollowOrgService {
     @Override
     public Page findAssignPage(Page page, SearchVo searchVo, String deptId) {
         List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
-        List<AssignListVo> assignListVos = new ArrayList<>();
 
-        long num;
-        if (searchVo.getAssignStatus() == 1) {//查已分配
-            assignListVos = followOrgMapper.findAssignsFollow(page, searchVo, followIds, dayiDataBaseStr);
-            num = followOrgMapper.getAssignsFollowNum(searchVo, followIds, dayiDataBaseStr);
-        } else {//查未分配
-            assignListVos = followOrgMapper.findAssignsNoFollow(page, searchVo, dayiDataBaseStr);
-            num = followOrgMapper.getAssignsNoFollowNum(searchVo, dayiDataBaseStr);
+        if (searchVo.getAssignStatus() == null || searchVo.getAssignStatus() != 1) {//查未分配
+            page = followOrgMapper.findAssignsNoFollow(page, searchVo, dayiDataBaseStr);
+        } else {//查已分配
+            page = followOrgMapper.findAssignsFollow(page, searchVo, followIds, dayiDataBaseStr);
         }
 
-        page.setResults(assignListVos);
-        page.setTotalRecord(num);
         return page;
     }
 }

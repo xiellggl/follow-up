@@ -292,6 +292,9 @@ public class FollowAgentServiceImpl implements FollowAgentService {
 
     @Override
     public BizResult clear(FollowAgent followAgent) {
+        Agent agent = agentMapper.get(followAgent.getAgentId());
+        if (agent == null) return BizResult.FAIL;
+
         FollowUp followUp = followUpMapper.get(followAgent.getFollowId());
         if (followUp != null) {
             followAgent.setFollowUpBefore(followUp.getName());

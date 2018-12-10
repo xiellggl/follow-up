@@ -84,7 +84,7 @@
         select count(0) from  finance_login_log where login_id =#{agentId};
     </select>
 
-    <select id="findLevel2ByOrgId" parameterType="java.lang.Integer" resultType="com.dayi.follow.model.follow.Agent">
+    <select id="findLevel1ByOrgId" parameterType="java.lang.Integer" resultType="com.dayi.follow.model.follow.Agent">
         SELECT * from agent where org_id =${orgId} and del_status != -1 and invite_level =1
     </select>
 

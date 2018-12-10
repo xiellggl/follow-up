@@ -26,7 +26,7 @@ public class FollowUp extends BaseModel implements Principal {
     private String deptId;     // 所属部门ID
     @NotBlank(message = "邀请码不能为空！")
     private String inviteCode;  // 邀请码
-    private Integer disable;    // 是否启用：1--启用；0--禁用
+    private Integer disable=1;    // 是否启用：1--启用；0--禁用
     @NotNull(message = "请选择二级资产开关状态！")
     private Integer switchStatus; //二级资管状态
     private String channelRemark;//渠道码备注

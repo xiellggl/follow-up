@@ -19,7 +19,7 @@ import java.util.List;
 public interface FollowOrgMapper extends BaseMapper<FollowOrg> {
 
     //统计资产规模
-    double getTotalFund(@Param("followIds") List<String> followIds,@Param("assistDataBase") String assistDataBase);
+    double getTotalFund(@Param("followIds") List<String> followIds, @Param("assistDataBase") String assistDataBase);
 
     List<Organization> findOrgsByfollowId(@Param("followId") String followId, @Param("deadline") String deadline, @Param("assistDataBase") String assistDataBase);
 
@@ -28,10 +28,11 @@ public interface FollowOrgMapper extends BaseMapper<FollowOrg> {
     String getFollowIdByOrgId(Integer orgId);
 
     //获取follow_org
-    FollowOrg getFollowOrgByOrgId(Integer orgId);
+    FollowOrg getFollowOrgByOrgId(@Param("orgId")Integer orgId);
 
     //获取联系记录
     List<OrgContact> findContacts(@Param("orgId") Integer orgId, @Param("limitStart") Integer limitStart, @Param("limitEnd") Integer limitEnd);
+
     //获取联系记录
     int getContactsNum(@Param("orgId") Integer orgId);
 
@@ -47,20 +48,13 @@ public interface FollowOrgMapper extends BaseMapper<FollowOrg> {
                                  @Param("limitStart") Integer limitStart, @Param("limitEnd") Integer limitEnd);
 
     Integer getTeamOrgsNum(@Param("followUp") String followUp, @Param("inviteCode") String inviteCode,
-                              @Param("followIds") List<String> followIds, @Param("assistDataBase") String assistDataBase);
+                           @Param("followIds") List<String> followIds, @Param("assistDataBase") String assistDataBase);
 
     //查找已分配跟进人的创客
-    List<AssignListVo> findAssignsFollow(Page page, SearchVo searchVo, List<String> followIds, String assistDataBase);
-
-    //统计已分配跟进人的创客数量
-    long getAssignsFollowNum(SearchVo searchVo, List<String> followIds, String assistDataBase);
+    Page<AssignListVo> findAssignsFollow(Page page, @Param("searchVo") SearchVo searchVo, @Param("followIds") List<String> followIds, @Param("assistDataBase") String assistDataBase);
 
     //查找未分配跟进人的创客
-    List<AssignListVo> findAssignsNoFollow(Page page, SearchVo searchVo, String assistDataBase);
-
-    //统计未分配跟进人的创客数量
-    long getAssignsNoFollowNum(SearchVo searchVo, String assistDataBase);
-
+    Page<AssignListVo> findAssignsNoFollow(Page page, @Param("searchVo") SearchVo searchVo, @Param("assistDataBase") String assistDataBase);
 
     //获取跟进用户数量
     long getCusNum(String followId);

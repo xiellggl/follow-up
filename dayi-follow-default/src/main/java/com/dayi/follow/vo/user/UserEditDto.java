@@ -7,7 +7,7 @@ import org.springframework.beans.BeanUtils;
 
 import javax.validation.constraints.NotNull;
 
-public class FollowUpEditDto extends BaseModel {
+public class UserEditDto extends BaseModel {
 
     /**
      * 姓名
@@ -55,7 +55,7 @@ public class FollowUpEditDto extends BaseModel {
      * @param dto
      * @param followUp
      */
-    public static void dtoToEntity(FollowUpEditDto dto, FollowUp followUp) {
+    public static void dtoToEntity(UserEditDto dto, FollowUp followUp) {
         BeanUtils.copyProperties(dto, followUp);
     }
 

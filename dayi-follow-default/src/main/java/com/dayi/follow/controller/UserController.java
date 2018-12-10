@@ -13,7 +13,7 @@ import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.UserService;
 import com.dayi.follow.util.Md5Util;
 import com.dayi.follow.util.PageUtil;
-import com.dayi.follow.vo.user.FollowUpEditDto;
+import com.dayi.follow.vo.user.UserEditDto;
 import com.dayi.follow.vo.user.UserVo;
 import com.dayi.follow.vo.LoginVo;
 import com.dayi.mybatis.support.Page;
@@ -25,14 +25,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -152,14 +150,14 @@ public class UserController extends BaseController {
      */
     @RequestMapping("/update/save")
     @ResponseBody
-    public BizResult updateSave(HttpServletRequest request, @Valid FollowUpEditDto followUpEditDto, BindingResult result) {
+    public BizResult updateSave(HttpServletRequest request, @Valid UserEditDto userEditDto, BindingResult result) {
         BizResult bizResult = checkErrors(result);
         if (!bizResult.isSucc()) return bizResult;//参数传入错误
 
         LoginVo currVo = userComponent.getCurrUser(request);
-        followUpEditDto.setUpdateBy(currVo.getName());
-        followUpEditDto.setUpdateTime(new Date());
-        return userService.update(followUpEditDto);
+        userEditDto.setUpdateBy(currVo.getName());
+        userEditDto.setUpdateTime(new Date());
+        return userService.update(userEditDto);
 
 
     }

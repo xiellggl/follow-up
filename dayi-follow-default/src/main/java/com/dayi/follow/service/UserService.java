@@ -4,11 +4,9 @@ package com.dayi.follow.service;
 import com.dayi.common.util.BizResult;
 import com.dayi.follow.model.follow.Department;
 import com.dayi.follow.model.follow.FollowUp;
-import com.dayi.follow.vo.user.FollowUpEditDto;
+import com.dayi.follow.vo.user.UserEditDto;
 import com.dayi.follow.vo.user.UserVo;
 import com.dayi.mybatis.support.Page;
-
-import java.util.List;
 /**
  * @author xiell
  * @date 2018/11/12
@@ -42,7 +40,7 @@ public interface UserService {
     /**
      * 更新用户信息
      */
-    BizResult update(FollowUpEditDto followUpEditDto);
+    BizResult update(UserEditDto userEditDto);
 
     /**
      * 修改密码

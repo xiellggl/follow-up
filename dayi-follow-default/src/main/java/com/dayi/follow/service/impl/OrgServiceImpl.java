@@ -148,7 +148,7 @@ public class OrgServiceImpl implements OrgService {
             }
 
             if (switchStatus != null && switchStatus.equals(SwitchStatusEnum.CLOSE.getKey().intValue())) {//二级资管关闭
-                item.setAgentNum(agentMapper.findLevel2ByOrgId(item.getId()).size());//管理代理商人數
+                item.setAgentNum(agentMapper.findLevel1ByOrgId(item.getId()).size());//管理代理商人數
                 item.setValidAgentNum(countMapper.getOrgValidAgentNum(item.getId(), 1));//有效代理商-只算1级
             }
 

@@ -24,7 +24,7 @@ public interface AgentMapper extends BaseMapper<Agent> {
 
     List<Agent> findByOrgId(@Param("orgId") Integer orgId);
 
-    List<Agent> findLevel2ByOrgId(@Param("orgId") Integer orgId);
+    List<Agent> findLevel1ByOrgId(@Param("orgId") Integer orgId);
 
     //获取代理中的资金
     double getAgentFund(@Param("agentId")Integer agentId);
