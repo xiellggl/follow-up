@@ -89,7 +89,7 @@ public class FollowupController extends BaseController {
 
         page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
 
-        followUpService.findAllAgentPage(page, searchVo, currVo.getDeptId());
+        page = followUpService.findAllAgentPage(page, searchVo, currVo.getDeptId());
 
         model.addAttribute("page", page);
 

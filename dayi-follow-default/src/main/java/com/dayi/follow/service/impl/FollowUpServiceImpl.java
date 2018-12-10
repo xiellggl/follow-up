@@ -107,13 +107,11 @@ public class FollowUpServiceImpl implements FollowUpService {
     public Page<FMDetailListVo> findAgentPage(Page page, SearchVo searchVo, String followId) {
 
         List<String> followIds = new ArrayList<String>();
+        followIds.add(followId);
 
-        List<FMDetailListVo> agents = followUpMapper.findAgents(searchVo, followIds, page.getStartRow(), page.getPageSize(), dayiDataBaseStr);
+        page = followUpMapper.findAgents(page, searchVo, followIds, dayiDataBaseStr);
 
-        long agentsCount = followUpMapper.findAgentscount(searchVo, followIds, dayiDataBaseStr);
-
-        page.setResults(doAgentMore(agents));
-        page.setTotalRecord(agentsCount);
+        page.setResults(doAgentMore(page.getResults()));
 
         return page;
     }
@@ -123,12 +121,9 @@ public class FollowUpServiceImpl implements FollowUpService {
 
         List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
 
-        List<FMDetailListVo> agents = followUpMapper.findAgents(searchVo, followIds, page.getStartRow(), page.getPageSize(), dayiDataBaseStr);
+        page = followUpMapper.findAgents(page, searchVo, followIds, dayiDataBaseStr);
 
-        long agentsCount = followUpMapper.findAgentscount(searchVo, followIds, dayiDataBaseStr);
-
-        page.setResults(doAgentMore(agents));
-        page.setTotalRecord(agentsCount);
+        page.setResults(doAgentMore(page.getResults()));
 
         return page;
     }
@@ -136,13 +131,11 @@ public class FollowUpServiceImpl implements FollowUpService {
     @Override
     public Page<FMDetailListVo> findOrgPage(Page page, SearchVo searchVo, String followId) {
         List<String> followIds = new ArrayList<String>();
+        followIds.add(followId);
 
-        List<FMDetailListVo> orgs = followUpMapper.findOrgs(searchVo, followIds, page.getStartRow(), page.getPageSize(), dayiDataBaseStr);
+        page = followUpMapper.findOrgs(page, searchVo, followIds, dayiDataBaseStr);
 
-        long orgscount = followUpMapper.findOrgscount(searchVo, followIds, dayiDataBaseStr);
-
-        page.setResults(doOrgMore(orgs));
-        page.setTotalRecord(orgscount);
+        page.setResults(doOrgMore(page.getResults()));
 
         return page;
     }
@@ -152,12 +145,9 @@ public class FollowUpServiceImpl implements FollowUpService {
 
         List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
 
-        List<FMDetailListVo> orgs = followUpMapper.findOrgs(searchVo, followIds, page.getStartRow(), page.getPageSize(), dayiDataBaseStr);
+        page = followUpMapper.findOrgs(page, searchVo, followIds, dayiDataBaseStr);
 
-        long orgscount = followUpMapper.findOrgscount(searchVo, followIds, dayiDataBaseStr);
-
-        page.setResults(doOrgMore(orgs));
-        page.setTotalRecord(orgscount);
+        page.setResults(doOrgMore(page.getResults()));
 
         return page;
     }
@@ -167,12 +157,14 @@ public class FollowUpServiceImpl implements FollowUpService {
             agent.setAgentCargo(agentMapper.getAgentFund(agent.getId()));//代理资金
 
             Account account = agentMapper.getAccount(agent.getId());
-            double totalFund = account.getCargoInterest().multiply(BigDecimal.valueOf(0.8))//总资金
-                    .add(account.getCargoInterestPuchas())
-                    .add(account.getFrozen())
-                    .add(account.getOutFrozen())
-                    .add(account.getUseable()).doubleValue();
-            agent.setTotalFund(totalFund);
+            if (account != null) {
+                double totalFund = account.getCargoInterest().multiply(BigDecimal.valueOf(0.8))//总资金
+                        .add(account.getCargoInterestPuchas())
+                        .add(account.getFrozen())
+                        .add(account.getOutFrozen())
+                        .add(account.getUseable()).doubleValue();
+                agent.setTotalFund(totalFund);
+            }
 
             agent.setGrowthCargo(BigDecimals.subtract(agent.getAgentCargo(), agent.getAgentCargoBefore()));//净增货值
             agent.setGrowthFund(BigDecimals.subtract(agent.getTotalFund(), agent.getTotalFundBefore()));//净增资金
