@@ -6,9 +6,16 @@ import com.dayi.common.web.util.IPUtil;
 import com.dayi.follow.base.BaseController;
 import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.conf.Constants;
+import com.dayi.follow.dao.follow.FollowAgentMapper;
+import com.dayi.follow.dao.follow.FollowOrgMapper;
+import com.dayi.follow.dao.follow.FollowUpLogMapper;
+import com.dayi.follow.dao.follow.FollowUpMapper;
 import com.dayi.follow.enums.MemberStatusEnum;
 import com.dayi.follow.model.follow.Department;
 import com.dayi.follow.model.follow.FollowUp;
+import com.dayi.follow.model.follow.FollowUpLog;
+import com.dayi.follow.model.follow.Organization;
+import com.dayi.follow.service.CountService;
 import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.UserService;
 import com.dayi.follow.util.Md5Util;
@@ -20,8 +27,10 @@ import com.dayi.mybatis.support.Page;
 import com.dayi.user.authorization.AuthorizationManager;
 import com.dayi.user.authorization.authc.support.UsernamePasswordToken;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,6 +40,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -47,6 +57,18 @@ public class UserController extends BaseController {
     UserService userService;
     @Resource
     DeptService deptService;
+    @Resource
+    FollowUpMapper followUpMapper;
+    @Resource
+    FollowAgentMapper followAgentMapper;
+    @Resource
+    FollowUpLogMapper followUpLogMapper;
+    @Resource
+    FollowOrgMapper followOrgMapper;
+    @Value("${dayi.dataBase}")
+    String dayiDataBaseStr;
+    @Resource
+    CountService countService;
     private static Logger logger = LoggerFactory.getLogger(UserController.class);
 
     /**
@@ -112,7 +134,7 @@ public class UserController extends BaseController {
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
         model.addAttribute("pageUrl", pageUrl);
         model.addAttribute("page", page);
-        model.addAttribute("deptList",deptList);
+        model.addAttribute("deptList", deptList);
         return "sys/user_list";
     }
 
@@ -172,7 +194,6 @@ public class UserController extends BaseController {
         FollowUp followUp = userService.get(id);
         return BizResult.succ(followUp, "操作成功！");
     }
-
 
 
     /**
@@ -294,6 +315,71 @@ public class UserController extends BaseController {
                                     @RequestParam(value = "confirmNewPwd", required = true) String confirmNewPwd) {
         LoginVo currVo = userComponent.getCurrUser(request);
         return userService.editPwd(currVo.getId(), oldPwd, newPwd, confirmNewPwd);
+    }
+
+    /**
+     * 便于测试，生成销售统计，上线删除
+     */
+    @RequestMapping("/test/log")
+    public BizResult test(Date date) {
+        if (date == null) return BizResult.FAIL;
+        List<FollowUp> followUps = followUpMapper.findAll();
+        for (FollowUp followUp : followUps) {
+            //统计昨天23:30:01到今天23:30:00的数据
+            String stratTime = new DateTime(date).plusDays(-1).millisOfDay().withMaximumValue()
+                    .plusMinutes(-30).plusSeconds(2).toString("yyyy-MM-dd HH:mm:ss");
+
+            String endTime = new DateTime(date).plusDays(1).millisOfDay().withMinimumValue()
+                    .plusMinutes(-30).toString("yyyy-MM-dd HH:mm:ss");
+
+            FollowUpLog followUpLog = new FollowUpLog();
+
+            int openNum = followAgentMapper.getOpenAccountNum(followUp.getId(), stratTime, endTime, dayiDataBaseStr);
+            followUpLog.setOpenAccountNum(openNum);
+
+            double inCash = followAgentMapper.getInCash(followUp.getId(), stratTime, endTime, dayiDataBaseStr);
+            followUpLog.setInCash(BigDecimal.valueOf(inCash));
+
+            int inCashNum = followAgentMapper.getInCashNum(followUp.getId(), stratTime, endTime, dayiDataBaseStr);
+            followUpLog.setInCashNum(inCashNum);
+
+            double outCash = followAgentMapper.getOutCash(followUp.getId(), stratTime, endTime, dayiDataBaseStr);
+            followUpLog.setOutCash(BigDecimal.valueOf(outCash));
+
+            int outCashNum = followAgentMapper.getOutCashNum(followUp.getId(), stratTime, endTime, dayiDataBaseStr);
+            followUpLog.setOutCashNum(outCashNum);
+
+            followUpLog.setId(followUpLogMapper.getNewId());
+            followUpLog.setFollowId(followUp.getId());
+            followUpLog.setDeptId(followUp.getDeptId());
+            followUpLog.setCreateTime(date);
+            followUpLog.setUpdateTime(date);
+
+            endTime = new DateTime(date).plusDays(1).millisOfDay().withMinimumValue()
+                    .plusMinutes(-30).toString("yyyy-MM-dd HH:mm:ss");
+
+            List<Organization> orgs = followOrgMapper.findOrgsByfollowId(followUp.getId(), endTime, dayiDataBaseStr);
+
+            double manageFund = countService.getOrgManageFund(orgs);
+            followUpLog.setManageFund(BigDecimal.valueOf(manageFund));
+
+            stratTime = new DateTime(date).plusDays(-2).millisOfDay().withMaximumValue()
+                    .plusMinutes(-30).plusSeconds(2).toString("yyyy-MM-dd HH:mm:ss");
+
+            endTime = new DateTime(date).millisOfDay().withMinimumValue().plusMinutes(-30)
+                    .toString("yyyy-MM-dd HH:mm:ss");
+
+            FollowUpLog log = followUpLogMapper.getLog(followUp.getId(), stratTime, endTime);
+
+            if (log == null) {
+                followUpLog.setManageGrowthFund(BigDecimal.valueOf(manageFund));
+            } else {
+                followUpLog.setManageGrowthFund(BigDecimal.valueOf(manageFund).subtract(log.getManageFund()));
+            }
+            followUpLogMapper.add(followUpLog);
+        }
+        return BizResult.SUCCESS;
+
     }
 
 

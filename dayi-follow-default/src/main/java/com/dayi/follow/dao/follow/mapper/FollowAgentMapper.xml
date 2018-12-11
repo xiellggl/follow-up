@@ -269,25 +269,10 @@
         --         根据分配日期排序
         ORDER BY a.assign_date DESC
     </sql>
-    <!--分页-->
-    <sql id="pageSql">
-        <if test="null!=limitStart and null!=limitEnd">
-            LIMIT #{limitStart},#{limitEnd}
-        </if>
-    </sql>
 
     <!--分页查找代理商列表-->
     <select id="findAgents" resultMap="BaseResultMap" parameterType="map">
         <include refid="findAgentsSelect"/>
-        <include refid="findAgentsSql"/>
-        <include refid="followConditionSql"/>
-        <include refid="ConditionQuery"/>
-        <include refid="pageSql"/>
-    </select>
-
-    <!--统计分页代理商列表总数-->
-    <select id="findAgentsCount" resultType="java.lang.Integer" parameterType="map">
-        <include refid="countNum"/>
         <include refid="findAgentsSql"/>
         <include refid="followConditionSql"/>
         <include refid="ConditionQuery"/>
@@ -299,16 +284,8 @@
         <include refid="findAgentsSql"/>
         <include refid="followTeamConditionSql"/>
         <include refid="ConditionQuery"/>
-        <include refid="pageSql"/>
     </select>
 
-    <!--统计分页团队代理商列表总数-->
-    <select id="findTeamAgentsCount" resultType="java.lang.Integer" parameterType="map">
-        <include refid="countNum"/>
-        <include refid="findAgentsSql"/>
-        <include refid="followTeamConditionSql"/>
-        <include refid="ConditionQuery"/>
-    </select>
 
     <!--统计待联系代理商id集合-->
     <select id="getWaitLinkAgentIds" resultType="java.lang.Integer" parameterType="string">
@@ -347,10 +324,6 @@
 
     <select id="findContacts" resultType="com.dayi.follow.vo.agent.AgentContactVo" parameterType="java.lang.Integer" >
         SELECT * FROM `agent_contact` WHERE agent_id = #{agentId} order by create_time desc LIMIT #{limitStart},#{limitEnd}
-    </select>
-
-    <select id="getContactsNum" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
-        SELECT count(0) FROM `agent_contact` WHERE agent_id = #{agentId}
     </select>
 
     <select id="getAssignDate" parameterType="java.lang.Integer" resultType="java.util.Date">
@@ -454,6 +427,93 @@
         ) b on b.id = a.org_id
         WHERE  a.follow_id =#{followId}
     </select>
+
+    <select id="getOpenAccountNum" parameterType="map" resultType="java.lang.Integer">
+        SELECT count(create_date) from follow_agent a
+        LEFT JOIN (
+            SELECT min(create_date) as create_date,agent from ${assistDataBase}.protocol
+            group by agent HAVING create_date between #{startDate}  and #{endDate}
+        )b on b.agent=a.agent_id
+        WHERE a.follow_id =#{followId}
+    </select>
+
+    <select id="getInCash" parameterType="map" resultType="java.lang.Double">
+        SELECT IFNULL(sum(inAccrual),0) from follow_agent a
+        LEFT JOIN (
+            select agent_org_id,sum(accrual)inAccrual
+            from ${assistDataBase}.finance_account_log WHERE create_date between  #{startDate}  and #{endDate}
+            and pay_type=1 and account_type != 1 GROUP BY agent_org_id
+        )b on b.agent_org_id=a.agent_id
+        WHERE a.follow_id =#{followId}
+    </select>
+
+    <select id="getInCashNum" parameterType="map" resultType="java.lang.Integer">
+        SELECT count(b.pay_type) from follow_agent a
+        LEFT JOIN (
+            select agent_org_id,pay_type
+            from ${assistDataBase}.finance_account_log WHERE create_date between  #{startDate}  and #{endDate}
+            and pay_type=1 and account_type != 1
+            GROUP BY agent_org_id
+        )b on b.agent_org_id=a.agent_id
+        WHERE a.follow_id =#{followId}
+    </select>
+
+    <select id="getOutCash" parameterType="map" resultType="java.lang.Double">
+        SELECT IFNULL(sum(outAccrual),0) from follow_agent a
+        LEFT JOIN (
+            select agent_org_id,sum(accrual)outAccrual
+            from ${assistDataBase}.finance_account_log WHERE create_date between  #{startDate}  and #{endDate}
+            and pay_type in (-9,-112) and account_type != 1 GROUP BY agent_org_id
+        )b on b.agent_org_id=a.agent_id
+        WHERE a.follow_id =#{followId}
+    </select>
+
+    <select id="getOutCashNum" parameterType="map" resultType="java.lang.Integer">
+        SELECT count(b.pay_type) from follow_agent a
+        LEFT JOIN (
+            select agent_org_id ,pay_type
+            from ${assistDataBase}.finance_account_log WHERE create_date between  #{startDate}  and #{endDate}
+            and pay_type in (-9,-112) and account_type != 1
+            GROUP BY agent_org_id
+        )b on b.agent_org_id=a.agent_id
+        WHERE a.follow_id =#{followId}
+    </select>
+
+    <select id="">
+        SELECT count(create_date)newOpenNum,IFNULL(sum(inAccrual),0) as cyberBankTotalInCash,count(fal3.pay_type)InCashNum,
+        IFNULL(sum(outAccrual),0) as totalApplyOutCash,count(fal4.pay_type)OutCashNum
+        from (SELECT id,flow_id from agent where del_status != -1 )a
+        left join  (
+            select agent_org_id,sum(accrual)inAccrual
+            from finance_account_log WHERE create_date between '.append(dateStart)'  and '.append(dateEnd)'
+            and pay_type=1 and account_type != 1 GROUP BY agent_org_id
+        )fal1 on fal1.agent_org_id=a.id
+        left join (
+            select agent_org_id,sum(accrual)outAccrual
+            from finance_account_log WHERE create_date between '.append(dateStart)'  and '.append(dateEnd)'
+            and pay_type in (-9,-112) and account_type != 1 GROUP BY agent_org_id
+        )fal2 on fal2.agent_org_id=a.id
+        left join (
+            select agent_org_id,pay_type
+            from finance_account_log WHERE create_date between '.append(dateStart)'  and '.append(dateEnd)'
+            and pay_type=1 and account_type != 1
+            GROUP BY agent_org_id
+        )fal3 on fal3.agent_org_id=a.id
+        left join(
+            select agent_org_id ,pay_type
+            from finance_account_log WHERE create_date between '.append(dateStart)'  and '.append(dateEnd)'
+            and pay_type in (-9,-112) and account_type != 1
+            GROUP BY agent_org_id
+        )fal4 on fal4.agent_org_id=a.id
+        left join (
+            SELECT min(protocol.create_date) as create_date,agent from protocol
+            group by protocol.agent HAVING create_date between '.append(dateStart)'  and '.append(dateEnd)'
+        )p on a.id=p.agent
+        where 1=1 and a.flow_id = .append(flowId) ;
+
+    </select>
+
+
 
 
 

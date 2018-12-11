@@ -57,14 +57,10 @@ public class AgentServiceImpl implements AgentService {
         String startStr = dateTime.millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
         String endStr = dateTime.millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
 
-        List<AgentListVo> agents = followAgentMapper.findAgents(searchVo,
-                ids, startStr, endStr, followId, dayiDataBaseStr,
-                page.getStartRow(), page.getPageSize());
+        page = followAgentMapper.findAgents(page, searchVo,
+                ids, startStr, endStr, followId, dayiDataBaseStr);
 
-        Integer totalCount = followAgentMapper.findAgentsCount(searchVo, ids, startStr, endStr, followId, dayiDataBaseStr);
-
-        page.setResults(this.queryByList(agents));
-        page.setTotalRecord(totalCount);
+        this.queryByList(page.getResults());
 
         return page;
     }
@@ -85,14 +81,10 @@ public class AgentServiceImpl implements AgentService {
         String startStr = dateTime.millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
         String endStr = dateTime.millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
 
-        List<AgentListVo> agents = followAgentMapper.findTeamAgents(searchVo,
-                ids, startStr, endStr, followIds, dayiDataBaseStr,
-                page.getStartRow(), page.getPageSize());
+        page = followAgentMapper.findTeamAgents(page, searchVo,
+                ids, startStr, endStr, followIds, dayiDataBaseStr);
 
-        Integer totalCount = followAgentMapper.findTeamAgentsCount(searchVo, ids, startStr, endStr, followIds, dayiDataBaseStr);
-
-        page.setResults(this.queryByList(agents));
-        page.setTotalRecord(totalCount);
+        this.queryByList(page.getResults());
 
         return page;
     }

@@ -188,11 +188,7 @@ public class FollowAgentServiceImpl implements FollowAgentService {
 
     @Override
     public Page findContacts(Page page, Integer agentId) {
-        List<AgentContactVo> contacts = followAgentMapper.findContacts(agentId, page.getStartRow(), page.getPageSize());
-        int contactsNum = followAgentMapper.getContactsNum(agentId);
-        page.setResults(contacts);
-        page.setTotalRecord(contactsNum);
-        return page;
+        return followAgentMapper.findContacts(page, agentId);
     }
 
     @Override

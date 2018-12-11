@@ -249,18 +249,28 @@ public class CountServiceImpl implements CountService {
             String endTime = DateTime.now().plusDays(1).millisOfDay().withMinimumValue()
                     .plusMinutes(-30).toString("yyyy-MM-dd HH:mm:ss");
 
-            DailyVo dailyVo = countMapper.countFollowUpLog(followUp.getId(), stratTime, endTime);
-
             FollowUpLog followUpLog = new FollowUpLog();
+
+            int openNum = followAgentMapper.getOpenAccountNum(followUp.getId(), stratTime, endTime, dayiDataBaseStr);
+            followUpLog.setOpenAccountNum(openNum);
+
+            double inCash = followAgentMapper.getInCash(followUp.getId(), stratTime, endTime, dayiDataBaseStr);
+            followUpLog.setInCash(BigDecimal.valueOf(inCash));
+
+            int inCashNum = followAgentMapper.getInCashNum(followUp.getId(), stratTime, endTime, dayiDataBaseStr);
+            followUpLog.setInCashNum(inCashNum);
+
+            double outCash = followAgentMapper.getOutCash(followUp.getId(), stratTime, endTime, dayiDataBaseStr);
+            followUpLog.setOutCash(BigDecimal.valueOf(outCash));
+
+            int outCashNum = followAgentMapper.getOutCashNum(followUp.getId(), stratTime, endTime, dayiDataBaseStr);
+            followUpLog.setOutCashNum(outCashNum);
+
+            followUpLog.setId(followUpLogMapper.getNewId());
             followUpLog.setFollowId(followUp.getId());
             followUpLog.setDeptId(followUp.getDeptId());
             followUpLog.setCreateTime(new Date());
             followUpLog.setUpdateTime(new Date());
-            followUpLog.setOpenAccountNum(dailyVo.getOpenNum());
-            followUpLog.setInCash(dailyVo.getInCash());
-            followUpLog.setInCashNum(dailyVo.getInCashNum());
-            followUpLog.setOutCash(dailyVo.getOutCash());
-            followUpLog.setOutCashNum(dailyVo.getOutCashNum());
 
             endTime = DateTime.now().plusDays(1).millisOfDay().withMinimumValue()
                     .plusMinutes(-30).toString("yyyy-MM-dd HH:mm:ss");

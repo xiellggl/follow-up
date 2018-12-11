@@ -267,5 +267,5 @@
         WHERE b.id is not null and  date(create_time) =
         (select date(max(create_time)) from ${assistDataBase}.follow_up_log)
     </select>
-    
+
 </mapper>
