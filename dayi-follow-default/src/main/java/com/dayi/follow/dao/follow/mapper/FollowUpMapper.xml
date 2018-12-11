@@ -214,4 +214,8 @@
         SELECT * from follow_up where disable!=0 and identity=1
     </select>
 
+    <select id="getByInviteCode" parameterType="java.lang.String" resultType="com.dayi.follow.model.follow.FollowUp">
+        SELECT * from follow_up where invite_code =#{inviteCode} and  identity =1 and disable!=0
+    </select>
+
 </mapper>

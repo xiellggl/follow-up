@@ -88,4 +88,8 @@
         SELECT * from agent where org_id =${orgId} and del_status != -1 and invite_level =1
     </select>
 
+    <select id="getByUcId" parameterType="java.lang.String" resultType="com.dayi.follow.model.follow.Agent">
+        SELECT * from agent where uc_id =#{ucId}
+    </select>
+
 </mapper>

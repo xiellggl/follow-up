@@ -46,4 +46,6 @@ public interface FollowUpMapper extends BaseMapper<FollowUp> {
                                   @Param("assistDataBase") String assistDataBase);
 
     List<FollowUp> findAll();
+
+    FollowUp getByInviteCode(String inviteCode);
 }

@@ -27,33 +27,37 @@ public interface AgentMapper extends BaseMapper<Agent> {
     List<Agent> findLevel1ByOrgId(@Param("orgId") Integer orgId);
 
     //获取代理中的资金
-    double getAgentFund(@Param("agentId")Integer agentId);
+    double getAgentFund(@Param("agentId") Integer agentId);
 
     //获取当日入金
-    double getDayInCash(@Param("agentId")Integer agentId, @Param("todayStart")String todayStart,@Param("todayEnd") String todayEnd);
+    double getDayInCash(@Param("agentId") Integer agentId, @Param("todayStart") String todayStart, @Param("todayEnd") String todayEnd);
 
     //获取当日最后一笔入金时间
-    Date getDayLastInCashTime(@Param("agentId")Integer agentId, @Param("todayStart")String todayStart,@Param("todayEnd") String todayEnd);
+    Date getDayLastInCashTime(@Param("agentId") Integer agentId, @Param("todayStart") String todayStart, @Param("todayEnd") String todayEnd);
 
     //获取今日出金
-    double getDayOutCash(@Param("agentId")Integer agentId,@Param("todayStart") String todayStart,@Param("todayEnd") String todayEnd);
+    double getDayOutCash(@Param("agentId") Integer agentId, @Param("todayStart") String todayStart, @Param("todayEnd") String todayEnd);
 
     //获取今日转出到卡
-    double getDayToCard(@Param("agentId")Integer agentId,@Param("todayStart") String todayStart,@Param("todayEnd") String todayEnd);
+    double getDayToCard(@Param("agentId") Integer agentId, @Param("todayStart") String todayStart, @Param("todayEnd") String todayEnd);
 
     //获取今日转出申请
-    double getDayApplyOutCash(@Param("agentId")Integer agentId,@Param("todayStart") String todayStart,@Param("todayEnd") String todayEnd);
+    double getDayApplyOutCash(@Param("agentId") Integer agentId, @Param("todayStart") String todayStart, @Param("todayEnd") String todayEnd);
 
     //获取今日最后一笔转出申请时间
-    Date getDayLastApplyOutCashTime(@Param("agentId")Integer agentId,@Param("todayStart") String todayStart,@Param("todayEnd") String todayEnd);
+    Date getDayLastApplyOutCashTime(@Param("agentId") Integer agentId, @Param("todayStart") String todayStart, @Param("todayEnd") String todayEnd);
 
     //获取已开通银行通道类型（字符串形式）
-    String getOpenBankIdsStr(@Param("agentId")Integer agentId);
-    //获取代理商的账户
-    Account getAccount(@Param("agentId")Integer agentId);
+    String getOpenBankIdsStr(@Param("agentId") Integer agentId);
 
     //获取代理商的账户
-    List<LoginLogVo> findLoginLog(@Param("agentId")Integer agentId,@Param("limitStart") Integer limitStart,@Param("limitEnd") Integer limitEnd);
+    Account getAccount(@Param("agentId") Integer agentId);
+
     //获取代理商的账户
-    long getLoginLogNum(@Param("agentId")Integer agentId);
+    List<LoginLogVo> findLoginLog(@Param("agentId") Integer agentId, @Param("limitStart") Integer limitStart, @Param("limitEnd") Integer limitEnd);
+
+    //获取代理商的账户
+    long getLoginLogNum(@Param("agentId") Integer agentId);
+
+    Agent getByUcId(String ucId);
 }
