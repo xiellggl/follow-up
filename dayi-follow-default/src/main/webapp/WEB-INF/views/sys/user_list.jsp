@@ -214,13 +214,13 @@
 
                         <div class="space-4"></div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label no-padding inline"> 是否负责人： </label>
+                            <label class="col-sm-2 control-label no-padding inline"> 是否跟进人： </label>
                             <div class="col-sm-9 inline align-middle" >
-                                <label style="margin-right: 15px;"><input type="radio" name="isManager" value="0"
-                                                                          {{id==null||isManager==0?'checked':''}}/>
+                                <label style="margin-right: 15px;"><input type="radio" name="identity" value="2"
+                                                                          {{id==null||identity==2?'checked':''}}/>
                                     否</label>
-                                <label><input type="radio" name="isManager" value="1"
-                                              {{isManager==1?'checked':''}}/> 是</label>
+                                <label><input type="radio" name="identity" value="1"
+                                              {{identity==1?'checked':''}}/> 是</label>
                             </div>
                         </div>
 
@@ -228,11 +228,11 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label no-padding inline"> 二级资产开关： </label>
                             <div class="col-sm-9 inline align-middle" >
-                                <label style="margin-right: 15px;"><input type="radio" name="isAsset" value="0"
-                                                                          {{id==null||isAsset==0?'checked':''}}/>
+                                <label style="margin-right: 15px;"><input type="radio" name="switchStatus" value="1"
+                                                                          {{id==null||switchStatus==1?'checked':''}}/>
                                     开启</label>
-                                <label><input type="radio" name="isAsset" value="1"
-                                              {{isAsset==1?'checked':''}}/> 关闭</label>
+                                <label><input type="radio" name="switchStatus" value="-1"
+                                              {{switchStatus==-1?'checked':''}}/> 关闭</label>
                             </div>
                         </div>
 

@@ -116,7 +116,7 @@
             var id = id || 0;
             var url = "/role/edit";
             if (id > 0) {
-                url = "/permission/edit?id="+id
+                url = "/role/edit?id="+id
             }
             var html = "";
 
@@ -188,15 +188,15 @@
         //禁用/启用
         $(".state-btn").on("click", function () {
             var state = $(this).data("state");
-            var act = state == 0 ? "enable" : "disable";
-            var stateStr = act == "enable" ? "启用" : "禁用";
-            var className = act == "enable" ? "btn-yellow" : "btn-danger";
+            var act = state == 0 ? "true" : "false";
+            var stateStr = act == "true" ? "启用" : "禁用";
+            var className = act == "true" ? "btn-yellow" : "btn-danger";
             var $btn = $(this);
             var id = $(this).closest("tr").data("id");
             layer.confirm('<p class="tc">是否确定' + stateStr + '此用户</p>', {icon: 3, title: "温馨提示"}, function (index) {
                 layer.close(index);
                 common.ajax.handle({
-                    url: "/user/" + act + "/" + id + ".json",
+                    url: "/role/enableModule?id="+id,
                     succback: function (data) {
                         var btn = '<span class="btn btn-minier ' + className + '">' + stateStr + '</span>';
                         $btn.data("state", !state).html(btn).attr('data-original-title', "已" + stateStr);

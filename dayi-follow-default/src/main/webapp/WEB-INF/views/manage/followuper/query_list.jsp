@@ -113,6 +113,7 @@
                 </div>
 
                 <div class="space-10"></div>
+
                 <div class="row" id="listPan">
                     <div class="col-xs-12">
                         <table class="table table-striped table-bordered table-hover" >
@@ -166,6 +167,7 @@
 
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
