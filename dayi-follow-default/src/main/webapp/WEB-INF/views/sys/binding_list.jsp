@@ -112,7 +112,7 @@
                                 <c:if test="${empty topDeptList}">
                                     <tr>
                                         <td colspan="6" class="no_data">暂无功能，请
-                                            <a href="javascript:;" data-toggle="modal"
+                                            <a href="#" data-toggle="modal"
                                                data-target="#myModalEditFollowuper"
                                                data-toggle="tooltip" title="新增功能">
                                                 新增功能
@@ -129,7 +129,7 @@
                                     <td>2018/10/18 <br/>17:48 </td>
                                     <td>管理首页信息</td>
                                     <td>
-                                        <a href="#" data-id="1" data-toggle="modal"
+                                        <a href="#" data-id="30" data-toggle="modal"
                                            data-target="#myModalEditFollowuper"
                                            data-toggle="tooltip" title="修改">
                                             <i class="ace-icon fa fa-pencil bigger-130"></i>
@@ -166,12 +166,12 @@
         common.head("system",1);
 
         //添加、编辑功能方法
-        var editDeptFn = function (id,pid) {
+        var editDeptFn = function (id) {
             var id = id || 0;
             var url = "/permission/edit";
-            // if (id > 0) {
-            //     url = "/permission/update/" + id;
-            // }
+            if (id > 0) {
+                url = "/permission/edit?id="+id
+            }
             var html = "";
 
             common.ajax.handle({
@@ -256,7 +256,7 @@
             var id=$(this).closest("tr").data("id");
             layer.confirm('<p class="tc">是否删除该功能？</p>',{title:"温馨提示"},function () {
                 common.ajax.handle({
-                    url:"/module/delete/"+ id + ".json",
+                    url:"/permission/delete?id="+id
                 });
             });
         });

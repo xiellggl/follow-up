@@ -59,7 +59,7 @@
                             <tr>
                                 <td colspan="6" class="no_data">
                                     暂无用户，请
-                                    <a href="javascript:;" data-toggle="modal"
+                                    <a href="#" data-toggle="modal"
                                        data-target="#myModalEditFollowuper">新增用户</a>
                                 </td>
                             </tr>
@@ -76,8 +76,9 @@
                                 <td>
                                     <a class="state-btn" data-state="${item.disable}" href="#"
                                        data-id="${item.id}" title="已${item.status}">
-                                                <span
-                                                        class="btn btn-minier ${item.disable eq 1 ? 'btn-yellow':'btn-danger'}">${item.status}</span>
+                                        <span class="btn btn-minier ${item.disable eq 1 ? 'btn-yellow':'btn-danger'}">
+                                                ${item.status}
+                                        </span>
                                     </a>
                                 </td>
                                 <td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/> </td>
@@ -135,7 +136,7 @@
             </div>
 
             <div class="modal-body">
-                <div class="row">
+                <div class="row" style="padding-left: 1%;">
                     <div class="col-xs-12">
                         {{if id > 0}}
                         <input type="hidden" name="id" value="{{id}}">
@@ -143,7 +144,7 @@
 
                         <div class="space-4"></div>
                         <div class="form-group">
-                            <label class="col-sm-3  control-label no-padding-right">*用户姓名 ：</label>
+                            <label class="col-sm-2  control-label no-padding-right">*用户姓名 ：</label>
                             <div class="col-xs-12 col-sm-6">
                                 <input type="text" name="name" value="{{name}}" class="form-control" required/>
                             </div>
@@ -153,7 +154,7 @@
                         {{if id==null}}
                         <div class="space-4"></div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right">*账号 ：</label>
+                            <label class="col-sm-2 control-label no-padding-right">*账号 ：</label>
                             <div class="col-xs-12 col-sm-6">
                                 <input type="text" name="userName" class="form-control" required/>
                             </div>
@@ -162,7 +163,7 @@
 
                         <div class="space-4"></div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right">*邀请码 ：</label>
+                            <label class="col-sm-2 control-label no-padding-right">*邀请码 ：</label>
                             <div class="col-xs-12 col-sm-6">
                                 <input type="text" name="inviteCode" class="form-control" required/>
                             </div>
@@ -171,7 +172,7 @@
 
                         <div class="space-4"></div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right">*密码 ：</label>
+                            <label class="col-sm-2 control-label no-padding-right">*密码 ：</label>
                             <div class="col-xs-12 col-sm-6">
                                 <input type="text" name="password" class="form-control" required/>
                             </div>
@@ -181,7 +182,7 @@
 
                         <div class="space-4"></div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right">*手机号码 ：</label>
+                            <label class="col-sm-2 control-label no-padding-right">*手机号码 ：</label>
                             <div class="col-xs-12 col-sm-6">
                                 <input type="text" name="mobile"  value="{{mobile}}" class="form-control" required/>
                             </div>
@@ -190,7 +191,7 @@
 
                         <div class="space-4"></div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right">角色 ：</label>
+                            <label class="col-sm-2 control-label no-padding-right">角色 ：</label>
                             <div class="col-xs-12 col-sm-6">
                                 <select name="pid" class="form-control">
 
@@ -200,7 +201,7 @@
 
                         <div class="space-4"></div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right">部门 ：</label>
+                            <label class="col-sm-2 control-label no-padding-right">部门 ：</label>
                             <div class="col-xs-12 col-sm-6">
                                 <select name="deptId" class="form-control">
                                     <option value="">请选择所属部门</option>
@@ -213,41 +214,40 @@
 
                         <div class="space-4"></div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right inline">是否负责人： </label>
-                            <div class="col-sm-9 inline align-middle" style="padding-top:5px;">
-                                <div class="radio">
+                            <label class="col-sm-2 control-label no-padding inline">是否负责人： </label>
+                            <div class="col-sm-9 inline align-middle">
 
                                     <label>
-                                        <input class="ace" type="radio" name="principal" value="0" checked/>
+                                        <input class="ace" type="radio" name="isManager"
+                                               value="0" {{id==null||isManager==0?'checked':''}}/>
                                     <span class="lbl">否</span>
                                     </label>
 
                                     <label>
-                                        <input class="ace" type="radio" name="principal" value="1">
+                                        <input class="ace" type="radio" name="isManager"
+                                               value="1"{{isManager==1?'checked':''}}/>
                                         <span class="lbl">是</span>
                                     </label>
 
-                                </div>
                             </div>
                         </div>
 
                         <div class="space-4"></div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right inline">二级资产开关： </label>
-                            <div class="col-sm-9 inline align-middle" style="padding-top:5px;">
-
-                                <div class="radio">
+                            <label class="col-sm-2 control-label no-padding inline">二级资产开关： </label>
+                            <div class="col-sm-9 inline align-middle">
 
                                     <label>
-                                        <input class="ace" type="radio" name="property" value="0" checked/>
+                                        <input class="ace" type="radio" name="isAssets"
+                                               value="0" {{id==null||isManager==0?'checked':''}}/>
                                         <span class="lbl">开启</span>
                                     </label>
                                     <label>
-                                        <input class="ace" type="radio" name="property" value="1">
+                                        <input class="ace" type="radio" name="isAssets"
+                                               value="1"{{isManager==1?'checked':''}}/>
                                         <span class="lbl">关闭</span>
                                     </label>
 
-                                </div>
                             </div>
                         </div>
 
@@ -422,7 +422,7 @@
             layer.confirm('<p class="tc">是否确定' + stateStr + '此用户</p>', {icon: 3, title: "温馨提示"}, function (index) {
                 layer.close(index);
                 common.ajax.handle({
-                    url: "/user/disable/" + act + "/" + id + ".json",
+                    url: "/user/" + act + "/" + id + ".json",
                     succback: function (data) {
                         var btn = '<span class="btn btn-minier ' + className + '">' + stateStr + '</span>';
                         $btn.data("state", !state).html(btn).attr('data-original-title', "已" + stateStr);

@@ -20,7 +20,7 @@
                         <i class="ace-icon fa fa-home home-icon"></i>
                         <a href="/followup/manage/index">首页</a>
                     </li>
-                    <li class="active">日志管理</li>
+                    <li class="active">跟进人查询</li>
                 </ul><!-- /.breadcrumb -->
             </div>
             <div class="page-content">
@@ -29,7 +29,7 @@
                         您当前操作
                         <small>
                             <i class="ace-icon fa fa-angle-double-right"></i>
-                            日志管理
+                            跟进人查询
                         </small>
                     </h1>
                 </div>
@@ -37,21 +37,64 @@
                 <div class="row">
                     <form class="form-horizontal">
                         <div class="clearfix maintop">
-                            <div class="col-xs-12 col-sm-3 maintop">
+
+                            <div class="col-xs-2 col-sm-2 btn-sespan">
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-calendar"></i>
                                     </span>
-                                    <input type="text" class="form-control admin_sea dates" name="date" value="${param.date}"
-                                           placeholder="日志日期"/>
+                                    <input type="text" class="form-control admin_sea dates" name="date" value=""
+                                           placeholder="当前跟进人"/>
                                 </div>
                             </div>
-                            <div class="col-xs-12 col-sm-4 maintop">
+
+                            <div class="col-xs-2 col-sm-2 btn-sespan">
                                 <div class="input-group">
                                     <span class="input-group-addon">
-                                        <i class="ace-icon fa fa-check"></i>
+                                        <i class="ace-icon fa fa-calendar"></i>
                                     </span>
-                                    <input type="text" name="deptName" class="form-control search-query admin_sea" value="${param.deptName}" placeholder="操作人"/>
+                                    <input type="text" class="form-control admin_sea dates" name="date" value=""
+                                           placeholder="更变跟进人"/>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-2 col-sm-2 btn-sespan">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="ace-icon fa fa-calendar"></i>
+                                    </span>
+                                    <input type="text" class="form-control admin_sea dates" name="date" value=""
+                                           placeholder="名称"/>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-2 col-sm-2 btn-sespan">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="ace-icon fa fa-calendar"></i>
+                                    </span>
+                                    <input type="text" class="form-control admin_sea dates" name="date" value=""
+                                           placeholder="手机号"/>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-2 col-sm-2 btn-sespan">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="ace-icon fa fa-calendar"></i>
+                                    </span>
+                                    <input type="text" class="form-control admin_sea dates" name="date" value=""
+                                           placeholder="邀请码"/>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-2 col-sm-2 btn-sespan">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="ace-icon fa fa-calendar"></i>
+                                    </span>
+                                    <input type="text" class="form-control admin_sea dates" name="date"
+                                           value="${param.date}" placeholder="变更日期"/>
                                     <div class="input-group-btn">
                                         <button type="submit" class="btn btn-xs btn-purple">
                                             <span class="ace-icon fa fa-search"></span>
@@ -59,11 +102,12 @@
                                         </button>
                                         <a href="?" class="btn btn-xs btn-info">
                                             <span class="ace-icon fa fa-globe"></span>
-                                            显示全部
+                                            导出
                                         </a>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </form>
                 </div>
@@ -74,28 +118,40 @@
                         <table class="table table-striped table-bordered table-hover" >
                             <thead>
                             <tr>
-                                <th>操作人</th>
-                                <th>操作模块</th>
-                                <th>操作内容</th>
-                                <th>操作时间</th>
-                                <th>操作IP</th>
+                                <th>会员ID</th>
+                                <th>名称</th>
+                                <th>手机号</th>
+                                <th>注册时间</th>
+                                <th>邀请码</th>
+                                <th>当前跟进人</th>
+                                <th>变更前跟进人</th>
+                                <th>变更日期</th>
+                                <th>变更前总资产</th>
+                                <th>当前总资产</th>
+                                <th>新增代理商服务费</th>
                             </tr>
                             </thead>
                             <tbody>
 
                             <%--<c:if test="${empty page.items}">--%>
                             <%--<tr>--%>
-                                <%--<td colspan="8" class="no_data">暂无数据记录</td>--%>
+                                <%--<td colspan="11" class="no_data">暂无数据记录</td>--%>
                             <%--</tr>--%>
                             <%--</c:if>--%>
 
                             <c:forEach var="i" begin="1" end="5">
                             <tr>
-                                <td>老陈</td>
-                                <td>首页信息</td>
-                                <td>登录账号</td>
+                                <td>520</td>
+                                <td>马冬梅</td>
+                                <td>13711802518</td>
                                 <td>2016-02-20 14:44:43</td>
-                                <td>172.28.13.41</td>
+                                <td>1314</td>
+                                <td>夏洛</td>
+                                <td>郝建</td>
+                                <td>2016-02-20 14:44:43</td>
+                                <td>100.000.62</td>
+                                <td>100.000.62</td>
+                                <td>998</td>
                             </tr>
                             </c:forEach>
 

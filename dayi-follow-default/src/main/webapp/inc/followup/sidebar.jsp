@@ -233,10 +233,16 @@
                 <span class="menu-text">部门管理</span>
             </a>
         </li>
-        <li data-rel="manageManager">
+        <li data-rel="followuper">
             <a href="/followup/list">
                 <i class="menu-icon fa fa-user"></i>
                 <span class="menu-text">跟进人管理</span>
+            </a>
+        </li>
+        <li data-rel="followuperQuery">
+            <a href="">
+                <i class="menu-icon fa fa-user"></i>
+                <span class="menu-text">跟进人查询</span>
             </a>
         </li>
     </ul><!-- 菜单列表结束 -->

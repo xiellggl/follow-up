@@ -62,7 +62,7 @@
                                 <c:if test="${empty topDeptList}">
                                     <tr>
                                         <td colspan="7" class="no_data">暂无模块，请
-                                            <a href="javascript:;" data-toggle="modal"
+                                            <a href="#" data-toggle="modal"
                                                data-target="#myModalEditFollowuper"
                                                data-toggle="tooltip" title="新增模块">
                                                 新增模块
@@ -242,17 +242,13 @@
         //菜单高亮
         common.head("system",1);
 
-        // var elements = $('tr[class*=link]'),elementf =$('tr[class*=king]');
-        // elements.css("display","none");
-        // elementf.css("display","none");
-
         //添加、编辑模块方法
-        var editDeptFn = function (id,pid) {
+        var editDeptFn = function (id) {
             var id = id || 0;
             var url = "/module/edit";
-            // if (id > 0) {
-            //     url = "/module/update/" + id;
-            // }
+            if (id > 0) {
+                url = "/module/edit?id="+id
+            }
             var html = "";
 
             common.ajax.handle({
@@ -337,7 +333,7 @@
             var id=$(this).closest("tr").data("id");
             layer.confirm('<p class="tc">是否删除该模块？</p>',{title:"温馨提示"},function () {
                 common.ajax.handle({
-                    url:"/module/delete/"+ id + ".json"
+                    url:"/module/delete?id="+id
                 });
             });
         });
@@ -364,6 +360,29 @@
 
         });
     });
+
+    //禁用/启用
+    $(".state-btn").on("click", function () {
+        var state = $(this).data("state");
+        var act = state == 0 ? "enable" : "disable";
+        var stateStr = act == "enable" ? "启用" : "禁用";
+        var className = act == "enable" ? "btn-yellow" : "btn-danger";
+        var $btn = $(this);
+        var id = $(this).closest("tr").data("id");
+        layer.confirm('<p class="tc">是否确定' + stateStr + '此用户</p>', {icon: 3, title: "温馨提示"}, function (index) {
+            layer.close(index);
+            common.ajax.handle({
+                url: "/user/" + act + "/" + id + ".json",
+                succback: function (data) {
+                    var btn = '<span class="btn btn-minier ' + className + '">' + stateStr + '</span>';
+                    $btn.data("state", !state).html(btn).attr('data-original-title', "已" + stateStr);
+                    return false;
+                }
+            });
+        });
+        return false;
+    });
+
 </script>
 <%--<script type="text/javascript">--%>
     <%--/** ⚠️ 模版页不要用单行注释(异步请求会把后边的所有内容注释掉) */--%>
