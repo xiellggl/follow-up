@@ -1,6 +1,7 @@
 package com.dayi.follow.service.impl;
 
 
+import com.dayi.common.util.BizResult;
 import com.dayi.common.util.Misc;
 import com.dayi.component.annotation.Log;
 import com.dayi.component.model.BaseLog;
@@ -310,19 +311,26 @@ public class ModuleServiceImpl implements ModuleService {
 
     @Override
     @Log(target = OperateLog.class, action = BaseLog.LogAction.UPDATE, what = "模块管理", note = "更新模块")
-    public boolean updateModule(Module module) {
+    public BizResult updateModule(Module module) {
+        if (null == moduleMapper.get(module.getId())) {
+            return BizResult.fail("模块不存在.");
+        }
+
         if (module.getParentid() == null) {
             module.setParentid("");
         }
         module.setUpdateTime(new Date());
-        return 1 == moduleMapper.update(module);
+        return 1 == moduleMapper.update(module) ? BizResult.SUCCESS : BizResult.FAIL;
     }
 
     @Override
     @Log(target = OperateLog.class, action = BaseLog.LogAction.UPDATE, what = "模块管理", note = "启用禁用模块")
-    public boolean updateStatus(String id, boolean enable) {
-        Module module = new Module();
-        module.setId(id);
+    public BizResult updateStatus(String id, boolean enable) {
+        Module module = moduleMapper.get(id);
+        if (null == module) {
+            return BizResult.fail("模块不存在.");
+        }
+
         if (enable) {
             module.setStatus(Module.STATUS_NORMAL.id);
         } else {
@@ -330,9 +338,9 @@ public class ModuleServiceImpl implements ModuleService {
         }
         module.setUpdateTime(new Date());
         if (moduleMapper.update(module) == 0) {
-            return false;
+            return BizResult.FAIL;
         }
-        return true;
+        return BizResult.SUCCESS;
     }
 
     @Override

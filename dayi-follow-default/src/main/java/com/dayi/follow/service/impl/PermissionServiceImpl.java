@@ -1,6 +1,7 @@
 package com.dayi.follow.service.impl;
 
 
+import com.dayi.common.util.BizResult;
 import com.dayi.component.annotation.Log;
 import com.dayi.component.model.BaseLog;
 import com.dayi.follow.dao.follow.PermissionMapper;
@@ -104,7 +105,8 @@ public class PermissionServiceImpl implements PermissionService {
         List<Permission> permissions = queryPermissionsByIds(permissionIds);
         for (Permission permission : permissions) {
             permission.setModuleid(moduleId);
-            if (!updatePermission(permission)) {
+            permission.setUpdateTime(new Date());
+            if (permissionMapper.update(permission) == 0) {
                 return false;
             }
         }
@@ -142,9 +144,13 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     @Log(target = OperateLog.class, action = BaseLog.LogAction.UPDATE, what = "权限管理", note = "权限更新")
-    public boolean updatePermission(Permission permission) {
+    public BizResult updatePermission(Permission permission) {
+        if (null == permissionMapper.get(permission.getId())) {
+            return BizResult.fail("功能模块不存在.");
+        }
+
         permission.setUpdateTime(new Date());
-        return 1 == permissionMapper.update(permission);
+        return 1 == permissionMapper.update(permission) ? BizResult.SUCCESS : BizResult.FAIL;
     }
 
     @Override
@@ -159,9 +165,12 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     @Log(target = OperateLog.class, action = BaseLog.LogAction.UPDATE, what = "权限管理", note = "显示/隐藏功能")
-    public boolean updateDisplace(String id, boolean displace) {
-        Permission permission = new Permission();
-        permission.setId(id);
+    public BizResult updateDisplace(String id, boolean displace) {
+        Permission permission = permissionMapper.get(id);
+        if (null == permission) {
+            return BizResult.fail("功能模块不存在.");
+        }
+
         if (displace) {
             permission.setDisplayStatus(Permission.DISPLAY_STATUS_NORMAL.id);
         } else {
@@ -169,9 +178,9 @@ public class PermissionServiceImpl implements PermissionService {
         }
         permission.setUpdateTime(new Date());
         if (permissionMapper.update(permission) == 0) {
-            return false;
+            return BizResult.FAIL;
         }
-        return true;
+        return BizResult.SUCCESS;
     }
 
     @Override

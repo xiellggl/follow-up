@@ -89,7 +89,7 @@ public class PermissionController {
         }
         permission.setUpdateBy(accountInfo.getUserName());
 
-        return permissionService.updatePermission(permission) ? BizResult.SUCCESS : BizResult.FAIL;
+        return permissionService.updatePermission(permission);
     }
 
     /**
@@ -104,7 +104,7 @@ public class PermissionController {
         if (Misc.isEmpty(id)) {
             return BizResult.fail("请选择要显示/隐藏的功能");
         }
-        return permissionService.updateDisplace(id, displace) ? BizResult.SUCCESS : BizResult.FAIL;
+        return permissionService.updateDisplace(id, displace);
     }
 
     /**

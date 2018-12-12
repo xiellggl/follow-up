@@ -122,7 +122,7 @@ public class ModuleController {
         }
         module.setUpdateBy(accountInfo.getUserName());
 
-        return moduleService.updateModule(module) ? BizResult.SUCCESS : BizResult.FAIL;
+        return moduleService.updateModule(module);
     }
 
     /**
@@ -137,7 +137,7 @@ public class ModuleController {
         if (Misc.isEmpty(id)) {
             return BizResult.fail("请选择要禁用/启用的模块");
         }
-        return moduleService.updateStatus(id, enable) ? BizResult.SUCCESS : BizResult.FAIL;
+        return moduleService.updateStatus(id, enable);
     }
 
     /**

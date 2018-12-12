@@ -1,6 +1,7 @@
 package com.dayi.follow.service;
 
 
+import com.dayi.common.util.BizResult;
 import com.dayi.follow.model.follow.Module;
 import com.dayi.follow.model.follow.Menu;
 import com.dayi.follow.model.follow.Permission;
@@ -63,7 +64,7 @@ public interface ModuleService {
      * @param module
      * @return
      */
-    boolean updateModule(Module module);
+    BizResult updateModule(Module module);
 
     /**
      * 启用/禁用模块
@@ -71,7 +72,7 @@ public interface ModuleService {
      * @param enable
      * @return
      */
-    boolean updateStatus(String id, boolean enable);
+    BizResult updateStatus(String id, boolean enable);
 
     /**
      * 删除角模块信息

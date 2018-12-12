@@ -79,7 +79,7 @@ public class RoleController {
         if (permissionIds == null || permissionIds.length == 0) {
             return BizResult.fail("保存角色前，请选择一个模块");
         }
-        return roleService.updateRole(role, permissionIds) ? BizResult.SUCCESS : BizResult.FAIL;
+        return roleService.updateRole(role, permissionIds);
     }
 
     /**
@@ -94,7 +94,7 @@ public class RoleController {
         if (Misc.isEmpty(id)) {
             return BizResult.fail("请选择要禁用/启用的角色");
         }
-        return roleService.updateStatus(id, enable) ? BizResult.SUCCESS : BizResult.FAIL;
+        return roleService.updateStatus(id, enable);
     }
 
     /**
