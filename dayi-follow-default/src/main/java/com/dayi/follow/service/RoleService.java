@@ -1,5 +1,6 @@
 package com.dayi.follow.service;
 
+import com.dayi.common.util.BizResult;
 import com.dayi.follow.model.follow.Role;
 import com.dayi.mybatis.support.Page;
 
@@ -43,7 +44,7 @@ public interface RoleService {
      * @param permissionIds
      * @return
      */
-    boolean updateRole(Role role, String[] permissionIds);
+    BizResult updateRole(Role role, String[] permissionIds);
 
     /**
      * 根据ids查询角色列表
@@ -79,6 +80,6 @@ public interface RoleService {
      * @param enable
      * @return
      */
-    boolean updateStatus(String id, boolean enable);
+    BizResult updateStatus(String id, boolean enable);
 
 }

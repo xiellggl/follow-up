@@ -1,5 +1,6 @@
 package com.dayi.follow.service.impl;
 
+import com.dayi.common.util.BizResult;
 import com.dayi.common.util.Misc;
 import com.dayi.component.annotation.Log;
 import com.dayi.component.model.BaseLog;
@@ -52,6 +53,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     @Log(target = OperateLog.class, action = BaseLog.LogAction.ADD, what = "角色管理", note = "添加角色")
+    @Transactional
     public boolean addRole(Role role, String[] permissionIds) {
         if (Misc.isEmpty(role.getId())) {
             role.setId(roleMapper.getNewId());
@@ -70,24 +72,30 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     @Log(target = OperateLog.class, action = BaseLog.LogAction.UPDATE, what = "角色管理", note = "修改角色资料")
-    public boolean updateRole(Role role, String[] permissionIds) {
+    @Transactional
+    public BizResult updateRole(Role role, String[] permissionIds) {
+        if (null == roleMapper.get(role.getId())) {
+            return BizResult.fail("角色不存在.");
+        }
         role.setUpdateTime(new Date());
         if (1 == roleMapper.update(role)) {
             //保存前，先删除已有角色权限关系数据
             permissionService.deleteRolePermission(role.getId());
             permissionService.addBatch(role.getId(), permissionIds);
-            return true;
+            return BizResult.SUCCESS;
         } else {
-            return false;
+            return BizResult.FAIL;
         }
 
     }
 
     @Override
     @Log(target = OperateLog.class, action = BaseLog.LogAction.UPDATE, what = "角色管理", note = "启用/禁用角色")
-    public boolean updateStatus(String id, boolean enable) {
-        Role role = new Role();
-        role.setId(id);
+    public BizResult updateStatus(String id, boolean enable) {
+        Role role = roleMapper.get(id);
+        if (null == role) {
+            return BizResult.fail("角色不存在.");
+        }
         if (enable) {
             role.setStatus(Role.STATUS_NORMAL.id);
         } else {
@@ -95,9 +103,9 @@ public class RoleServiceImpl implements RoleService {
         }
         role.setUpdateTime(new Date());
         if (roleMapper.update(role) == 0) {
-            return false;
+            return BizResult.FAIL;
         }
-        return true;
+        return BizResult.SUCCESS;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.dayi.follow.service;
 
+import com.dayi.common.util.BizResult;
 import com.dayi.follow.model.follow.Permission;
 import com.dayi.follow.model.follow.RolePermission;
 import com.dayi.follow.vo.PermissionVo;
@@ -34,7 +35,6 @@ public interface PermissionService {
      * @param permissionIds
      */
     void addBatch(String roleId, String[] permissionIds);
-
 
     /**
      * 添加权限信息
@@ -86,7 +86,7 @@ public interface PermissionService {
      * @param permission
      * @return
      */
-    boolean updatePermission(Permission permission);
+    BizResult updatePermission(Permission permission);
 
     /**
      * 获取权限列表
@@ -108,7 +108,7 @@ public interface PermissionService {
      * @param displace
      * @return
      */
-    boolean updateDisplace(String id, boolean displace);
+    BizResult updateDisplace(String id, boolean displace);
 
     /**
      * 删除权限

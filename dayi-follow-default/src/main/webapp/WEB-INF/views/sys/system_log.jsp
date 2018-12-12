@@ -85,27 +85,27 @@
 
                             <%--<c:if test="${empty page.items}">--%>
                             <%--<tr>--%>
-                                <%--<td colspan="8" class="no_data">暂无数据记录</td>--%>
+                            <%--<td colspan="8" class="no_data">暂无数据记录</td>--%>
                             <%--</tr>--%>
                             <%--</c:if>--%>
 
                             <c:forEach var="i" begin="1" end="5">
-                            <tr>
-                                <td>老陈</td>
-                                <td>首页信息</td>
-                                <td>登录账号</td>
-                                <td>2016-02-20 14:44:43</td>
-                                <td>172.28.13.41</td>
-                            </tr>
+                                <tr>
+                                    <td>老陈</td>
+                                    <td>首页信息</td>
+                                    <td>登录账号</td>
+                                    <td>2016-02-20 14:44:43</td>
+                                    <td>172.28.13.41</td>
+                                </tr>
                             </c:forEach>
 
                             </tbody>
                         </table>
 
                         <%--<c:if test="${not empty page}">--%>
-                            <%--<div class="pagerBar" id="pagerBar">--%>
-                                <%--<common:page2 url="${pageUrl}" type="3"/>--%>
-                            <%--</div>--%>
+                        <%--<div class="pagerBar" id="pagerBar">--%>
+                        <%--<common:page2 url="${pageUrl}" type="3"/>--%>
+                        <%--</div>--%>
                         <%--</c:if>--%>
 
                     </div>

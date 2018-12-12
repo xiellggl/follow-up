@@ -44,13 +44,14 @@
 
                                 <dl>
                                     <dd>
+
                                         <dl>
                                             <dt>
                                                 <label>
                                                     <input name="form-field-checkbox" type="checkbox" class="ace">
                                                     <span class="lbl">这是模块一</span>
                                                 </label>
-                                                <a class="btn btn-minier btn-purple" data-ac="eye" data-id="1" data-flag="1">展开</a>
+                                                <a class="btn btn-minier btn-purple" data-ac="eye" data-id="1">展开</a>
                                             </dt>
                                             <dd class="last conceal-tr click1" style="">
                                                 <label title="这是模块一的第一个功能">
@@ -67,13 +68,14 @@
                                                 </label>
                                             </dd>
                                         </dl>
+
                                         <dl>
                                             <dt>
                                                 <label>
                                                     <input name="form-field-checkbox" type="checkbox" class="ace">
                                                     <span class="lbl">这是模块二</span>
                                                 </label>
-                                                <a class="btn btn-minier btn-purple" data-ac="eye" data-id="2" data-flag="2">展开</a>
+                                                <a class="btn btn-minier btn-purple" data-ac="eye" data-id="2">展开</a>
                                             </dt>
                                             <dd class="last conceal-tr click2" style="">
                                                 <label title="这是模块二的第一个功能">
@@ -90,6 +92,7 @@
                                                 </label>
                                             </dd>
                                         </dl>
+
                                     </dd>
                                 </dl>
 
@@ -115,11 +118,9 @@
 <script>
     //展开收起交互
     $('[data-ac="eye"]').on('click', function(event) {
-        var flag = $(this).attr("data-flag");
-        $(".click"+flag).toggle(100);
-        var $this=$(this);
         var me = this;
         var id = $(this).data('id');
+        $(".click"+id).toggle(100);
         var curr = this.innerHTML;
         if(curr === '收起'){
             me.ip = 0;
