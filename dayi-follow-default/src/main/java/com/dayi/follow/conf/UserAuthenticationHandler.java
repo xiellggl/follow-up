@@ -1,6 +1,7 @@
 package com.dayi.follow.conf;
 
 import com.dayi.common.util.Misc;
+import com.dayi.follow.service.UserService;
 import com.dayi.follow.service.impl.FollowUpServiceImpl;
 import com.dayi.follow.service.impl.UserServiceImpl;
 import com.dayi.user.authorization.AuthenticationHandler;
@@ -26,11 +27,11 @@ public class UserAuthenticationHandler implements AuthenticationHandler {
     protected Logger logger = LoggerFactory.getLogger(UserAuthenticationHandler.class);
 
     @Resource
-    UserServiceImpl userServiceImpl;
+    UserService userService;
 
     @Override
     public Realm getRealm() {
-        return userServiceImpl;
+        return userService;
     }
 
     @Override

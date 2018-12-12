@@ -8,6 +8,7 @@ import com.dayi.follow.vo.LoginVo;
 import com.dayi.follow.vo.user.UserEditDto;
 import com.dayi.follow.vo.user.UserVo;
 import com.dayi.mybatis.support.Page;
+import com.dayi.user.authorization.realm.Realm;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * 跟进人 业务接口类
  */
-public interface UserService {
+public interface UserService extends Realm{
 
     /**
      * 添加用户
