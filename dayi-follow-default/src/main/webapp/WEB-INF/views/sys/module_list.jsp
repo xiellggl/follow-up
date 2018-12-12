@@ -44,10 +44,6 @@
                             <table class="table table-striped table-bordered table-hover">
                                 <thead>
                                 <tr>
-                                    <th>
-                                    <label class="ui_checkbox"><input type="checkbox" name="permission" value="2340ca71006623a1" data-param="{type:1}" autocomplete="off">
-                                    </label>
-                                    </th>
                                     <th>模块名称</th>
                                     <th>操作</th>
                                     <th class="hidden-sm hidden-xs">状态</th>
@@ -78,11 +74,6 @@
                                 <c:forEach var="i" begin="1" end="1">
 
                                 <tr data-id="${item.id}" data-pid="${item.pid}">
-                                    <td>
-                                        <label class="ui_checkbox">
-                                        <input type="checkbox" name="permission" value="2340ca71006623a1" data-param="{type:1}" autocomplete="off">
-                                        </label>
-                                    </td>
                                     <td>&nbsp首页</td>
                                     <td><a class="btn aaa btn-minier btn-purple" data-ac="eye" data-id="a30" data-flag="30">展开</a></td>
                                     <td>
@@ -106,16 +97,11 @@
                                 </tr>
 
                                 <tr  class="conceal-t link30">
-                                    <th>
-                                        <label class="ui_checkbox"><input type="checkbox" name="permission" value="2340ca71006623a1" data-param="{type:1}" autocomplete="off">
-                                        </label>
-                                    </th>
                                     <td>&nbsp&nbsp二级模块</td>
                                     <td><a class="btn aaa btn-minier btn-purple" data-ac="eve" data-id="aa30" data-flag="30">展开</a></td>
-
-                                        <td>
+                                    <td>
                                         <a class="state-btn" data-state="1" href="javascript:;" data-id="30" title="" data-original-title="已启用">
-                                            <span class="btn btn-minier btn-yellow">显示</span>
+                                            <span class="btn btn-minier btn-yellow">启用</span>
                                         </a>
                                     </td>
                                     <td>http://spotnewuc.fiidee.loc/#/admin/member/user </td>
@@ -127,15 +113,11 @@
                                 </tr>
 
                                 <tr class="conceal-t king30">
-                                    <th>
-                                        <label class="ui_checkbox"><input type="checkbox" name="permission" value="2340ca71006623a1" data-param="{type:1}" autocomplete="off">
-                                        </label>
-                                    </th>
                                     <td>&nbsp&nbsp&nbsp这是功能权限3</td>
                                     <td></td>
                                     <td>
                                         <a class="state-btn" data-state="1" href="javascript:;" data-id="30" title="" data-original-title="已启用">
-                                            <span class="btn btn-minier btn-yellow">隐藏</span>
+                                            <span class="btn btn-minier btn-yellow">启用</span>
                                         </a>
                                     </td>
                                     <td>http://spotnewuc.fiidee.loc/#/admin/member/user </td>
@@ -145,75 +127,6 @@
                                             <i class="ace-icon fa fa-trash-o bigger-130 red"></i></a>
                                     </td>
                                 </tr>
-
-                                    <tr data-id="${item.id}" data-pid="${item.pid}">
-                                        <td>
-                                            <label class="ui_checkbox">
-                                                <input type="checkbox" name="permission" value="2340ca71006623a1" data-param="{type:1}" autocomplete="off">
-                                            </label>
-                                        </td>
-                                        <td>&nbsp首页</td>
-                                        <td><a class="btn aaa btn-minier btn-purple" data-ac="eye" data-id="a55" data-flag="55">展开</a></td>
-                                        <td>
-                                            <a class="state-btn" data-state="1" href="javascript:;" data-id="55" title="" data-original-title="已启用">
-                                                <span class="btn btn-minier btn-yellow">启用</span>
-                                            </a>
-                                        </td>
-                                        <td>http://spotnewuc.fiidee.loc/#/admin/member/user </td>
-                                        <td>管理首页信息</td>
-                                        <td>
-                                            <a href="#" data-id="1" data-toggle="modal"
-                                               data-target="#myModalEditFollowuper"
-                                               data-toggle="tooltip" title="修改">
-                                                <i class="ace-icon fa fa-pencil bigger-130"></i>
-                                            </a>
-                                            <a href="#" data-act="del" data-toggle="tooltip" title="删除">
-                                                <i class="ace-icon fa fa-trash-o bigger-130 red"></i></a>
-                                            <a href="#" data-act="del" data-toggle="tooltip" title="绑定功能">
-                                                <i class="ace-icon fa fa-exchange bigger-130 red"></i></a>
-                                        </td>
-                                    </tr>
-
-                                    <tr  class="conceal-t link55">
-                                        <th>
-                                            <label class="ui_checkbox"><input type="checkbox" name="permission" value="2340ca71006623a1" data-param="{type:1}" autocomplete="off">
-                                            </label>
-                                        </th>
-                                        <td>&nbsp&nbsp二级模块</td>
-                                        <td><a class="btn aaa btn-minier btn-purple" data-ac="eve" data-id="aa55" data-flag="55">展开</a></td>
-
-                                        <td>
-                                            <a class="state-btn" data-state="1" href="javascript:;" data-id="55" title="" data-original-title="已启用">
-                                                <span class="btn btn-minier btn-yellow">显示</span>
-                                            </a>
-                                        </td>
-                                        <td>http://spotnewuc.fiidee.loc/#/admin/member/user </td>
-                                        <td>可查看预约联系时间为今天的代理商</td>
-                                        <td>
-                                            <a href="#" data-act="del" data-toggle="tooltip" title="解除绑定">
-                                                <i class="ace-icon fa fa-trash-o bigger-130 red"></i></a>
-                                        </td>
-                                    </tr>
-
-                                    <tr class="conceal-t king55">
-                                        <th>
-                                            <label class="ui_checkbox"><input type="checkbox" name="permission" value="2340ca71006623a1" data-param="{type:1}" autocomplete="off">
-                                            </label>
-                                        </th>
-                                        <td>&nbsp&nbsp&nbsp这是功能权限3</td>
-                                        <td></td>
-                                        <td>
-                                            <a class="state-btn" data-state="1" href="javascript:;" data-id="30" title="" data-original-title="已启用">
-                                                <span class="btn btn-minier btn-yellow">隐藏</span>
-                                            </a>
-                                        </td>
-                                        <td>http://spotnewuc.fiidee.loc/#/admin/member/user </td>
-                                        <td>可查看不同状态下的代理商数量（适用于业务人员）</td>
-                                        <td>
-                                            <a href="#" data-act="del" data-toggle="tooltip" title="解除绑定">
-                                                <i class="ace-icon fa fa-trash-o bigger-130 red"></i></a>
-                                        </td>
-                                    </tr>
 
                                 </c:forEach>
 
@@ -359,28 +272,29 @@
             }
 
         });
-    });
 
-    //禁用/启用
-    $(".state-btn").on("click", function () {
-        var state = $(this).data("state");
-        var act = state == 0 ? "enable" : "disable";
-        var stateStr = act == "enable" ? "启用" : "禁用";
-        var className = act == "enable" ? "btn-yellow" : "btn-danger";
-        var $btn = $(this);
-        var id = $(this).closest("tr").data("id");
-        layer.confirm('<p class="tc">是否确定' + stateStr + '此用户</p>', {icon: 3, title: "温馨提示"}, function (index) {
-            layer.close(index);
-            common.ajax.handle({
-                url: "/user/" + act + "/" + id + ".json",
-                succback: function (data) {
-                    var btn = '<span class="btn btn-minier ' + className + '">' + stateStr + '</span>';
-                    $btn.data("state", !state).html(btn).attr('data-original-title', "已" + stateStr);
-                    return false;
-                }
+        //禁用/启用
+        $(".state-btn").on("click", function () {
+            var state = $(this).data("state");
+            var act = state == 0 ? "enable" : "disable";
+            var stateStr = act == "enable" ? "启用" : "禁用";
+            var className = act == "enable" ? "btn-yellow" : "btn-danger";
+            var $btn = $(this);
+            var id = $(this).closest("tr").data("id");
+            layer.confirm('<p class="tc">是否确定' + stateStr + '此用户</p>', {icon: 3, title: "温馨提示"}, function (index) {
+                layer.close(index);
+                common.ajax.handle({
+                    url: "/user/" + act + "/" + id + ".json",
+                    succback: function (data) {
+                        var btn = '<span class="btn btn-minier ' + className + '">' + stateStr + '</span>';
+                        $btn.data("state", !state).html(btn).attr('data-original-title', "已" + stateStr);
+                        return false;
+                    }
+                });
             });
+            return false;
         });
-        return false;
+
     });
 
 </script>
