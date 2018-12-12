@@ -55,7 +55,10 @@
                                     <th>操作</th>
                                 </tr>
                                 </thead>
+
                                 <tbody id="table" data-toggle="table">
+
+                                <tr>
                                     <td>&nbsp首页</td>
                                     <td><a class="btn btn-minier btn-purple" data-ac="eye" data-id="30" >展开</a></td>
                                     <td>
@@ -77,6 +80,7 @@
                                             <i class="ace-icon fa fa-exchange bigger-130 red"></i></a>
                                     </td>
                                 </tr>
+
                                 <tr  class="conceal-t link30">
                                     <td style="padding-left: 3%">&nbsp&nbsp二级模块</td>
                                     <td><a class="btn btn-minier btn-purple" data-ac="eye" data-id="30" >展开</a></td>
@@ -92,6 +96,7 @@
                                             <i class="ace-icon fa fa-trash-o bigger-130 red"></i></a>
                                     </td>
                                 </tr>
+
                                 <tr class="conceal-t link30">
                                     <td style="padding-left: 6%">这是功能权限3</td>
                                     <td></td>
@@ -107,6 +112,7 @@
                                             <i class="ace-icon fa fa-trash-o bigger-130 red"></i></a>
                                     </td>
                                 </tr>
+
                                 </tbody>
                             </table>
                     </div>
