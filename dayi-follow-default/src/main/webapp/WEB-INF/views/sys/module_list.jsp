@@ -61,7 +61,7 @@
                                 <tr>
                                     <td>&nbsp首页</td>
                                     <td class="center"><a class="btn btn-minier btn-purple" data-ac="eye" data-id="30" >展开</a></td>
-                                    <td>
+                                    <td class="center">
                                         <a class="state-btn" data-state="1" href="javascript:;" data-id="30" title="" data-original-title="已启用">
                                             <span class="btn btn-minier btn-yellow">启用</span>
                                         </a>
@@ -84,7 +84,7 @@
                                 <tr  class="conceal-t link30">
                                     <td style="padding-left: 3%">&nbsp&nbsp二级模块</td>
                                     <td class="center"><a class="btn btn-minier btn-purple" data-ac="eye" data-id="30" >展开</a></td>
-                                    <td>
+                                    <td class="center">
                                         <a class="state-btn" data-state="1" href="javascript:;" data-id="30" title="" data-original-title="已启用">
                                             <span class="btn btn-minier btn-yellow">启用</span>
                                         </a>
@@ -100,7 +100,7 @@
                                 <tr class="conceal-t link30">
                                     <td style="padding-left: 6%">这是功能权限3</td>
                                     <td></td>
-                                    <td>
+                                    <td class="center">
                                         <a class="state-btn" data-state="1" href="javascript:;" data-id="30" title="" data-original-title="已启用">
                                             <span class="btn btn-minier btn-yellow">启用</span>
                                         </a>

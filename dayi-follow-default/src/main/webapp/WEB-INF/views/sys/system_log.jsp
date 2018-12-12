@@ -6,7 +6,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>日志管理</title>
-    <%@include file="/inc/followup/csslink.jsp"%>
+    <%@include file="/inc/followup/csslink.jsp"%><link rel="stylesheet" type="text/css" media="all" href="/static/public/daterangepicker3/daterangepicker.css"/>
+
 </head>
 <body class="no-skin">
 <%@include file="/inc/followup/topbar.jsp"%>
@@ -115,9 +116,24 @@
     </div>
 </div>
 <%@include file="/inc/followup/script.jsp"%>
+<script charset="UTF-8" async="" src="/static/public/daterangepicker3/moment.min.js"></script>
 <script>
-    seajs.use(["common","validate","template"],function(common,validate,template){
+    seajs.use(["common", "daterangepicker"], function (common) {
         common.head("system",3);
+        var date_o = {
+            autoUpdateInput: false,
+            locale: locale_cn,
+        };
+        date_o.locale.cancelLabel = "清空";
+        $('.dates').daterangepicker(date_o);
+
+        $('.dates').on('apply.daterangepicker', function (ev, picker) {
+            $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
+        });
+
+        $('.dates').on('cancel.daterangepicker', function (ev, picker) {
+            $(this).val('');
+        });
     });
 </script>
 </body>
