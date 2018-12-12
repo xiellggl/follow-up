@@ -90,30 +90,19 @@ public class UserController extends BaseController {
      */
     @RequestMapping("/login/post")
     @ResponseBody
-    public BizResult login(HttpServletRequest request, HttpServletResponse response, @Valid @ModelAttribute("loginVo") LoginVo loginVo, String goTo, BindingResult result) {
+    public BizResult login(HttpServletRequest request, @Valid @ModelAttribute("loginVo") LoginVo loginVo, String goTo, BindingResult result) {
         BizResult bizResult = checkErrors(result);
         if (!bizResult.isSucc()) {
             return bizResult;//参数传入错误
         } else {
-            boolean b = AuthorizationManager.login(request, new UsernamePasswordToken(loginVo.getUsername(), loginVo.getPassword(), IPUtil.getIp(request)));
-            if (!b) return BizResult.fail("账号密码错误！");
-            LoginVo currVo = userComponent.getCurrUser(request);
-            if (currVo == null) return BizResult.fail("登录失败！");
-            if (currVo.getDisable() != MemberStatusEnum.ENABLE.getValue()) return BizResult.fail("账号已被禁用！");
-            String goToUrl;
-            if (StringUtils.isNotBlank(goTo)) {//跳转
-                goToUrl = goTo;
-            } else {
-                goToUrl = "/index";
-            }
-            return BizResult.succ(goToUrl, "登录成功！");
+            return userService.login(request, loginVo, goTo);
         }
     }
 
 
     @RequestMapping("loginout")
     public String loginOut(HttpServletRequest request, HttpServletResponse response) {
-        AuthorizationManager.cleanAllAuthenticationInfo(request, response);
+        userService.loginOut(request, response);
         return "redirect:/user/login";
     }
 
@@ -169,7 +158,7 @@ public class UserController extends BaseController {
 
 
     /**
-     * 新增 -- 保存 -- 用户
+     * 校验用户名
      */
     @RequestMapping("/check/userName")
     @ResponseBody
@@ -179,7 +168,7 @@ public class UserController extends BaseController {
     }
 
     /**
-     * 新增 -- 保存 -- 用户
+     * 校验邀请码
      */
     @RequestMapping("/check/inviteCode")
     @ResponseBody

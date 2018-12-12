@@ -4,6 +4,8 @@ package com.dayi.follow.service.impl;
 import com.dayi.common.util.BigDecimals;
 import com.dayi.common.util.BizResult;
 import com.dayi.common.util.DateUtil;
+import com.dayi.component.annotation.Log;
+import com.dayi.component.model.BaseLog;
 import com.dayi.follow.dao.dayi.AgentMapper;
 import com.dayi.follow.dao.dayi.CountMapper;
 import com.dayi.follow.dao.dayi.OrgMapper;
@@ -13,6 +15,7 @@ import com.dayi.follow.dao.follow.OrgContactMapper;
 import com.dayi.follow.enums.DelStatusEnum;
 import com.dayi.follow.enums.OrgTypeEnum;
 import com.dayi.follow.enums.SwitchStatusEnum;
+import com.dayi.follow.model.follow.OperateLog;
 import com.dayi.follow.model.follow.OrgContact;
 import com.dayi.follow.service.CountService;
 import com.dayi.follow.service.OrgService;
@@ -109,6 +112,7 @@ public class OrgServiceImpl implements OrgService {
 
 
     @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.ADD, what = "我的创客", note = "添加联系记录")
     public BizResult addContact(OrgContact orgContact) {
         Organization org = orgMapper.get(orgContact.getOrgId());
         if(org==null)return BizResult.fail("创客不存在！");

@@ -4,9 +4,13 @@ package com.dayi.follow.service;
 import com.dayi.common.util.BizResult;
 import com.dayi.follow.model.follow.Department;
 import com.dayi.follow.model.follow.FollowUp;
+import com.dayi.follow.vo.LoginVo;
 import com.dayi.follow.vo.user.UserEditDto;
 import com.dayi.follow.vo.user.UserVo;
 import com.dayi.mybatis.support.Page;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 /**
  * @author xiell
  * @date 2018/11/12
@@ -58,6 +62,7 @@ public interface UserService {
 
     //重置密码
     BizResult disable(FollowUp followUp);
+
     //删除
     BizResult delete(FollowUp followUp);
 
@@ -69,4 +74,10 @@ public interface UserService {
 
     //处理更新部门人数
     void doUpdatePerson(Department oldDept, String newId);
+
+    //登录
+    BizResult login(HttpServletRequest request, LoginVo loginVo, String goTo);
+    //登出
+    void loginOut(HttpServletRequest request, HttpServletResponse response);
+
 }

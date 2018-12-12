@@ -3,6 +3,8 @@ package com.dayi.follow.service.impl;
 
 import com.dayi.common.util.BigDecimals;
 import com.dayi.common.util.BizResult;
+import com.dayi.component.annotation.Log;
+import com.dayi.component.model.BaseLog;
 import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.dao.dayi.AgentMapper;
 import com.dayi.follow.dao.dayi.OrgMapper;
@@ -65,6 +67,7 @@ public class FollowOrgServiceImpl implements FollowOrgService {
     }
 
     @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.ADD, what = "创客分配管理", note = "分配跟进人")
     public BizResult add(FollowOrg followOrgVo) {
         FollowUp followUp = followUpMapper.get(followOrgVo.getFollowId());
         if (followUp == null) return BizResult.FAIL;
@@ -117,6 +120,7 @@ public class FollowOrgServiceImpl implements FollowOrgService {
     }
 
     @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.ADD, what = "创客分配管理", note = "批量分配跟进人")
     public BizResult addBatch(List<FollowOrg> followOrgs) {
         for (FollowOrg followOrg : followOrgs) {
             BizResult add = this.add(followOrg);
@@ -126,6 +130,7 @@ public class FollowOrgServiceImpl implements FollowOrgService {
     }
 
     @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.UPDATE, what = "创客分配管理", note = "清除跟进人")
     public BizResult clear(FollowOrg followOrg) {
         Organization org = orgMapper.get(followOrg.getOrgId());
         if (org == null) return BizResult.FAIL;
@@ -150,6 +155,7 @@ public class FollowOrgServiceImpl implements FollowOrgService {
     }
 
     @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.UPDATE, what = "创客分配管理", note = "批量清除跟进人")
     public BizResult clearBatch(List<FollowOrg> followOrgs) {
         for (FollowOrg followOrg : followOrgs) {
             BizResult clear = this.clear(followOrg);

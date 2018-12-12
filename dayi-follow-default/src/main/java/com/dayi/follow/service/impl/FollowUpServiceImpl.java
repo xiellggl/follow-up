@@ -91,7 +91,6 @@ public class FollowUpServiceImpl implements FollowUpService {
     }
 
     @Override
-    @Log(target = OperateLog.class, action = BaseLog.LogAction.SEARCH, what = "分配跟进人", note = "查询跟进人列表")
     public Page<FollowUpListVo> findAssignSelect(Page<FollowUpListVo> page, String followUp, String deptId) {
         List<String> followIds = this.findIdsByDeptId(deptId);
         page = followUpMapper.findAssignSelect(page, followUp, followIds);
@@ -119,6 +118,7 @@ public class FollowUpServiceImpl implements FollowUpService {
     }
 
     @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.SEARCH, what = "跟进人管理", note = "导出代理商明细列表")
     public List<FMDetailListVo> findAgentList(SearchVo searchVo, String followId) {
         List<String> followIds = new ArrayList<String>();
         followIds.add(followId);
@@ -153,6 +153,7 @@ public class FollowUpServiceImpl implements FollowUpService {
     }
 
     @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.SEARCH, what = "跟进人管理", note = "导出全部代理商明细列表")
     public List<FMDetailListVo> findAllAgentList(SearchVo searchVo, String deptId) {
         List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
 

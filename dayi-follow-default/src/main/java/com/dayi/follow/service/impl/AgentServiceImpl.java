@@ -49,7 +49,6 @@ public class AgentServiceImpl implements AgentService {
     String dayiDataBaseStr;
 
     @Override
-    @Log(target = OperateLog.class, action = BaseLog.LogAction.SEARCH, what = "我的代理商", note = "查询代理商列表")
     public Page<AgentListVo> findAgentPage(Page<AgentListVo> page, SearchVo searchVo, String followId) {
 
         List<Integer> ids = null;
@@ -99,7 +98,6 @@ public class AgentServiceImpl implements AgentService {
     }
 
     @Override
-    @Log(target = OperateLog.class, action = BaseLog.LogAction.SEARCH, what = "登录日志", note = "查询代理商登录日志列表")
     public Page<LoginLogVo> findLoginLog(Page page, Integer agentId) {
         List<LoginLogVo> loginLog = agentMapper.findLoginLog(agentId, page.getStartRow(), page.getEndRow());
         long loginLogNum = agentMapper.getLoginLogNum(agentId);
@@ -109,7 +107,7 @@ public class AgentServiceImpl implements AgentService {
     }
 
     @Override
-    @Log(target = OperateLog.class, action = BaseLog.LogAction.ADD, what = "联系记录", note = "添加联系记录")
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.ADD, what = "我的代理商", note = "添加联系记录")
     public BizResult addContact(AgentContact agentContact) {
         Agent agent = agentMapper.get(agentContact.getAgentId());
         if (agent == null) return BizResult.fail("代理商不存在！");

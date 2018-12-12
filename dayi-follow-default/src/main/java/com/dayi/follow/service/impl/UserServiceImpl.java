@@ -2,15 +2,20 @@ package com.dayi.follow.service.impl;
 
 
 import com.dayi.common.util.BizResult;
+import com.dayi.common.web.util.IPUtil;
+import com.dayi.component.annotation.Log;
+import com.dayi.component.model.BaseLog;
 import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.dao.follow.*;
 import com.dayi.follow.enums.MemberStatusEnum;
 import com.dayi.follow.model.follow.*;
 import com.dayi.follow.service.*;
 import com.dayi.follow.util.Md5Util;
+import com.dayi.follow.vo.LoginVo;
 import com.dayi.follow.vo.user.UserEditDto;
 import com.dayi.follow.vo.user.UserVo;
 import com.dayi.mybatis.support.Page;
+import com.dayi.user.authorization.AuthorizationManager;
 import com.dayi.user.authorization.authc.AccountInfo;
 import com.dayi.user.authorization.authc.AuthenticationInfo;
 import com.dayi.user.authorization.authc.AuthenticationToken;
@@ -28,6 +33,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -80,6 +87,7 @@ public class UserServiceImpl implements UserService, Realm {
     }
 
     @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.ADD, what = "用户管理", note = "添加用户")
     public BizResult add(FollowUp followUp) {
         followUp.setId(userMapper.getNewId());
         followUp.setDisable(MemberStatusEnum.ENABLE.getValue());
@@ -129,6 +137,7 @@ public class UserServiceImpl implements UserService, Realm {
     }
 
     @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.UPDATE, what = "用户管理", note = "修改用户")
     public BizResult update(UserEditDto userEditDto) {
         FollowUp followUp = userMapper.get(userEditDto.getId());
         if (null == followUp) {
@@ -209,6 +218,7 @@ public class UserServiceImpl implements UserService, Realm {
     }
 
     @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.UPDATE, what = "用户管理", note = "重置密码")
     public BizResult resetPwd(FollowUp followUp, String newPwd) {
         followUp.setPassword(Md5Util.md5(followUp.getUserName(), newPwd));
         followUp.setUpdateTime(new Date());
@@ -217,6 +227,7 @@ public class UserServiceImpl implements UserService, Realm {
     }
 
     @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.UPDATE, what = "用户管理", note = "启用用户")
     public BizResult enable(FollowUp followUp) {
         followUp.setDisable(MemberStatusEnum.ENABLE.getValue());
         followUp.setUpdateTime(new Date());
@@ -229,6 +240,7 @@ public class UserServiceImpl implements UserService, Realm {
     }
 
     @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.UPDATE, what = "用户管理", note = "禁用用户")
     public BizResult disable(FollowUp followUp) {
         followUp.setDisable(MemberStatusEnum.DISABLE.getValue());
         followUp.setUpdateTime(new Date());
@@ -242,6 +254,7 @@ public class UserServiceImpl implements UserService, Realm {
     }
 
     @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.DELETE, what = "用户管理", note = "删除用户")
     public BizResult delete(FollowUp followUp) {
         List<Agent> agents = followAgentMapper.findAgentsByFollowId(followUp.getId(), dayiDataBaseStr);
 
@@ -384,5 +397,36 @@ public class UserServiceImpl implements UserService, Realm {
             newDept = newDept.getParentDept();
         }
     }
+
+    @Override
+    public BizResult login(HttpServletRequest request, LoginVo loginVo, String goTo) {
+        boolean b = AuthorizationManager.login(request, new UsernamePasswordToken(loginVo.getUsername(), loginVo.getPassword(), IPUtil.getIp(request)));
+        if (!b) return BizResult.fail("账号密码错误！");
+
+        LoginVo currVo = userComponent.getCurrUser(request);
+        if (currVo == null) return BizResult.fail("登录失败！");
+        if (currVo.getDisable() != MemberStatusEnum.ENABLE.getValue()) return BizResult.fail("账号已被禁用！");
+
+        return loginAfter(goTo);
+    }
+
+    @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.ADD, what = "登录管理", note = "用户登出")
+    public void loginOut(HttpServletRequest request, HttpServletResponse response) {
+        AuthorizationManager.cleanAllAuthenticationInfo(request, response);
+    }
+
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.ADD, what = "登录管理", note = "用户登录")
+    private BizResult loginAfter(String goTo) {
+        String goToUrl;
+        if (StringUtils.isNotBlank(goTo)) {//跳转
+            goToUrl = goTo;
+        } else {
+            goToUrl = "/index";
+        }
+        return BizResult.succ(goToUrl, "登录成功！");
+    }
+
+
 }
 
