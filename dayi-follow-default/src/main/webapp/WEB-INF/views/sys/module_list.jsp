@@ -81,7 +81,7 @@
                                     </td>
                                 </tr>
 
-                                <tr  class="detail-row conceal-t link30">
+                                <tr  class="conceal-t link30">
                                     <td style="padding-left: 3%">&nbsp&nbsp二级模块</td>
                                     <td class="center"><a class="btn btn-minier btn-purple" data-ac="eye" data-id="30" >展开</a></td>
                                     <td>
@@ -97,7 +97,7 @@
                                     </td>
                                 </tr>
 
-                                <tr class="detail-row conceal-t link30">
+                                <tr class="conceal-t link30">
                                     <td style="padding-left: 6%">这是功能权限3</td>
                                     <td></td>
                                     <td>
