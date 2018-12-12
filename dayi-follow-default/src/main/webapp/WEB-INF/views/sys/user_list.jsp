@@ -214,40 +214,25 @@
 
                         <div class="space-4"></div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label no-padding inline">是否负责人： </label>
-                            <div class="col-sm-9 inline align-middle">
-
-                                    <label>
-                                        <input class="ace" type="radio" name="isManager"
-                                               value="0" {{id==null||isManager==0?'checked':''}}/>
-                                    <span class="lbl">否</span>
-                                    </label>
-
-                                    <label>
-                                        <input class="ace" type="radio" name="isManager"
-                                               value="1"{{isManager==1?'checked':''}}/>
-                                        <span class="lbl">是</span>
-                                    </label>
-
+                            <label class="col-sm-2 control-label no-padding inline"> 是否负责人： </label>
+                            <div class="col-sm-9 inline align-middle" >
+                                <label style="margin-right: 15px;"><input type="radio" name="isManager" value="0"
+                                                                          {{id==null||isManager==0?'checked':''}}/>
+                                    否</label>
+                                <label><input type="radio" name="isManager" value="1"
+                                              {{isManager==1?'checked':''}}/> 是</label>
                             </div>
                         </div>
 
                         <div class="space-4"></div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label no-padding inline">二级资产开关： </label>
-                            <div class="col-sm-9 inline align-middle">
-
-                                    <label>
-                                        <input class="ace" type="radio" name="isAssets"
-                                               value="0" {{id==null||isManager==0?'checked':''}}/>
-                                        <span class="lbl">开启</span>
-                                    </label>
-                                    <label>
-                                        <input class="ace" type="radio" name="isAssets"
-                                               value="1"{{isManager==1?'checked':''}}/>
-                                        <span class="lbl">关闭</span>
-                                    </label>
-
+                            <label class="col-sm-2 control-label no-padding inline"> 二级资产开关： </label>
+                            <div class="col-sm-9 inline align-middle" >
+                                <label style="margin-right: 15px;"><input type="radio" name="isAsset" value="0"
+                                                                          {{id==null||isAsset==0?'checked':''}}/>
+                                    开启</label>
+                                <label><input type="radio" name="isAsset" value="1"
+                                              {{isAsset==1?'checked':''}}/> 关闭</label>
                             </div>
                         </div>
 
