@@ -6,6 +6,9 @@
     <meta charset="UTF-8">
     <title>模块管理</title>
     <%@include file="/inc/followup/csslink.jsp"%>
+    <style>
+        .conceal-t{display: none;}
+    </style>
 </head>
 <body class="no-skin">
 <%@include file="/inc/followup/topbar.jsp"%>
@@ -40,8 +43,8 @@
                 <div class="col-xs-12">
                     <div class="row">
                         <div class="space-6"></div>
-                        <div>
                             <table class="table table-striped table-bordered table-hover">
+
                                 <thead>
                                 <tr>
                                     <th>模块名称</th>
@@ -53,30 +56,12 @@
                                 </tr>
                                 </thead>
 
-                                <tbody>
+                                <tbody id="table" data-toggle="table">
 
-                                <c:if test="${empty topDeptList}">
-                                    <tr>
-                                        <td colspan="7" class="no_data">暂无模块，请
-                                            <a href="#" data-toggle="modal"
-                                               data-target="#myModalEditFollowuper"
-                                               data-toggle="tooltip" title="新增模块">
-                                                新增模块
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </c:if>
-
-                                <style>
-                                    .conceal-t{display: none;}
-                                </style>
-
-                                <c:forEach var="i" begin="1" end="1">
-
-                                <tr data-id="${item.id}" data-pid="${item.pid}">
+                                <tr>
                                     <td>&nbsp首页</td>
-                                    <td><a class="btn aaa btn-minier btn-purple" data-ac="eye" data-id="a30" data-flag="30">展开</a></td>
-                                    <td>
+                                    <td class="center"><a class="btn btn-minier btn-purple" data-ac="eye" data-id="30" >展开</a></td>
+                                    <td class="center">
                                         <a class="state-btn" data-state="1" href="javascript:;" data-id="30" title="" data-original-title="已启用">
                                             <span class="btn btn-minier btn-yellow">启用</span>
                                         </a>
@@ -97,9 +82,9 @@
                                 </tr>
 
                                 <tr  class="conceal-t link30">
-                                    <td>&nbsp&nbsp二级模块</td>
-                                    <td><a class="btn aaa btn-minier btn-purple" data-ac="eve" data-id="aa30" data-flag="30">展开</a></td>
-                                    <td>
+                                    <td style="padding-left: 3%">&nbsp&nbsp二级模块</td>
+                                    <td class="center"><a class="btn btn-minier btn-purple" data-ac="eye" data-id="30" >展开</a></td>
+                                    <td class="center">
                                         <a class="state-btn" data-state="1" href="javascript:;" data-id="30" title="" data-original-title="已启用">
                                             <span class="btn btn-minier btn-yellow">启用</span>
                                         </a>
@@ -112,10 +97,10 @@
                                     </td>
                                 </tr>
 
-                                <tr class="conceal-t king30">
-                                    <td>&nbsp&nbsp&nbsp这是功能权限3</td>
+                                <tr class="conceal-t link30">
+                                    <td style="padding-left: 6%">这是功能权限3</td>
                                     <td></td>
-                                    <td>
+                                    <td class="center">
                                         <a class="state-btn" data-state="1" href="javascript:;" data-id="30" title="" data-original-title="已启用">
                                             <span class="btn btn-minier btn-yellow">启用</span>
                                         </a>
@@ -128,20 +113,11 @@
                                     </td>
                                 </tr>
 
-                                </c:forEach>
-
                                 </tbody>
                             </table>
-
-                            <%--<c:if test="${not empty page.items}">--%>
-                                <%--<div class="pagerBar" id="pagerBar">--%>
-                                    <%--<common:page2 url="${pageUrl}" type="3"/>--%>
-                                <%--</div>--%>
-                            <%--</c:if>--%>
-
-                        </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -251,40 +227,47 @@
             });
         });
 
+
         //展开收起交互
-        $(".aaa").on('click', function(event) {
-            var flag = $(this).attr("data-flag");
-            var acg = $(this).attr("data-ac");
-            var id = $(this).data('id');
+        $('[data-ac="eye"]').on('click', function(event) {
             var me = this;
+            var id = $(this).data('id');
             var curr = this.innerHTML;
             if(curr === '收起'){
                 me.ip = 0;
+                // eye(id);
             }else{
                 me.ip = 1;
             }
             this.innerHTML = ['展开','收起'][me.ip];
-            if(acg==="eye"){
-                $(".link"+flag)[['fadeOut','fadeIn'][me.ip]]();
-            }
-            if(acg==="eve"){
-                $(".king"+flag)[['fadeOut','fadeIn'][me.ip]]();
-            }
+            $('.link'+id)[['fadeOut','fadeIn'][me.ip]]();
 
         });
+
+        /** 展开收起交互 */
+        function eye(fid,eid){
+
+            $('.link'+fid+' [data-ac=eye]').each(function(i,btn){
+                if(btn.innerHTML === '收起'&&$(btn).data('id') !== eid){
+                    $(btn).click();
+                    eye($(btn).data('id'));
+                }
+            });
+
+        }
 
         //禁用/启用
         $(".state-btn").on("click", function () {
             var state = $(this).data("state");
-            var act = state == 0 ? "enable" : "disable";
-            var stateStr = act == "enable" ? "启用" : "禁用";
-            var className = act == "enable" ? "btn-yellow" : "btn-danger";
+            var act = state == 0 ? "true" : "false";
+            var stateStr = act == "true" ? "启用" : "禁用";
+            var className = act == "true" ? "btn-yellow" : "btn-danger";
             var $btn = $(this);
             var id = $(this).closest("tr").data("id");
-            layer.confirm('<p class="tc">是否确定' + stateStr + '此用户</p>', {icon: 3, title: "温馨提示"}, function (index) {
+            layer.confirm('<p class="tc">是否确定' + stateStr + '此模块</p>', {icon: 3, title: "温馨提示"}, function (index) {
                 layer.close(index);
                 common.ajax.handle({
-                    url: "/user/" + act + "/" + id + ".json",
+                    url: "/module/enableModule?id="+id,
                     succback: function (data) {
                         var btn = '<span class="btn btn-minier ' + className + '">' + stateStr + '</span>';
                         $btn.data("state", !state).html(btn).attr('data-original-title', "已" + stateStr);
@@ -326,19 +309,14 @@
 
             <%--/** 展开收起交互 */--%>
             <%--function eye(fid,eid){--%>
-
                 <%--$(layout.find('.p'+fid+' [data-ac=eye]')).each(function(i,btn){--%>
                     <%--if(btn.innerHTML === '收起'&&$(btn).data('id') !== eid){--%>
                         <%--$(btn).click();--%>
                         <%--eye($(btn).data('id'));--%>
                     <%--}--%>
                 <%--});--%>
-
             <%--}--%>
-
-
         <%--});--%>
-
     <%--});--%>
 
 <%--</script>--%>
