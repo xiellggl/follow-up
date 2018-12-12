@@ -83,6 +83,8 @@ public class UserServiceImpl implements UserService, Realm {
     public BizResult add(FollowUp followUp) {
         followUp.setId(userMapper.getNewId());
         followUp.setDisable(MemberStatusEnum.ENABLE.getValue());
+        followUp.setCreateTime(new Date());
+        followUp.setUpdateTime(new Date());
         if (userMapper.add(followUp) != 1) {
             return BizResult.FAIL;
         }
@@ -147,7 +149,6 @@ public class UserServiceImpl implements UserService, Realm {
         }
 
         UserEditDto.dtoToEntity(userEditDto, followUp);
-        followUp.setUpdateTime(new Date());
         userMapper.updateAll(followUp);
 
         return BizResult.SUCCESS;

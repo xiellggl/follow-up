@@ -35,7 +35,7 @@ public class FollowUp extends BaseModel implements Principal {
     @NotBlank(message = "角色不能为空！")
     private String roleids;//角色ids
     @NotNull(message = "请选择身份！")
-    private Integer identity;//1-跟进人，2-运维
+    private Integer identity;//1-跟进人，2-非跟进人
 
 
 

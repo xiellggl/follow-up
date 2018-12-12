@@ -110,6 +110,9 @@ public class OrgServiceImpl implements OrgService {
 
     @Override
     public BizResult addContact(OrgContact orgContact) {
+        Organization org = orgMapper.get(orgContact.getOrgId());
+        if(org==null)return BizResult.fail("创客不存在！");
+
         orgContact.setCreateTime(new Date());
         orgContact.setUpdateTime(new Date());
         orgContact.setId(orgMapper.getNewId());

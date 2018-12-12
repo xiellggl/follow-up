@@ -105,6 +105,8 @@ public class AgentServiceImpl implements AgentService {
 
     @Override
     public BizResult addContact(AgentContact agentContact) {
+        Agent agent = agentMapper.get(agentContact.getAgentId());
+        if (agent == null) return BizResult.fail("代理商不存在！");
         agentContact.setCreateTime(new Date());
         agentContact.setUpdateTime(new Date());
         agentContact.setId(agentMapper.getNewId());

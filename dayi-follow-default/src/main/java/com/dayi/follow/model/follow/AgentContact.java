@@ -12,6 +12,7 @@ import java.util.Date;
  * @date 2018/7/20
  */
 public class AgentContact extends BaseModel {
+    @NotNull(message = "代理商ID不能为空！")
     private Integer agentId;//代理商ID
     @NotNull(message = "联系类型不能为空！")
     private Integer contactType;//联系类型

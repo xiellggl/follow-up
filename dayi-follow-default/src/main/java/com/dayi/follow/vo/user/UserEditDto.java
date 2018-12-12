@@ -40,7 +40,7 @@ public class UserEditDto extends BaseModel {
     private String roleids;
 
     /**
-     * 1-跟进人，2-运维
+     * 1-跟进人，2-非跟进人
      */
     @NotNull(message = "请选择身份！")
     private Integer identity;

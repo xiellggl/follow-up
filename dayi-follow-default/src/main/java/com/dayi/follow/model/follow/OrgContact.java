@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
  * @date 2018/7/20
  */
 public class OrgContact extends BaseModel {
+    @NotNull(message = "创客ID不能为空")
     private Integer orgId;//创客ID
     @NotNull(message = "联系类型不能为空！")
     private Integer contactType;//联系类型

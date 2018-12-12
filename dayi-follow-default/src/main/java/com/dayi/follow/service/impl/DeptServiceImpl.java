@@ -79,12 +79,16 @@ public class DeptServiceImpl implements DeptService {
         doUpdatePerson(department, departmentVo.getPid());
 
         //复制属性
-        department.setName(department.getName());
-        department.setPid(department.getPid());
-        department.setSortNo(department.getSortNo());
-        department.setCityServer(department.getCityServer());
-        department.setCityInviteCode(department.getCityInviteCode());
-        department.setRemark(department.getRemark());
+        department.setName(departmentVo.getName());
+        department.setPid(departmentVo.getPid());
+        department.setSortNo(departmentVo.getSortNo());
+        if (departmentVo.getCityServer() == null) {
+            department.setCityServer(0);
+        } else {
+            department.setCityServer(departmentVo.getCityServer());
+        }
+        department.setCityInviteCode(departmentVo.getCityInviteCode());
+        department.setRemark(departmentVo.getRemark());
         department.setUpdateTime(new Date());
 
         if (deptMapper.updateAll(department) == 1) {
@@ -104,7 +108,9 @@ public class DeptServiceImpl implements DeptService {
     @Override
     public BizResult add(Department department) {
         department.setId(deptMapper.getNewId());
-        department.setCityServer(0);
+        if (department.getCityServer() == null) {
+            department.setCityServer(0);
+        }
         department.setPersonNum(0);
 
         return 1 == deptMapper.add(department) ? BizResult.SUCCESS : BizResult.FAIL;
