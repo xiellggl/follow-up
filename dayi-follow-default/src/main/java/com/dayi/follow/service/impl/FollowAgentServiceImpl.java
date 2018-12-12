@@ -3,16 +3,15 @@ package com.dayi.follow.service.impl;
 
 import com.dayi.common.util.BigDecimals;
 import com.dayi.common.util.BizResult;
+import com.dayi.component.annotation.Log;
+import com.dayi.component.model.BaseLog;
 import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.dao.dayi.AgentMapper;
 import com.dayi.follow.dao.follow.FollowAgentMapper;
 import com.dayi.follow.dao.follow.FollowUpMapper;
 import com.dayi.follow.enums.AgentCusTypeEnum;
 import com.dayi.follow.enums.BankTypeEnum;
-import com.dayi.follow.model.follow.Account;
-import com.dayi.follow.model.follow.Agent;
-import com.dayi.follow.model.follow.FollowAgent;
-import com.dayi.follow.model.follow.FollowUp;
+import com.dayi.follow.model.follow.*;
 import com.dayi.follow.service.AgentService;
 import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.FollowAgentService;
@@ -64,6 +63,7 @@ public class FollowAgentServiceImpl implements FollowAgentService {
     }
 
     @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.SEARCH, what = "我的代理商", note = "代理商详情")
     public DetailVo getDetail(Integer agentId) {
         DetailVo detailVo = new DetailVo();
         if (agentId == null) {
@@ -187,6 +187,7 @@ public class FollowAgentServiceImpl implements FollowAgentService {
     }
 
     @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.SEARCH, what = "联系记录", note = "查询代理商联系记录列表")
     public Page findContacts(Page page, Integer agentId) {
         return followAgentMapper.findContacts(page, agentId);
     }
@@ -197,6 +198,7 @@ public class FollowAgentServiceImpl implements FollowAgentService {
     }
 
     @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.SEARCH, what = "分配跟进人", note = "查询代理商列表")
     public Page findAssignPage(Page<AssignListVo> page, SearchVo searchVo, String deptId) {
 
         List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
@@ -218,7 +220,9 @@ public class FollowAgentServiceImpl implements FollowAgentService {
         return page;
     }
 
+
     @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.ADD, what = "分配跟进人", note = "代理商分配")
     public BizResult add(FollowAgent followAgentVo) {
         FollowUp followUp = followUpMapper.get(followAgentVo.getFollowId());
         if (followUp == null) return BizResult.FAIL;
@@ -279,6 +283,7 @@ public class FollowAgentServiceImpl implements FollowAgentService {
     }
 
     @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.ADD, what = "分配跟进人", note = "代理商批量分配")
     public BizResult addBatch(List<FollowAgent> followAgents) {
         for (FollowAgent followAgent : followAgents) {
             BizResult add = this.add(followAgent);
@@ -288,6 +293,7 @@ public class FollowAgentServiceImpl implements FollowAgentService {
     }
 
     @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.UPDATE, what = "分配跟进人", note = "代理商清除分配")
     public BizResult clear(FollowAgent followAgent) {
         Agent agent = agentMapper.get(followAgent.getAgentId());
         if (agent == null) return BizResult.FAIL;
@@ -317,6 +323,7 @@ public class FollowAgentServiceImpl implements FollowAgentService {
     }
 
     @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.UPDATE, what = "分配跟进人", note = "代理商批量清除分配")
     public BizResult clearBatch(List<FollowAgent> followAgents) {
         for (FollowAgent followAgent : followAgents) {
             BizResult clear = this.clear(followAgent);

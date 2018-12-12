@@ -136,11 +136,11 @@ CREATE TABLE `dayi_follow_all`.`org_contact`  (
 INSERT into  dayi_follow_all.agent_contact
 (id,agent_id,contact_type,customer_type,cus_intention_type,next_contact_time,follow_id,content,create_time,update_time)
 SELECT id,agent_id,contact_type,customer_type,customer_intention_type,next_contact_time,flow_id,content,create_date,modify_date
-from dev_dayi_spot.agent_contact;
+from dayi_spot.agent_contact;
 
 #复制follow_dept表到department表中
 insert into dayi_follow_all.department(id,pid,sort_no,name,city_server,city_invite_code,remark,person_num,create_time,update_time)
-SELECT id,pid,sort_no,name,city_server,city_invite_code,remark,person_num,create_date,modify_date from dev_dayi_spot.follow_dept;
+SELECT id,pid,sort_no,name,city_server,city_invite_code,remark,person_num,create_date,modify_date from dayi_spot.follow_dept;
 
 
 #将agent表的跟进人数据，迁移到follow_agent表
@@ -148,21 +148,21 @@ INSERT into  dayi_follow_all.follow_agent (id,follow_id,agent_id,follow_up_befor
 customer_type,cus_intention_type,assign_date,agent_fund_before,total_fund_before,create_time,update_time)
 SELECT CONCAT(id,'a',IFNULL(flow_id,0)),flow_id,id,follow_up_before,flow_date_before,
 customer_type,customer_intention_type,flow_date,asserts_before,balance_before,create_date,
-modify_date from dev_dayi_spot.agent;
+modify_date from dayi_spot.agent;
 
 #将organization表的跟进人数据，迁移到follow_org表
 INSERT into  dayi_follow_all.follow_org (id,follow_id,org_id,follow_up_before,assign_date,
 assign_date_before,manage_fund_before,create_time,update_time)
 SELECT CONCAT(id,'a',IFNULL(flow_id,0)),flow_id,id,follow_up_before,flow_date,
 flow_date_before,asserts_before,create_date,
-modify_date from dev_dayi_spot.organization;
+modify_date from dayi_spot.organization;
 
 #复制flow_up到follow_up表
 INSERT into  dayi_follow_all.follow_up (id,dept_id,name,mobile,invite_code,
 user_name,disable,`password`,create_by,update_by,create_time,update_time,switch_status,channel_remark,identity)
 SELECT id,dept_id,link_person,mobile,invite_code,
 user_name,`disable`,`password`,create_by,modify_by,create_date,modify_date,switch_status,channel_remark,1
-from dev_dayi_spot.flow_up;
+from dayi_spot.flow_up;
 
 #修补超管和管理员的部门id
 update dayi_follow_all.follow_up set dept_id = 2 WHERE user_name='admin' or user_name='chenyh1';
@@ -172,9 +172,9 @@ update dayi_follow_all.follow_up set identity = 2 WHERE user_name='admin' or use
 
 #复制follow_up_log数据到新库中
 INSERT into dayi_follow_all.follow_up_log (id,follow_id,dept_id,open_account_num,in_cash,in_cash_num,out_cash,manage_growth_fund,manage_fund,out_cash_num,create_time,update_time )
-SELECT id,flow_id,dept_id,open_account_num,in_cash,in_cash_num,out_cash,manage_asset_growth,manage_asset,out_cash_num,create_date,modify_date from dev_dayi_spot.follow_up_log;
+SELECT id,flow_id,dept_id,open_account_num,in_cash,in_cash_num,out_cash,manage_asset_growth,manage_asset,out_cash_num,create_date,modify_date from dayi_spot.follow_up_log;
 
 #复制organization_contact数据到org_contact中
 INSERT into dayi_follow_all.org_contact (id,org_id,contact_type,content,follow_id,create_time,update_time )
-SELECT id,org_id,contact_type,content,flow_id,create_date,modify_date from dev_dayi_spot.organization_contact;
+SELECT id,org_id,contact_type,content,flow_id,create_date,modify_date from dayi_spot.organization_contact;
 

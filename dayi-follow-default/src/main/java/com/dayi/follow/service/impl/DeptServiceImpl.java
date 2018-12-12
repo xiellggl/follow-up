@@ -1,11 +1,14 @@
 package com.dayi.follow.service.impl;
 
 import com.dayi.common.util.BizResult;
+import com.dayi.component.annotation.Log;
+import com.dayi.component.model.BaseLog;
 import com.dayi.follow.dao.follow.DeptMapper;
 import com.dayi.follow.dao.follow.FollowUpMapper;
 import com.dayi.follow.dao.follow.UserMapper;
 import com.dayi.follow.model.follow.Department;
 import com.dayi.follow.model.follow.FollowUp;
+import com.dayi.follow.model.follow.OperateLog;
 import com.dayi.follow.service.DeptService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.ListUtils;
@@ -72,6 +75,7 @@ public class DeptServiceImpl implements DeptService {
     }
 
     @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.UPDATE, what = "部门管理", note = "修改部门")
     public BizResult updateDept(Department departmentVo) {
         //处理上级部门人数
         Department department = deptMapper.get(departmentVo.getId());
@@ -106,6 +110,7 @@ public class DeptServiceImpl implements DeptService {
 
 
     @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.ADD, what = "部门管理", note = "添加部门")
     public BizResult add(Department department) {
         department.setId(deptMapper.getNewId());
         if (department.getCityServer() == null) {
@@ -117,6 +122,7 @@ public class DeptServiceImpl implements DeptService {
     }
 
     @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.DELETE, what = "部门管理", note = "删除部门")
     public BizResult delete(Department department) {
         List<String> userIds = new ArrayList<String>();
         userIds = userMapper.findIdsByDeptId(department.getId());
@@ -188,6 +194,7 @@ public class DeptServiceImpl implements DeptService {
     }
 
     @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.SEARCH, what = "部门管理", note = "查询部门列表")
     public List<Department> getDeptTree(Department department) {
         List<Department> departments = new ArrayList<Department>();
 

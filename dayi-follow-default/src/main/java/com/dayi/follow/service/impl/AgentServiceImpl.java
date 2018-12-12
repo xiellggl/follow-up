@@ -2,6 +2,8 @@ package com.dayi.follow.service.impl;
 
 
 import com.dayi.common.util.BizResult;
+import com.dayi.component.annotation.Log;
+import com.dayi.component.model.BaseLog;
 import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.dao.dayi.AgentMapper;
 import com.dayi.follow.dao.follow.AgentContactMapper;
@@ -9,6 +11,7 @@ import com.dayi.follow.dao.follow.FollowAgentMapper;
 import com.dayi.follow.dao.follow.FollowUpMapper;
 import com.dayi.follow.model.follow.Agent;
 import com.dayi.follow.model.follow.AgentContact;
+import com.dayi.follow.model.follow.OperateLog;
 import com.dayi.follow.service.AgentService;
 import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.OrgService;
@@ -46,6 +49,7 @@ public class AgentServiceImpl implements AgentService {
     String dayiDataBaseStr;
 
     @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.SEARCH, what = "我的代理商", note = "查询代理商列表")
     public Page<AgentListVo> findAgentPage(Page<AgentListVo> page, SearchVo searchVo, String followId) {
 
         List<Integer> ids = null;
@@ -95,6 +99,7 @@ public class AgentServiceImpl implements AgentService {
     }
 
     @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.SEARCH, what = "登录日志", note = "查询代理商登录日志列表")
     public Page<LoginLogVo> findLoginLog(Page page, Integer agentId) {
         List<LoginLogVo> loginLog = agentMapper.findLoginLog(agentId, page.getStartRow(), page.getEndRow());
         long loginLogNum = agentMapper.getLoginLogNum(agentId);
@@ -104,6 +109,7 @@ public class AgentServiceImpl implements AgentService {
     }
 
     @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.ADD, what = "联系记录", note = "添加联系记录")
     public BizResult addContact(AgentContact agentContact) {
         Agent agent = agentMapper.get(agentContact.getAgentId());
         if (agent == null) return BizResult.fail("代理商不存在！");

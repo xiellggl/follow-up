@@ -169,6 +169,26 @@ public class UserController extends BaseController {
 
 
     /**
+     * 新增 -- 保存 -- 用户
+     */
+    @RequestMapping("/check/userName")
+    @ResponseBody
+    public boolean checkUserName(String userName) {
+        if (userService.getByUserName(userName) == null) return true;
+        return false;
+    }
+
+    /**
+     * 新增 -- 保存 -- 用户
+     */
+    @RequestMapping("/check/inviteCode")
+    @ResponseBody
+    public boolean checkInviteCode(String inviteCode) {
+        return userService.checkCodeRepeat(inviteCode);
+    }
+
+
+    /**
      * 修改 -- 保存 -- 用户
      */
     @RequestMapping("/update/save")

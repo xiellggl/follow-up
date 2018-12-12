@@ -2,16 +2,15 @@ package com.dayi.follow.service.impl;
 
 
 import com.dayi.common.util.BigDecimals;
+import com.dayi.component.annotation.Log;
+import com.dayi.component.model.BaseLog;
 import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.dao.dayi.AgentMapper;
 import com.dayi.follow.dao.dayi.CountMapper;
 import com.dayi.follow.dao.dayi.OrgMapper;
 import com.dayi.follow.dao.follow.*;
 import com.dayi.follow.enums.SwitchStatusEnum;
-import com.dayi.follow.model.follow.Account;
-import com.dayi.follow.model.follow.Agent;
-import com.dayi.follow.model.follow.FollowUp;
-import com.dayi.follow.model.follow.Organization;
+import com.dayi.follow.model.follow.*;
 import com.dayi.follow.service.*;
 import com.dayi.follow.util.CollectionUtil;
 import com.dayi.follow.vo.SearchVo;
@@ -67,6 +66,7 @@ public class FollowUpServiceImpl implements FollowUpService {
     }
 
     @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.SEARCH, what = "跟进人管理", note = "查询跟进人列表")
     public Page<FollowUpListVo> findPage(Page page, String deptId, String mobile, String queryDeptId, String inviteCode) {
         List<String> followIds = new ArrayList<String>();
 
@@ -91,6 +91,7 @@ public class FollowUpServiceImpl implements FollowUpService {
     }
 
     @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.SEARCH, what = "分配跟进人", note = "查询跟进人列表")
     public Page<FollowUpListVo> findAssignSelect(Page<FollowUpListVo> page, String followUp, String deptId) {
         List<String> followIds = this.findIdsByDeptId(deptId);
         page = followUpMapper.findAssignSelect(page, followUp, followIds);
@@ -104,6 +105,7 @@ public class FollowUpServiceImpl implements FollowUpService {
     }
 
     @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.SEARCH, what = "跟进人管理", note = "查询代理商明细列表")
     public Page<FMDetailListVo> findAgentPage(Page page, SearchVo searchVo, String followId) {
 
         List<String> followIds = new ArrayList<String>();
@@ -127,6 +129,7 @@ public class FollowUpServiceImpl implements FollowUpService {
     }
 
     @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.SEARCH, what = "跟进人管理", note = "导出创客明细列表")
     public List<FMDetailListVo> findOrgList(SearchVo searchVo, String followId) {
         List<String> followIds = new ArrayList<String>();
         followIds.add(followId);
@@ -137,6 +140,7 @@ public class FollowUpServiceImpl implements FollowUpService {
     }
 
     @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.SEARCH, what = "跟进人管理", note = "查询全部代理商明细列表")
     public Page<FMDetailListVo> findAllAgentPage(Page page, SearchVo searchVo, String deptId) {
 
         List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
@@ -158,6 +162,7 @@ public class FollowUpServiceImpl implements FollowUpService {
     }
 
     @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.SEARCH, what = "跟进人管理", note = "查询创客明细列表")
     public Page<FMDetailListVo> findOrgPage(Page page, SearchVo searchVo, String followId) {
         List<String> followIds = new ArrayList<String>();
         followIds.add(followId);
@@ -170,6 +175,7 @@ public class FollowUpServiceImpl implements FollowUpService {
     }
 
     @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.SEARCH, what = "跟进人管理", note = "查询全部创客明细列表")
     public Page<FMDetailListVo> findAllOrgPage(Page page, SearchVo searchVo, String deptId) {
 
         List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
@@ -182,6 +188,7 @@ public class FollowUpServiceImpl implements FollowUpService {
     }
 
     @Override
+    @Log(target = OperateLog.class, action = BaseLog.LogAction.SEARCH, what = "跟进人管理", note = "导出全部创客明细列表")
     public List<FMDetailListVo> findAllOrgList(SearchVo searchVo, String deptId) {
         List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
 
