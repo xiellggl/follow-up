@@ -82,14 +82,14 @@
                                 </tr>
 
                                 <tr  class="conceal-t link30">
-                                    <td style="padding-left: 3%">&nbsp&nbsp二级模块</td>
+                                    <td style="padding-left: 3%">代理商状态</td>
                                     <td class="center"><a class="btn btn-minier btn-purple" data-ac="eye" data-id="30" >展开</a></td>
                                     <td class="center">
                                         <a class="state-btn" data-state="1" href="javascript:;" data-id="30" title="" data-original-title="已启用">
                                             <span class="btn btn-minier btn-yellow">启用</span>
                                         </a>
                                     </td>
-                                    <td>http://spotnewuc.fiidee.loc/#/admin/member/user </td>
+                                    <td></td>
                                     <td>可查看预约联系时间为今天的代理商</td>
                                     <td>
                                         <a href="#" data-act="del" data-toggle="tooltip" title="解除绑定">
@@ -98,14 +98,14 @@
                                 </tr>
 
                                 <tr class="conceal-t link30">
-                                    <td style="padding-left: 6%">这是功能权限3</td>
+                                    <td style="padding-left: 6%">数据统计</td>
                                     <td></td>
                                     <td class="center">
                                         <a class="state-btn" data-state="1" href="javascript:;" data-id="30" title="" data-original-title="已启用">
                                             <span class="btn btn-minier btn-yellow">启用</span>
                                         </a>
                                     </td>
-                                    <td>http://spotnewuc.fiidee.loc/#/admin/member/user </td>
+                                    <td></td>
                                     <td>可查看不同状态下的代理商数量（适用于业务人员）</td>
                                     <td>
                                         <a href="#" data-act="del" data-toggle="tooltip" title="解除绑定">
@@ -235,7 +235,7 @@
             var curr = this.innerHTML;
             if(curr === '收起'){
                 me.ip = 0;
-                // eye(id);
+
             }else{
                 me.ip = 1;
             }
@@ -244,17 +244,6 @@
 
         });
 
-        /** 展开收起交互 */
-        function eye(fid,eid){
-
-            $('.link'+fid+' [data-ac=eye]').each(function(i,btn){
-                if(btn.innerHTML === '收起'&&$(btn).data('id') !== eid){
-                    $(btn).click();
-                    eye($(btn).data('id'));
-                }
-            });
-
-        }
 
         //禁用/启用
         $(".state-btn").on("click", function () {
@@ -281,44 +270,5 @@
     });
 
 </script>
-<%--<script type="text/javascript">--%>
-    <%--/** ⚠️ 模版页不要用单行注释(异步请求会把后边的所有内容注释掉) */--%>
-    <%--seajs.use('main',function(fn){--%>
-
-        <%--fn.main(function(box,form,layout){--%>
-
-            <%--form.submit();--%>
-
-            <%--/** 展开收起交互 */--%>
-            <%--layout.on('click','[data-ac=eye]',function(){--%>
-
-                <%--var me = this, id = $(this).data('id'), curr = this.innerHTML;--%>
-
-                <%--if(curr === '收起'){--%>
-                    <%--me.ip = 0;--%>
-                    <%--eye(id);--%>
-                <%--}else{--%>
-                    <%--me.ip = 1;--%>
-                <%--}--%>
-
-                <%--this.innerHTML = ['展开','收起'][me.ip];--%>
-
-                <%--layout.find('.p'+id)[['fadeOut','fadeIn'][me.ip]]();--%>
-
-            <%--});--%>
-
-            <%--/** 展开收起交互 */--%>
-            <%--function eye(fid,eid){--%>
-                <%--$(layout.find('.p'+fid+' [data-ac=eye]')).each(function(i,btn){--%>
-                    <%--if(btn.innerHTML === '收起'&&$(btn).data('id') !== eid){--%>
-                        <%--$(btn).click();--%>
-                        <%--eye($(btn).data('id'));--%>
-                    <%--}--%>
-                <%--});--%>
-            <%--}--%>
-        <%--});--%>
-    <%--});--%>
-
-<%--</script>--%>
 </body>
 </html>

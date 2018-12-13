@@ -114,56 +114,28 @@
 
                 <div class="space-10"></div>
 
-                <div class="row" id="listPan">
-                    <div class="col-xs-12">
-                        <table class="table table-striped table-bordered table-hover" >
-                            <thead>
-                            <tr>
-                                <th>会员ID</th>
-                                <th>名称</th>
-                                <th>手机号</th>
-                                <th>注册时间</th>
-                                <th>邀请码</th>
-                                <th>当前跟进人</th>
-                                <th>变更前跟进人</th>
-                                <th>变更日期</th>
-                                <th>变更前总资产</th>
-                                <th>当前总资产</th>
-                                <th>新增代理商服务费</th>
-                            </tr>
-                            </thead>
-                            <tbody>
+                <div class="tabbable">
+                    <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
 
-                            <%--<c:if test="${empty page.items}">--%>
-                            <%--<tr>--%>
-                            <%--<td colspan="11" class="no_data">暂无数据记录</td>--%>
-                            <%--</tr>--%>
-                            <%--</c:if>--%>
+                        <li class="active">
+                            <a data-toggle="tab" href="#profile4" aria-expanded="false">代理商</a>
+                        </li>
 
-                            <c:forEach var="i" begin="1" end="5">
-                                <tr>
-                                    <td>520</td>
-                                    <td>马冬梅</td>
-                                    <td>13711802518</td>
-                                    <td>2016-02-20 14:44:43</td>
-                                    <td>1314</td>
-                                    <td>夏洛</td>
-                                    <td>郝建</td>
-                                    <td>2016-02-20 14:44:43</td>
-                                    <td>100.000.62</td>
-                                    <td>100.000.62</td>
-                                    <td>998</td>
-                                </tr>
-                            </c:forEach>
+                        <li class="">
+                            <a data-toggle="tab" href="#home4" aria-expanded="true">创客</a>
+                        </li>
 
-                            </tbody>
-                        </table>
+                    </ul>
 
-                        <%--<c:if test="${not empty page}">--%>
-                        <%--<div class="pagerBar" id="pagerBar">--%>
-                        <%--<common:page2 url="${pageUrl}" type="3"/>--%>
-                        <%--</div>--%>
-                        <%--</c:if>--%>
+                    <div class="tab-content">
+
+                        <div id="profile4" class="tab-pane active">
+                            <div id="conList"></div>
+                        </div>
+
+                        <div id="home4" class="tab-pane">
+                            <div id="logList"></div>
+                        </div>
 
                     </div>
                 </div>
@@ -174,8 +146,20 @@
 </div>
 <%@include file="/inc/followup/script.jsp"%>
 <script>
-    seajs.use(["common","validate","template"],function(common,validate,template){
-        common.head("system",3);
+    seajs.use(["common", "template", "validate", "addMethod"], function (common, template) {
+        var agentId = ${param.agentId};
+        common.head("teamCustomer",1);
+
+        var $logList = $("#logList");
+        var log_url = "/followup/uc/customer/agent/loginlog?agentId=" + agentId;
+        common.loadPageHTML(log_url, null,$logList);
+        common.clickPageFn(log_url, null, $logList);
+
+
+        var $conList = $("#conList");
+        var con_url = "/followup/uc/customer/agent/contact?agentId=" + agentId;
+        common.loadPageHTML(con_url, null,$conList);
+        common.clickPageFn(con_url, null, $conList);
     });
 </script>
 </body>

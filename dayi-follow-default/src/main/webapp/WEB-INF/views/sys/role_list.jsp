@@ -65,27 +65,29 @@
                                 </tr>
                             </c:if>
 
-                            <c:forEach var="i" begin="1" end="5">
-                            <tr>
-                                <td>资产管理中心总经理</td>
-                                <td>资产管理中心头号人物，神秘而美丽...</td>
-                                <td>2016-02-20 14:44:43</td>
-                                <td>
-                                    <a class="state-btn" data-state="1" href="javascript:;" data-id="30" title="" data-original-title="已启用">
-                                        <span class="btn btn-minier btn-yellow">启用</span>
-                                    </a>
-                                </td>
-                                <td>
-                                    <a href="#" data-id="30" data-toggle="modal"
-                                       data-target="#myModalEditFollowuper"
-                                       data-toggle="tooltip" title="修改">
-                                        <i class="ace-icon fa fa-pencil bigger-130"></i>
-                                    </a>
-                                    <a href="#" data-act="del" data-toggle="tooltip" title="删除">
-                                        <i class="ace-icon fa fa-trash-o bigger-130 red"></i></a>
-                                </td>
-                            </tr>
-                            </c:forEach>
+                            <c:if test="${not empty page.results}">
+                                <c:forEach items="${page.results}" var="item">
+                                    <tr data-id="${item.id}">
+                                        <td>${item.name}</td>
+                                        <td>${item.descript}</td>
+                                        <td>2016-02-20 14:44:43</td>
+                                        <td>
+                                            <a class="state-btn" data-state="1" href="javascript:;" data-id="30" title="" data-original-title="已启用">
+                                                <span class="btn btn-minier btn-yellow">启用</span>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="#" data-id="30" data-toggle="modal"
+                                               data-target="#myModalEditFollowuper"
+                                               data-toggle="tooltip" title="修改">
+                                                <i class="ace-icon fa fa-pencil bigger-130"></i>
+                                            </a>
+                                            <a href="#" data-act="del" data-toggle="tooltip" title="删除">
+                                                <i class="ace-icon fa fa-trash-o bigger-130 red"></i></a>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </c:if>
 
                             </tbody>
                         </table>
@@ -196,7 +198,7 @@
             layer.confirm('<p class="tc">是否确定' + stateStr + '此用户</p>', {icon: 3, title: "温馨提示"}, function (index) {
                 layer.close(index);
                 common.ajax.handle({
-                    url: "/role/enableModule?id="+id,
+                    url: "/role/enableRole?id="+id,
                     succback: function (data) {
                         var btn = '<span class="btn btn-minier ' + className + '">' + stateStr + '</span>';
                         $btn.data("state", !state).html(btn).attr('data-original-title', "已" + stateStr);
