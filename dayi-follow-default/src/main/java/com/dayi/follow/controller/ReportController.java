@@ -109,6 +109,7 @@ public class ReportController extends BaseController {
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
         request.setAttribute("pageUrl", pageUrl);
         model.addAttribute("page", page);
+        model.addAttribute("date",date);
         return "/followup/uc/log/mydaily";
     }
 
@@ -153,6 +154,7 @@ public class ReportController extends BaseController {
         ReportDailyVo week = reportService.getWeek(currVo.getId(), date);
 
         model.addAttribute("week", week);
+        model.addAttribute("date",date);
         return "/followup/uc/log/mydaily";
     }
 
@@ -179,6 +181,7 @@ public class ReportController extends BaseController {
         List<ReportDailyVo> teamWeek = reportService.findTeamWeek(currVo.getDeptId(), date);
 
         model.addAttribute("teamWeek", teamWeek);
+        model.addAttribute("date",date);
         return "/followup/uc/log/mydaily";
     }
 
@@ -198,6 +201,7 @@ public class ReportController extends BaseController {
         ReportDailyVo month = reportService.getMonth(currVo.getId(), date);
 
         model.addAttribute("month", month);
+        model.addAttribute("date",date);
         return "/followup/uc/log/mydaily";
     }
 
@@ -220,6 +224,7 @@ public class ReportController extends BaseController {
         List<ReportDailyVo> teamMonth = reportService.findTeamMonth(currVo.getDeptId(), date);
 
         model.addAttribute("teamMonth", teamMonth);
+        model.addAttribute("date",date);
         return "/followup/uc/log/mydaily";
     }
 

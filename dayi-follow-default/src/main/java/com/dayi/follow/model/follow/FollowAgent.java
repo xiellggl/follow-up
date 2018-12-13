@@ -1,5 +1,7 @@
 package com.dayi.follow.model.follow;
 
+import com.dayi.follow.enums.AgentCusTypeEnum;
+import com.dayi.follow.enums.AgentIntenTypeEnum;
 import com.dayi.mybatis.support.BaseModel;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.BeanUtils;
@@ -108,6 +110,28 @@ public class FollowAgent extends BaseModel {
     }
 
     public String getCustomerTypeStr() {
+        if (customerType != null) {
+            switch (customerType) {
+                case (1):
+                    customerTypeStr = AgentCusTypeEnum.NOT_LINK.getName();
+                    break;
+                case (2):
+                    customerTypeStr = AgentCusTypeEnum.OPEN_ACCOUNT.getName();
+                    break;
+                case (3):
+                    customerTypeStr = AgentCusTypeEnum.CAN_FOLLOWUP.getName();
+                    break;
+                case (4):
+                    customerTypeStr = AgentCusTypeEnum.NO_INTENTION.getName();
+                    break;
+                case (5):
+                    customerTypeStr = AgentCusTypeEnum.LOST.getName();
+                    break;
+                case (6):
+                    customerTypeStr = AgentCusTypeEnum.INVALID.getName();
+                    break;
+            }
+        }
         return customerTypeStr;
     }
 
@@ -116,6 +140,22 @@ public class FollowAgent extends BaseModel {
     }
 
     public String getCusIntentionTypeStr() {
+        if (cusIntentionType != null) {
+            switch (cusIntentionType) {
+                case (1):
+                    cusIntentionTypeStr = AgentIntenTypeEnum.STRONG.getName();
+                    break;
+                case (2):
+                    cusIntentionTypeStr = AgentIntenTypeEnum.MIDDLE.getName();
+                    break;
+                case (3):
+                    cusIntentionTypeStr = AgentIntenTypeEnum.WEAK.getName();
+                    break;
+                case (4):
+                    cusIntentionTypeStr = AgentIntenTypeEnum.NO.getName();
+                    break;
+            }
+        }
         return cusIntentionTypeStr;
     }
 
