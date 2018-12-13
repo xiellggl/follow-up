@@ -48,26 +48,51 @@
                                 <thead>
                                 <tr>
                                     <th>模块名称</th>
-                                    <th>操作</th>
-                                    <th class="hidden-sm hidden-xs">状态</th>
+                                    <th>状态</th>
+                                    <th>菜单状态</th>
                                     <th>功能路径</th>
+                                    <th>排序</th>
                                     <th>备注</th>
                                     <th>操作</th>
                                 </tr>
                                 </thead>
 
-                                <tbody id="table" data-toggle="table">
+                                <tbody>
 
-                                <tr>
-                                    <td>&nbsp首页</td>
-                                    <td class="center"><a class="btn btn-minier btn-purple" data-ac="eye" data-id="30" >展开</a></td>
+
+                                <c:if test="${empty page.results}">
+                                    <tr>
+                                        <td colspan="7" class="no_data">
+                                            暂无模块，请
+                                            <a href="#" data-toggle="modal"
+                                               data-target="#myModalEditFollowuper">新增模块</a>
+                                        </td>
+                                    </tr>
+                                </c:if>
+
+
+                                <c:if test="${not empty page.results}">
+                                <c:forEach items="${page.results}" var="item">
+
+                                <c:forEach items="${item.menus}" var="item">
+
+                                <tr id="${item.id} - ${item.parentId}">
+                                    <td>${item.name}</td>
+                                    <td>
+                                        <a data-id="${item.id}" data-level="{$v.level}" href="{:url('admin/Sys/admin_menu_list',['pid'=>$v.id])}"
+                                           style="cursor:pointer;" class="rule-list">
+                                        <span class="fa {if condition='$v.level egt 4'}fa-minus{else /}fa-plus{/if} blue"></span>
+                                        </a>
+                                    </td>
                                     <td class="center">
                                         <a class="state-btn" data-state="1" href="javascript:;" data-id="30" title="" data-original-title="已启用">
                                             <span class="btn btn-minier btn-yellow">启用</span>
                                         </a>
                                     </td>
-                                    <td>http://spotnewuc.fiidee.loc/#/admin/member/user </td>
-                                    <td>管理首页信息</td>
+                                    <td>${item.status}</td>
+                                    <td>${item.url}</td>
+                                    <td>${item.order}</td>
+                                    <td>${item.description}</td>
                                     <td>
                                         <a href="#" data-id="1" data-toggle="modal"
                                            data-target="#myModalEditFollowuper"
@@ -81,40 +106,20 @@
                                     </td>
                                 </tr>
 
-                                <tr  class="conceal-t link30">
-                                    <td style="padding-left: 3%">代理商状态</td>
-                                    <td class="center"><a class="btn btn-minier btn-purple" data-ac="eye" data-id="30" >展开</a></td>
-                                    <td class="center">
-                                        <a class="state-btn" data-state="1" href="javascript:;" data-id="30" title="" data-original-title="已启用">
-                                            <span class="btn btn-minier btn-yellow">启用</span>
-                                        </a>
-                                    </td>
-                                    <td></td>
-                                    <td>可查看预约联系时间为今天的代理商</td>
-                                    <td>
-                                        <a href="#" data-act="del" data-toggle="tooltip" title="解除绑定">
-                                            <i class="ace-icon fa fa-trash-o bigger-130 red"></i></a>
-                                    </td>
-                                </tr>
+                                </c:forEach>
 
-                                <tr class="conceal-t link30">
-                                    <td style="padding-left: 6%">数据统计</td>
-                                    <td></td>
-                                    <td class="center">
-                                        <a class="state-btn" data-state="1" href="javascript:;" data-id="30" title="" data-original-title="已启用">
-                                            <span class="btn btn-minier btn-yellow">启用</span>
-                                        </a>
-                                    </td>
-                                    <td></td>
-                                    <td>可查看不同状态下的代理商数量（适用于业务人员）</td>
-                                    <td>
-                                        <a href="#" data-act="del" data-toggle="tooltip" title="解除绑定">
-                                            <i class="ace-icon fa fa-trash-o bigger-130 red"></i></a>
-                                    </td>
-                                </tr>
+                                </c:forEach>
+                                </c:if>
 
                                 </tbody>
                             </table>
+
+                        <c:if test="${not empty page.results}">
+                            <div class="pagerBar" id="pagerBar">
+                                <common:page2 url="${pageUrl}" type="3"/>
+                            </div>
+                        </c:if>
+
                     </div>
                 </div>
 
@@ -135,8 +140,10 @@
         var editDeptFn = function (id) {
             var id = id || 0;
             var url = "/module/edit";
+            var keepurl = "/module/add/save.json";
             if (id > 0) {
-                url = "/module/edit?id="+id
+                url = "/module/edit?id="+id;
+                keepurl = "/module/add/edit.json";
             }
             var html = "";
 
@@ -157,32 +164,16 @@
             var $form = $("#form-id");
             $form.validate({
                 rules: {
-                    module_name:"required",
-                    module_id:{
-
-                    },
-                    module_sort:{
-                        required:true,
-                        number:true
-                    },
-                    module_state:{
-
-                    },
-                    module_path:"required"
+                    name:"required",
+                    // module_id:{
+                    //
+                    // },
                 },
                 messages: {
-                    module_name:"模块名称不能为空",
-                    module_id:{
-
-                    },
-                    module_sort:{
-                        required:"模块排序不能为空",
-                        number:"请输入数字"
-                    },
-                    module_state:{
-
-                    },
-                    module_path: "功能路径不能为空"
+                    name:"模块名称不能为空",
+                    // module_id:{
+                    //
+                    // },
 
                 },
                 errorPlacement: function (error, element) {
@@ -200,7 +191,7 @@
                 },
                 submitHandler: function (form) {
                     common.ajax.handle({
-                        url: "/module/edit/save.json",
+                        url: keepurl,
                         data: $form.serialize()
                     });
                     return false;
@@ -227,6 +218,35 @@
             });
         });
 
+
+        //打开子菜单
+        $('body').on('click','.rule-list',function () {
+
+            var $a=$(this),$tr=$a.parents('tr');
+            var pid=$tr.attr('id');
+
+            if($a.find('span').hasClass('fa-minus')){
+                $("tr[id^='"+pid+"-']").attr('style','display:none');
+                $a.find('span').removeClass('fa-minus').addClass('fa-plus');
+            }else{
+                if($("tr[id^='"+pid+"-']").length>0){
+                    $("tr[id^='"+pid+"-']").attr('style','');
+                    $a.find('span').removeClass('fa-plus').addClass('fa-minus');
+                }else{
+                    var url = this.href,id=$a.data('id'),level=$a.data('level');
+                    $.post(url,{pid:id,level:level,id:pid}, function (data) {
+                        if (data) {
+                            $a.find('span').removeClass('fa-plus').addClass('fa-minus');
+                            $tr.after(data);
+                        }else{
+                            $a.find('span').removeClass('fa-plus').addClass('fa-minus');
+                        }
+                        return false;
+                    }, "json");
+                }
+            }
+            return false;
+        });
 
         //展开收起交互
         $('[data-ac="eye"]').on('click', function(event) {

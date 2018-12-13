@@ -20,7 +20,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label no-padding-right">*模块名称：</label>
                             <div class="col-xs-12 col-sm-6">
-                                <input type="text" name="module_name" value="" class="form-control" required/>
+                                <input type="text" name="name" value="" class="form-control" required/>
                             </div>
                             <div class="help-block col-xs-12 col-sm-reset inline tips_box"></div>
                         </div>
@@ -29,7 +29,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label no-padding-right">*所属模块：</label>
                             <div class="col-xs-12 col-sm-6">
-                                <select name="module_id" class="form-control">
+                                <select name="parentid" class="form-control">
                                     <c:forEach items="${deptList}" var="item" >
                                         <option value="${item.id}" ${deptVo.pid eq item.id ? 'selected' : ''}>${item.treeName}</option>
                                     </c:forEach>
@@ -42,7 +42,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label no-padding-right">*模块排序：</label>
                             <div class="col-xs-12 col-sm-6">
-                                <input type="text" name="module_sort" value="" class="form-control" required/>
+                                <input type="text" name="sort" value="" class="form-control"/>
                             </div>
                             <div class="help-block col-xs-12 col-sm-reset inline tips_box"></div>
                         </div>
@@ -50,17 +50,14 @@
                         <div class="space-4"></div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label no-padding-right">*模块状态：</label>
-                            <div class="col-xs-12 col-sm-6">
-                                <div class="radio">
-                                    <label>
-                                        <input name="module_state" type="radio" class="ace" checked/>
-                                        <span class="lbl">禁用</span>
-                                    </label>
-                                    <label>
-                                        <input name="module_state" type="radio" class="ace">
-                                        <span class="lbl">启动</span>
-                                    </label>
-                                </div>
+                            <div class="col-sm-9 inline align-middle" >
+                                <label style="margin-right: 15px;">
+                                    <input type="radio" name="module_syate" value="no"
+                                           {{id==null||module_syate==no?'checked':''}}/>
+                                    否</label>
+                                <label><input type="radio" name="module_syate" value="yes"
+                                              {{module_syate==yes?'checked':''}}/>
+                                    是</label>
                             </div>
                         </div>
 
@@ -68,7 +65,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label no-padding-right">*功能路径：</label>
                             <div class="col-xs-12 col-sm-6">
-                                <input type="text" name="module_path" value="" class="form-control"/>
+                                <input type="text" name="url" value="" class="form-control"/>
                             </div>
                             <div class="help-block col-xs-12 col-sm-reset inline tips_box"></div>
                         </div>
@@ -77,7 +74,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label no-padding-right">备注信息：</label>
                             <div class="col-xs-12 col-sm-6">
-                                <textarea name="module_remark" class="form-control" style="height:60px;"></textarea>
+                                <textarea name="description" class="form-control" style="height:60px;"></textarea>
                             </div>
                         </div>
                     </div>
