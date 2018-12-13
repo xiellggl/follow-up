@@ -140,68 +140,26 @@
                     </div>
                 </div>
 
-                <div class="row" id="listPan">
-                    <div class="col-xs-12">
-                        <table class="table table-striped table-bordered table-hover" >
-                            <thead>
-                            <tr>
-                                <th>会员ID</th>
-                                <th>名称</th>
-                                <th>手机号</th>
-                                <th>注册时间</th>
-                                <th>邀请码</th>
-                                <th>当前跟进人</th>
-                                <th>变更前跟进人</th>
-                                <th>变更日期</th>
-                                <th>变更前总资产</th>
-                                <th>当前总资产</th>
-                                <th>新增代理商服务费</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-
-                            <%--<c:if test="${empty page.items}">--%>
-                            <%--<tr>--%>
-                            <%--<td colspan="11" class="no_data">暂无数据记录</td>--%>
-                            <%--</tr>--%>
-                            <%--</c:if>--%>
-
-                            <c:forEach var="i" begin="1" end="5">
-                                <tr>
-                                    <td>520</td>
-                                    <td>老陈</td>
-                                    <td>13711802518</td>
-                                    <td>2016-02-20 14:44:43</td>
-                                    <td>1314</td>
-                                    <td>老李</td>
-                                    <td>老王</td>
-                                    <td>2016-02-20 14:44:43</td>
-                                    <td>100.000.62</td>
-                                    <td>100.000.62</td>
-                                    <td>998</td>
-                                </tr>
-                            </c:forEach>
-
-                            </tbody>
-                        </table>
-
-                        <%--<c:if test="${not empty page}">--%>
-                        <%--<div class="pagerBar" id="pagerBar">--%>
-                        <%--<common:page2 url="${pageUrl}" type="3"/>--%>
-                        <%--</div>--%>
-                        <%--</c:if>--%>
-
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>
 </div>
 <%@include file="/inc/followup/script.jsp"%>
 <script>
-    seajs.use(["common","validate","template"],function(common,validate,template){
-        common.head("system",3);
+    seajs.use(["common", "template", "validate", "addMethod"], function (common, template) {
+        var agentId = ${param.agentId};
+        common.head("teamCustomer",1);
+
+        var $logList = $("#logList");
+        var log_url = "/followup/uc/customer/agent/loginlog?agentId=" + agentId;
+        common.loadPageHTML(log_url, null,$logList);
+        common.clickPageFn(log_url, null, $logList);
+
+
+        var $conList = $("#conList");
+        var con_url = "/followup/uc/customer/agent/contact?agentId=" + agentId;
+        common.loadPageHTML(con_url, null,$conList);
+        common.clickPageFn(con_url, null, $conList);
     });
 </script>
 </body>

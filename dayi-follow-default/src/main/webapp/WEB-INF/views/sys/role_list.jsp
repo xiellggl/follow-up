@@ -70,7 +70,7 @@
                                     <tr data-id="${item.id}">
                                         <td>${item.name}</td>
                                         <td>${item.descript}</td>
-                                        <td>${item.permissionList}</td>
+                                        <td>2016-02-20 14:44:43</td>
                                         <td>
                                             <a class="state-btn" data-state="1" href="javascript:;" data-id="30" title="" data-original-title="已启用">
                                                 <span class="btn btn-minier btn-yellow">启用</span>
