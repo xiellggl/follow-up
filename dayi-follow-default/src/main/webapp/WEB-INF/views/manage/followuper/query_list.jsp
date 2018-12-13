@@ -114,6 +114,32 @@
 
                 <div class="space-10"></div>
 
+                <div class="tabbable">
+                    <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
+
+                        <li class="active">
+                            <a data-toggle="tab" href="#profile4" aria-expanded="false">代理商</a>
+                        </li>
+
+                        <li class="">
+                            <a data-toggle="tab" href="#home4" aria-expanded="true">创客</a>
+                        </li>
+
+                    </ul>
+
+                    <div class="tab-content">
+
+                        <div id="profile4" class="tab-pane active">
+                            <div id="conList"></div>
+                        </div>
+
+                        <div id="home4" class="tab-pane">
+                            <div id="logList"></div>
+                        </div>
+
+                    </div>
+                </div>
+
                 <div class="row" id="listPan">
                     <div class="col-xs-12">
                         <table class="table table-striped table-bordered table-hover" >
@@ -143,12 +169,12 @@
                             <c:forEach var="i" begin="1" end="5">
                                 <tr>
                                     <td>520</td>
-                                    <td>马冬梅</td>
+                                    <td>老陈</td>
                                     <td>13711802518</td>
                                     <td>2016-02-20 14:44:43</td>
                                     <td>1314</td>
-                                    <td>夏洛</td>
-                                    <td>郝建</td>
+                                    <td>老李</td>
+                                    <td>老王</td>
                                     <td>2016-02-20 14:44:43</td>
                                     <td>100.000.62</td>
                                     <td>100.000.62</td>

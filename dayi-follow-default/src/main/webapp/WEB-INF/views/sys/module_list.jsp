@@ -235,7 +235,7 @@
             var curr = this.innerHTML;
             if(curr === '收起'){
                 me.ip = 0;
-                // eye(id);
+
             }else{
                 me.ip = 1;
             }
@@ -244,17 +244,6 @@
 
         });
 
-        /** 展开收起交互 */
-        function eye(fid,eid){
-
-            $('.link'+fid+' [data-ac=eye]').each(function(i,btn){
-                if(btn.innerHTML === '收起'&&$(btn).data('id') !== eid){
-                    $(btn).click();
-                    eye($(btn).data('id'));
-                }
-            });
-
-        }
 
         //禁用/启用
         $(".state-btn").on("click", function () {
@@ -281,44 +270,5 @@
     });
 
 </script>
-<%--<script type="text/javascript">--%>
-    <%--/** ⚠️ 模版页不要用单行注释(异步请求会把后边的所有内容注释掉) */--%>
-    <%--seajs.use('main',function(fn){--%>
-
-        <%--fn.main(function(box,form,layout){--%>
-
-            <%--form.submit();--%>
-
-            <%--/** 展开收起交互 */--%>
-            <%--layout.on('click','[data-ac=eye]',function(){--%>
-
-                <%--var me = this, id = $(this).data('id'), curr = this.innerHTML;--%>
-
-                <%--if(curr === '收起'){--%>
-                    <%--me.ip = 0;--%>
-                    <%--eye(id);--%>
-                <%--}else{--%>
-                    <%--me.ip = 1;--%>
-                <%--}--%>
-
-                <%--this.innerHTML = ['展开','收起'][me.ip];--%>
-
-                <%--layout.find('.p'+id)[['fadeOut','fadeIn'][me.ip]]();--%>
-
-            <%--});--%>
-
-            <%--/** 展开收起交互 */--%>
-            <%--function eye(fid,eid){--%>
-                <%--$(layout.find('.p'+fid+' [data-ac=eye]')).each(function(i,btn){--%>
-                    <%--if(btn.innerHTML === '收起'&&$(btn).data('id') !== eid){--%>
-                        <%--$(btn).click();--%>
-                        <%--eye($(btn).data('id'));--%>
-                    <%--}--%>
-                <%--});--%>
-            <%--}--%>
-        <%--});--%>
-    <%--});--%>
-
-<%--</script>--%>
 </body>
 </html>
