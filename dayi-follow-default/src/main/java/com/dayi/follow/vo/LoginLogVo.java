@@ -1,5 +1,9 @@
 package com.dayi.follow.vo;
 
+import com.dayi.follow.enums.LoginTypeEnum;
+import com.dayi.follow.util.IPUtil;
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Date;
 
 public class LoginLogVo {
@@ -45,6 +49,9 @@ public class LoginLogVo {
     }
 
     public String getLoginTypeStr() {
+        if (loginType != null) {
+            loginTypeStr = LoginTypeEnum.getCnameByKey(loginType);
+        }
         return loginTypeStr;
     }
 
@@ -53,6 +60,12 @@ public class LoginLogVo {
     }
 
     public String getAddress() {
+        if (loginIp != null) {
+            address = IPUtil.getAddressByIp(loginIp);
+            if (!StringUtils.isBlank(address)) {
+                address = address.substring(0, address.length() - 2);//去掉运营商名字
+            }
+        }
         return address;
     }
 

@@ -29,7 +29,6 @@ public class OrgListVo {
 
     private Date createDate;//注册时间，创建时间
 
-    private Integer deadLine;//创客会员期限
     private Date expirationDate;//到期时间
     private String deadLineStr; //创客会员期限字符串
 
@@ -86,14 +85,6 @@ public class OrgListVo {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
-    }
-
-    public Integer getDeadLine() {
-        return deadLine;
-    }
-
-    public void setDeadLine(Integer deadLine) {
-        this.deadLine = deadLine;
     }
 
     public String getDeadLineStr() {
