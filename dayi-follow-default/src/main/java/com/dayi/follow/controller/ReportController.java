@@ -144,6 +144,12 @@ public class ReportController extends BaseController {
 
         String date = request.getParameter("date");
 
+        if (StringUtils.isBlank(date)) {
+            String one = DateTime.now().plusWeeks(-1).withDayOfWeek(1).toString("yyyy-MM-dd");
+            String five = DateTime.now().plusWeeks(-1).withDayOfWeek(5).toString("yyyy-MM-dd");
+            date = one + " - " + five;
+        }
+
         ReportDailyVo week = reportService.getWeek(currVo.getId(), date);
 
         model.addAttribute("week", week);
@@ -161,6 +167,12 @@ public class ReportController extends BaseController {
         LoginVo currVo = userComponent.getCurrUser(request);
 
         String date = request.getParameter("date");
+
+        if (StringUtils.isBlank(date)) {
+            String one = DateTime.now().plusWeeks(-1).withDayOfWeek(1).toString("yyyy-MM-dd");
+            String five = DateTime.now().plusWeeks(-1).withDayOfWeek(5).toString("yyyy-MM-dd");
+            date = one + " - " + five;
+        }
 
         page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
 
@@ -181,6 +193,7 @@ public class ReportController extends BaseController {
         LoginVo currVo = userComponent.getCurrUser(request);
 
         String date = request.getParameter("date");
+        if (StringUtils.isBlank(date)) date = DateTime.now().plusMonths(-1).toString("yyyy-MM");
 
         ReportDailyVo month = reportService.getMonth(currVo.getId(), date);
 
@@ -199,6 +212,8 @@ public class ReportController extends BaseController {
         LoginVo currVo = userComponent.getCurrUser(request);
 
         String date = request.getParameter("date");
+
+        if (StringUtils.isBlank(date)) date = DateTime.now().plusMonths(-1).toString("yyyy-MM");
 
         page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
 

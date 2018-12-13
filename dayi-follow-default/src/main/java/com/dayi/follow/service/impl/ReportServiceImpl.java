@@ -105,42 +105,44 @@ public class ReportServiceImpl implements ReportService {
     //个人周报
     @Override
     public ReportDailyVo getWeek(String followId, String betweenDate) {
-        String startDate = "";
-        String endDate = "";
-        if (!StringUtils.isBlank(betweenDate)) {
-            String[] split = StringUtils.split(betweenDate, ",");
-            startDate = split[0];
-            endDate = DateTime.parse(split[1]).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
-        }
-        ReportDailyVo week = reportMapper.getWeek(followId, startDate, endDate);
-        week.setGrowthFund(week.getInCash().subtract(week.getOutCash()));
-        return week;
+        ReportDailyVo vo = new ReportDailyVo();
+
+        if (StringUtils.isBlank(betweenDate)) return vo;
+
+        String[] split = betweenDate.split(" - ");
+        String startDate = split[0];
+        String endDate = DateTime.parse(split[1]).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
+
+        vo = reportMapper.getWeek(followId, startDate, endDate);
+        vo.setGrowthFund(vo.getInCash().subtract(vo.getOutCash()));
+        return vo;
     }
 
     //团队周报
     @Override
     public List<ReportDailyVo> findTeamWeek(String deptId, String betweenDate) {
-        String startDate = "";
-        String endDate = "";
-        if (!StringUtils.isBlank(betweenDate)) {
-            String[] split = StringUtils.split(betweenDate, ",");
-            startDate = split[0];
-            endDate = DateTime.parse(split[1]).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
-        }
-        List<ReportDailyVo> teamWeek = reportMapper.findTeamWeek(deptId, startDate, endDate);
-        return doMore(teamWeek);
+        List<ReportDailyVo> list = new ArrayList<>();
+
+        if (StringUtils.isBlank(betweenDate)) return list;
+
+        String[] split = betweenDate.split(" - ");
+        String startDate = split[0];
+        String endDate = DateTime.parse(split[1]).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
+
+        list = reportMapper.findTeamWeek(deptId, startDate, endDate);
+        return doMore(list);
     }
 
     @Override
     public ReportDailyVo getMonth(String followId, String month) {
 
-        String startDate = "";
-        String endDate = "";
-        if (!StringUtils.isBlank(month)) {
-            startDate = DateTime.parse(month).dayOfMonth().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
-            endDate = DateTime.parse(month).dayOfMonth().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
-        }
-        ReportDailyVo monthVo = reportMapper.getMonth(followId, startDate, endDate);
+        ReportDailyVo monthVo = new ReportDailyVo();
+
+        if (StringUtils.isBlank(month)) return monthVo;
+        String startDate = DateTime.parse(month).toString("yyyy-MM-dd HH:mm:ss");//本月开始
+        String endDate = DateTime.parse(month).dayOfMonth().withMaximumValue().millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");//本月结束
+
+        monthVo = reportMapper.getMonth(followId, startDate, endDate);
         monthVo.setGrowthFund(monthVo.getInCash().subtract(monthVo.getOutCash()));
         return monthVo;
 
@@ -148,14 +150,14 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public List<ReportDailyVo> findTeamMonth(String deptId, String month) {
-        String startDate = "";
-        String endDate = "";
-        if (!StringUtils.isBlank(month)) {
-            startDate = DateTime.parse(month).dayOfMonth().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
-            endDate = DateTime.parse(month).dayOfMonth().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
-        }
-        List<ReportDailyVo> teamMonth = reportMapper.findTeamMonth(deptId, startDate, endDate);
-        return doMore(teamMonth);
+        List<ReportDailyVo> list = new ArrayList<>();
+
+        if (StringUtils.isBlank(month)) return list;
+        String startDate = DateTime.parse(month).toString("yyyy-MM-dd HH:mm:ss");//本月开始
+        String endDate = DateTime.parse(month).dayOfMonth().withMaximumValue().millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");//本月结束
+
+        list = reportMapper.findTeamMonth(deptId, startDate, endDate);
+        return doMore(list);
     }
 
     @Override
