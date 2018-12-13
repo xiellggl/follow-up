@@ -9,6 +9,7 @@ import org.apache.commons.collections.EnumerationUtils;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -24,9 +25,13 @@ public class AgentContactVo extends BaseModel {
     private String content;//内容
     private String followId;//跟进人ID
 
+    @Transient
     private String customerTypeStr;//客户类型字符串
+    @Transient
     private String cusIntentionTypeStr;//客户意向度字符串
+    @Transient
     private String contactTypeStr;//联系类型字符串
+    @Transient
     private String followUp;//跟进人
 
     public String getFollowId() {
@@ -176,12 +181,5 @@ public class AgentContactVo extends BaseModel {
         this.followUp = followUp;
     }
 
-    /** 修改 -- 设置属性 */
-    public void setModifyProperty(AgentContactVo agentContact) {
-        if(agentContact != null){ // 更新页面修改属性值
-            BeanUtils.copyProperties(agentContact, this);
-        }
-        this.setUpdateTime(new Date());
-    }
 
 }

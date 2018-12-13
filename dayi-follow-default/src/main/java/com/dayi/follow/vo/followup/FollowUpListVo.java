@@ -11,25 +11,25 @@ public class FollowUpListVo {
     private String name;  // 姓名
     private String userName;    // 账号
     private String inviteCode;  // 邀请码
-    private String deptName;
+    private String deptName;//部门名字
 
-    private Integer disable;//状态
-    private String status;
+    private Integer disable;//状态-1开启0-禁用
+    private String status;//状态对应字符串
 
-    private int agentNum;
+    private int agentNum;//代理商数量
 
-    private int orgNum;
+    private int orgNum;//创客数量
 
-    private double agentFund;
+    private double agentFund;//代理商资金
 
-    private double orgFund;
+    private double orgFund;//创客资金
 
-    private Date createTime;
+    private Date createTime;//创建时间
     private String createTimeFm;
 
     //加于客户分配的跟进人列表
-    private String mobile;
-    private int cusNum;
+    private String mobile;//手机
+    private int cusNum;//客户名字
 
     public int getCusNum() {
         return cusNum;

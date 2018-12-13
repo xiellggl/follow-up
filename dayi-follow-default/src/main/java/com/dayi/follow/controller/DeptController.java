@@ -8,6 +8,7 @@ import com.dayi.follow.model.follow.FollowUp;
 import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.FollowUpService;
 import com.dayi.follow.service.UserService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -74,9 +75,10 @@ public class DeptController extends BaseController {
     /**
      * 获取部门信息
      */
-    @RequestMapping("/getEditList/{userId}")
+    @RequestMapping("/getEditList")
     @ResponseBody
-    public BizResult getDeptList(HttpServletRequest request, @PathVariable String userId) {
+    public BizResult getDeptList(HttpServletRequest request, String userId) {
+        if (StringUtils.isBlank(userId)) return BizResult.FAIL;
         FollowUp followUp = userService.get(userId);
         String deptId = followUp.getDeptId();
         Department department = deptService.get(deptId);
@@ -121,9 +123,10 @@ public class DeptController extends BaseController {
     /**
      * 删除 -- 部门
      */
-    @RequestMapping("/delete/{deptId}")
+    @RequestMapping("/delete")
     @ResponseBody
-    public BizResult delete(HttpServletRequest request, @PathVariable String deptId) {
+    public BizResult delete(HttpServletRequest request,String deptId) {
+        if (StringUtils.isBlank(deptId)) return BizResult.FAIL;
 
         Department department = deptService.get(deptId);
         if (department == null) return BizResult.FAIL;

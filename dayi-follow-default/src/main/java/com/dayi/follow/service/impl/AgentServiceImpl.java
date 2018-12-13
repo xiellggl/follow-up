@@ -16,9 +16,11 @@ import com.dayi.follow.service.AgentService;
 import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.OrgService;
 import com.dayi.follow.vo.*;
+import com.dayi.follow.vo.agent.AgentContactVo;
 import com.dayi.follow.vo.agent.AgentListVo;
 import com.dayi.mybatis.support.Page;
 import org.joda.time.DateTime;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -114,7 +116,7 @@ public class AgentServiceImpl implements AgentService {
         agentContact.setCreateTime(new Date());
         agentContact.setUpdateTime(new Date());
         agentContact.setId(agentMapper.getNewId());
-        return 1 == agentContactMapper.add(agentContact) ? BizResult.succ(agentContact) : BizResult.FAIL;
+        return 1 == agentContactMapper.add(agentContact) ? BizResult.SUCCESS : BizResult.FAIL;
     }
 
     private List<AgentListVo> queryByList(List<AgentListVo> agents) {

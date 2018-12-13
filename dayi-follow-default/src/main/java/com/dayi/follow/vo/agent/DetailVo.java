@@ -46,7 +46,7 @@ public class DetailVo {
     private String agentFundFm;//
 
     private double frozenFund;//冻结货款
-    private String frozenFundFm;//
+    private String frozenFundFm;//冻结货款
 
     private double useableFund;  // 可用余额
     private String useableFundFm;      // 可用余额（格式化：显示前两位和小数点位，其余用*标识）

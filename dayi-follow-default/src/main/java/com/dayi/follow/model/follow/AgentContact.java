@@ -1,9 +1,7 @@
 package com.dayi.follow.model.follow;
 
 import com.dayi.mybatis.support.BaseModel;
-import org.springframework.beans.BeanUtils;
 
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -24,9 +22,30 @@ public class AgentContact extends BaseModel {
     private String content;//内容
     private String followId;//跟进人ID
 
-    @Transient
-    private String followUp;
 
+    public Integer getAgentId() {
+        return agentId;
+    }
+
+    public void setAgentId(Integer agentId) {
+        this.agentId = agentId;
+    }
+
+    public Integer getContactType() {
+        return contactType;
+    }
+
+    public void setContactType(Integer contactType) {
+        this.contactType = contactType;
+    }
+
+    public Integer getCustomerType() {
+        return customerType;
+    }
+
+    public void setCustomerType(Integer customerType) {
+        this.customerType = customerType;
+    }
 
     public Integer getCusIntentionType() {
         return cusIntentionType;
@@ -36,68 +55,27 @@ public class AgentContact extends BaseModel {
         this.cusIntentionType = cusIntentionType;
     }
 
-    public String getFollowId() {
-        return followId;
-    }
-
-    public void setFollowId(String followId) {
-        this.followId = followId;
-    }
-
-    public Integer getContactType() {
-        return contactType;
-    }
-
-    public Integer getCustomerType() {
-        return customerType;
-    }
-
-
     public Date getNextContactTime() {
         return nextContactTime;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public Integer getAgentId() {
-        return agentId;
-    }
-
-    public void setContactType(Integer contactType) {
-        this.contactType = contactType;
-    }
-
-    public void setCustomerType(Integer customerType) {
-        this.customerType = customerType;
     }
 
     public void setNextContactTime(Date nextContactTime) {
         this.nextContactTime = nextContactTime;
     }
 
+    public String getContent() {
+        return content;
+    }
+
     public void setContent(String content) {
         this.content = content;
     }
 
-    public void setAgentId(Integer agentId) {
-        this.agentId = agentId;
+    public String getFollowId() {
+        return followId;
     }
 
-    /** 修改 -- 设置属性 */
-    public void setModifyProperty(AgentContact agentContact) {
-        if(agentContact != null){ // 更新页面修改属性值
-            BeanUtils.copyProperties(agentContact, this);
-        }
-        this.setUpdateTime(new Date());
-    }
-
-    public String getFollowUp() {
-        return followUp;
-    }
-
-    public void setFollowUp(String followUp) {
-        this.followUp = followUp;
+    public void setFollowId(String followId) {
+        this.followId = followId;
     }
 }

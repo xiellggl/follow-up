@@ -197,9 +197,11 @@ public class UserController extends BaseController {
     /**
      * 获取用户信息
      */
-    @RequestMapping("/get/{id}")
+    @RequestMapping("/get")
     @ResponseBody
-    public BizResult updateSave(HttpServletRequest request, @PathVariable String id) {
+    public BizResult updateSave(HttpServletRequest request, String id) {
+        if (StringUtils.isBlank(id)) return BizResult.FAIL;
+
         FollowUp followUp = userService.get(id);
         return BizResult.succ(followUp, "操作成功！");
     }
@@ -221,9 +223,10 @@ public class UserController extends BaseController {
     /**
      * 禁用 -- 用户
      */
-    @RequestMapping(value = "/disable/{id}")
+    @RequestMapping(value = "/disable")
     @ResponseBody
-    public BizResult disable(HttpServletRequest request, @PathVariable String id) {
+    public BizResult disable(HttpServletRequest request, String id) {
+        if (StringUtils.isBlank(id)) return BizResult.FAIL;
         LoginVo currVo = userComponent.getCurrUser(request);
 
         FollowUp followUp = userService.get(id);
@@ -236,9 +239,10 @@ public class UserController extends BaseController {
     /**
      * 启用 -- 用户
      */
-    @RequestMapping(value = "/enable/{id}")
+    @RequestMapping(value = "/enable")
     @ResponseBody
-    public BizResult enable(HttpServletRequest request, @PathVariable String id) {
+    public BizResult enable(HttpServletRequest request, String id) {
+        if (StringUtils.isBlank(id)) return BizResult.FAIL;
         LoginVo currVo = userComponent.getCurrUser(request);
 
         FollowUp followUp = userService.get(id);
@@ -251,9 +255,10 @@ public class UserController extends BaseController {
     /**
      * 重置密码 -- 用户
      */
-    @RequestMapping(value = "/resetpwd/{id}")
+    @RequestMapping(value = "/resetpwd")
     @ResponseBody
-    public BizResult manageResetPwd(@PathVariable String id, @RequestParam("pwd") String pwd, HttpServletRequest request) {
+    public BizResult manageResetPwd(String id, @RequestParam("pwd") String pwd, HttpServletRequest request) {
+        if (StringUtils.isBlank(id)) return BizResult.FAIL;
         LoginVo currVo = userComponent.getCurrUser(request);
 
         if (StringUtils.isBlank(pwd)) return BizResult.fail("密码不能为空!");
@@ -269,9 +274,10 @@ public class UserController extends BaseController {
     /**
      * 删除 -- 用户
      */
-    @RequestMapping(value = "/delete/{id}")
+    @RequestMapping(value = "/delete")
     @ResponseBody
-    public BizResult delete(HttpServletRequest request, @PathVariable String id) {
+    public BizResult delete(HttpServletRequest request, String id) {
+        if (StringUtils.isBlank(id)) return BizResult.FAIL;
         FollowUp followUp = userService.get(id);
         if (followUp == null) return BizResult.fail("用户不存在.");
         return userService.delete(followUp);

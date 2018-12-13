@@ -16,7 +16,7 @@ import java.util.Date;
  * 跟进人管理中的明细列表,代理商和创客共用
  */
 public class FMDetailListVo {
-    private Integer id;//代理商id
+    private Integer id;//id
 
     private String linkPerson;//姓名
 
