@@ -78,7 +78,6 @@ public class AgentController extends BaseController{
 
         request.setAttribute("pageUrl", pageUrl);
         model.addAttribute("page", page);
-        model.addAttribute("customerTypes", AgentCusTypeEnum.values());//客户类型
         model.addAttribute("bankTypes", bankTypes);//银行类型
         model.addAttribute("bankTypesArr", bankTypesArr);
         return "uc/customer/agent/list";
@@ -196,7 +195,9 @@ public class AgentController extends BaseController{
         } else {
             return "redirect:/followup/uc/index";
         }
-
+        model.addAttribute("customerTypes", AgentCusTypeEnum.values());//客户类型
+        model.addAttribute("cusIntentionTypes",AgentIntenTypeEnum.values());//客户意向度
+        model.addAttribute("contactTypes",ContactTypeEnum.values());//联系类型
         model.addAttribute("agent", followAgent);
         return "/followup/uc/customer/contact_list";
     }

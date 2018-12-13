@@ -1,9 +1,11 @@
 package com.dayi.follow.vo.agent;
 
+import com.dayi.component.lock.utils.EnumUtils;
 import com.dayi.follow.enums.AgentCusTypeEnum;
 import com.dayi.follow.enums.AgentIntenTypeEnum;
 import com.dayi.follow.enums.ContactTypeEnum;
 import com.dayi.mybatis.support.BaseModel;
+import org.apache.commons.collections.EnumerationUtils;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Transient;
