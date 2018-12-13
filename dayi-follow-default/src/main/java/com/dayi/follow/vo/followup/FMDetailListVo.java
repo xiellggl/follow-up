@@ -44,8 +44,18 @@ public class FMDetailListVo {
 
     private double growthFund;//净增总资产
 
+    private double interest;//利息（服务费）
+
     public Integer getId() {
         return id;
+    }
+
+    public double getInterest() {
+        return interest;
+    }
+
+    public void setInterest(double interest) {
+        this.interest = interest;
     }
 
     public void setId(Integer id) {

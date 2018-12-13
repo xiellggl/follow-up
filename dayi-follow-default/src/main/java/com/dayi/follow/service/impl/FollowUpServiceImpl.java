@@ -136,7 +136,7 @@ public class FollowUpServiceImpl implements FollowUpService {
 
         List<FMDetailListVo> orgList = followUpMapper.findOrgList(searchVo, followIds, dayiDataBaseStr);
 
-        return doAgentMore(orgList);
+        return doOrgMore(orgList);
     }
 
     @Override
@@ -195,7 +195,7 @@ public class FollowUpServiceImpl implements FollowUpService {
 
         List<FMDetailListVo> orgList = followUpMapper.findOrgList(searchVo, followIds, dayiDataBaseStr);
 
-        return doAgentMore(orgList);
+        return doOrgMore(orgList);
     }
 
     @Override
@@ -216,6 +216,8 @@ public class FollowUpServiceImpl implements FollowUpService {
                         .add(account.getUseable()).doubleValue();
                 agent.setTotalFund(totalFund);
             }
+
+            agent.setInterest(account.getInterest().doubleValue());//利息-服务费
 
             agent.setGrowthCargo(BigDecimals.subtract(agent.getAgentCargo(), agent.getAgentCargoBefore()));//净增货值
             agent.setGrowthFund(BigDecimals.subtract(agent.getTotalFund(), agent.getTotalFundBefore()));//净增资金

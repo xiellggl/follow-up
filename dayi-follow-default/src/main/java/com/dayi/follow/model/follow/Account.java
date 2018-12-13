@@ -17,7 +17,15 @@ public class Account {
     private String bankRealName;//实际的开户行名称
     private BigDecimal cargoInterestPuchas;//代采货物价值累加
     private BigDecimal cargoInterest;//货物价值累加
+    private BigDecimal interest;//利息
 
+    public BigDecimal getInterest() {
+        return interest;
+    }
+
+    public void setInterest(BigDecimal interest) {
+        this.interest = interest;
+    }
 
     public BigDecimal getUseable() {
         return useable;
