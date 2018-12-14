@@ -33,6 +33,7 @@
                             创客跟进人查询
                         </small>
                     </h1>
+                    <a class="btn btn-primary pull-right" href="/followup/list">返回</a>
                 </div>
 
                 <div class="row">
@@ -198,8 +199,9 @@
 <script charset="UTF-8" async="" src="/static/public/daterangepicker3/moment.min.js"></script>
 <script>
     seajs.use(["common","template","validate","addMethod","daterangepicker"], function (common, template) {
+        //菜单高亮
+        common.head("followuper");
 
-        common.head("system",3);
         var date_o = {
             autoUpdateInput: false,
             locale: locale_cn,

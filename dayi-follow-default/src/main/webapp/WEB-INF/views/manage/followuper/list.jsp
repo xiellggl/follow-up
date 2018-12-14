@@ -34,6 +34,9 @@
                     <a href="#" class="pull-right" data-toggle="modal" data-target="#myModalEditFollowuper">
                         <span class="btn btn-xs btn-danger">新增跟进人</span>
                     </a>
+                    <a href="/followup/all/agent/list" style="margin-right: 1%" class="pull-right"">
+                    <span class="btn btn-xs btn-success">跟进人查询</span>
+                    </a>
                 </div>
                 <div class="row">
                     <form class="form-horizontal" style="max-width: 800px;">
