@@ -10,7 +10,7 @@
     <!--查找代理商最近代理数据-->
     <select id="countRecentAgent" resultType="com.dayi.follow.vo.agent.AgentListVo" parameterType="java.lang.Integer">
             SELECT DATE_FORMAT(create_date, '%Y-%m-%d') recentAgentDate, IFNULL(SUM(amount), 0) recentAgentFund
-             FROM protocol WHERE (STATUS = 1 OR STATUS = 2) AND agent = #{agentId}
+             FROM protocol WHERE STATUS in (1,2) AND agent = #{agentId}
              GROUP BY recentAgentDate
              ORDER BY recentAgentDate DESC
             LIMIT 0, 1
@@ -21,7 +21,7 @@
     </select>
 
     <select id="getAgentFund" parameterType="java.lang.Integer" resultType="java.lang.Double">
-        SELECT IFNULL(SUM(amount), 0) FROM protocol where (status = 1 or status = 2) and agent = ${agentId}
+        SELECT IFNULL(SUM(amount), 0) FROM protocol where status in (1,2) and agent = ${agentId}
     </select>
 
 

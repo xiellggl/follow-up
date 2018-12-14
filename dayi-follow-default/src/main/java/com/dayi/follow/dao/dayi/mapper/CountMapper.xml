@@ -26,7 +26,7 @@
 
     <select id="getNameCusNum" parameterType="map" resultType="java.lang.Long">
         SELECT count(b.id)  from ${assistDataBase}.follow_agent a
-        left join (SELECT id from agent where (audit_status IN (1 ,- 3) OR cancel_status = 3) and del_status != -1) b
+        left join (SELECT id from agent where id_card is not null  and del_status != -1) b
         on b.id = a.agent_id
         WHERE  a.follow_id IN
         <foreach item="item" index="index" collection="followIds"
@@ -75,7 +75,7 @@
         left join (
             SELECT b1.id FROM agent b1 LEFT JOIN finance_account b2 ON b1.account_id = b2.id
               LEFT JOIN (
-                  SELECT agent, IFNULL(SUM(amount), 0) amount from protocol WHERE (status = 1 OR status = 2) GROUP BY agent
+                  SELECT agent, IFNULL(SUM(amount), 0) amount from protocol WHERE status in(1,2) GROUP BY agent
               ) b3 ON b1.id = b3.agent
             WHERE b1.del_status != -1 and IFNULL(b2.useable + b2.frozen + b2.out_frozen + IFNULL(b3.amount, 0), 0) = 0
         ) b on b.id = a.agent_id
@@ -146,7 +146,7 @@
                 ELSE 7 END AS type
             FROM finance_account fa
             LEFT JOIN (
-            SELECT agent, IFNULL(SUM(amount), 0) amount from protocol WHERE (status = 1 OR status = 2) GROUP BY agent
+            SELECT agent, IFNULL(SUM(amount), 0) amount from protocol WHERE status in (1,2) GROUP BY agent
             ) d ON fa.agent_org_id = d.agent
         ) fam on fam.type=t.type
         left join (
