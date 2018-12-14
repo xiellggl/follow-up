@@ -89,7 +89,7 @@
         left join ${assistDataBase}.finance_account d on d.id = c.account_id
 
         left join (
-        SELECT agent, IFNULL(SUM(amount), 0) amount from ${assistDataBase}.protocol WHERE (status = 1 OR status = 2) GROUP BY agent
+        SELECT agent, IFNULL(SUM(amount), 0) amount from ${assistDataBase}.protocol WHERE status in (1,2) GROUP BY agent
         )e on e.agent=c.id
 
         left join (
