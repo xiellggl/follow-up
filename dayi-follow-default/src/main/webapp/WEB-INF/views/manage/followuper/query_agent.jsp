@@ -55,7 +55,7 @@
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-calendar"></i>
                                     </span>
-                                    <input type="text" class="form-control admin_sea" name="followUpBefore" value="${item.followUpBefore}"
+                                    <input type="text" class="form-control admin_sea" name="followUpBefore" value="${param.followUpBefore}"
                                            placeholder="更变跟进人"/>
                                 </div>
                             </div>
