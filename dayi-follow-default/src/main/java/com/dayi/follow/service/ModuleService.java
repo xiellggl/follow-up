@@ -39,7 +39,7 @@ public interface ModuleService {
      *
      * @return
      */
-    List<Menu> listModel();
+    List<Menu> listModule();
 
     /**
      * 返回所有权限
@@ -80,6 +80,13 @@ public interface ModuleService {
      * @return
      */
     BizResult updateStatus(String id, boolean enable);
+
+    /**
+     * 解绑功能
+     * @param moduleId
+     * @return
+     */
+    boolean untying(String moduleId);
 
     /**
      * 删除角模块信息

@@ -68,10 +68,10 @@ public class ModuleController {
      * 加载所有模块（不包括菜单）
      * @return
      */
-    @RequestMapping("/listModel")
+    @RequestMapping("/listModule")
     @ResponseBody
-    public BizResult listModel() {
-        List<Menu> menus = moduleService.listModel();
+    public BizResult listModule() {
+        List<Menu> menus = moduleService.listModule();
         return BizResult.succ(menus);
     }
 
@@ -148,6 +148,24 @@ public class ModuleController {
             return BizResult.fail("请选择要禁用/启用的模块");
         }
         return moduleService.updateStatus(id, enable);
+    }
+
+
+    /**
+     * 解绑功能
+     */
+    @RequestMapping("/untying")
+    @ResponseBody
+    public BizResult untyingSave(HttpServletRequest request) {
+        String moduleId = request.getParameter("id");
+        if (Misc.isEmpty(moduleId)) {
+            return BizResult.fail("请选择模块");
+        }
+
+        if (moduleService.untying(moduleId)) {
+            return BizResult.SUCCESS;
+        }
+        return BizResult.FAIL;
     }
 
     /**
