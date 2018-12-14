@@ -181,6 +181,35 @@ public class ModuleServiceImpl implements ModuleService {
         return menuList;
     }
 
+    @Override
+    public List<Menu> listModel() {
+        List<Menu> menuList = new ArrayList<>();
+
+        // 所有可用模块
+        Conditions conditions = new Conditions();
+        conditions.add(Restrictions.eq("del_status", Module.DEL_STATUS_NO.id));
+        conditions.add(Restrictions.eq("status", Module.STATUS_NORMAL.id));
+        List<Module> rootModule = moduleMapper.searchByConditions(conditions);
+        if (rootModule == null || rootModule.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        //模块转菜单数据
+        List<Menu> rootMenu = modulesToConvertMenu(rootModule);
+
+        //先找到所有的起始菜单
+        for (int i = 0; i < rootMenu.size(); i++) {
+            if (Misc.isEmpty(rootMenu.get(i).getParentId()) || "0".equals(rootMenu.get(i).getParentId())) {
+                menuList.add(rootMenu.get(i));
+            }
+        }
+
+        // 为起始菜单设置子菜单，getChild是递归调用的
+        eachMenu(menuList, rootMenu, true);
+        Collections.sort(menuList);
+        return menuList;
+    }
+
     /**
      * 获取所有权限
      *

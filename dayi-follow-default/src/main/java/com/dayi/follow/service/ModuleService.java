@@ -27,12 +27,19 @@ public interface ModuleService {
     List<Menu> queryMenus(PermissionVo permission);
 
     /**
-     * 查询所有模块、权限
+     * 查询所有模块、菜单
      *
      * @param isOnlyShowEnable 是否显示只显示启用菜单
      * @return
      */
     List<Menu> listAll(Boolean isOnlyShowEnable);
+
+    /**
+     * 查询所有模块（不包括菜单）
+     *
+     * @return
+     */
+    List<Menu> listModel();
 
     /**
      * 返回所有权限

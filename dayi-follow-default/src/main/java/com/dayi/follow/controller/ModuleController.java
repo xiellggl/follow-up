@@ -53,15 +53,25 @@ public class ModuleController {
         return BizResult.succ(menus);
     }
 
-
     /**
-     * 加载所有模块权限
+     * 加载所有模块菜单
      * @return
      */
     @RequestMapping("/listAll")
     @ResponseBody
     public BizResult listAll(Boolean isOnlyShowEnable) {
         List<Menu> menus = moduleService.listAll(isOnlyShowEnable);
+        return BizResult.succ(menus);
+    }
+
+    /**
+     * 加载所有模块（不包括菜单）
+     * @return
+     */
+    @RequestMapping("/listModel")
+    @ResponseBody
+    public BizResult listModel() {
+        List<Menu> menus = moduleService.listModel();
         return BizResult.succ(menus);
     }
 
