@@ -199,9 +199,7 @@ public class UserController extends BaseController {
      */
     @RequestMapping("/get")
     @ResponseBody
-    public BizResult updateSave(HttpServletRequest request, String id) {
-        if (StringUtils.isBlank(id)) return BizResult.FAIL;
-
+    public BizResult getUserInfo(HttpServletRequest request, String id) {
         FollowUp followUp = userService.get(id);
         return BizResult.succ(followUp, "操作成功！");
     }

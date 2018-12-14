@@ -11,6 +11,7 @@ import com.dayi.user.authorization.authc.AccountInfo;
 import com.dayi.user.authorization.authz.AuthorizationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -114,6 +115,16 @@ public class ModuleController {
         Module module = moduleService.getModule(id);
         model.addAttribute("module", module);
         return "sys/module_edit";
+    }
+
+    /**
+     * 获取模块信息
+     */
+    @RequestMapping("/getModuleById")
+    @ResponseBody
+    public BizResult getModuleById(String id) {
+        Module module = moduleService.getModule(id);
+        return BizResult.succ(module, "操作成功！");
     }
 
     /**
