@@ -78,7 +78,7 @@ public class FollowupController extends BaseController {
 
         model.addAttribute("page", page);
 
-        return "/followup/manage/followuper/list";
+        return "manage/followuper/query_agent";
     }
 
 
@@ -107,7 +107,7 @@ public class FollowupController extends BaseController {
 
         model.addAttribute("page", page);
 
-        return "/followup/manage/followuper/list";
+        return "manage/followuper/query_maker";
     }
 
     @RequestMapping(value = "/all/org/list")

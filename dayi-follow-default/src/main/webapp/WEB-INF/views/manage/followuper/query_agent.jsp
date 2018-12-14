@@ -118,8 +118,8 @@
                 <div class="space-10"></div>
                 <div class="row">
                     <div class="col-xs-12">
-                        <a class="btn btn-white btn-info" href="/followup/all/agent/list">代理商</a>
-                        <a class="btn btn-white" href="/followup/all/org/list">创客</a>
+                        <a id="agent-href" class="btn btn-white btn-info"href="">代理商</a>
+                        <a id="org-href" class="btn btn-white" href="">创客</a>
                     </div>
                 </div>
                 <div class="space-10"></div>
@@ -201,6 +201,33 @@
     seajs.use(["common","template","validate","addMethod","daterangepicker"], function (common, template) {
         //菜单高亮
         common.head("followuper");
+
+        //href设置
+        (function($){
+            $.getUrlParam = function(name)
+            {
+                var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if (r!=null) return unescape(r[2]); return null;
+            }
+        })(jQuery);
+
+        $(function(){
+            var Href = $.getUrlParam('followId');
+            var agentHref = "/followup/all/agent/list";
+            var orgHref = "/followup/all/org/list";
+
+            var followupaGentHref = "/followup/agent/list?followId="+Href;
+            var followupOrgHref = "/followup/org/list?followId="+Href;
+
+            $('#agent-href').attr("href",agentHref );
+            $('#org-href').attr("href",orgHref );
+
+            if(Href>0){
+                $('#agent-href').attr("href",followupaGentHref );
+                $('#org-href').attr("href",followupOrgHref );
+            }
+        });
 
         var date_o = {
             autoUpdateInput: false,

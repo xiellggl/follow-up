@@ -34,12 +34,9 @@
                     <a href="#" class="pull-right" data-toggle="modal" data-target="#myModalEditFollowuper">
                         <span class="btn btn-xs btn-danger">新增跟进人</span>
                     </a>
-                    <a href="/followup/all/agent/list" style="margin-right: 1%" class="pull-right"">
-                    <span class="btn btn-xs btn-success">跟进人查询</span>
-                    </a>
                 </div>
                 <div class="row">
-                    <form class="form-horizontal" style="max-width: 800px;">
+                    <form class="form-horizontal" style="max-width: 1000px;">
                         <div class="clearfix maintop">
                             <div class="col-xs-4 col-sm-3 btn-sespan">
                                 <div class="input-group">
@@ -89,6 +86,10 @@
                                 <a href="./list" class="btn btn-xs btn-info hidden-xs">
                                     <span class="ace-icon fa fa-globe"></span>
                                     显示全部
+                                </a>
+                                <a class="btn btn-xs btn-success" href="/followup/all/agent/list" >
+                                    <span class="ace-icon fa fa-gift"></span>
+                                    全部明细
                                 </a>
                             </div>
                         </div>
@@ -149,6 +150,9 @@
                                             <a href="#" data-act="resetpwd" data-toggle="tooltip"
                                                title="重置密码">
                                                 <i class="ace-icon fa fa-key bigger-130"></i>
+                                            </a>
+                                            <a href="/followup/agent/list?followId=${item.id}" data-toggle="tooltip" title="查看明细">
+                                                <i class="ace-icon fa  fa-leaf bigger-130"></i>
                                             </a>
                                         </td>
                                     </tr>
