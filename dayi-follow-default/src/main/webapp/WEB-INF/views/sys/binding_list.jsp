@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>绑定模块</title>
+    <title>功能管理</title>
     <%@include file="/inc/followup/csslink.jsp"%>
 </head>
 <body class="no-skin">
@@ -20,7 +20,7 @@
                         <i class="ace-icon fa fa-home home-icon"></i>
                         <a href="/followup/manage/index">首页</a>
                     </li>
-                    <li class="active">模块管理</li>
+                    <li class="active">功能管理</li>
                 </ul><!-- /.breadcrumb -->
             </div>
             <div class="page-content">
@@ -30,7 +30,7 @@
                         您当前操作
                         <small>
                             <i class="ace-icon fa fa-angle-double-right"></i>
-                            模块管理
+                            功能管理
                         </small>
                     </h1>
                     <a href="#" class="pull-right">
@@ -47,8 +47,8 @@
                                     <span class="input-group-addon">
                                         <i class="ace-icon glyphicon glyphicon-phone"></i>
                                     </span>
-                                    <input type="text" name="filter_LIKEANYWHERES_mobile" class="form-control admin_sea"
-                                           value="${param.filter_LIKEANYWHERES_mobile}" placeholder="功能名称："/>
+                                    <input type="text" name="name" class="form-control admin_sea"
+                                           value="${param.name}" placeholder="功能名称："/>
                                 </div>
                             </div>
 
@@ -57,17 +57,15 @@
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-cog"></i>
                                     </span>
-                                    <select name="myDeptId" class="form-control admin_sea">
-                                        <option value="">绑定状态：</option>
-                                        <c:forEach var="item" items="${deptList}">
-                                            <option
-                                                    value="${item.id}" ${myDeptId eq item.id?"selected":''}>${item.treeName}</option>
-                                        </c:forEach>
+                                    <select name="isBinding" class="form-control admin_sea">
+                                        <option value="">绑定状态</option>
+                                        <option value="false"  ${isBinding=='false'?"selected":''}>未绑定</option>
+                                        <option value="true"  ${isBinding=='true'?"selected":''}>已绑定</option>
                                     </select>
                                 </div>
                             </div>
 
-                            <div class="col-xs-4 col-sm-3 btn-sespan">
+                            <div class="col-xs-4 col-sm-4 btn-sespan">
                                 <div class="btn-group dropup">
                                     <button type="submit" class="btn btn-xs btn-purple">
                                         <span class="ace-icon fa fa-search"></span>
@@ -80,11 +78,18 @@
                                         <li>
                                             <a href="./list">绑定功能</a>
                                         </li>
+                                        <li>
+                                            <a href="">返回列表</a>
+                                        </li>
                                     </ul>
                                 </div>
-                                <a href="./list" class="btn btn-xs btn-info hidden-xs">
+                                <a href="#" data-act="binding" class="btn btn-xs btn-pink hidden-xs">
                                     <span class="ace-icon fa fa-globe"></span>
                                     绑定功能
+                                </a>
+                                <a href="" class="btn btn-xs btn-info hidden-xs">
+                                    <span class="ace-icon fa fa-globe"></span>
+                                    返回列表
                                 </a>
                             </div>
                         </div>
@@ -99,6 +104,14 @@
                             <table class="table table-striped table-bordered table-hover">
                                 <thead>
                                 <tr>
+                                    <th class="center sorting_disabled" rowspan="1" colspan="1" aria-label="">
+                                        <label class="pos-rel">
+                                            <input type="checkbox" id="chkAll" class="ace">
+
+                                            <span class="lbl"></span>
+                                        </label>
+                                        <input type="hidden" id="checkIds" name="ids">
+                                    </th>
                                     <th>功能名称</th>
                                     <th class="hidden-sm hidden-xs">功能路径</th>
                                     <th>添加时间</th>
@@ -109,27 +122,33 @@
                                 </thead>
                                 <tbody>
 
-                                <c:if test="${empty topDeptList}">
+
+                                <c:if test="${empty page}">
                                     <tr>
-                                        <td colspan="6" class="no_data">暂无功能，请
+                                        <td colspan="7" class="no_data">
+                                            暂无功能，请
                                             <a href="#" data-toggle="modal"
-                                               data-target="#myModalEditFollowuper"
-                                               data-toggle="tooltip" title="新增功能">
-                                                新增功能
-                                            </a>
+                                               data-target="#myModalEditFollowuper" title="新增功能">新增功能</a>
                                         </td>
                                     </tr>
                                 </c:if>
 
-                                <c:forEach var="i" begin="1" end="5">
-                                <tr data-id="${item.id}" data-pid="${item.pid}">
-                                    <td>这是功能权限</td>
-                                    <td>http://spotnewuc.fiidee.loc/#/admin/member/user </td>
-                                    <td>2018/10/18 <br/>17:48 </td>
-                                    <td>2018/10/18 <br/>17:48 </td>
-                                    <td>管理首页信息</td>
+                                <c:if test="${not empty page.results}">
+                                <c:forEach items="${page.results}" var="item" >
+                                <tr data-id="${item.id}">
+                                    <td class="center">
+                                        <label class="pos-rel">
+                                            <input type="checkbox" class="ace check" name="id" value="${item.id}">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </td>
+                                    <td>${item.name}</td>
+                                    <td>${item.url}</td>
+                                    <td class="hidden-sm hidden-xs"><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                    <td class="hidden-sm hidden-xs"><fmt:formatDate value="${item.updateTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                    <td>${item.description}</td>
                                     <td>
-                                        <a href="#" data-id="30" data-toggle="modal"
+                                        <a href="#" data-id="${item.id}" data-toggle="modal"
                                            data-target="#myModalEditFollowuper"
                                            data-toggle="tooltip" title="修改">
                                             <i class="ace-icon fa fa-pencil bigger-130"></i>
@@ -139,6 +158,7 @@
                                     </td>
                                 </tr>
                                 </c:forEach>
+                                </c:if>
 
                                 </tbody>
                             </table>
@@ -168,9 +188,9 @@
         //添加、编辑功能方法
         var editDeptFn = function (id) {
             var id = id || 0;
-            var url = "/permission/edit";
-            if (id > 0) {
-                url = "/permission/edit?id="+id
+            var url = "/permission/edit?id="+id
+            if (id = null) {
+                var url = "/permission/edit";
             }
             var html = "";
 
@@ -191,32 +211,22 @@
             var $form = $("#form-id");
             $form.validate({
                 rules: {
-                    module_name:"required",
-                    module_id:{
-
-                    },
-                    module_sort:{
+                    name:"required",
+                    sort:{
                         required:true,
                         number:true
                     },
-                    module_state:{
-
-                    },
-                    module_path:"required"
+                    url:"required",
+                    description:"required"
                 },
                 messages: {
-                    module_name:"模块名称不能为空",
-                    module_id:{
-
-                    },
-                    module_sort:{
-                        required:"模块排序不能为空",
+                    name:"功能名称不能为空",
+                    sort:{
+                        required:"功能排序不能为空",
                         number:"请输入数字"
                     },
-                    module_state:{
-
-                    },
-                    module_path: "功能路径不能为空"
+                    url: "功能路径不能为空",
+                    description:"请输入功能描述"
 
                 },
                 errorPlacement: function (error, element) {
@@ -234,7 +244,7 @@
                 },
                 submitHandler: function (form) {
                     common.ajax.handle({
-                        url: "/permission/edit/save.json",
+                        url: "/permission/add/save.json",
                         data: $form.serialize()
                     });
                     return false;
@@ -261,6 +271,14 @@
             });
         });
 
+        var $list = $("#listPan");
+        //全选、反选
+        common.checkBox($("#chkAll"), $list.find('[name="id"]'), $("#checkIds"));
+
+        //绑定功能
+        $('[data-act="action"]').on("click", function () {
+
+        });
 
     });
 </script>

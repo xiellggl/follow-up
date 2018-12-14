@@ -11,6 +11,7 @@ import com.dayi.user.authorization.authc.AccountInfo;
 import com.dayi.user.authorization.authz.AuthorizationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -53,15 +54,25 @@ public class ModuleController {
         return BizResult.succ(menus);
     }
 
-
     /**
-     * 加载所有模块权限
+     * 加载所有模块菜单
      * @return
      */
     @RequestMapping("/listAll")
     @ResponseBody
     public BizResult listAll(Boolean isOnlyShowEnable) {
         List<Menu> menus = moduleService.listAll(isOnlyShowEnable);
+        return BizResult.succ(menus);
+    }
+
+    /**
+     * 加载所有模块（不包括菜单）
+     * @return
+     */
+    @RequestMapping("/listModule")
+    @ResponseBody
+    public BizResult listModule() {
+        List<Menu> menus = moduleService.listModule();
         return BizResult.succ(menus);
     }
 
@@ -107,6 +118,16 @@ public class ModuleController {
     }
 
     /**
+     * 获取模块信息
+     */
+    @RequestMapping("/getModuleById")
+    @ResponseBody
+    public BizResult getModuleById(String id) {
+        Module module = moduleService.getModule(id);
+        return BizResult.succ(module, "操作成功！");
+    }
+
+    /**
      * 编辑保存模块
      * @param request
      * @param module
@@ -138,6 +159,24 @@ public class ModuleController {
             return BizResult.fail("请选择要禁用/启用的模块");
         }
         return moduleService.updateStatus(id, enable);
+    }
+
+
+    /**
+     * 解绑功能
+     */
+    @RequestMapping("/untying")
+    @ResponseBody
+    public BizResult untyingSave(HttpServletRequest request) {
+        String moduleId = request.getParameter("id");
+        if (Misc.isEmpty(moduleId)) {
+            return BizResult.fail("请选择模块");
+        }
+
+        if (moduleService.untying(moduleId)) {
+            return BizResult.SUCCESS;
+        }
+        return BizResult.FAIL;
     }
 
     /**

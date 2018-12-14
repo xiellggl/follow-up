@@ -36,7 +36,7 @@
                         </small>
                     </h1>
                     <a href="#" class="pull-right">
-                    <span class="btn btn-primary" data-toggle="modal" data-target="#myModalEditFollowuper">添加模块</span>
+                    <span class="btn btn-primary" data-toggle="modal" data-target="#myModalEditModule">添加模块</span>
                     </a>
                 </div>
 
@@ -47,78 +47,33 @@
 
                                 <thead>
                                 <tr>
+                                    <th></th>
                                     <th>模块名称</th>
-                                    <th>状态</th>
                                     <th>菜单状态</th>
                                     <th>功能路径</th>
                                     <th>排序</th>
-                                    <th>备注</th>
                                     <th>操作</th>
                                 </tr>
                                 </thead>
 
                                 <tbody>
-
-
-                                <c:if test="${empty page.results}">
+                                <c:if test="${empty menus}">
                                     <tr>
                                         <td colspan="7" class="no_data">
                                             暂无模块，请
                                             <a href="#" data-toggle="modal"
-                                               data-target="#myModalEditFollowuper">新增模块</a>
+                                               data-target="#myModalEditModule">新增模块</a>
                                         </td>
                                     </tr>
                                 </c:if>
 
-
-                                <c:if test="${not empty page.results}">
-                                <c:forEach items="${page.results}" var="item">
-
-                                <c:forEach items="${item.menus}" var="item">
-
-                                <tr id="${item.id} - ${item.parentId}">
-                                    <td>${item.name}</td>
-                                    <td>
-                                        <a data-id="${item.id}" data-level="{$v.level}" href="{:url('admin/Sys/admin_menu_list',['pid'=>$v.id])}"
-                                           style="cursor:pointer;" class="rule-list">
-                                        <span class="fa {if condition='$v.level egt 4'}fa-minus{else /}fa-plus{/if} blue"></span>
-                                        </a>
-                                    </td>
-                                    <td class="center">
-                                        <a class="state-btn" data-state="1" href="javascript:;" data-id="30" title="" data-original-title="已启用">
-                                            <span class="btn btn-minier btn-yellow">启用</span>
-                                        </a>
-                                    </td>
-                                    <td>${item.status}</td>
-                                    <td>${item.url}</td>
-                                    <td>${item.order}</td>
-                                    <td>${item.description}</td>
-                                    <td>
-                                        <a href="#" data-id="1" data-toggle="modal"
-                                           data-target="#myModalEditFollowuper"
-                                           data-toggle="tooltip" title="修改">
-                                            <i class="ace-icon fa fa-pencil bigger-130"></i>
-                                        </a>
-                                        <a href="#" data-act="del" data-toggle="tooltip" title="删除">
-                                            <i class="ace-icon fa fa-trash-o bigger-130 red"></i></a>
-                                        <a href="#" data-act="del" data-toggle="tooltip" title="绑定功能">
-                                            <i class="ace-icon fa fa-exchange bigger-130 red"></i></a>
-                                    </td>
-                                </tr>
-
-                                </c:forEach>
-
-                                </c:forEach>
+                                <c:if test="${not empty menus}">
+                                    <c:set var="moduleList" value="${menus}" />
+                                    <%@ include file="module_item.jsp" %>
                                 </c:if>
 
                                 </tbody>
                             </table>
-
-                        <c:if test="${not empty page.results}">
-                            <div class="pagerBar" id="pagerBar">
-                                <common:page2 url="${pageUrl}" type="3"/>
-                            </div>
-                        </c:if>
 
                     </div>
                 </div>
@@ -129,7 +84,97 @@
 </div>
 
 <%--编辑模块模态框（Modal）--%>
-<div class="modal fade in" id="myModalEditFollowuper" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
+<div class="modal fade in" id="myModalEditModule" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
+<script type="text/html" id="tplEditModule">
+    <form id="form-id" class="form-horizontal" autocomplete="off">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-hidden="true">×
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">{{id>0?'修改':'添加'}}模块</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <input type="hidden" name="id" value="{{id}}" />
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label no-padding-right">*模块名称：</label>
+                                <div class="col-xs-12 col-sm-6">
+                                    <input type="text" name="name" value="{{name}}" class="form-control"/>
+                                </div>
+                                <div class="help-block col-xs-12 col-sm-reset inline tips_box"></div>
+                            </div>
+
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label no-padding-right">*所属模块：</label>
+                                <div class="col-xs-12 col-sm-6">
+                                    <select name="parentid" class="chosen-select form-control" data-placeholder="Choose a State...">
+                                        <option value="">顶级模块</option>
+                                        <c:set var="selectList" value="${menus}" />
+                                        <%@ include file="module_option_item.jsp" %>
+                                    </select>
+                                </div>
+                                <div class="help-block col-xs-12 col-sm-reset inline tips_box"></div>
+                            </div>
+
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label no-padding-right">模块排序：</label>
+                                <div class="col-xs-12 col-sm-6">
+                                    <input type="text" name="sort" value="{{sort}}" class="form-control"/>
+                                </div>
+                                <div class="help-block col-xs-12 col-sm-reset inline tips_box"></div>
+                            </div>
+
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label no-padding-right">*模块状态：</label>
+                                <div class="col-sm-9 inline align-middle" >
+                                    <label style="margin-right: 15px;">
+                                        <input type="radio" name="status" value="1" {{id==null||status==1?'checked':''}}/>
+                                        开启
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="status" value="0" {{status==0?'checked':''}}/>
+                                        关闭
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label no-padding-right">功能路径：</label>
+                                <div class="col-xs-12 col-sm-6">
+                                    <input type="text" name="url" value="{{url}}" class="form-control"/>
+                                </div>
+                                <div class="help-block col-xs-12 col-sm-reset inline tips_box"></div>
+                            </div>
+
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label no-padding-right">备注信息：</label>
+                                <div class="col-xs-12 col-sm-6">
+                                    <textarea name="description" class="form-control" style="height:60px;">{{description}}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">
+                        提交保存
+                    </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        关闭
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</script>
 <%@include file="/inc/followup/script.jsp"%>
 <script>
     seajs.use(["common","validate","template",],function(common,validate,template){
@@ -137,44 +182,49 @@
         common.head("system",1);
 
         //添加、编辑模块方法
-        var editDeptFn = function (id) {
-            var id = id || 0;
-            var url = "/module/edit";
-            var keepurl = "/module/add/save.json";
-            if (id > 0) {
-                url = "/module/edit?id="+id;
-                keepurl = "/module/add/edit.json";
-            }
-            var html = "";
-
-            common.ajax.handle({
-                type: "get",
-                url:url,
-                dataType: "html",
-                async: false,
-                succback: function (data) {
-                    html = data;
+        var editModuleFn = function (id,pid) {
+            var id = id || null;
+            var pid = pid || null;
+            var type = "add"
+            var data = {};
+            if (id) {
+                type = "edit"
+                common.ajax.handle({
+                    url: "/module/getModuleById.json",
+                    data:{id:id},
+                    async: false,
+                    succback: function (json) {
+                        data = json.result;
+                    }
+                });
+                if (data.id==null) {
+                    return false;
                 }
-            });
-            var $modal = $("#myModalEditFollowuper");
-            $modal.html(html);
-            if (id > 0) {
-                $(".modal-title").html("修改模块");
+
             }
+
+
+
+            var $modal = $("#myModalEditModule");
+            var html = template("tplEditModule", data);
+            $modal.html(html);
             var $form = $("#form-id");
+            if(id) {
+                $(".modal-title").html("修改模块");
+                if(data.parentid!=""){
+                    $form.find('[name="parentid"]').val(data.parentid);
+                }
+            }
+            if(pid){
+                $form.find('[name="parentid"]').val(pid);
+            }
+
             $form.validate({
                 rules: {
                     name:"required",
-                    // module_id:{
-                    //
-                    // },
                 },
                 messages: {
                     name:"模块名称不能为空",
-                    // module_id:{
-                    //
-                    // },
-
                 },
                 errorPlacement: function (error, element) {
                     var $tipsBox = element.closest(".form-group").find(".tips_box");
@@ -191,7 +241,7 @@
                 },
                 submitHandler: function (form) {
                     common.ajax.handle({
-                        url: keepurl,
+                        url: "/module/"+type+"/save.json",
                         data: $form.serialize()
                     });
                     return false;
@@ -202,10 +252,11 @@
         };
 
         //新增、编辑功能按钮
-        var $editBtn = $('[data-target="#myModalEditFollowuper"]');
+        var $editBtn = $('[data-target="#myModalEditModule"]');
         $editBtn.on("click", function () {
             var id = $(this).data('id') || null;
-            editDeptFn(id);
+            var pid = $(this).data('pid') || null;
+            editModuleFn(id,pid);
         });
 
         //删除
