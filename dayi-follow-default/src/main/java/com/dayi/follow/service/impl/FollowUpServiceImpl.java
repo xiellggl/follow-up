@@ -215,9 +215,9 @@ public class FollowUpServiceImpl implements FollowUpService {
                         .add(account.getOutFrozen())
                         .add(account.getUseable()).doubleValue();
                 agent.setTotalFund(totalFund);
+                agent.setInterest(account.getInterest().doubleValue());//利息-服务费
             }
 
-            agent.setInterest(account.getInterest().doubleValue());//利息-服务费
 
             agent.setGrowthCargo(BigDecimals.subtract(agent.getAgentCargo(), agent.getAgentCargoBefore()));//净增货值
             agent.setGrowthFund(BigDecimals.subtract(agent.getTotalFund(), agent.getTotalFundBefore()));//净增资金
