@@ -98,7 +98,7 @@
                 </div>
 
                 <div class="col-xs-12">
-                    <div class="row">
+                    <div class="row" id="listPan">
                         <div class="space-6"></div>
                         <div>
                             <table class="table table-striped table-bordered table-hover">
