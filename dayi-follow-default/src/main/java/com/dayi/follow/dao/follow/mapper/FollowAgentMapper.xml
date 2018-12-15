@@ -479,43 +479,4 @@
         WHERE a.follow_id =#{followId}
     </select>
 
-    <select id="">
-        SELECT count(create_date)newOpenNum,IFNULL(sum(inAccrual),0) as cyberBankTotalInCash,count(fal3.pay_type)InCashNum,
-        IFNULL(sum(outAccrual),0) as totalApplyOutCash,count(fal4.pay_type)OutCashNum
-        from (SELECT id,flow_id from agent where del_status != -1 )a
-        left join  (
-            select agent_org_id,sum(accrual)inAccrual
-            from finance_account_log WHERE create_date between '.append(dateStart)'  and '.append(dateEnd)'
-            and pay_type=1 and account_type != 1 GROUP BY agent_org_id
-        )fal1 on fal1.agent_org_id=a.id
-        left join (
-            select agent_org_id,sum(accrual)outAccrual
-            from finance_account_log WHERE create_date between '.append(dateStart)'  and '.append(dateEnd)'
-            and pay_type in (-9,-112) and account_type != 1 GROUP BY agent_org_id
-        )fal2 on fal2.agent_org_id=a.id
-        left join (
-            select agent_org_id,pay_type
-            from finance_account_log WHERE create_date between '.append(dateStart)'  and '.append(dateEnd)'
-            and pay_type=1 and account_type != 1
-            GROUP BY agent_org_id
-        )fal3 on fal3.agent_org_id=a.id
-        left join(
-            select agent_org_id ,pay_type
-            from finance_account_log WHERE create_date between '.append(dateStart)'  and '.append(dateEnd)'
-            and pay_type in (-9,-112) and account_type != 1
-            GROUP BY agent_org_id
-        )fal4 on fal4.agent_org_id=a.id
-        left join (
-            SELECT min(protocol.create_date) as create_date,agent from protocol
-            group by protocol.agent HAVING create_date between '.append(dateStart)'  and '.append(dateEnd)'
-        )p on a.id=p.agent
-        where 1=1 and a.flow_id = .append(flowId) ;
-
-    </select>
-
-
-
-
-
-
 </mapper>

@@ -43,41 +43,19 @@
         and dept_id =#{deptId}
     </select>
 
-    <select id="findUsers" parameterType="map" resultMap="BaseResultMap">
+    <select id="findPage" parameterType="map" resultMap="BaseResultMap">
         SELECT * from follow_up where  disable !=0
         <if test="''!=mobile and null!=mobile">
             and mobile =#{mobile}
         </if>
 
-        and id in
-        <foreach item="item" index="index" collection="followIds"
-                 open="(" separator="," close=")">
-            #{item}
-        </foreach>
-
-        <if test="''!=inviteCode and null!=inviteCode">
-            and inviteCode =#{inviteCode}
+        <if test="''!=deptId and null!=deptId">
+        and dept_id =#{deptId}
         </if>
-        limit #{limitStart},#{limitEnd}
-    </select>
-
-    <select id="getUsersNum" resultType="java.lang.Integer">
-        SELECT count(0) from follow_up  where disable !=0
-        <if test="''!=mobile and null!=mobile">
-            and mobile =#{mobile}
-        </if>
-
-        and id in
-        <foreach item="item" index="index" collection="followIds"
-                 open="(" separator="," close=")">
-            #{item}
-        </foreach>
 
         <if test="''!=inviteCode and null!=inviteCode">
             and inviteCode =#{inviteCode}
         </if>
     </select>
-
-
 
 </mapper>

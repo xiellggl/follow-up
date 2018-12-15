@@ -1,6 +1,8 @@
 package com.dayi.follow.vo.index;
 
 
+import com.dayi.follow.util.Misc;
+
 import java.math.BigDecimal;
 
 public class DailyVo {
@@ -34,6 +36,9 @@ public class DailyVo {
     }
 
     public String getInCashFm() {
+        if (this.inCash != null) {
+            inCashFm = Misc.parseMoney(inCash.doubleValue(), 2);
+        }
         return inCashFm;
     }
 
@@ -58,6 +63,9 @@ public class DailyVo {
     }
 
     public String getOutCashFm() {
+        if (this.outCash != null) {
+            outCashFm = Misc.parseMoney(outCash.doubleValue(), 2);
+        }
         return outCashFm;
     }
 

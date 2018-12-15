@@ -116,7 +116,7 @@ public class UserController extends BaseController {
 
         page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
 
-        page = userService.findPage(page, currVo.getDeptId(), mobile, queryDeptId, inviteCode);
+        page = userService.findPage(page, mobile, queryDeptId, inviteCode);
 
         List<Department> deptList = deptService.getDeptTree(null);//前端要求-用于新增修改的部门列表
 

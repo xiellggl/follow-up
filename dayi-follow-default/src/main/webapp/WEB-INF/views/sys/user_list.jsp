@@ -262,7 +262,7 @@
             var data = {};
             if (id > 0) {
                 common.ajax.handle({
-                    url: "/user/get?id=" + id + ".json",
+                    url: "/user/get?id=" + id,
                     async: false,
                     succback: function (json) {
                         data = json.result;
@@ -391,7 +391,7 @@
             var id=$(this).closest("tr").data("id");
             layer.confirm('<p class="tc">确定删除此用户</p>',{title:"温馨提示"},function () {
                 common.ajax.handle({
-                    url:"/user/delete?id="+ id + ".json"
+                    url:"/user/delete?id="+ id
                 });
             });
         });
@@ -407,7 +407,7 @@
             layer.confirm('<p class="tc">是否确定' + stateStr + '此用户</p>', {icon: 3, title: "温馨提示"}, function (index) {
                 layer.close(index);
                 common.ajax.handle({
-                    url: "/user/" + act + "?id=" + id + ".json",
+                    url: "/user/" + act + "?id=" + id,
                     succback: function (data) {
                         var btn = '<span class="btn btn-minier ' + className + '">' + stateStr + '</span>';
                         $btn.data("state", !state).html(btn).attr('data-original-title', "已" + stateStr);
@@ -436,7 +436,7 @@
                         return false;
                     }
                     common.ajax.handle({
-                        url: "/user/resetpwd?id=" + id + ".json",
+                        url: "/user/resetpwd?id=" + id,
                         data: {pwd: $pwd.val()},
                         succback: function (data) {
                             common.successMsg(data.msg);

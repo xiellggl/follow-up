@@ -309,7 +309,7 @@
                             <%-- 总资产 --%>
                         <td class="hidden-sm hidden-xs">${item.totalFundFm}</td>
                             <%-- 最近代理 --%>
-                        <td class="hidden-sm hidden-xs">${item.recentAgentFundFm}<c:if test="${not empty item.recentAgentDateFm}"><br>${item.recentAgentDateFm}</c:if></td>
+                        <td class="hidden-sm hidden-xs">${item.recentAgentFundFm}<br><fmt:formatDate value="${item.recentAgentDate}" pattern="yyyy-MM-dd"/></td>
                             <%-- 客户类型 --%>
                          <td class="hidden-sm hidden-xs">${item.customerTypeStr}
                                <i  class="glyphicon glyphicon-exclamation-sign"  data-toggle="tooltip" title="意向度：${item.cusIntentionTypeStr}" style="color:#aaa;"></i>

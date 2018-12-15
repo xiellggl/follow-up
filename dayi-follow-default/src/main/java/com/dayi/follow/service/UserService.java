@@ -53,7 +53,7 @@ public interface UserService extends Realm{
     BizResult editPwd(String id, String oldPwd, String newPwd, String confirmPwd);
 
     //查询全部用户
-    Page<UserVo> findPage(Page page, String deptId, String mobile, String queryDeptId, String inviteCode);
+    Page<UserVo> findPage(Page<UserVo>page, String mobile, String queryDeptId, String inviteCode);
 
     //重置密码
     BizResult resetPwd(FollowUp followUp, String newPwd);

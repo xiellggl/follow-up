@@ -3,8 +3,10 @@ package com.dayi.follow.controller;
 import com.dayi.common.util.BizResult;
 import com.dayi.common.util.DateUtil;
 import com.dayi.follow.component.UserComponent;
-import com.dayi.follow.service.*;
-import com.dayi.follow.vo.*;
+import com.dayi.follow.service.CountService;
+import com.dayi.follow.service.DeptService;
+import com.dayi.follow.service.FollowUpService;
+import com.dayi.follow.vo.LoginVo;
 import com.dayi.follow.vo.index.*;
 import com.dayi.follow.vo.org.OrgDataVo;
 import org.springframework.stereotype.Controller;
@@ -13,7 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author xiell
@@ -29,13 +32,7 @@ public class IndexController {
     @Resource
     UserComponent userComponent;
     @Resource
-    AgentService agentService;
-    @Resource
     DeptService deptService;
-    @Resource
-    ReportService reportService;
-    @Resource
-    OrgService orgService;
 
     @RequestMapping("")
     public String index(HttpServletRequest request) {

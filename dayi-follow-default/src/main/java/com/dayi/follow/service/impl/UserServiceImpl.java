@@ -187,15 +187,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<UserVo> findPage(Page page, String deptId, String mobile, String queryDeptId, String inviteCode) {
-        List<String> followIds = new ArrayList<String>();
+    public Page<UserVo> findPage(Page<UserVo> page, String mobile, String queryDeptId, String inviteCode) {
 
-        if (StringUtils.isBlank(queryDeptId)) followIds = userMapper.findIdsByDeptId(deptId);
-        else followIds = userMapper.findIdsByDeptId(queryDeptId);
+        page = userMapper.findPage(page, mobile, queryDeptId, inviteCode);
 
-        List<UserVo> users = userMapper.findUsers(mobile, followIds, inviteCode, page.getStartRow(), page.getPageSize());
-
-        for (UserVo vo : users) {
+        for (UserVo vo : page.getResults()) {
             //处理角色名称
             if (StringUtils.isBlank(vo.getRoleids())) break;
             String[] split = StringUtils.split(vo.getRoleids(), ",");
@@ -210,10 +206,6 @@ public class UserServiceImpl implements UserService {
             }
         }
 
-        int num = userMapper.getUsersNum(mobile, followIds, inviteCode);
-
-        page.setResults(users);
-        page.setTotalRecord(num);
         return page;
     }
 
@@ -422,7 +414,6 @@ public class UserServiceImpl implements UserService {
     public void loginOut(HttpServletRequest request, HttpServletResponse response) {
         AuthorizationManager.cleanAllAuthenticationInfo(request, response);
     }
-
 
 
 }
