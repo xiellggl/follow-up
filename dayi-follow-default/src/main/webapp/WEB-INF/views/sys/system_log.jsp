@@ -43,7 +43,7 @@
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-calendar"></i>
                                     </span>
-                                    <input type="text" class="form-control admin_sea dates" name="date" value="${param.date}"
+                                    <input type="text" class="form-control admin_sea dates" name="date" value="${param.beginDate}"
                                            placeholder="日志日期"/>
                                 </div>
                             </div>
