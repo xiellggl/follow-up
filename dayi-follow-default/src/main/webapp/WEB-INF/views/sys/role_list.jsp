@@ -53,12 +53,11 @@
                             </thead>
                             <tbody>
 
-                            <c:if test="${empty topDeptList}">
+                            <c:if test="${empty page}">
                                 <tr>
                                     <td colspan="6" class="no_data">暂无角色，请
                                         <a href="#" data-toggle="modal"
-                                           data-target="#myModalEditFollowuper"
-                                           data-toggle="tooltip" title="新增角色">
+                                           data-target="#myModalEditFollowuper" title="新增角色">
                                             新增角色
                                         </a>
                                     </td>
@@ -70,7 +69,7 @@
                                     <tr data-id="${item.id}">
                                         <td>${item.name}</td>
                                         <td>${item.descript}</td>
-                                        <td>2016-02-20 14:44:43</td>
+                                        <td class="hidden-sm hidden-xs"><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                         <td>
                                             <a class="state-btn" data-state="1" href="javascript:;" data-id="30" title="" data-original-title="已启用">
                                                 <span class="btn btn-minier btn-yellow">启用</span>
@@ -78,8 +77,7 @@
                                         </td>
                                         <td>
                                             <a href="#" data-id="30" data-toggle="modal"
-                                               data-target="#myModalEditFollowuper"
-                                               data-toggle="tooltip" title="修改">
+                                               data-target="#myModalEditFollowuper" title="修改">
                                                 <i class="ace-icon fa fa-pencil bigger-130"></i>
                                             </a>
                                             <a href="#" data-act="del" data-toggle="tooltip" title="删除">
@@ -114,7 +112,7 @@
         common.head("system",4);
 
         //添加、编辑角色方法
-        var editDeptFn = function (id,pid) {
+        var editDeptFn = function (id) {
             var id = id || 0;
             var url = "/role/edit";
             if (id > 0) {
@@ -140,10 +138,10 @@
 
             $form.validate({
                 rules: {
-                    role_name:"required"
+                    name:"required"
                 },
                 messages: {
-                    role_name:"角色名称不能为空"
+                    name:"角色名称不能为空"
                 },
                 errorPlacement: function (error, element) {
                     var $tipsBox = element.closest(".form-group").find(".tips_box");

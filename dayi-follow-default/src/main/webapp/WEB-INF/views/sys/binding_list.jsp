@@ -76,7 +76,7 @@
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <a href="./list">绑定功能</a>
+                                            <a href="">绑定功能</a>
                                         </li>
                                         <li>
                                             <a href="">返回列表</a>
@@ -87,7 +87,7 @@
                                     <span class="ace-icon fa fa-globe"></span>
                                     绑定功能
                                 </a>
-                                <a href="" class="btn btn-xs btn-info hidden-xs">
+                                <a href="#" class="btn btn-xs btn-info hidden-xs">
                                     <span class="ace-icon fa fa-globe"></span>
                                     返回列表
                                 </a>
@@ -110,7 +110,7 @@
 
                                             <span class="lbl"></span>
                                         </label>
-                                        <input type="hidden" id="checkIds" name="ids">
+                                        <input type="hidden" id="checkIds" name="ids" value="">
                                     </th>
                                     <th>功能名称</th>
                                     <th class="hidden-sm hidden-xs">功能路径</th>
@@ -276,8 +276,13 @@
         common.checkBox($("#chkAll"), $list.find('[name="id"]'), $("#checkIds"));
 
         //绑定功能
-        $('[data-act="action"]').on("click", function () {
+        $('[data-act="binding"]').on("click", function () {
+            var pid = $("#checkIds").val();
 
+            common.ajax.handle({
+                url:"/permission/bind/save.json"+pid,
+                type: "post",
+            });
         });
 
     });
