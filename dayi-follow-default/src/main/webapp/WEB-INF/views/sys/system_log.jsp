@@ -52,7 +52,7 @@
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-check"></i>
                                     </span>
-                                    <input type="text" name="deptName" class="form-control search-query admin_sea" value="${param.deptName}" placeholder="操作人"/>
+                                    <input type="text" name="operatorName" class="form-control search-query admin_sea" value="${param.operatorName}" placeholder="操作人"/>
                                     <div class="input-group-btn">
                                         <button type="submit" class="btn btn-xs btn-purple">
                                             <span class="ace-icon fa fa-search"></span>
@@ -84,21 +84,23 @@
                             </thead>
                             <tbody>
 
-                            <%--<c:if test="${empty page.items}">--%>
-                            <%--<tr>--%>
-                            <%--<td colspan="8" class="no_data">暂无数据记录</td>--%>
-                            <%--</tr>--%>
-                            <%--</c:if>--%>
+                            <c:if test="${empty page}">
+                            <tr>
+                            <td colspan="8" class="no_data">暂无数据记录</td>
+                            </tr>
+                            </c:if>
 
-                            <c:forEach var="i" begin="1" end="5">
+                            <c:if test="${not empty page.results}">
+                            <c:forEach items="${page.results}" var="item" >
                                 <tr>
-                                    <td>老陈</td>
-                                    <td>首页信息</td>
-                                    <td>登录账号</td>
-                                    <td>2016-02-20 14:44:43</td>
-                                    <td>172.28.13.41</td>
+                                    <td>${item.authorName}</td>
+                                    <td>${item.what}</td>
+                                    <td>${item.note}</td>
+                                    <td class="hidden-sm hidden-xs"><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                    <td>${item.ip}</td>
                                 </tr>
                             </c:forEach>
+                            </c:if>
 
                             </tbody>
                         </table>
