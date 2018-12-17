@@ -368,9 +368,6 @@ public class UserController extends BaseController {
             followUpLog.setCreateTime(date);
             followUpLog.setUpdateTime(date);
 
-            endTime = new DateTime(date).plusDays(1).millisOfDay().withMinimumValue()
-                    .plusMinutes(-30).toString("yyyy-MM-dd HH:mm:ss");
-
             List<Organization> orgs = followOrgMapper.findOrgsByfollowId(followUp.getId(), endTime, dayiDataBaseStr);
 
             double manageFund = countService.getOrgManageFund(orgs);

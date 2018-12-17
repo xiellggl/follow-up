@@ -272,9 +272,6 @@ public class CountServiceImpl implements CountService {
             followUpLog.setCreateTime(new Date());
             followUpLog.setUpdateTime(new Date());
 
-            endTime = DateTime.now().plusDays(1).millisOfDay().withMinimumValue()
-                    .plusMinutes(-30).toString("yyyy-MM-dd HH:mm:ss");
-
             List<Organization> orgs = followOrgMapper.findOrgsByfollowId(followUp.getId(), endTime, dayiDataBaseStr);
 
             double manageFund = this.getOrgManageFund(orgs);
