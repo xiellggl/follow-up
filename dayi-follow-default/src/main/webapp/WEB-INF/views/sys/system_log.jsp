@@ -134,6 +134,8 @@
         var date_o = {
             singleDatePicker: true,
             autoUpdateInput: false,
+            timePicker24Hour : true,
+            timePicker : true,
             locale: locale_cn,
         };
         date_o.locale.cancelLabel = "清空";
