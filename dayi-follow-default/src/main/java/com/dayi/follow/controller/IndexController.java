@@ -101,8 +101,7 @@ public class IndexController {
         if (currVo == null) {
             return BizResult.FAIL;
         }
-        String dateStr = DateUtil.formatDate(new Date());
-        long num = countService.getAgentNumWait2Link(currVo.getId(), dateStr);
+        long num = countService.getAgentNumWait2Link(currVo.getId());
         return BizResult.succ(num);
     }
 
