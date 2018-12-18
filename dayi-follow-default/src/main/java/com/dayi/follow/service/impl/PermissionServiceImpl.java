@@ -6,9 +6,11 @@ import com.dayi.component.annotation.Log;
 import com.dayi.component.model.BaseLog;
 import com.dayi.follow.dao.follow.PermissionMapper;
 import com.dayi.follow.dao.follow.RolePermissionMapper;
+import com.dayi.follow.model.follow.Module;
 import com.dayi.follow.model.follow.OperateLog;
 import com.dayi.follow.model.follow.Permission;
 import com.dayi.follow.model.follow.RolePermission;
+import com.dayi.follow.service.ModuleService;
 import com.dayi.follow.service.PermissionService;
 import com.dayi.follow.util.Misc;
 import com.dayi.follow.vo.sys.PermissionSearchVo;
@@ -29,6 +31,9 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Resource
     PermissionMapper permissionMapper;
+
+    @Resource
+    ModuleService moduleService;
 
     @Resource
     RolePermissionMapper rolePermissionMapper;
@@ -55,7 +60,17 @@ public class PermissionServiceImpl implements PermissionService {
         }
         conditions.add(Restrictions.eq("del_status", Permission.DEL_STATUS_NO.id));
 
-        return permissionMapper.searchByConditions(page, conditions);
+        page = permissionMapper.searchByConditions(page, conditions);
+
+        for(Permission permission : page.getResults()) {
+            // 设置模块名称
+            Module module = moduleService.getModule(permission.getModuleid());
+            if (null != module) {
+                permission.setModuleName(module.getName());
+            }
+        }
+
+        return page;
     }
 
     @Override
@@ -86,7 +101,6 @@ public class PermissionServiceImpl implements PermissionService {
         permission.setDisplayStatus(Permission.DISPLAY_STATUS_DISABLE.id);
         permission.setDelStatus(Permission.DEL_STATUS_NO.id);
         permission.setId(permissionMapper.getNewId());
-        permission.setModuleid("");
         return 1 == permissionMapper.add(permission);
     }
 
@@ -144,9 +158,17 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     @Log(target = OperateLog.class, action = BaseLog.LogAction.UPDATE, what = "权限管理", note = "权限更新")
+    @Transactional
     public BizResult updatePermission(Permission permission) {
-        if (null == permissionMapper.get(permission.getId())) {
+        Permission findPermission = permissionMapper.get(permission.getId());
+        if (null == findPermission) {
             return BizResult.fail("功能模块不存在.");
+        }
+
+        // 所属模块若有变更则删除角色权限关联
+        if (!Misc.isEmpty(permission.getModuleid()) && !findPermission.getModuleid().equals(permission.getModuleid())) {
+            // 删除角色权限关联
+            rolePermissionMapper.deleteByPerId(findPermission.getId());
         }
 
         permission.setUpdateTime(new Date());
