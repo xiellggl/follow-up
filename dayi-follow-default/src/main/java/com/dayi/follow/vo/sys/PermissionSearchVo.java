@@ -28,6 +28,11 @@ public class PermissionSearchVo {
      */
     private Boolean isBinding;
 
+    /**
+     * 所属模块id
+     */
+    private String moduleId;
+
     public int getPageNo() {
         return pageNo > 0 ? pageNo : 1;
     }
@@ -60,6 +65,14 @@ public class PermissionSearchVo {
         isBinding = binding;
     }
 
+    public String getModuleId() {
+        return moduleId;
+    }
+
+    public void setModuleId(String moduleId) {
+        this.moduleId = moduleId;
+    }
+
     @Override
     public String toString() {
         return "PermissionSearchVo{" +
@@ -67,6 +80,7 @@ public class PermissionSearchVo {
                 ", pageSize=" + pageSize +
                 ", name='" + name + '\'' +
                 ", isBinding=" + isBinding +
+                ", moduleId='" + moduleId + '\'' +
                 '}';
     }
 }

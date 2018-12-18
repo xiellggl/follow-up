@@ -71,8 +71,11 @@
                                         <td>${item.descript}</td>
                                         <td class="hidden-sm hidden-xs"><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                         <td>
-                                            <a class="state-btn" data-state="1" href="javascript:;" data-id="30" title="" data-original-title="已启用">
-                                                <span class="btn btn-minier btn-yellow">启用</span>
+                                            <a class="state-btn" data-state="${item.status}" href="#"
+                                               data-id="${item.id}" title="已${item.status eq 1 ? '启动':'禁用'}">
+                                            <span class="btn btn-minier ${item.status eq 1 ? 'btn-yellow':'btn-danger'}">
+                                                    ${item.status  eq 1 ? '启动':'禁用'}
+                                            </span>
                                             </a>
                                         </td>
                                         <td>
@@ -196,7 +199,7 @@
             layer.confirm('<p class="tc">是否确定' + stateStr + '此用户</p>', {icon: 3, title: "温馨提示"}, function (index) {
                 layer.close(index);
                 common.ajax.handle({
-                    url: "/role/enableRole?id="+id,
+                    url: "/role/enableRole?id="+id+"&enable="+act,
                     succback: function (data) {
                         var btn = '<span class="btn btn-minier ' + className + '">' + stateStr + '</span>';
                         $btn.data("state", !state).html(btn).attr('data-original-title', "已" + stateStr);

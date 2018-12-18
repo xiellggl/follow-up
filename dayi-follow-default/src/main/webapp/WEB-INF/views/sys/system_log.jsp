@@ -43,9 +43,18 @@
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-calendar"></i>
                                     </span>
-                                    <input type="text" class="form-control admin_sea dates" name="date" value="${param.beginDate}"
-                                           placeholder="日志日期"/>
+                                    <input type="text" class="form-control admin_sea dates" name="beginDate" value="${param.beginDate}"
+                                           placeholder="开始时间"/>
                                 </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-3 maintop">
+                            <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="ace-icon fa fa-calendar"></i>
+                                    </span>
+                                <input type="text" class="form-control admin_sea dates" name="endDate" value="${param.endDate}"
+                                       placeholder="结束时间"/>
+                            </div>
                             </div>
                             <div class="col-xs-12 col-sm-4 maintop">
                                 <div class="input-group">
@@ -118,19 +127,25 @@
     </div>
 </div>
 <%@include file="/inc/followup/script.jsp"%>
+<style>
+    .calendar-time{display: none;}
+</style>
 <script charset="UTF-8" async="" src="/static/public/daterangepicker3/moment.min.js"></script>
 <script>
     seajs.use(["common", "daterangepicker"], function (common) {
         common.head("system",3);
         var date_o = {
+            singleDatePicker: true,
             autoUpdateInput: false,
+            timePicker24Hour : true,
+            timePicker : true,
             locale: locale_cn,
         };
         date_o.locale.cancelLabel = "清空";
         $('.dates').daterangepicker(date_o);
 
         $('.dates').on('apply.daterangepicker', function (ev, picker) {
-            $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
+            $(this).val(picker.startDate.format('YYYY-MM-DD'));
         });
 
         $('.dates').on('cancel.daterangepicker', function (ev, picker) {

@@ -5,6 +5,8 @@ import com.dayi.common.util.NameItems;
 import com.dayi.mybatis.support.BaseModel;
 import com.dayi.user.authorization.authz.PermissionBase;
 
+import javax.persistence.Transient;
+
 
 /**
  * @author xiell
@@ -28,6 +30,12 @@ public class Permission extends BaseModel implements PermissionBase {
      * 模块id
      */
     private String moduleid;
+
+    /**
+     * 所属模块名称
+     */
+    @Transient
+    private String moduleName;
 
     /**
      * 显示名称
@@ -147,6 +155,14 @@ public class Permission extends BaseModel implements PermissionBase {
 
     public void setModuleid(String moduleid) {
         this.moduleid = moduleid;
+    }
+
+    public String getModuleName() {
+        return moduleName;
+    }
+
+    public void setModuleName(String moduleName) {
+        this.moduleName = moduleName;
     }
 
     @Override
