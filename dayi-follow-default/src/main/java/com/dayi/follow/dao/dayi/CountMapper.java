@@ -39,7 +39,7 @@ public interface CountMapper {
     /**
      * 统计待联系代理商
      */
-    Long getAgentNumWait2Link(@Param("followId") String followId, @Param("dateStr") String dateStr, @Param("assistDataBase") String assistDataBase);
+    Long getAgentNumWait2Link(@Param("followId") String followId, @Param("startDate") String startDate, @Param("endDate") String endDate, @Param("assistDataBase") String assistDataBase);
 
     List<CusTypeRatioVo> countCusTypeRatio(@Param("followId") String followId, @Param("assistDataBase") String assistDataBase);
 
@@ -49,11 +49,21 @@ public interface CountMapper {
 
     List<SevenInCashVo> countSevenInCash(@Param("followId") String followId, @Param("assistDataBase") String assistDataBase);
 
-    long getWaitAssignAgentNum(@Param("assistDataBase") String assistDataBase);
+    //获取已分配代理商数量
+    long getAssignedAgentNum(@Param("assistDataBase") String assistDataBase);
 
-    long getWaitAssignOrgNum(@Param("orgType") Integer orgType, @Param("assistDataBase") String assistDataBase);
+    //获取全部代理商数量
+    long getAllAgentNum();
 
-    long getFollowCusNum(@Param("followUpIds") List<String> followUpIds, @Param("assistDataBase") String assistDataBase);
+    //获取已分配创客数量
+    int getAssignedOrgNum(@Param("assistDataBase") String assistDataBase);
+
+    //获取全部机构商数量
+    int getAllOrgNum();
+
+    long getFollowAgentNum(@Param("followUpIds") List<String> followUpIds, @Param("assistDataBase") String assistDataBase);
+
+    int getFollowOrgNum(@Param("followUpIds") List<String> followUpIds, @Param("assistDataBase") String assistDataBase);
 
     //统计KA的创客数据
     OrgDataVo countOrgData(@Param("followIds") List<String> followIds);

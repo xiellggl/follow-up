@@ -59,8 +59,10 @@ public class CountServiceImpl implements CountService {
 
 
     @Override
-    public long getAgentNumWait2Link(String followId, String dateStr) {
-        return countMapper.getAgentNumWait2Link(followId, dateStr, followDataBaseStr);
+    public long getAgentNumWait2Link(String followId) {
+        String startDate = DateTime.now().millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
+        String endDate = DateTime.now().millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
+        return countMapper.getAgentNumWait2Link(followId, startDate, endDate, followDataBaseStr);
     }
 
     /* 统计客户类型--跟进人ID */
@@ -115,14 +117,20 @@ public class CountServiceImpl implements CountService {
         serCusStatusVo.setFollowUpNum(followUps.size());
 
         //待分配客户数量
-        long waitAgentNum = countMapper.getWaitAssignAgentNum(followDataBaseStr);//待分配代理商数量
-        long waitOrgNum = countMapper.getWaitAssignOrgNum(OrgTypeEnum.Maker.getValue(), followDataBaseStr);//待分配创客数量
-        serCusStatusVo.setWaitAssignNum(waitAgentNum + waitOrgNum);
+        long agentNum = countMapper.getAssignedAgentNum(followDataBaseStr);//以分配代理商数量
+        long allAgentNum = countMapper.getAllAgentNum();//全部代理商数量
+        long waitAgentNum = allAgentNum - agentNum;
+
+        int allOrgNum = countMapper.getAllOrgNum();//全部创客数量
+        int orgNum = countMapper.getAssignedOrgNum(followDataBaseStr);//已分配创客数量
+        int waitMakerNum = allOrgNum - orgNum;
+        serCusStatusVo.setWaitAssignNum(waitAgentNum + waitMakerNum);
 
         //跟进用户总数
         List<String> followIds = followUpMapper.findIdsByDeptIds(deptIds);
-        long followCusNum = countMapper.getFollowCusNum(followIds, followDataBaseStr);
-        serCusStatusVo.setFollowCusNum(followCusNum);
+        agentNum = countMapper.getFollowAgentNum(followIds, followDataBaseStr);
+        orgNum = countMapper.getFollowOrgNum(followIds, followDataBaseStr);
+        serCusStatusVo.setFollowCusNum(agentNum + orgNum);
 
         //已认证客户数量
         long nameCusNum = countMapper.getNameCusNum(followIds, followDataBaseStr);

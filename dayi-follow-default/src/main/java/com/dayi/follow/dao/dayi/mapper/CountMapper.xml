@@ -97,21 +97,8 @@
     </select>
 
     <select id="getAgentNumWait2Link" parameterType="map" resultType="java.lang.Long">
-      select count( ac.agent_id ) num FROM agent a
-      left join (
-          SELECT  ac2.agent_id
-             FROM (
-                SELECT max( create_time ) create_time, agent_id FROM ${assistDataBase}.agent_contact GROUP BY agent_id
-             ) ac1
-             LEFT JOIN (
-              SELECT create_time, agent_id, next_contact_time FROM ${assistDataBase}.agent_contact
-             ) ac2 ON ac2.create_time = ac1.create_time
-             AND ac2.agent_id = ac1.agent_id WHERE next_contact_time =${dateStr}
-      ) ac ON ac.agent_id = a.id
-      left join (
-        SELECT agent_id from ${assistDataBase}.follow_agent where follow_id =${followId}
-      )fa on fa.agent_id=a.id
-      WHERE a.del_status != -1 and fa.agent_id is not null
+     SELECT count(DISTINCT agent_id) from ${assistDataBase}.agent_contact
+     where follow_id = #{followId} and next_contact_time   BETWEEN #{startDate} and #{endDate}
     </select>
 
     <select id="countCusTypeRatio" parameterType="java.lang.String" resultType="com.dayi.follow.vo.index.CusTypeRatioVo">
@@ -123,14 +110,8 @@
     </select>
     
     <select id="countCusFundRank" parameterType="java.lang.String" resultType="com.dayi.follow.vo.index.FundRankVo">
-        SELECT t.type as fundRank,count(a.id) num
-        FROM (
-            SELECT 1 as type union all  SELECT 2 as type union all
-            SELECT 3 as type union all  SELECT 4 as type union all
-            SELECT 5 as type union all  SELECT 6 as type union all
-            SELECT 7 as type
-        )t
-        left JOIN (
+        SELECT fam.type as fundRank,count(a.id) num
+        from (
             SELECT fa.agent_org_id,
                 CASE WHEN fa.useable + fa.frozen + fa.out_frozen + IFNULL(d.amount, 0) = 0 THEN 1
                 WHEN 0  &lt;  fa.useable + fa.frozen + fa.out_frozen + IFNULL(d.amount, 0)
@@ -148,19 +129,19 @@
             LEFT JOIN (
             SELECT agent, IFNULL(SUM(amount), 0) amount from protocol WHERE status in (1,2) GROUP BY agent
             ) d ON fa.agent_org_id = d.agent
-        ) fam on fam.type=t.type
+        ) fam
         left join (
             SELECT id from agent
             LEFT JOIN (
               SELECT agent_id from ${assistDataBase}.follow_agent where follow_id = ${followId}
             )b on b.agent_id=agent.id
             where del_status != -1 and b.agent_id is not null
-        )a ON a.id = fam.agent_org_id GROUP BY t.type
+        )a ON a.id = fam.agent_org_id GROUP BY fam.type
     </select>
 
     <select id="countSevenOpen" parameterType="java.lang.String" resultType="com.dayi.follow.vo.index.SevenOpenVo">
-           select click_date as dateStr, count(a.id)num
-              from (  
+           select click_date as dateStr, sum(IFNULL(open_account_num,0))num
+              from (
                   SELECT date_sub(curdate(), interval 1 day) as click_date union all
                   SELECT date_sub(curdate(), interval 2 day) as click_date union all
                   SELECT date_sub(curdate(), interval 3 day) as click_date union all
@@ -168,20 +149,14 @@
                   SELECT date_sub(curdate(), interval 5 day) as click_date union all
                   SELECT date_sub(curdate(), interval 6 day) as click_date union all
                   SELECT date_sub(curdate(), interval 7 day) as click_date
-              ) m left join (
-                  SELECT min(protocol.create_date) as create_date,agent from
-                  protocol  group by protocol.agent
-              )p on date(p.create_date)=m.click_date
-              left join  (
-                  select id from agent
-                  left join (SELECT agent_id from ${assistDataBase}.follow_agent where follow_id = ${followId})b
-                  on b.agent_id = agent.id
-                  WHERE del_status != -1 and b.agent_id is not null
-              )a on a.id=p.agent GROUP BY m.click_date
+              ) a left join (
+                    SELECT open_account_num,date(create_time)date from ${assistDataBase}.follow_up_log where follow_id=#{followId}
+              )b on a.click_date=b.date
+              GROUP BY a.click_date
     </select>
     
     <select id="countSevenInCash" parameterType="java.lang.String" resultType="com.dayi.follow.vo.index.SevenInCashVo">
-        select click_date as dateStr,sum(if(ISNULL(a.id),0,accrual))inCash
+        select click_date as dateStr,sum(ifnull(in_cash,0))inCash
           from (   
               SELECT date_sub(curdate(), interval 1 day) as click_date union all
               SELECT date_sub(curdate(), interval 2 day) as click_date union all
@@ -190,39 +165,39 @@
               SELECT date_sub(curdate(), interval 5 day) as click_date union all
               SELECT date_sub(curdate(), interval 6 day) as click_date union all
               SELECT date_sub(curdate(), interval 7 day) as click_date
-          ) m
-          left join(
-              SELECT create_date,agent_org_id,accrual FROM
-              finance_account_log WHERE pay_type = 1 and account_type &lt;&gt; 1
-          ) fal ON date(fal.create_date) =m.click_date
+          )a
           left join (
-              SELECT id from agent
-              left join (SELECT agent_id from ${assistDataBase}.follow_agent where follow_id = ${followId})b
-              on b.agent_id = agent.id
-              WHERE del_status != -1 and b.agent_id is not null
-          )a on a.id=fal.agent_org_id group by click_date
+              SELECT in_cash,date(create_time)date from ${assistDataBase}.follow_up_log where follow_id=#{followId}
+          )b on a.click_date=b.date
+          group by a.click_date
     </select>
 
-    <select id="getWaitAssignAgentNum" resultType="java.lang.Long">
-            SELECT count(IF(b.agent_id is null,1,null))
-            from agent a
-            LEFT join (
-                SELECT agent_id from ${assistDataBase}.follow_agent
-            )b on b.agent_id=a.id
-            where del_status != -1
+    <select id="getAssignedAgentNum" resultType="java.lang.Long">
+            SELECT count(0) from ${assistDataBase}.follow_agent where follow_id is not null
     </select>
 
-    <select id="getWaitAssignOrgNum" parameterType="map" resultType="java.lang.Long">
-        SELECT count(IF(b.org_id is null,1,null))
-        from organization a
-        LEFT join (
-        SELECT org_id from ${assistDataBase}.follow_org
-        )b on b.org_id=a.id
-        where del_status != -1 and org_type=${orgType}
+    <select id="getAllAgentNum" resultType="java.lang.Long">
+        SELECT count(0) from agent  where del_status != -1
     </select>
 
-    <select id="getFollowCusNum" resultType="java.lang.Long" parameterType="map">
+    <select id="getAssignedOrgNum" resultType="java.lang.Integer">
+        SELECT count(0) from ${assistDataBase}.follow_org where follow_id is not null
+    </select>
+
+    <select id="getAllOrgNum" resultType="java.lang.Integer">
+        SELECT count(0) from organization  where del_status != -1
+    </select>
+
+    <select id="getFollowAgentNum" resultType="java.lang.Long" parameterType="map">
         SELECT count(0) from ${assistDataBase}.follow_agent where follow_id in
+        <foreach item="item" index="index" collection="followUpIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="getFollowOrgNum" resultType="java.lang.Integer" parameterType="map">
+        SELECT count(0) from ${assistDataBase}.follow_org where follow_id in
         <foreach item="item" index="index" collection="followUpIds"
                  open="(" separator="," close=")">
             #{item}

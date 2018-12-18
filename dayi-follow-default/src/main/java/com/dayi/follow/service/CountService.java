@@ -24,7 +24,7 @@ public interface CountService {
     /**
      * 统计待联系代理商 -- 跟进人Id
      */
-    long getAgentNumWait2Link(String followId, String dateStr);
+    long getAgentNumWait2Link(String followId);
 
     /* 统计客户类型--跟进人ID */
     List<CusTypeRatioVo> countCusTypeRatio(String followId);
