@@ -127,6 +127,9 @@
     </div>
 </div>
 <%@include file="/inc/followup/script.jsp"%>
+<style>
+    .calendar-time{display: none;}
+</style>
 <script charset="UTF-8" async="" src="/static/public/daterangepicker3/moment.min.js"></script>
 <script>
     seajs.use(["common", "daterangepicker"], function (common) {
