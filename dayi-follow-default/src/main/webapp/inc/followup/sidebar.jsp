@@ -69,19 +69,19 @@
                 </a>
                 <ul class="submenu">
                     <li data-index="1">
-                        <a href="/followup/uc/log/mydaily">
+                        <a href="/report/daily">
                             <i class="menu-icon fa fa-caret-right"></i>
                             日报
                         </a>
                     </li>
                     <li data-index="2">
-                        <a href="/followup/uc/log/weekly/list">
+                        <a href="/report/week">
                             <i class="menu-icon fa fa-caret-right"></i>
                             周报
                         </a>
                     </li>
                     <li data-index="3">
-                        <a href="/followup/uc/log/monthly/list">
+                        <a href="/report/month">
                             <i class="menu-icon fa fa-caret-right"></i>
                             月报
                         </a>
@@ -119,19 +119,19 @@
                 </a>
                 <ul class="submenu">
                     <li data-index="1">
-                        <a href="/followup/uc/log/teamdaily">
+                        <a href="/report/team/daily">
                             <i class="menu-icon fa fa-caret-right"></i>
                             日报
                         </a>
                     </li>
                     <li data-index="2">
-                        <a href="/followup/uc/log/weekly/list">
+                        <a href="/report/team/week">
                             <i class="menu-icon fa fa-caret-right"></i>
                             周报
                         </a>
                     </li>
                     <li data-index="3">
-                        <a href="/followup/uc/log/monthly/list">
+                        <a href="/report/team/month">
                             <i class="menu-icon fa fa-caret-right"></i>
                             月报
                         </a>
@@ -171,20 +171,20 @@
             </a>
             <ul class="submenu">
                 <li data-index="1">
-                    <a href="/followup/manage/log/daily/list">
+                    <a href="/report/admin/daily">
                         <i class="menu-icon fa fa-caret-right"></i>
                         日报
                     </a>
                 </li>
 
                 <li data-index="2">
-                    <a href="/followup/manage/log/weekly/list">
+                    <a href="/report/admin/week">
                         <i class="menu-icon fa fa-caret-right"></i>
                         周报
                     </a>
                 </li>
                 <li data-index="3">
-                    <a href="/followup/manage/log/monthly/list">
+                    <a href="/report/admin/month">
                         <i class="menu-icon fa fa-caret-right"></i>
                         月报
                     </a>

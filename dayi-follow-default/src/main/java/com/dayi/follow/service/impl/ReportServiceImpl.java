@@ -114,6 +114,7 @@ public class ReportServiceImpl implements ReportService {
         String endDate = DateTime.parse(split[1]).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
 
         vo = reportMapper.getWeek(followId, startDate, endDate);
+        if (vo == null) return vo;
         vo.setGrowthFund(vo.getInCash().subtract(vo.getOutCash()));
         return vo;
     }
@@ -143,6 +144,7 @@ public class ReportServiceImpl implements ReportService {
         String endDate = DateTime.parse(month).dayOfMonth().withMaximumValue().millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");//本月结束
 
         monthVo = reportMapper.getMonth(followId, startDate, endDate);
+        if (monthVo == null) return monthVo;
         monthVo.setGrowthFund(monthVo.getInCash().subtract(monthVo.getOutCash()));
         return monthVo;
 
@@ -272,6 +274,7 @@ public class ReportServiceImpl implements ReportService {
             date4 = DateTime.parse(month).plusMonths(-1).dayOfMonth().withMaximumValue().millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");//上月结束
         }
         for (AdminMonthVo vo : list) {
+            if (vo == null) continue;
             double manageFund1 = reportMapper.getLastManageFund(vo.getFollowId(), date1, date2);//当月最后一天管理资产
             vo.setManageFund(BigDecimal.valueOf(manageFund1).setScale(2));
             if (manageFund1 == 0) {
