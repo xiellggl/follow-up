@@ -8,11 +8,13 @@ import com.dayi.component.model.BaseLog;
 import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.dao.dayi.AgentMapper;
 import com.dayi.follow.dao.dayi.OrgMapper;
+import com.dayi.follow.dao.follow.DeptMapper;
 import com.dayi.follow.dao.follow.FollowAgentMapper;
 import com.dayi.follow.dao.follow.FollowOrgMapper;
 import com.dayi.follow.dao.follow.FollowUpMapper;
 import com.dayi.follow.model.follow.*;
 import com.dayi.follow.service.CountService;
+import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.FollowOrgService;
 import com.dayi.follow.service.OrgService;
 import com.dayi.follow.vo.agent.AssignListVo;
@@ -46,6 +48,8 @@ public class FollowOrgServiceImpl implements FollowOrgService {
     private AgentMapper agentMapper;
     @Resource
     private CountService countService;
+    @Resource
+    private DeptService deptService;
     @Resource
     private UserComponent userComponent;
     @Value("${dayi.dataBase}")
@@ -172,7 +176,12 @@ public class FollowOrgServiceImpl implements FollowOrgService {
 
     @Override
     public Page findAssignPage(Page page, SearchVo searchVo, String deptId) {
-        List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
+        List<String> followIds = new ArrayList<>();
+
+        List<String> deptIds = deptService.getSubDeptIds(deptId);
+        for (String id : deptIds) {
+            followIds.addAll(followUpMapper.findIdsByDeptId(id));
+        }
 
         if (searchVo.getAssignStatus() == null || searchVo.getAssignStatus() != 1) {//查未分配
             page = followOrgMapper.findAssignsNoFollow(page, searchVo, dayiDataBaseStr);

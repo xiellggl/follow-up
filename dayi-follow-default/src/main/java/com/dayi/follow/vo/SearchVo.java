@@ -56,6 +56,16 @@ public class SearchVo {
     private String changeDateStart;//分配时间开始
     private String changeDateEnd;//分配时间结束
 
+    //加于创客分配
+    private Integer orgType;//机构类型
+
+    public Integer getOrgType() {
+        return orgType;
+    }
+
+    public void setOrgType(Integer orgType) {
+        this.orgType = orgType;
+    }
 
     public String getFollowUpBefore() {
         return followUpBefore;

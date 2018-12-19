@@ -4,6 +4,7 @@ import com.dayi.common.util.BizResult;
 import com.dayi.follow.base.BaseController;
 import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.conf.Constants;
+import com.dayi.follow.enums.OrgTypeEnum;
 import com.dayi.follow.model.follow.*;
 import com.dayi.follow.service.*;
 import com.dayi.follow.util.PageUtil;
@@ -59,6 +60,7 @@ public class OrgAssignController extends BaseController {
 
         request.setAttribute("pageUrl", pageUrl);
         model.addAttribute("page", page);
+        model.addAttribute("orgTypes", OrgTypeEnum.values());//机构商类型
         return "/followup/manage/followuper/assign_list";
     }
 

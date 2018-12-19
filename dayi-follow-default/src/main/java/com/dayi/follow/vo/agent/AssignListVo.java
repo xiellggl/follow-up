@@ -1,5 +1,7 @@
 package com.dayi.follow.vo.agent;
 
+import com.dayi.follow.enums.AgentCusTypeEnum;
+import com.dayi.follow.enums.OrgTypeEnum;
 import com.dayi.follow.util.CheckIdCardUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -33,6 +35,14 @@ public class AssignListVo {
     private Date assignDate;//分配时间
 
     private String inviteCode;//邀请码
+
+    //加于兼容其他机构商类型
+
+    private Integer orgType;//机构类型
+
+    private String orgTypeStr;//机构类型字符串
+
+    private Integer experienceMaker;// 是否体验创客
 
     public String getLinkPerson() {
         return linkPerson;
@@ -132,5 +142,49 @@ public class AssignListVo {
 
     public void setAssignDate(Date assignDate) {
         this.assignDate = assignDate;
+    }
+
+    public Integer getOrgType() {
+        return orgType;
+    }
+
+    public void setOrgType(Integer orgType) {
+        this.orgType = orgType;
+    }
+
+    public String getOrgTypeStr() {
+        if (orgType != null) {
+            switch (orgType) {
+                case (1):
+                    orgTypeStr = OrgTypeEnum.Manager.getName();
+                    break;
+                case (2):
+                    orgTypeStr = OrgTypeEnum.Colligate.getName();
+                    break;
+                case (4):
+                    if (experienceMaker == 1) {
+                        orgTypeStr = "体验创客";
+                    } else {
+                        orgTypeStr = OrgTypeEnum.Maker.getName();
+                    }
+                    break;
+                case (5):
+                    orgTypeStr = OrgTypeEnum.CityServer.getName();
+                    break;
+            }
+        }
+        return orgTypeStr;
+    }
+
+    public void setOrgTypeStr(String orgTypeStr) {
+        this.orgTypeStr = orgTypeStr;
+    }
+
+    public Integer getExperienceMaker() {
+        return experienceMaker;
+    }
+
+    public void setExperienceMaker(Integer experienceMaker) {
+        this.experienceMaker = experienceMaker;
     }
 }
