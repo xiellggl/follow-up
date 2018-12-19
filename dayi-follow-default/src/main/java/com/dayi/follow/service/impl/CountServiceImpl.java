@@ -160,7 +160,6 @@ public class CountServiceImpl implements CountService {
         int agentNum = this.getValidAgentNum(orgVos);
         orgDataVo.setAgentNum(agentNum);
 
-
         DateTime dateTime = DateTime.now();
         String deadline = dateTime.millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
         List<Organization> yesOrgVos = followOrgMapper.findOrgsByfollowId(followId, deadline, dayiDataBaseStr);//截至昨天的创客

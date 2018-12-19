@@ -1,5 +1,7 @@
 package com.dayi.follow.vo.index;
 
+import com.dayi.follow.util.Misc;
+
 //管理员客户状态
 public class AdminCusStatusVo {
     private Integer followUpNum = 0; // 跟进人数量
@@ -68,6 +70,11 @@ public class AdminCusStatusVo {
     }
 
     public String getTotalFundFm() {
+        if (this.totalFund != 0) {
+            totalFundFm = Misc.parseMoney(totalFund, 2);
+        } else {
+            totalFundFm = "0.00";
+        }
         return totalFundFm;
     }
 
