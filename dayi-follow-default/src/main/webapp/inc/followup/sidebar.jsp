@@ -205,6 +205,12 @@
                             模块管理
                         </a>
                     </li>
+                    <li data-index="1">
+                        <a href="/module/list">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            功能管理
+                        </a>
+                    </li>
 
                     <li data-index="2">
                         <a href="/user/list">
