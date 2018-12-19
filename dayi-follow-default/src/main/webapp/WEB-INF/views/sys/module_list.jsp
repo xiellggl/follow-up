@@ -6,9 +6,6 @@
     <meta charset="UTF-8">
     <title>模块管理</title>
     <%@include file="/inc/followup/csslink.jsp"%>
-    <style>
-        .conceal-t{display: none;}
-    </style>
 </head>
 <body class="no-skin">
 <%@include file="/inc/followup/topbar.jsp"%>
@@ -68,7 +65,7 @@
                                 </c:if>
 
                                 <c:if test="${not empty menus}">
-                                    <c:set var="moduleList" value="${menus}" />
+                                    <c:set var="moduleList" value="${allMenus}" />
                                     <%@ include file="module_item.jsp" %>
                                 </c:if>
 
@@ -181,12 +178,18 @@
         //菜单高亮
         common.head("system",1);
 
+        var menus = null;
+
         //添加、编辑模块方法
         var editModuleFn = function (id,pid) {
             var id = id || null;
             var pid = pid || null;
             var type = "add"
             var data = {};
+
+
+
+
             if (id) {
                 type = "edit"
                 common.ajax.handle({
@@ -206,7 +209,13 @@
 
 
             var $modal = $("#myModalEditModule");
+
+
+
             var html = template("tplEditModule", data);
+
+
+
             $modal.html(html);
             var $form = $("#form-id");
             if(id) {

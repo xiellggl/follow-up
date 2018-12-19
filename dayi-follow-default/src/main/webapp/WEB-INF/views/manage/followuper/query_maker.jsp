@@ -39,7 +39,7 @@
                 <div class="row">
                     <form class="form-horizontal">
                         <div class="clearfix maintop">
-
+                            <input id="storeId" type="hidden" class="" name="followId" value=""/>
                             <div class="col-xs-2 col-sm-2 btn-sespan">
                                 <div class="input-group">
                                     <span class="input-group-addon">
@@ -98,7 +98,7 @@
                                     <input type="text" name="inviteCode" class="form-control admin_sea"
                                            value="${inviteCode}" placeholder="邀请码"/>
                                     <div class="input-group-btn">
-                                        <button type="submit" class="btn btn-xs btn-purple">
+                                        <button type="submit" id="storeButton" class="btn btn-xs btn-purple">
                                             <span class="ace-icon fa fa-search"></span>
                                             搜索
                                         </button>
@@ -226,6 +226,12 @@
             if(Href>0){
                 $('#agent-href').attr("href",followupaGentHref );
                 $('#org-href').attr("href",followupOrgHref );
+            }
+        });
+        $("#storeButton").on("click", function () {
+            var Href = $.getUrlParam('followId');
+            if(Href>0){
+                $("#storeId").val(Href)
             }
         });
 

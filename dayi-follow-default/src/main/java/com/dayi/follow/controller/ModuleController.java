@@ -83,7 +83,9 @@ public class ModuleController {
      */
     @RequestMapping("/list")
     public String list(Model model) {
-        List<Menu> menus = moduleService.listAll(null);
+        List<Menu> allMenus = moduleService.listAll(null);
+        model.addAttribute("allMenus", allMenus);
+        List<Menu> menus = moduleService.listModule();
         model.addAttribute("menus", menus);
         return "sys/module_list";
     }
