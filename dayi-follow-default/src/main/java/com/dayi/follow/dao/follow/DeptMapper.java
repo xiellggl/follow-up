@@ -15,7 +15,5 @@ public interface DeptMapper extends BaseMapper<Department> {
 
     Department get(String deptId);
 
-    List<DeptMapper> getSubDepts(String deptId);
-
     Department getByInviteCode(String inviteCode);
 }
