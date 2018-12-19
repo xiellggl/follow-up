@@ -336,22 +336,22 @@
 
     <sql id="assignsFollowCondition">
         <if test="null!=searchVo.createDateStart and ''!= searchVo.createDateStart and null!=searchVo.createDateEnd and ''!= searchVo.createDateEnd">
-            and a.create_date BETWEEN ${searchVo.createDateStart} and ${searchVo.createDateEnd}
+            and b.create_date BETWEEN ${searchVo.createDateStart} and ${searchVo.createDateEnd}
         </if>
         <if test="''!=searchVo.mobile and null!=searchVo.mobile">
-            and a.mobile like CONCAT('%','${searchVo.mobile}','%')
+            and b.mobile like CONCAT('%','${searchVo.mobile}','%')
         </if>
         <if test="''!=searchVo.cusName and null!=searchVo.cusName">
-            and a.link_person like CONCAT('%','${searchVo.cusName}','%')
+            and b.link_person like CONCAT('%','${searchVo.cusName}','%')
         </if>
         <if test="null!=searchVo.assignDateStart and ''!= searchVo.assignDateStart and null!=searchVo.assignDateEnd and ''!= searchVo.assignDateEnd">
-            and b.assign_date BETWEEN ${searchVo.assignDateStart} and ${searchVo.assignDateEnd}
+            and a.assign_date BETWEEN ${searchVo.assignDateStart} and ${searchVo.assignDateEnd}
         </if>
         <if test="''!=searchVo.followUp and null!=searchVo.followUp">
             and c.name like CONCAT('%','${searchVo.followUp}','%')
         </if>
         <if test="''!=searchVo.inviteCode and null!=searchVo.inviteCode">
-            and a.record_invite_code like CONCAT('%','${searchVo.inviteCode}','%')
+            and b.record_invite_code like CONCAT('%','${searchVo.inviteCode}','%')
         </if>
     </sql>
 
@@ -371,36 +371,28 @@
     </sql>
 
     <select id="findAssignsFollow" parameterType="map" resultType="com.dayi.follow.vo.agent.AssignListVo">
-        SELECT a.id,link_person,create_date,mobile,bank_name bank,id_card,bank_account,
-                record_invite_code inviteCode,audit_date,c.name followUp,b.assign_date
-        from ${assistDataBase}.agent a
-        left JOIN (
-            SELECT agent_id,follow_id,assign_date from follow_agent where follow_id in
-            <foreach item="item" index="index" collection="followIds"
-                     open="(" separator="," close=")">
-                #{item}
-            </foreach>
-        )b on b.agent_id =a.id
+        SELECT b.id,link_person,create_date,mobile,bank_name bank,id_card,bank_account,
+              follow_id, assign_date,c.name followUp,record_invite_code inviteCode
+              from follow_agent a
+        left join (
+            SELECT id,link_person,create_date,mobile,bank_name ,id_card,bank_account,record_invite_code,audit_date
+            from ${assistDataBase}.agent where del_status !=-1
+        )b on b.id = a.agent_id
         LEFT JOIN (
             SELECT id,name  from follow_up
-        )c on c.id = b.follow_id
-        where b.follow_id is not null and c.id is not null
-
-       <include refid="assignsFollowCondition"/>
-        order by a.audit_date desc
+        )c on c.id = a.follow_id
+        where b.id is not null and c.id is not null
+        <include refid="assignsFollowCondition"/>
+        order by b.audit_date desc
     </select>
 
     <select id="findAssignsNoFollow" parameterType="map" resultType="com.dayi.follow.vo.agent.AssignListVo">
-        SELECT a.id,link_person,create_date,mobile,bank_name bank,id_card,bank_account,
-        record_invite_code inviteCode,audit_date,c.name followUp,b.assign_date
-        from ${assistDataBase}.agent a
-        left JOIN (
-            SELECT agent_id,follow_id,assign_date from follow_agent
-        )b on b.agent_id = a.id
-        left join(
-            SELECT id,name from follow_up
-        )c on c.id =b.follow_id
-        where b.follow_id is null
+        SELECT a.id,link_person,create_date,mobile,bank_name bank,id_card,bank_account,record_invite_code inviteCode,audit_date
+            from ${assistDataBase}.agent a
+        CROSS join (
+            SELECT agent_id,follow_id  from follow_agent
+        )b on b.agent_id =a.id
+        where del_status !=-1 and b.follow_id is null
         <include refid="assignsNoFollowCondition"/>
         order by a.audit_date desc
     </select>

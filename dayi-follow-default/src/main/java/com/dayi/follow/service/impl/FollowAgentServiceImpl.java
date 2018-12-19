@@ -197,8 +197,12 @@ public class FollowAgentServiceImpl implements FollowAgentService {
 
     @Override
     public Page findAssignPage(Page<AssignListVo> page, SearchVo searchVo, String deptId) {
+        List<String> followIds = new ArrayList<>();
 
-        List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
+        List<String> subDeptIds = deptService.getSubDeptIds(deptId);
+        for (String subDeptId : subDeptIds) {
+            followIds.addAll(followUpMapper.findIdsByDeptId(subDeptId));
+        }
 
         if (searchVo.getAssignStatus() == null || searchVo.getAssignStatus() != 1) {//查未分配
             page = followAgentMapper.findAssignsNoFollow(page, searchVo, dayiDataBaseStr);
