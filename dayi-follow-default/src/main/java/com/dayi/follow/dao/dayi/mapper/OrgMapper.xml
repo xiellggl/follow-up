@@ -18,4 +18,16 @@
         where  b.agent is not null
         and a.org_id =#{orgId} and a.invite_level=2
     </select>
+
+    <select id="getByMarkerNum" parameterType="java.lang.String" resultType="com.dayi.follow.model.follow.Organization">
+        SELECT * from organization where maker_num =#{makerNum} and del_status!=-1
+    </select>
+
+    <select id="getManagerOrgByInviteCode" parameterType="java.lang.Integer" resultType="com.dayi.follow.model.follow.Organization">
+        SELECT * from organization where invite_code =#{inviteCode} and del_status!=-1 and org_type =1
+    </select>
+
+    <select id="getColligateOrgByInviteCode" parameterType="java.lang.Integer" resultType="com.dayi.follow.model.follow.Organization">
+         SELECT * from organization where word_letter=#{word} and del_status!=-1 and org_type =2 and invite_code =#{inviteCode}
+    </select>
 </mapper>

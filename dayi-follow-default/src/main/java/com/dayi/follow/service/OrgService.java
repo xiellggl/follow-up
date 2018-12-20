@@ -26,16 +26,6 @@ public interface OrgService {
      */
     Organization getByInviteCode(String inviteCode);
 
-    /**
-     * 根据邀请码获取经纪会员机构商信息
-     */
-    Organization getManagerOrgByInviteCode(Integer inviteCode);
-
-    /**
-     * 根据邀请码获取综合会员机构商信息
-     */
-    Organization getColligateOrgByInviteCode(String inviteCode);
-
     BizResult addContact(OrgContact orgContact);
 
     /**

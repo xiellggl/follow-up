@@ -120,7 +120,7 @@ public class UserServiceImpl implements UserService {
      */
     public boolean checkCodeRepeat(String inviteCode) {
         if (StringUtils.isBlank(inviteCode)) return false;
-        Organization orgVo = null;
+        Organization orgVo;
         orgVo = orgService.getByMarkerNum(inviteCode);
         if (orgVo != null) {
             return false;

@@ -66,50 +66,25 @@ public class OrgServiceImpl implements OrgService {
 
     @Override
     public Organization getByMarkerNum(String makerNum) {
-        Conditions conditions = new Conditions();
-        conditions.add(Restrictions.eq("maker_num", makerNum));
-        conditions.add(Restrictions.eq("del_status", DelStatusEnum.Normal.getValue()));
-        return orgMapper.getByConditions(conditions);
+        return orgMapper.getByMarkerNum(makerNum);
     }
 
     @Override
     public Organization getByInviteCode(String inviteCode) {
-        Organization orgVo = null;
         if (StringUtil.isInteger(inviteCode)) {//判断邀请码是否为数字
-            Integer inter = 0;
+            Integer inter;
             try {
                 inter = Integer.parseInt(inviteCode);
             } catch (Exception e) {
                 return null;
             }
-            return this.getManagerOrgByInviteCode(inter);
+            return orgMapper.getManagerOrgByInviteCode(inter);
         } else {
-            return this.getColligateOrgByInviteCode(inviteCode);
+            InviteCodeVo vo = WordLetterUtil.getInviteCode(inviteCode);
+            if (vo == null) return null;
+            return orgMapper.getColligateOrgByInviteCode(vo.getWord(), vo.getCode());
         }
-
     }
-
-    @Override
-    public Organization getManagerOrgByInviteCode(Integer inviteCode) {
-        Conditions conditions = new Conditions();
-        conditions.add(Restrictions.eq("invite_code", inviteCode));
-        conditions.add(Restrictions.eq("org_type", OrgTypeEnum.Manager.getValue()));
-        conditions.add(Restrictions.eq("del_status", DelStatusEnum.Normal.getValue()));
-        return orgMapper.getByConditions(conditions);
-    }
-
-    @Override
-    public Organization getColligateOrgByInviteCode(String inviteCode) {
-        InviteCodeVo vo = WordLetterUtil.getInviteCode(inviteCode);
-        if (vo == null) return null;
-        Conditions conditions = new Conditions();
-        conditions.add(Restrictions.eq("word_letter", vo.getWord()));
-        conditions.add(Restrictions.eq("invite_code", vo.getCode()));
-        conditions.add(Restrictions.eq("org_type", OrgTypeEnum.Colligate.getValue()));
-        conditions.add(Restrictions.ne("del_status", DelStatusEnum.Delete.getValue()));
-        return orgMapper.getByConditions(conditions);
-    }
-
 
     @Override
     @Log(target = OperateLog.class, action = BaseLog.LogAction.ADD, what = "我的创客", note = "添加联系记录")

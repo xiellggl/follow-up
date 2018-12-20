@@ -20,10 +20,6 @@ public interface UserMapper extends BaseMapper<FollowUp> {
     @Select(" select * from follow_up where invite_code =#{inviteCode} ")
     FollowUp getByInviteCode(String inviteCode);
 
-    List<FollowUp> findByDeptIds(List<String> deptIds);
-
-    List<String> findIdsByDeptIds(List<String> deptIds);
-
     List<String> findIdsByDeptId(@Param("deptId") String deptId);
 
     Page<UserVo> findPage(Page page, @Param("mobile") String mobile,
