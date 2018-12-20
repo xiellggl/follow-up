@@ -36,6 +36,8 @@ public class AssignListVo {
 
     private String inviteCode;//邀请码
 
+    private String followId;
+
     //加于兼容其他机构商类型
 
     private Integer orgType;//机构类型
@@ -46,6 +48,14 @@ public class AssignListVo {
 
     public String getLinkPerson() {
         return linkPerson;
+    }
+
+    public String getFollowId() {
+        return followId;
+    }
+
+    public void setFollowId(String followId) {
+        this.followId = followId;
     }
 
     public void setLinkPerson(String linkPerson) {
