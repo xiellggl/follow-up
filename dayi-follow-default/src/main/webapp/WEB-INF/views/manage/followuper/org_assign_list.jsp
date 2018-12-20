@@ -188,7 +188,7 @@
                                             </label>
                                         </td>
                                         <!-- 名称 -->
-                                        <td>${item.linkPersonStr}</td>
+                                        <td>${item.linkPersonFm}</td>
                                         <!-- 注册时间 -->
                                         <td class="hidden-xs"><fmt:formatDate value="${item.createDate}"
                                                                               pattern="yyyy-MM-dd HH:mm:ss"/></td>
@@ -200,23 +200,23 @@
                                         <!-- 跟进人 -->
                                         <td>${item.followUp}</td>
                                         <!-- 分配时间 -->
-                                        <td class="hidden-xs"><fmt:formatDate value="${item.flowDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                        <td class="hidden-xs"><fmt:formatDate value="${item.assignDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                         <!-- 邀请码 -->
                                         <td>
-                                        <td>${item.followUp}</td>
+                                        <td>${item.inviteCode}</td>
                                         </td>
                                         <!-- 操作 -->
                                         <td>
                                             <a style="margin: 0 5px;" href="javascript:;" class="green"
                                                data-id="${item.id}" data-from="from=assign_list" data-flowid="${item.flowId}"
-                                               data-name='<c:if test="${not empty item.linkPerson}">${fn:substring(item.linkPerson,0,1)}**</c:if>'
+                                               data-name='<c:if test="${not empty item.linkPersonFm}">${fn:substring(item.linkPersonFm,0,1)}**</c:if>'
                                                data-act="assign" data-toggle="tooltip" title="分配跟进人">
                                                 <i class="ace-icon glyphicon glyphicon-log-in"></i>
                                             </a>
                                             <c:if test="${not empty item.flowId}">
                                                 <a style="margin: 0 5px;" href="javascript:;" class="light-grey"
                                                    data-id="${item.id}"
-                                                   data-name='<c:if test="${not empty item.linkPerson}">${fn:substring(item.linkPerson,0,1)}**</c:if>'
+                                                   data-name='<c:if test="${not empty item.linkPersonFm}">${fn:substring(item.linkPersonFm,0,1)}**</c:if>'
                                                    data-act="clearAssign" data-toggle="tooltip" title="清除分配">
                                                     <i class="ace-icon glyphicon glyphicon-log-out"></i>
                                                 </a>
