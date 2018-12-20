@@ -85,8 +85,8 @@
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-calendar"></i>
                                     </span>
-                                    <input type="text" class="form-control admin_sea dates" name="date"
-                                           value="${param.date}" placeholder="变更日期"/>
+                                    <input type="text" class="form-control admin_sea dates" name="changeDate"
+                                           value="${param.changeDate}" placeholder="变更日期"/>
                                 </div>
                             </div>
 
@@ -137,9 +137,9 @@
                                 <th>当前跟进人</th>
                                 <th>变更前跟进人</th>
                                 <th>变更日期</th>
-                                <th>变更前总资产</th>
-                                <th>当前总资产</th>
-                                <th>新增代理商服务费</th>
+                                <th>变更前代理货值</th>
+                                <th>当前代理货值</th>
+                                <th>净增代理货值</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -169,12 +169,12 @@
                                         <td>${item.followUpBefore}</td>
                                             <%--变更日期--%>
                                         <td class="hidden-sm hidden-xs"><fmt:formatDate value="${item.changeDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                            <%--变更前总资产--%>
-                                        <td>${item.totalFundBefore}</td>
-                                            <%--当前总资产--%>
-                                        <td>${item.totalFund}</td>
-                                            <%--新增代理商服务费--%>
-                                        <td>${item.interest}</td>
+                                            <%--变更前代理货值--%>
+                                        <td>${item.agentCargoBefore}</td>
+                                            <%--当前代理货值--%>
+                                        <td>${item.agentCargo}</td>
+                                            <%--净增代理货值--%>
+                                        <td>${item.growthCargo}</td>
                                     </tr>
                                 </c:forEach>
                             </c:if>

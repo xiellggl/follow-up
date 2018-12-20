@@ -5,6 +5,7 @@ import com.dayi.follow.model.follow.Organization;
 import com.dayi.follow.vo.index.*;
 import com.dayi.follow.vo.org.OrgDataVo;
 
+import java.math.BigDecimal;
 import java.util.List;
 /**
  * @author xiell
@@ -51,7 +52,7 @@ public interface CountService {
     int getValidAgentNum(List<Organization> orgs);
 
     //获的创客管理资金
-    double getOrgManageFund(List<Organization> orgs);
+    BigDecimal getOrgManageFund(List<Organization> orgs);
 
     DailyVo countDaily(String followId);
 

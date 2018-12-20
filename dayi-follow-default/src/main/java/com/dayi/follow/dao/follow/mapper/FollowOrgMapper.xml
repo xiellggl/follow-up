@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dayi.follow.dao.follow.FollowOrgMapper">
 
-    <select id="getTotalFund" parameterType="map" resultType="java.lang.Double">
+    <select id="getTotalFund" parameterType="map" resultType="java.math.BigDecimal">
         SELECT ifnull(sum(amount),0) from follow_org a
         left join (
           SELECT id from ${assistDataBase}.organization where org_type = 4 and del_status !=-1

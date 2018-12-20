@@ -91,17 +91,18 @@ public class FollowAgentServiceImpl implements FollowAgentService {
         detailVo.setIdCardAddr(agent.getIdCardAddr());
         // 可用余额
         Account account = agentMapper.getAccount(agentId);
-        detailVo.setUseableFund(account.getUseable().doubleValue());
+        detailVo.setUseableFund(account.getUseable());
 
         // 实名认证
         detailVo.setIdCard(idCard);
         detailVo.setCardValidDate(agent.getCardValidDate());
         // 总资产
-        double agentFund = agentMapper.getAgentFund(agentId);  // 代理资金
+        BigDecimal agentFund = agentMapper.getAgentFund(agentId);  // 代理资金
 
-        double partFund = BigDecimal.valueOf(agentFund).add(account.getFrozen())
-                .add(account.getOutFrozen()).doubleValue();
-        double totalFund = BigDecimals.add(account.getUseable().doubleValue(), partFund, 2);
+        BigDecimal partFund = agentFund.add(account.getFrozen())
+                .add(account.getOutFrozen());
+
+        BigDecimal totalFund = account.getUseable().add(partFund).setScale(2);
 
         detailVo.setTotalFund(totalFund);
 
@@ -116,20 +117,20 @@ public class FollowAgentServiceImpl implements FollowAgentService {
         }
 
         // 是否入金
-        detailVo.setInCash(account.getTotalInCash().doubleValue());
+        detailVo.setInCash(account.getTotalInCash());
 
 
         DateTime time = new DateTime();
         String todayStrat = time.millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
         String todayEnd = time.millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
 
-        double dayInCash = agentMapper.getDayInCash(agentId, todayStrat, todayEnd);//当日累计入金
+        BigDecimal dayInCash = agentMapper.getDayInCash(agentId, todayStrat, todayEnd);//当日累计入金
         Date dayLastInCashTime = agentMapper.getDayLastInCashTime(agentId, todayStrat, todayEnd);//当日最后一笔入金时间
         detailVo.setDayInCash(dayInCash);
         detailVo.setDayLastInCashTime(dayLastInCashTime);
 
         // 申请出金
-        double dayApplyOutCash = agentMapper.getDayApplyOutCash(agentId, todayStrat, todayEnd);
+        BigDecimal dayApplyOutCash = agentMapper.getDayApplyOutCash(agentId, todayStrat, todayEnd);
         detailVo.setDayApplyOutCash(dayApplyOutCash);
 
         // 申请出金日期
@@ -141,9 +142,9 @@ public class FollowAgentServiceImpl implements FollowAgentService {
         }
 
         // 当日实际出金
-        double dayOutCash = agentMapper.getDayOutCash(agentId, todayStrat, todayEnd);
-        double dayToCard = agentMapper.getDayToCard(agentId, todayStrat, todayEnd);
-        detailVo.setDayOutCash(BigDecimals.add(dayOutCash, dayToCard));
+        BigDecimal dayOutCash = agentMapper.getDayOutCash(agentId, todayStrat, todayEnd);
+        BigDecimal dayToCard = agentMapper.getDayToCard(agentId, todayStrat, todayEnd);
+        detailVo.setDayOutCash(dayOutCash.add(dayToCard));
 
         //已开通结算银行
         String openBankIdsStr = agentMapper.getOpenBankIdsStr(agentId);
@@ -179,7 +180,7 @@ public class FollowAgentServiceImpl implements FollowAgentService {
         detailVo.setAgentFund(agentFund);
 
         //冻结货款
-        double frozenFund = account.getFrozen().add(account.getOutFrozen()).doubleValue();
+        BigDecimal frozenFund = account.getFrozen().add(account.getOutFrozen());
         detailVo.setFrozenFund(frozenFund);
 
         return detailVo;

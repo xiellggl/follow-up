@@ -89,25 +89,25 @@ public class FollowOrgServiceImpl implements FollowOrgService {
             followOrg.setCreateTime(new Date());
             followOrg.setUpdateTime(new Date());
 
-            double level1 = orgMapper.getManageFundLevel1(org.getId());
-            double level2 = 0;
+            BigDecimal level1 = orgMapper.getManageFundLevel1(org.getId());
+            BigDecimal level2 = BigDecimal.ZERO;
             if (org.getSwitchStatus() != null && org.getSwitchStatus().equals(1)) {//计算2级
                 level2 = orgMapper.getManageFundLevel2(org.getId());
             }
 
-            followOrg.setManageFundBefore(BigDecimal.valueOf(BigDecimals.add(level1, level2)));
+            followOrg.setManageFundBefore(level1.add(level2));
         } else {//更新
             FollowUp oldFollowUp = followUpMapper.get(followOrg.getFollowId());
             if (oldFollowUp != null) {//当前有跟进人
                 followOrg.setFollowUpBefore(oldFollowUp.getName());
                 followOrg.setAssignDateBefore(followOrg.getAssignDate());
 
-                double level1 = orgMapper.getManageFundLevel1(org.getId());
-                double level2 = 0;
+                BigDecimal level1 = orgMapper.getManageFundLevel1(org.getId());
+                BigDecimal level2 = BigDecimal.ZERO;
                 if (org.getSwitchStatus() != null && org.getSwitchStatus().equals(1)) {//计算2级
                     level2 = orgMapper.getManageFundLevel2(org.getId());
                 }
-                followOrg.setManageFundBefore(BigDecimal.valueOf(BigDecimals.add(level1, level2)));
+                followOrg.setManageFundBefore(level1.add(level2));
 
             } else {
                 //如何当前没有跟进人，而followOrg又不为空，说明原来有跟进人，被清除分配过，而清除分配时又会更新以下信息
@@ -147,12 +147,12 @@ public class FollowOrgServiceImpl implements FollowOrgService {
         followOrg.setAssignDateBefore(followOrg.getAssignDate());
         followOrg.setAssignDate(null);
 
-        double level1 = orgMapper.getManageFundLevel1(org.getId());
-        double level2 = 0;
+        BigDecimal level1 = orgMapper.getManageFundLevel1(org.getId());
+        BigDecimal level2 = BigDecimal.ZERO;
         if (org.getSwitchStatus() != null && org.getSwitchStatus().equals(1)) {//计算2级
             level2 = orgMapper.getManageFundLevel2(org.getId());
         }
-        followOrg.setManageFundBefore(BigDecimal.valueOf(BigDecimals.add(level1, level2)));
+        followOrg.setManageFundBefore(level1.add(level2));
         followOrg.setUpdateTime(new Date());
 
         return 1 == followOrgMapper.updateAll(followOrg) ? BizResult.SUCCESS : BizResult.FAIL;

@@ -142,9 +142,9 @@ public class CountServiceImpl implements CountService {
         serCusStatusVo.setCardNum(cardCusNum);
         serCusStatusVo.setAgentNum(agentCusNum);
         //资产总规模
-        double agentTotalFund = followAgentMapper.getTotalFund(followIds, dayiDataBaseStr);
-        double orgTotalFund = followOrgMapper.getTotalFund(followIds, dayiDataBaseStr);
-        serCusStatusVo.setTotalFund(BigDecimals.add(agentTotalFund, orgTotalFund));
+        BigDecimal agentTotalFund = followAgentMapper.getTotalFund(followIds, dayiDataBaseStr);
+        BigDecimal orgTotalFund = followOrgMapper.getTotalFund(followIds, dayiDataBaseStr);
+        serCusStatusVo.setTotalFund(agentTotalFund.add(orgTotalFund));
 
         return serCusStatusVo;
     }
@@ -164,9 +164,9 @@ public class CountServiceImpl implements CountService {
         String deadline = dateTime.millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
         List<Organization> yesOrgVos = followOrgMapper.findOrgsByfollowId(followId, deadline, dayiDataBaseStr);//截至昨天的创客
 
-        double manageFund = this.getOrgManageFund(yesOrgVos);
+        BigDecimal manageFund = this.getOrgManageFund(yesOrgVos);
 
-        orgDataVo.setManageFund(BigDecimal.valueOf(manageFund).setScale(2, BigDecimal.ROUND_HALF_UP));
+        orgDataVo.setManageFund(manageFund.setScale(2, BigDecimal.ROUND_HALF_UP));
         return orgDataVo;
     }
 
@@ -193,9 +193,9 @@ public class CountServiceImpl implements CountService {
         String deadline = dateTime.millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
         List<Organization> yesOrgVos = followOrgMapper.findOrgsByfollowIds(followIds, deadline, dayiDataBaseStr);//截至昨天的创客
 
-        double manageFund = this.getOrgManageFund(yesOrgVos);
+        BigDecimal manageFund = this.getOrgManageFund(yesOrgVos);
 
-        orgDataVo.setManageFund(BigDecimal.valueOf(manageFund).setScale(2, BigDecimal.ROUND_HALF_UP));
+        orgDataVo.setManageFund(manageFund.setScale(2, BigDecimal.ROUND_HALF_UP));
         return orgDataVo;
     }
 
@@ -218,20 +218,20 @@ public class CountServiceImpl implements CountService {
     }
 
     @Override
-    public double getOrgManageFund(List<Organization> orgs) {
-        double manageFund = 0;//全部机构商资产
-        double orgManageFund = 0;//单个机构商的管理资产
+    public BigDecimal getOrgManageFund(List<Organization> orgs) {
+        BigDecimal manageFund = BigDecimal.ZERO;//全部机构商资产
+        BigDecimal orgManageFund;//单个机构商的管理资产
         for (Organization orgVo : orgs) {
-            double oneLevel = orgMapper.getManageFundLevel1(orgVo.getId());//一级代理商资产
+            BigDecimal oneLevel = orgMapper.getManageFundLevel1(orgVo.getId());//一级代理商资产
 
-            double twoLevel = 0;//二级代理商资产
+            BigDecimal twoLevel = BigDecimal.ZERO;//二级代理商资产
             Integer switchStatus = orgVo.getSwitchStatus();
             if (switchStatus != null && switchStatus.equals(SwitchStatusEnum.OPEN.getKey().intValue())) {//开了二级收益开关
                 twoLevel = orgMapper.getManageFundLevel2(orgVo.getId());
             }
 
-            orgManageFund = BigDecimals.add(oneLevel, twoLevel);
-            manageFund = BigDecimals.add(manageFund, orgManageFund);
+            orgManageFund = oneLevel.add(twoLevel);
+            manageFund = manageFund.add(orgManageFund);
         }
         return manageFund;
     }
@@ -261,14 +261,14 @@ public class CountServiceImpl implements CountService {
             int openNum = followAgentMapper.getOpenAccountNum(followUp.getId(), stratTime, endTime, dayiDataBaseStr);
             followUpLog.setOpenAccountNum(openNum);
 
-            double inCash = followAgentMapper.getInCash(followUp.getId(), stratTime, endTime, dayiDataBaseStr);
-            followUpLog.setInCash(BigDecimal.valueOf(inCash));
+            BigDecimal inCash = followAgentMapper.getInCash(followUp.getId(), stratTime, endTime, dayiDataBaseStr);
+            followUpLog.setInCash(inCash);
 
             int inCashNum = followAgentMapper.getInCashNum(followUp.getId(), stratTime, endTime, dayiDataBaseStr);
             followUpLog.setInCashNum(inCashNum);
 
-            double outCash = followAgentMapper.getOutCash(followUp.getId(), stratTime, endTime, dayiDataBaseStr);
-            followUpLog.setOutCash(BigDecimal.valueOf(outCash));
+            BigDecimal outCash = followAgentMapper.getOutCash(followUp.getId(), stratTime, endTime, dayiDataBaseStr);
+            followUpLog.setOutCash(outCash);
 
             int outCashNum = followAgentMapper.getOutCashNum(followUp.getId(), stratTime, endTime, dayiDataBaseStr);
             followUpLog.setOutCashNum(outCashNum);
@@ -281,8 +281,8 @@ public class CountServiceImpl implements CountService {
 
             List<Organization> orgs = followOrgMapper.findOrgsByfollowId(followUp.getId(), endTime, dayiDataBaseStr);
 
-            double manageFund = this.getOrgManageFund(orgs);
-            followUpLog.setManageFund(BigDecimal.valueOf(manageFund));
+            BigDecimal manageFund = this.getOrgManageFund(orgs);
+            followUpLog.setManageFund(manageFund);
 
             stratTime = DateTime.now().plusDays(-2).millisOfDay().withMaximumValue()
                     .plusMinutes(-30).plusSeconds(2).toString("yyyy-MM-dd HH:mm:ss");
@@ -293,9 +293,9 @@ public class CountServiceImpl implements CountService {
             FollowUpLog log = followUpLogMapper.getLog(followUp.getId(), stratTime, endTime);
 
             if (log == null) {
-                followUpLog.setManageGrowthFund(BigDecimal.valueOf(manageFund));
+                followUpLog.setManageGrowthFund(manageFund);
             } else {
-                followUpLog.setManageGrowthFund(BigDecimal.valueOf(manageFund).subtract(log.getManageFund()));
+                followUpLog.setManageGrowthFund(manageFund.subtract(log.getManageFund()));
             }
             followUpLogMapper.add(followUpLog);
         }

@@ -8,6 +8,7 @@ import com.dayi.mybatis.support.BaseMapper;
 import com.dayi.mybatis.support.Page;
 import org.apache.ibatis.annotations.Param;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -27,22 +28,22 @@ public interface AgentMapper extends BaseMapper<Agent> {
     List<Agent> findLevel1ByOrgId(@Param("orgId") Integer orgId);
 
     //获取代理中的资金
-    double getAgentFund(@Param("agentId") Integer agentId);
+    BigDecimal getAgentFund(@Param("agentId") Integer agentId);
 
     //获取当日入金
-    double getDayInCash(@Param("agentId") Integer agentId, @Param("todayStart") String todayStart, @Param("todayEnd") String todayEnd);
+    BigDecimal getDayInCash(@Param("agentId") Integer agentId, @Param("todayStart") String todayStart, @Param("todayEnd") String todayEnd);
 
     //获取当日最后一笔入金时间
     Date getDayLastInCashTime(@Param("agentId") Integer agentId, @Param("todayStart") String todayStart, @Param("todayEnd") String todayEnd);
 
     //获取今日出金
-    double getDayOutCash(@Param("agentId") Integer agentId, @Param("todayStart") String todayStart, @Param("todayEnd") String todayEnd);
+    BigDecimal getDayOutCash(@Param("agentId") Integer agentId, @Param("todayStart") String todayStart, @Param("todayEnd") String todayEnd);
 
     //获取今日转出到卡
-    double getDayToCard(@Param("agentId") Integer agentId, @Param("todayStart") String todayStart, @Param("todayEnd") String todayEnd);
+    BigDecimal getDayToCard(@Param("agentId") Integer agentId, @Param("todayStart") String todayStart, @Param("todayEnd") String todayEnd);
 
     //获取今日转出申请
-    double getDayApplyOutCash(@Param("agentId") Integer agentId, @Param("todayStart") String todayStart, @Param("todayEnd") String todayEnd);
+    BigDecimal getDayApplyOutCash(@Param("agentId") Integer agentId, @Param("todayStart") String todayStart, @Param("todayEnd") String todayEnd);
 
     //获取今日最后一笔转出申请时间
     Date getDayLastApplyOutCashTime(@Param("agentId") Integer agentId, @Param("todayStart") String todayStart, @Param("todayEnd") String todayEnd);

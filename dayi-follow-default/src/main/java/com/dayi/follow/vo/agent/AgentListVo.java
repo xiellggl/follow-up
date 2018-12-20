@@ -47,7 +47,7 @@ public class AgentListVo {
     private BigDecimal totalFund;//总资产
     private String totalFundFm; // 总资产（格式化：显示前两位和小数点位，其余用*标识）
 
-    private double recentAgentFund;//最近一天代理金额
+    private BigDecimal recentAgentFund;//最近一天代理金额
     private String recentAgentFundFm; // 最近代理（格式化：显示前两位和小数点位，其余用*标识）
     private Date recentAgentDate;//最近代理时间
     private String recentAgentDateFm; // 最近代理时间（格式化）
@@ -177,8 +177,8 @@ public class AgentListVo {
     public String getDayInCashFm() {
         if (this.dayInCash != null) {
             dayInCashFm = Misc.parseMoney(dayInCash.doubleValue(), 2);
-        }else {
-            dayInCashFm="0.00元";
+        } else {
+            dayInCashFm = "0.00元";
         }
         return dayInCashFm;
     }
@@ -263,17 +263,17 @@ public class AgentListVo {
         this.totalFundFm = totalFundFm;
     }
 
-    public double getRecentAgentFund() {
+    public BigDecimal getRecentAgentFund() {
         return recentAgentFund;
     }
 
-    public void setRecentAgentFund(double recentAgentFund) {
+    public void setRecentAgentFund(BigDecimal recentAgentFund) {
         this.recentAgentFund = recentAgentFund;
     }
 
     public String getRecentAgentFundFm() {
-        if (this.recentAgentFund != 0) {
-            recentAgentFundFm = Misc.parseMoney(recentAgentFund, 2);
+        if (this.recentAgentFund != BigDecimal.ZERO && recentAgentFund != null) {
+            recentAgentFundFm = Misc.parseMoney(recentAgentFund.doubleValue(), 2);
         }
         return recentAgentFundFm;
     }

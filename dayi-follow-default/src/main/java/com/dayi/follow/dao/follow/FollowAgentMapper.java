@@ -12,6 +12,7 @@ import com.dayi.mybatis.support.BaseMapper;
 import com.dayi.mybatis.support.Page;
 import org.apache.ibatis.annotations.Param;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public interface FollowAgentMapper extends BaseMapper<FollowAgent> {
                                      @Param("followIds") List<String> followIds, @Param("assistDataBase") String assistDataBase);
 
     //统计资产规模
-    double getTotalFund(@Param("followIds") List<String> followIds, @Param("assistDataBase") String assistDataBase);
+    BigDecimal getTotalFund(@Param("followIds") List<String> followIds, @Param("assistDataBase") String assistDataBase);
 
     //获取代理商的跟进人id
     String getFollowIdByAgentId(@Param("agentId") Integer agentId);
@@ -66,13 +67,13 @@ public interface FollowAgentMapper extends BaseMapper<FollowAgent> {
     int getOrgNum(@Param("followId") String followId, @Param("assistDataBase") String assistDataBase);
 
     //获取入金
-    double getInCash(@Param("followId") String followId, @Param("startDate") String startDate, @Param("endDate") String endDate, @Param("assistDataBase") String assistDataBase);
+    BigDecimal getInCash(@Param("followId") String followId, @Param("startDate") String startDate, @Param("endDate") String endDate, @Param("assistDataBase") String assistDataBase);
 
     //获取入金人数
     int getInCashNum(@Param("followId") String followId, @Param("startDate") String startDate, @Param("endDate") String endDate, @Param("assistDataBase") String assistDataBase);
 
     //获取出金
-    double getOutCash(@Param("followId") String followId, @Param("startDate") String startDate, @Param("endDate") String endDate, @Param("assistDataBase") String assistDataBase);
+    BigDecimal getOutCash(@Param("followId") String followId, @Param("startDate") String startDate, @Param("endDate") String endDate, @Param("assistDataBase") String assistDataBase);
 
     //获取出金人数
     int getOutCashNum(@Param("followId") String followId, @Param("startDate") String startDate, @Param("endDate") String endDate, @Param("assistDataBase") String assistDataBase);

@@ -350,14 +350,14 @@ public class UserController extends BaseController {
             int openNum = followAgentMapper.getOpenAccountNum(followUp.getId(), stratTime, endTime, dayiDataBaseStr);
             followUpLog.setOpenAccountNum(openNum);
 
-            double inCash = followAgentMapper.getInCash(followUp.getId(), stratTime, endTime, dayiDataBaseStr);
-            followUpLog.setInCash(BigDecimal.valueOf(inCash));
+            BigDecimal inCash = followAgentMapper.getInCash(followUp.getId(), stratTime, endTime, dayiDataBaseStr);
+            followUpLog.setInCash(inCash);
 
             int inCashNum = followAgentMapper.getInCashNum(followUp.getId(), stratTime, endTime, dayiDataBaseStr);
             followUpLog.setInCashNum(inCashNum);
 
-            double outCash = followAgentMapper.getOutCash(followUp.getId(), stratTime, endTime, dayiDataBaseStr);
-            followUpLog.setOutCash(BigDecimal.valueOf(outCash));
+            BigDecimal outCash = followAgentMapper.getOutCash(followUp.getId(), stratTime, endTime, dayiDataBaseStr);
+            followUpLog.setOutCash(outCash);
 
             int outCashNum = followAgentMapper.getOutCashNum(followUp.getId(), stratTime, endTime, dayiDataBaseStr);
             followUpLog.setOutCashNum(outCashNum);
@@ -370,8 +370,8 @@ public class UserController extends BaseController {
 
             List<Organization> orgs = followOrgMapper.findOrgsByfollowId(followUp.getId(), endTime, dayiDataBaseStr);
 
-            double manageFund = countService.getOrgManageFund(orgs);
-            followUpLog.setManageFund(BigDecimal.valueOf(manageFund));
+            BigDecimal manageFund = countService.getOrgManageFund(orgs);
+            followUpLog.setManageFund(manageFund);
 
             stratTime = new DateTime(date).plusDays(-2).millisOfDay().withMaximumValue()
                     .plusMinutes(-30).plusSeconds(2).toString("yyyy-MM-dd HH:mm:ss");
@@ -382,9 +382,9 @@ public class UserController extends BaseController {
             FollowUpLog log = followUpLogMapper.getLog(followUp.getId(), stratTime, endTime);
 
             if (log == null) {
-                followUpLog.setManageGrowthFund(BigDecimal.valueOf(manageFund));
+                followUpLog.setManageGrowthFund(manageFund);
             } else {
-                followUpLog.setManageGrowthFund(BigDecimal.valueOf(manageFund).subtract(log.getManageFund()));
+                followUpLog.setManageGrowthFund(manageFund.subtract(log.getManageFund()));
             }
             followUpLogMapper.add(followUpLog);
         }

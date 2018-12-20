@@ -4,14 +4,16 @@ import com.dayi.follow.model.follow.Organization;
 import com.dayi.mybatis.support.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.math.BigDecimal;
+
 /**
  * @author xiell
  * @date 2018/11/13
  */
 public interface OrgMapper extends BaseMapper<Organization> {
-    double getManageFundLevel1(Integer orgId);
+    BigDecimal getManageFundLevel1(Integer orgId);
 
-    double getManageFundLevel2(Integer orgId);
+    BigDecimal getManageFundLevel2(Integer orgId);
 
     Organization getByMarkerNum(String makerNum);
     /**

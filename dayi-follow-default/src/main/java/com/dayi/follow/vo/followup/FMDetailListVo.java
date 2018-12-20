@@ -32,30 +32,22 @@ public class FMDetailListVo {
 
     private Date changeDate;//变更时间
 
-    private double agentCargoBefore;//变更前代理货值
+    private BigDecimal agentCargoBefore;//变更前代理货值
 
-    private double agentCargo;//代理货值
+    private BigDecimal agentCargo;//代理货值
 
-    private double growthCargo;//净增货值
+    private BigDecimal growthCargo;//净增货值
 
-    private double totalFundBefore;//变更前总资产
+    private BigDecimal totalFundBefore;//变更前总资产
 
-    private double totalFund;//总资产
+    private BigDecimal totalFund;//总资产
 
-    private double growthFund;//净增总资产
+    private BigDecimal growthFund;//净增总资产
 
-    private double interest;//利息（服务费）
+    private BigDecimal interest;//利息（服务费）
 
     public Integer getId() {
         return id;
-    }
-
-    public double getInterest() {
-        return interest;
-    }
-
-    public void setInterest(double interest) {
-        this.interest = interest;
     }
 
     public void setId(Integer id) {
@@ -118,51 +110,59 @@ public class FMDetailListVo {
         this.changeDate = changeDate;
     }
 
-    public double getAgentCargoBefore() {
+    public BigDecimal getAgentCargoBefore() {
         return agentCargoBefore;
     }
 
-    public void setAgentCargoBefore(double agentCargoBefore) {
+    public void setAgentCargoBefore(BigDecimal agentCargoBefore) {
         this.agentCargoBefore = agentCargoBefore;
     }
 
-    public double getAgentCargo() {
+    public BigDecimal getAgentCargo() {
         return agentCargo;
     }
 
-    public void setAgentCargo(double agentCargo) {
+    public void setAgentCargo(BigDecimal agentCargo) {
         this.agentCargo = agentCargo;
     }
 
-    public double getGrowthCargo() {
+    public BigDecimal getGrowthCargo() {
         return growthCargo;
     }
 
-    public void setGrowthCargo(double growthCargo) {
+    public void setGrowthCargo(BigDecimal growthCargo) {
         this.growthCargo = growthCargo;
     }
 
-    public double getTotalFundBefore() {
+    public BigDecimal getTotalFundBefore() {
         return totalFundBefore;
     }
 
-    public void setTotalFundBefore(double totalFundBefore) {
+    public void setTotalFundBefore(BigDecimal totalFundBefore) {
         this.totalFundBefore = totalFundBefore;
     }
 
-    public double getTotalFund() {
+    public BigDecimal getTotalFund() {
         return totalFund;
     }
 
-    public void setTotalFund(double totalFund) {
+    public void setTotalFund(BigDecimal totalFund) {
         this.totalFund = totalFund;
     }
 
-    public double getGrowthFund() {
+    public BigDecimal getGrowthFund() {
         return growthFund;
     }
 
-    public void setGrowthFund(double growthFund) {
+    public void setGrowthFund(BigDecimal growthFund) {
         this.growthFund = growthFund;
+    }
+
+    public BigDecimal getInterest() {
+        return interest;
+    }
+
+    public void setInterest(BigDecimal interest) {
+        this.interest = interest;
     }
 }

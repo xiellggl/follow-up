@@ -20,12 +20,12 @@
         SELECT * from agent where org_id =${orgId} and del_status != -1
     </select>
 
-    <select id="getAgentFund" parameterType="java.lang.Integer" resultType="java.lang.Double">
+    <select id="getAgentFund" parameterType="java.lang.Integer" resultType="java.math.BigDecimal">
         SELECT IFNULL(SUM(amount), 0) FROM protocol where status in (1,2) and agent = ${agentId}
     </select>
 
 
-    <select id="getDayInCash" parameterType="map" resultType="java.lang.Double">
+    <select id="getDayInCash" parameterType="map" resultType="java.math.BigDecimal">
         SELECT  IFNULL(SUM(accrual), 0) accrual FROM finance_account_log
         WHERE create_date between #{todayStart} and #{todayEnd} and pay_type = 1
         AND agent_org_id = #{agentId}
@@ -39,19 +39,19 @@
         LIMIT 0, 1
     </select>
 
-    <select id="getDayOutCash" parameterType="map" resultType="java.lang.Double">
+    <select id="getDayOutCash" parameterType="map" resultType="java.math.BigDecimal">
              SELECT  IFNULL(SUM(accrual), 0) accrual FROM finance_account_log
              WHERE create_date between #{todayStart} and #{todayEnd} and pay_type =-9
                 AND agent_org_id =  ${agentId}
     </select>
 
-    <select id="getDayToCard" parameterType="map" resultType="java.lang.Double">
+    <select id="getDayToCard" parameterType="map" resultType="java.math.BigDecimal">
         SELECT  IFNULL(SUM(accrual), 0) accrual FROM finance_account_log
         WHERE create_date between #{todayStart} and #{todayEnd} and pay_type = -112
         AND agent_org_id = ${agentId}
     </select>
 
-    <select id="getDayApplyOutCash" parameterType="map" resultType="java.lang.Double">
+    <select id="getDayApplyOutCash" parameterType="map" resultType="java.math.BigDecimal">
         SELECT  IFNULL(SUM(accrual), 0) accrual FROM finance_account_log
         WHERE create_date between #{todayStart} and #{todayEnd} and pay_type = -114
         AND agent_org_id = ${agentId}

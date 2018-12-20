@@ -306,19 +306,19 @@ public class ReportServiceImpl implements ReportService {
         }
         for (AdminMonthVo vo : list) {
             if (vo == null) continue;
-            double manageFund1 = reportMapper.getLastManageFund(vo.getFollowId(), date1, date2);//当月最后一天管理资产
-            vo.setManageFund(BigDecimal.valueOf(manageFund1).setScale(2));
-            if (manageFund1 == 0) {
+            BigDecimal manageFund1 = reportMapper.getLastManageFund(vo.getFollowId(), date1, date2);//当月最后一天管理资产
+            vo.setManageFund(manageFund1.setScale(2));
+            if (manageFund1 == BigDecimal.ZERO) {
                 vo.setRingGrowthRatio("暂无数据");
                 break;
             }
-            double manageFund2 = reportMapper.getLastManageFund(vo.getFollowId(), date3, date4);//上月最后一天管理资产
-            if (manageFund2 == 0) {
+            BigDecimal manageFund2 = reportMapper.getLastManageFund(vo.getFollowId(), date3, date4);//上月最后一天管理资产
+            if (manageFund2 == BigDecimal.ZERO) {
                 vo.setRingGrowthRatio("上月无数据");
                 break;
             }
-            BigDecimal subtract = BigDecimals.subtracts(manageFund1, manageFund2);//获取净增
-            BigDecimal divide = subtract.divide(BigDecimal.valueOf(manageFund2), 2, BigDecimal.ROUND_HALF_UP);
+            BigDecimal subtract = manageFund1.subtract(manageFund2);//获取净增
+            BigDecimal divide = subtract.divide(manageFund2, 2, BigDecimal.ROUND_HALF_UP);
             BigDecimal value = divide.multiply(BigDecimal.valueOf(100)).setScale(2, BigDecimal.ROUND_HALF_UP);
             vo.setRingGrowthRatio(value + "%");
         }

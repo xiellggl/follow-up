@@ -137,8 +137,8 @@
                                         </td>
                                         <td>${item.agentNum}</td>
                                         <td>${item.orgNum}</td>
-                                        <td class="tr hidden-xs">${item.agentFund}</td>
-                                        <td class="tr hidden-xs">${item.orgFund}</td>
+                                        <td class="tr hidden-xs">${item.agentFundFm}</td>
+                                        <td class="tr hidden-xs">${item.orgFundFm}</td>
                                         <td class="hidden-sm hidden-xs"><fmt:formatDate value="${item.createTime}"
                                                                                         pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                         <td>

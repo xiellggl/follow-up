@@ -14,7 +14,7 @@ public class OrgDataVo {
     private String manageFundFm;//KA创客管理资金规模
 
     public String getManageFundFm() {
-        if (!this.manageFund.equals(BigDecimal.ZERO)) {
+        if (!this.manageFund.equals(BigDecimal.ZERO) && manageFund != null) {
             manageFundFm = Misc.parseMoney(manageFund.doubleValue(), 2);
         } else {
             manageFundFm = "0.00 元";

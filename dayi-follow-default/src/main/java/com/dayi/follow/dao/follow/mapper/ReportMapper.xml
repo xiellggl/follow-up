@@ -263,7 +263,7 @@
         ORDER BY c.id asc , a.follow_id asc
     </select>
 
-    <select id="getLastManageFund" parameterType="map" resultType="java.lang.Double">
+    <select id="getLastManageFund" parameterType="map" resultType="java.math.BigDecimal">
         SELECT IFNULL(sum(manage_fund),0) FROM follow_up_log
         WHERE  create_time BETWEEN #{startDate} and #{endDate}
         and follow_id=#{followId}

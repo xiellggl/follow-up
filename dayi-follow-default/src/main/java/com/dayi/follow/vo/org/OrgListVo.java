@@ -36,7 +36,7 @@ public class OrgListVo {
 
     private Integer validAgentNum;//有效代理商
 
-    private double manageFund;//管理资产规模
+    private BigDecimal manageFund;//管理资产规模
     private String manageFundFm;//管理资产规模
 
     private String inviteCode;//邀请码
@@ -112,8 +112,8 @@ public class OrgListVo {
     }
 
     public String getManageFundFm() {
-        if (this.manageFund != 0) {
-            manageFundFm = Misc.parseMoney(manageFund, 2);
+        if (this.manageFund != BigDecimal.ZERO && manageFund != null) {
+            manageFundFm = Misc.parseMoney(manageFund.doubleValue(), 2);
         } else {
             manageFundFm = "0.00 元";
         }
@@ -140,11 +140,11 @@ public class OrgListVo {
         this.followUp = followUp;
     }
 
-    public double getManageFund() {
+    public BigDecimal getManageFund() {
         return manageFund;
     }
 
-    public void setManageFund(double manageFund) {
+    public void setManageFund(BigDecimal manageFund) {
         this.manageFund = manageFund;
     }
 

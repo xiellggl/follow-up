@@ -2,6 +2,8 @@ package com.dayi.follow.vo.index;
 
 import com.dayi.follow.util.Misc;
 
+import java.math.BigDecimal;
+
 //管理员客户状态
 public class AdminCusStatusVo {
     private Integer followUpNum = 0; // 跟进人数量
@@ -10,7 +12,7 @@ public class AdminCusStatusVo {
     private long nameNum = 0; // 已实名认证--用户人数
     private long cardNum = 0;  // 已绑卡--用户人数
     private long agentNum = 0;  // 已代理--用户人数
-    private Double totalFund = 0d;  //资产总规模
+    private BigDecimal totalFund;  //资产总规模
     private String totalFundFm;  //资产总规模
 
     public Integer getFollowUpNum() {
@@ -61,17 +63,17 @@ public class AdminCusStatusVo {
         this.agentNum = agentNum;
     }
 
-    public Double getTotalFund() {
+    public BigDecimal getTotalFund() {
         return totalFund;
     }
 
-    public void setTotalFund(Double totalFund) {
+    public void setTotalFund(BigDecimal totalFund) {
         this.totalFund = totalFund;
     }
 
     public String getTotalFundFm() {
-        if (this.totalFund != 0) {
-            totalFundFm = Misc.parseMoney(totalFund, 2);
+        if (this.totalFund != BigDecimal.ZERO && totalFund != null) {
+            totalFundFm = Misc.parseMoney(totalFund.doubleValue(), 2);
         } else {
             totalFundFm = "0.00";
         }

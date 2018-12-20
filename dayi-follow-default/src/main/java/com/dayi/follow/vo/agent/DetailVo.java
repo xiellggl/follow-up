@@ -30,7 +30,7 @@ public class DetailVo {
     private boolean bankSign;//是否绑卡
     private Date bankSignDate; //绑卡时间
 
-    private double inCash;      // 是否入金
+    private BigDecimal inCash;      // 是否入金
 
     private Date createDate;       // 注册时间
 
@@ -39,36 +39,36 @@ public class DetailVo {
     private Integer status;//状态
     private String statusStr;//状态
 
-    private double totalFund;//总资产
+    private BigDecimal totalFund;//总资产
     private String totalFundFm; // 总资产（格式化：显示前两位和小数点位，其余用*标识）
 
-    private double agentFund;//代理中的资金
+    private BigDecimal agentFund;//代理中的资金
     private String agentFundFm;//
 
-    private double frozenFund;//冻结货款
+    private BigDecimal frozenFund;//冻结货款
     private String frozenFundFm;//冻结货款
 
-    private double useableFund;  // 可用余额
+    private BigDecimal useableFund;  // 可用余额
     private String useableFundFm;      // 可用余额（格式化：显示前两位和小数点位，其余用*标识）
 
-    private double recentAgentFund;//最近一天代理金额
+    private BigDecimal recentAgentFund;//最近一天代理金额
     private String recentAgentFundFm; // 最近代理（格式化：显示前两位和小数点位，其余用*标识）
     private Date recentAgentDate;//最近代理时间
     private String recentAgentDateFm; // 最近代理时间（格式化）
 
     private String bankOpen;//已开通结算银行
 
-    private double dayInCash;//当日累计入金
+    private BigDecimal dayInCash;//当日累计入金
     private String dayInCashFm;//当日累计入金(格式化：显示前两位和小数点位，其余用*标识），用于是否入金判断
     private Date dayLastInCashTime;   // 当日最后一笔入金时间
     private String dayLastInCashTimeFm;  // 当日最后一笔入金时间（格式化）
 
-    private double dayApplyOutCash; // 当日申请出金
+    private BigDecimal dayApplyOutCash; // 当日申请出金
     private String dayApplyOutCashFm; // 当日申请出金（格式化：显示前两位和小数点位，其余用*标识）
     private Date dayLastApplyOutCashTime;//当日最后一笔申请出金时间
     private String dayLastApplyOutCashTimeFm;  //当日最后一笔申请出金时间（格式化）
 
-    private double dayOutCash;  // 当日实际出金
+    private BigDecimal dayOutCash;  // 当日实际出金
     private String dayOutCashFm;      // 当日实际出金（格式化）
 
     public String getLinkPerson() {
@@ -197,17 +197,17 @@ public class DetailVo {
         this.statusStr = statusStr;
     }
 
-    public double getTotalFund() {
+    public BigDecimal getTotalFund() {
         return totalFund;
     }
 
-    public void setTotalFund(double totalFund) {
+    public void setTotalFund(BigDecimal totalFund) {
         this.totalFund = totalFund;
     }
 
     public String getTotalFundFm() {
-        if (this.totalFund != 0) {
-            totalFundFm = Misc.parseMoney(totalFund, 2) + " 元";
+        if (this.totalFund != BigDecimal.ZERO && totalFund != null) {
+            totalFundFm = Misc.parseMoney(totalFund.doubleValue(), 2) + " 元";
         } else {
             totalFundFm = "0.00 元";
         }
@@ -218,17 +218,17 @@ public class DetailVo {
         this.totalFundFm = totalFundFm;
     }
 
-    public double getAgentFund() {
+    public BigDecimal getAgentFund() {
         return agentFund;
     }
 
-    public void setAgentFund(double agentFund) {
+    public void setAgentFund(BigDecimal agentFund) {
         this.agentFund = agentFund;
     }
 
     public String getAgentFundFm() {
-        if (this.agentFund != 0) {
-            agentFundFm = Misc.parseMoney(agentFund, 2) + " 元";
+        if (this.agentFund != BigDecimal.ZERO && agentFund != null) {
+            agentFundFm = Misc.parseMoney(agentFund.doubleValue(), 2) + " 元";
         } else {
             agentFundFm = "0.00 元";
         }
@@ -239,17 +239,17 @@ public class DetailVo {
         this.agentFundFm = agentFundFm;
     }
 
-    public double getFrozenFund() {
+    public BigDecimal getFrozenFund() {
         return frozenFund;
     }
 
-    public void setFrozenFund(double frozenFund) {
+    public void setFrozenFund(BigDecimal frozenFund) {
         this.frozenFund = frozenFund;
     }
 
     public String getFrozenFundFm() {
-        if (this.frozenFund != 0) {
-            frozenFundFm = Misc.parseMoney(frozenFund, 2) + " 元";
+        if (this.frozenFund != BigDecimal.ZERO && frozenFund != null) {
+            frozenFundFm = Misc.parseMoney(frozenFund.doubleValue(), 2) + " 元";
         } else {
             frozenFundFm = "0.00 元";
         }
@@ -260,17 +260,17 @@ public class DetailVo {
         this.frozenFundFm = frozenFundFm;
     }
 
-    public double getUseableFund() {
+    public BigDecimal getUseableFund() {
         return useableFund;
     }
 
-    public void setUseableFund(double useableFund) {
+    public void setUseableFund(BigDecimal useableFund) {
         this.useableFund = useableFund;
     }
 
     public String getUseableFundFm() {
-        if (this.useableFund != 0) {
-            useableFundFm = Misc.parseMoney(useableFund, 2) + " 元";
+        if (this.useableFund != BigDecimal.ZERO && useableFund != null) {
+            useableFundFm = Misc.parseMoney(useableFund.doubleValue(), 2) + " 元";
         } else {
             useableFundFm = "0.00 元";
         }
@@ -281,17 +281,17 @@ public class DetailVo {
         this.useableFundFm = useableFundFm;
     }
 
-    public double getRecentAgentFund() {
+    public BigDecimal getRecentAgentFund() {
         return recentAgentFund;
     }
 
-    public void setRecentAgentFund(double recentAgentFund) {
+    public void setRecentAgentFund(BigDecimal recentAgentFund) {
         this.recentAgentFund = recentAgentFund;
     }
 
     public String getRecentAgentFundFm() {
-        if (this.recentAgentFund != 0) {
-            recentAgentFundFm = Misc.parseMoney(recentAgentFund, 2) + " 元";
+        if (this.recentAgentFund != BigDecimal.ZERO && recentAgentFund != null) {
+            recentAgentFundFm = Misc.parseMoney(recentAgentFund.doubleValue(), 2) + " 元";
         } else {
             recentAgentFundFm = "0.00 元";
         }
@@ -326,17 +326,17 @@ public class DetailVo {
         this.bankOpen = bankOpen;
     }
 
-    public double getDayInCash() {
+    public BigDecimal getDayInCash() {
         return dayInCash;
     }
 
-    public void setDayInCash(double dayInCash) {
+    public void setDayInCash(BigDecimal dayInCash) {
         this.dayInCash = dayInCash;
     }
 
     public String getDayInCashFm() {
-        if (this.dayInCash != 0) {
-            dayInCashFm = Misc.parseMoney(dayInCash, 2) + " 元";
+        if (this.dayInCash != BigDecimal.ZERO && dayInCash != null) {
+            dayInCashFm = Misc.parseMoney(dayInCash.doubleValue(), 2) + " 元";
         } else {
             dayInCashFm = "0.00 元";
         }
@@ -363,17 +363,17 @@ public class DetailVo {
         this.dayLastInCashTimeFm = dayLastInCashTimeFm;
     }
 
-    public double getDayOutCash() {
+    public BigDecimal getDayOutCash() {
         return dayOutCash;
     }
 
-    public void setDayOutCash(double dayOutCash) {
+    public void setDayOutCash(BigDecimal dayOutCash) {
         this.dayOutCash = dayOutCash;
     }
 
     public String getDayOutCashFm() {
-        if (this.dayOutCash != 0) {
-            dayOutCashFm = Misc.parseMoney(dayOutCash, 2) + " 元";
+        if (this.dayOutCash != BigDecimal.ZERO && dayOutCash != null) {
+            dayOutCashFm = Misc.parseMoney(dayOutCash.doubleValue(), 2) + " 元";
         } else {
             dayOutCashFm = "0.00 元";
         }
@@ -384,17 +384,17 @@ public class DetailVo {
         this.dayOutCashFm = dayOutCashFm;
     }
 
-    public double getDayApplyOutCash() {
+    public BigDecimal getDayApplyOutCash() {
         return dayApplyOutCash;
     }
 
-    public void setDayApplyOutCash(double dayApplyOutCash) {
+    public void setDayApplyOutCash(BigDecimal dayApplyOutCash) {
         this.dayApplyOutCash = dayApplyOutCash;
     }
 
     public String getDayApplyOutCashFm() {
-        if (this.dayApplyOutCash != 0) {
-            dayApplyOutCashFm = Misc.parseMoney(dayApplyOutCash, 2) + " 元";
+        if (this.dayApplyOutCash != BigDecimal.ZERO && dayApplyOutCash != null) {
+            dayApplyOutCashFm = Misc.parseMoney(dayApplyOutCash.doubleValue(), 2) + " 元";
         } else {
             dayApplyOutCashFm = "0.00 元";
         }
@@ -421,11 +421,11 @@ public class DetailVo {
         this.dayLastApplyOutCashTimeFm = dayLastApplyOutCashTimeFm;
     }
 
-    public double getInCash() {
+    public BigDecimal getInCash() {
         return inCash;
     }
 
-    public void setInCash(double inCash) {
+    public void setInCash(BigDecimal inCash) {
         this.inCash = inCash;
     }
 }

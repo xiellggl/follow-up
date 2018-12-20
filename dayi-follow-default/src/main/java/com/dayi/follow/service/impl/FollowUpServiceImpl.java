@@ -50,6 +50,8 @@ public class FollowUpServiceImpl implements FollowUpService {
     @Resource
     private CountService countService;
     @Resource
+    private DeptService deptService;
+    @Resource
     private OrgService orgService;
     @Value("${dayi.dataBase}")
     String dayiDataBaseStr;
@@ -69,9 +71,15 @@ public class FollowUpServiceImpl implements FollowUpService {
     @Log(target = OperateLog.class, action = BaseLog.LogAction.SEARCH, what = "跟进人管理", note = "查询跟进人列表")
     public Page<FollowUpListVo> findPage(Page page, String deptId, String mobile, String queryDeptId, String inviteCode) {
         List<String> followIds = new ArrayList<String>();
+        List<String> subDeptIds;
+        if (StringUtils.isBlank(queryDeptId)) subDeptIds = deptService.getSubDeptIds(deptId);
+        else subDeptIds = deptService.getSubDeptIds(queryDeptId);
 
-        if (StringUtils.isBlank(queryDeptId)) followIds = followUpMapper.findIdsByDeptId(deptId);
-        else followIds = followUpMapper.findIdsByDeptId(queryDeptId);
+        for (String subDeptId : subDeptIds) {
+            followIds.addAll(followUpMapper.findIdsByDeptId(subDeptId));
+        }
+
+        if (followIds.isEmpty()) return page;
 
         List<FollowUpListVo> followUps = followUpMapper.findFollowUps(mobile, followIds, inviteCode, page.getStartRow(), page.getPageSize(), dayiDataBaseStr);
 
@@ -79,7 +87,7 @@ public class FollowUpServiceImpl implements FollowUpService {
             List<Organization> orgs = followOrgMapper.findOrgsByfollowId(vo.getId(), null, dayiDataBaseStr);
             vo.setOrgNum(orgs.size());
 
-            double orgFund = countService.getOrgManageFund(orgs);
+            BigDecimal orgFund = countService.getOrgManageFund(orgs);
             vo.setOrgFund(orgFund);
         }
 
@@ -178,8 +186,15 @@ public class FollowUpServiceImpl implements FollowUpService {
     @Override
     @Log(target = OperateLog.class, action = BaseLog.LogAction.SEARCH, what = "跟进人管理", note = "查询全部创客明细列表")
     public Page<FMDetailListVo> findAllOrgPage(Page page, SearchVo searchVo, String deptId) {
+        List<String> subDeptIds;
+        List<String> followIds = new ArrayList<>();
 
-        List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
+        if (StringUtils.isBlank(deptId)) return page;
+        else subDeptIds = deptService.getSubDeptIds(deptId);
+
+        for (String subDeptId : subDeptIds) {
+            followIds.addAll(followUpMapper.findIdsByDeptId(subDeptId));
+        }
 
         page = followUpMapper.findOrgs(page, searchVo, followIds, dayiDataBaseStr);
 
@@ -214,13 +229,12 @@ public class FollowUpServiceImpl implements FollowUpService {
                         .add(account.getFrozen())
                         .add(account.getOutFrozen())
                         .add(account.getUseable()).doubleValue();
-                agent.setTotalFund(totalFund);
-                agent.setInterest(account.getInterest().doubleValue());//利息-服务费
+                agent.setTotalFund(BigDecimal.valueOf(totalFund));
+                agent.setInterest(account.getInterest());//利息-服务费
             }
 
-
-            agent.setGrowthCargo(BigDecimals.subtract(agent.getAgentCargo(), agent.getAgentCargoBefore()));//净增货值
-            agent.setGrowthFund(BigDecimals.subtract(agent.getTotalFund(), agent.getTotalFundBefore()));//净增资金
+            agent.setGrowthCargo(agent.getAgentCargo().subtract(agent.getAgentCargoBefore()));//净增货值
+            agent.setGrowthFund(agent.getTotalFund().subtract(agent.getTotalFundBefore()));//净增资金
         }
         return agents;
     }
@@ -229,16 +243,16 @@ public class FollowUpServiceImpl implements FollowUpService {
         for (FMDetailListVo org : orgs) {
             Organization organization = orgMapper.get(org.getId());
 
-            double oneLevel = orgMapper.getManageFundLevel1(org.getId());//一级代理商资产
+            BigDecimal oneLevel = orgMapper.getManageFundLevel1(org.getId());//一级代理商资产
 
-            double twoLevel = 0;//二级代理商资产
+            BigDecimal twoLevel = BigDecimal.ZERO;//二级代理商资产
             Integer switchStatus = organization.getSwitchStatus();
             if (switchStatus != null && switchStatus.equals(SwitchStatusEnum.OPEN.getKey().intValue())) {//开了二级收益开关
                 twoLevel = orgMapper.getManageFundLevel2(org.getId());
             }
-            org.setAgentCargo(BigDecimals.add(oneLevel, twoLevel));//代理资金
+            org.setAgentCargo(oneLevel.add(twoLevel));//代理资金
 
-            org.setGrowthCargo(BigDecimals.subtract(org.getAgentCargo(), org.getAgentCargoBefore()));//净增货值
+            org.setGrowthCargo(org.getAgentCargo().subtract(org.getAgentCargoBefore()));//净增货值
         }
         return orgs;
     }

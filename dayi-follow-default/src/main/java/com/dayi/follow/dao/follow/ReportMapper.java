@@ -7,6 +7,7 @@ import com.dayi.mybatis.support.BaseMapper;
 import com.dayi.mybatis.support.Page;
 import org.apache.ibatis.annotations.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -53,5 +54,5 @@ public interface ReportMapper extends BaseMapper<BaseVo> {
     List<AdminMonthVo> findAdminMonthList( @Param("followIds") List<String> followIds, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
     //得到月最后一天的管理资金
-    double getLastManageFund(@Param("followId") String followId, @Param("startDate") String startDate, @Param("endDate") String endDate);
+    BigDecimal getLastManageFund(@Param("followId") String followId, @Param("startDate") String startDate, @Param("endDate") String endDate);
 }

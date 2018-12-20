@@ -85,8 +85,8 @@
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-calendar"></i>
                                     </span>
-                                    <input type="text" class="form-control admin_sea dates" name="date"
-                                           value="${param.changeDateStart}" placeholder="变更日期"/>
+                                    <input type="text" class="form-control admin_sea dates" name="changeDate"
+                                           value="${param.changeDate}" placeholder="变更日期"/>
                                 </div>
                             </div>
 

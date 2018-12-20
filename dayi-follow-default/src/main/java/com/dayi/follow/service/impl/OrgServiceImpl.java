@@ -90,7 +90,7 @@ public class OrgServiceImpl implements OrgService {
     @Log(target = OperateLog.class, action = BaseLog.LogAction.ADD, what = "我的创客", note = "添加联系记录")
     public BizResult addContact(OrgContact orgContact) {
         Organization org = orgMapper.get(orgContact.getOrgId());
-        if(org==null)return BizResult.fail("创客不存在！");
+        if (org == null) return BizResult.fail("创客不存在！");
 
         orgContact.setCreateTime(new Date());
         orgContact.setUpdateTime(new Date());
@@ -134,15 +134,15 @@ public class OrgServiceImpl implements OrgService {
                 item.setValidAgentNum(countMapper.getOrgValidAgentNum(item.getId(), 1));//有效代理商-只算1级
             }
 
-            double oneLevel = orgMapper.getManageFundLevel1(org.getId());//一级代理商资产
-            double twoLevel = 0;//二级代理商资产
+            BigDecimal oneLevel = orgMapper.getManageFundLevel1(org.getId());//一级代理商资产
+            BigDecimal twoLevel = BigDecimal.ZERO;//二级代理商资产
 
             Integer secondIncomeSwitch = org.getSecondIncomeSwitch();
             if (secondIncomeSwitch != null && secondIncomeSwitch.equals(SwitchStatusEnum.OPEN.getKey().intValue())) {//如果开了二级收益开关
                 twoLevel = orgMapper.getManageFundLevel2(org.getId());
             }
 
-            double manageFund = BigDecimals.add(oneLevel, twoLevel);
+            BigDecimal manageFund = oneLevel.add(twoLevel);
 
             item.setManageFund(manageFund);//管理资产规模
         }

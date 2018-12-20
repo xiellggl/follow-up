@@ -10,6 +10,7 @@ import com.dayi.mybatis.support.BaseMapper;
 import com.dayi.mybatis.support.Page;
 import org.apache.ibatis.annotations.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -19,7 +20,7 @@ import java.util.List;
 public interface FollowOrgMapper extends BaseMapper<FollowOrg> {
 
     //统计资产规模
-    double getTotalFund(@Param("followIds") List<String> followIds, @Param("assistDataBase") String assistDataBase);
+    BigDecimal getTotalFund(@Param("followIds") List<String> followIds, @Param("assistDataBase") String assistDataBase);
 
     List<Organization> findOrgsByfollowId(@Param("followId") String followId, @Param("deadline") String deadline, @Param("assistDataBase") String assistDataBase);
 
