@@ -205,8 +205,8 @@
                             模块管理
                         </a>
                     </li>
-                    <li data-index="1">
-                        <a href="/module/list">
+                    <li data-index="10">
+                        <a href="/permission/list">
                             <i class="menu-icon fa fa-caret-right"></i>
                             功能管理
                         </a>

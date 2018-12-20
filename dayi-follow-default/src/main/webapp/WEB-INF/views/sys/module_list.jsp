@@ -109,7 +109,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-right">*所属模块：</label>
                                 <div class="col-xs-12 col-sm-6">
-                                    <select name="parentid" class="chosen-select form-control" data-placeholder="Choose a State...">
+                                    <select name="parentid" class="chosen-select form-control">
                                         <option value="">顶级模块</option>
                                         <c:set var="selectList" value="${menus}" />
                                         <%@ include file="module_option_item.jsp" %>
@@ -184,14 +184,11 @@
         var editModuleFn = function (id,pid) {
             var id = id || null;
             var pid = pid || null;
-            var type = "add"
+            var type = "add";
             var data = {};
 
-
-
-
             if (id) {
-                type = "edit"
+                type = "edit";
                 common.ajax.handle({
                     url: "/module/getModuleById.json",
                     data:{id:id},
@@ -206,15 +203,9 @@
 
             }
 
-
-
             var $modal = $("#myModalEditModule");
 
-
-
             var html = template("tplEditModule", data);
-
-
 
             $modal.html(html);
             var $form = $("#form-id");
@@ -273,7 +264,21 @@
             var id=$(this).closest("tr").data("id");
             layer.confirm('<p class="tc">是否删除该模块？</p>',{title:"温馨提示"},function () {
                 common.ajax.handle({
-                    url:"/module/delete?id="+id
+                    url:"/module/delete.json",
+                    data:{id:id}
+                });
+            });
+        });
+
+        //解绑
+        $('[data-act="unbind"]').on("click",function () {
+            var id=$(this).closest("tr").data("id");
+            layer.confirm('<p class="tc">是否解绑该功能？</p>',{title:"温馨提示"},function () {
+                common.ajax.handle({
+                    url:"/module/untying.json",
+                    data:{
+                        id:id
+                    }
                 });
             });
         });

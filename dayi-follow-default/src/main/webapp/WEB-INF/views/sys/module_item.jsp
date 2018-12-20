@@ -14,6 +14,7 @@
             <td>${cur.url}</td>
             <td>${cur.order}</td>
             <td>
+                <c:if test="${cur.type eq 0}">
                 <a href="#" data-pid="${cur.id}" data-toggle="modal" data-target="#myModalEditModule" data-toggle="tooltip" title="添加子类">
                     <i class="ace-icon fa fa-plus-circle bigger-130"></i>
                 </a>
@@ -23,9 +24,15 @@
                 <a href="#" data-act="del" data-toggle="tooltip" title="删除">
                     <i class="ace-icon fa fa-trash-o bigger-130 red"></i>
                 </a>
-                <a href="#" data-act="del" data-toggle="tooltip" title="绑定功能">
-                    <i class="ace-icon fa fa-exchange bigger-130 red"></i>
+                <a href="#" data-act="bind" data-toggle="tooltip" title="绑定功能">
+                    <i class="ace-icon fa fa-link bigger-130"></i>
                 </a>
+                </c:if>
+                <c:if test="${cur.type eq 1}">
+                    <a href="#" data-act="unbind" data-toggle="tooltip" title="解绑功能">
+                        <i class="ace-icon fa fa-unlink bigger-130 red"></i>
+                    </a>
+                </c:if>
             </td>
         </tr>
 

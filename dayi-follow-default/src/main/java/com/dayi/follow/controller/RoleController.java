@@ -2,7 +2,9 @@ package com.dayi.follow.controller;
 
 import com.dayi.common.util.BizResult;
 import com.dayi.common.util.Misc;
+import com.dayi.follow.model.follow.Menu;
 import com.dayi.follow.model.follow.Role;
+import com.dayi.follow.service.ModuleService;
 import com.dayi.follow.service.RoleService;
 import com.dayi.mybatis.support.Page;
 import org.springframework.stereotype.Controller;
@@ -25,6 +27,9 @@ public class RoleController {
 
     @Resource
     RoleService roleService;
+
+    @Resource
+    ModuleService moduleService;
 
     /**
      * 加载所有角色
@@ -63,7 +68,9 @@ public class RoleController {
     public String edit(String id, Model model) {
         Role role = roleService.getById(id);
         model.addAttribute("role", role);
-        return "sys/role_compile";
+        List<Menu> menus = moduleService.listAll(true);
+        model.addAttribute("menus",menus);
+        return "sys/role_edit";
     }
 
     /**

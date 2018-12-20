@@ -33,8 +33,8 @@
                             角色管理
                         </small>
                     </h1>
-                    <a href="#" class="pull-right">
-                        <span class="btn btn-primary" data-toggle="modal" data-target="#myModalEditFollowuper">添加角色</span>
+                    <a href="./edit" class="pull-right">
+                        <span class="btn btn-primary">添加角色</span>
                     </a>
                 </div>
 
@@ -57,7 +57,7 @@
                                 <tr>
                                     <td colspan="6" class="no_data">暂无角色，请
                                         <a href="#" data-toggle="modal"
-                                           data-target="#myModalEditFollowuper" title="新增角色">
+                                           data-target="#myModalEditRole" title="新增角色">
                                             新增角色
                                         </a>
                                     </td>
@@ -72,15 +72,14 @@
                                         <td class="hidden-sm hidden-xs"><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                         <td>
                                             <a class="state-btn" data-state="${item.status}" href="#"
-                                               data-id="${item.id}" title="已${item.status eq 1 ? '启动':'禁用'}">
+                                               data-id="${item.id}" title="已${item.status eq 1 ? '启用':'禁用'}">
                                             <span class="btn btn-minier ${item.status eq 1 ? 'btn-yellow':'btn-danger'}">
                                                     ${item.status  eq 1 ? '启动':'禁用'}
                                             </span>
                                             </a>
                                         </td>
                                         <td>
-                                            <a href="#" data-id="30" data-toggle="modal"
-                                               data-target="#myModalEditFollowuper" title="修改">
+                                            <a href="./edit?id=${item.id}" title="修改">
                                                 <i class="ace-icon fa fa-pencil bigger-130"></i>
                                             </a>
                                             <a href="#" data-act="del" data-toggle="tooltip" title="删除">
@@ -107,83 +106,22 @@
 </div>
 
 <%--编辑模块模态框（Modal）--%>
-<div class="modal fade in" id="myModalEditFollowuper" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
+<div class="modal fade in" id="myModalEditRole" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
 <%@include file="/inc/followup/script.jsp"%>
 <script>
-    seajs.use(["common","validate","template"],function(common,validate,template){
+    seajs.use(["common","validate"],function(common){
         //菜单高亮
         common.head("system",4);
-
-        //添加、编辑角色方法
-        var editDeptFn = function (id) {
-            var id = id || 0;
-            var url = "/role/edit";
-            if (id > 0) {
-                url = "/role/edit?id="+id
-            }
-            var html = "";
-
-            common.ajax.handle({
-                type: "get",
-                url:url,
-                dataType: "html",
-                async: false,
-                succback: function (data) {
-                    html = data;
-                }
-            });
-            var $modal = $("#myModalEditFollowuper");
-            $modal.html(html);
-            if (id > 0) {
-                    $(".modal-title").html("编辑角色");
-            }
-            var $form = $("#form-id");
-
-            $form.validate({
-                rules: {
-                    name:"required"
-                },
-                messages: {
-                    name:"角色名称不能为空"
-                },
-                errorPlacement: function (error, element) {
-                    var $tipsBox = element.closest(".form-group").find(".tips_box");
-                    if ($tipsBox.length) {
-                        $tipsBox.html(error);
-                    } else {
-                        element.after(error);
-                    }
-                },
-                errorClass: "field-error",
-                success: function (label, element) {
-                    label.remove();
-                    return true;
-                },
-                submitHandler: function (form) {
-                    common.ajax.handle({
-                        url: "/role/edit/save.json",
-                        data: $form.serialize()
-                    });
-                    return false;
-                }
-            });
-
-
-        };
-
-        //新增、编辑功能按钮
-        var $editBtn = $('[data-target="#myModalEditFollowuper"]');
-        $editBtn.on("click", function () {
-            var id = $(this).data('id') || null;
-            editDeptFn(id);
-        });
 
         //删除
         $('[data-act="del"]').on("click",function () {
             var id=$(this).closest("tr").data("id");
             layer.confirm('<p class="tc">是否删除该角色？</p>',{title:"温馨提示"},function () {
                 common.ajax.handle({
-                    url:"/role/delete?id="+id
+                    url:"/role/delete.json",
+                    data:{
+                        id:id
+                    }
                 });
             });
         });
@@ -191,15 +129,19 @@
         //禁用/启用
         $(".state-btn").on("click", function () {
             var state = $(this).data("state");
-            var act = state == 0 ? "true" : "false";
-            var stateStr = act == "true" ? "启用" : "禁用";
-            var className = act == "true" ? "btn-yellow" : "btn-danger";
+            var act = state == 0 ? 1 : 0;
+            var stateStr = act == 1 ? "启用" : "禁用";
+            var className = act == 1 ? "btn-yellow" : "btn-danger";
             var $btn = $(this);
             var id = $(this).closest("tr").data("id");
             layer.confirm('<p class="tc">是否确定' + stateStr + '此用户</p>', {icon: 3, title: "温馨提示"}, function (index) {
                 layer.close(index);
                 common.ajax.handle({
-                    url: "/role/enableRole?id="+id+"&enable="+act,
+                    url: "/role/enableRole.json",
+                    data:{
+                        id:id,
+                        enable:act
+                    },
                     succback: function (data) {
                         var btn = '<span class="btn btn-minier ' + className + '">' + stateStr + '</span>';
                         $btn.data("state", !state).html(btn).attr('data-original-title', "已" + stateStr);

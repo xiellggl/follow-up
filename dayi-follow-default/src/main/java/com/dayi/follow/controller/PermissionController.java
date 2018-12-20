@@ -3,7 +3,9 @@ package com.dayi.follow.controller;
 import com.dayi.common.util.BizResult;
 import com.dayi.common.util.Misc;
 import com.dayi.follow.component.UserComponent;
+import com.dayi.follow.model.follow.Menu;
 import com.dayi.follow.model.follow.Permission;
+import com.dayi.follow.service.ModuleService;
 import com.dayi.follow.service.PermissionService;
 import com.dayi.follow.vo.sys.PermissionSearchVo;
 import com.dayi.mybatis.support.Page;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @author xiell
@@ -29,6 +32,9 @@ public class PermissionController {
     UserComponent userComponent;
 
     @Resource
+    ModuleService moduleService;
+
+    @Resource
     PermissionService permissionService;
 
     /**
@@ -38,7 +44,8 @@ public class PermissionController {
     public String list(PermissionSearchVo permissionSearchVo, Model model) {
         Page<Permission> page =  permissionService.searchPermissions(permissionSearchVo);
         model.addAttribute("page", page);
-
+        List<Menu> menus = moduleService.listModule();
+        model.addAttribute("menus", menus);
         return "sys/binding_list";
     }
 
@@ -70,6 +77,8 @@ public class PermissionController {
     public String edit(String id, Model model) {
         Permission permission = permissionService.get(id);
         model.addAttribute("permission", permission);
+        List<Menu> menus = moduleService.listModule();
+        model.addAttribute("menus", menus);
 
         return "sys/binding_edit";
     }

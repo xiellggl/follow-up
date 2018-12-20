@@ -34,15 +34,15 @@
                         </small>
                     </h1>
                     <a href="#" class="pull-right">
-                        <span class="btn btn-primary" data-toggle="modal" data-target="#myModalEditFollowuper">添加功能</span>
+                        <span class="btn btn-primary" data-toggle="modal" data-target="#myModalEditPermission">添加功能</span>
                     </a>
                 </div>
 
                 <div class="row">
-                    <form class="form-horizontal" style="max-width: 800px;">
+                    <form class="form-horizontal" style="max-width: 1000px;">
                         <div class="clearfix maintop">
 
-                            <div class="col-xs-4 col-sm-3 btn-sespan">
+                            <div class="col-xs-3 col-sm-3 btn-sespan">
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <i class="ace-icon glyphicon glyphicon-phone"></i>
@@ -52,20 +52,34 @@
                                 </div>
                             </div>
 
-                            <div class="col-xs-4 col-sm-3 btn-sespan">
+                            <div class="col-xs-3 col-sm-3 btn-sespan">
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-cog"></i>
                                     </span>
                                     <select name="isBinding" class="form-control admin_sea">
                                         <option value="">绑定状态</option>
-                                        <option value="false"  ${isBinding=='false'?"selected":''}>未绑定</option>
-                                        <option value="true"  ${isBinding=='true'?"selected":''}>已绑定</option>
+                                        <option value="0"  ${!param.isBinding?"selected":''}>未绑定</option>
+                                        <option value="1"  ${param.isBinding?"selected":''}>已绑定</option>
                                     </select>
                                 </div>
                             </div>
 
-                            <div class="col-xs-4 col-sm-4 btn-sespan">
+                            <div class="col-xs-3 col-sm-3 btn-sespan">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="ace-icon fa fa-cog"></i>
+                                    </span>
+                                    <select name="moduleId" class="form-control admin_sea" data-m="${param.moduleId}">
+                                        <option value="">所属模块</option>
+                                        <c:set var="selectedId" value="${param.moduleId}" scope="request" />
+                                        <c:set var="selectList" value="${menus}" />
+                                        <%@ include file="module_option_item.jsp" %>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-3 col-sm-3 btn-sespan">
                                 <div class="btn-group dropup">
                                     <button type="submit" class="btn btn-xs btn-purple">
                                         <span class="ace-icon fa fa-search"></span>
@@ -113,6 +127,7 @@
                                         <input type="hidden" id="checkIds" name="ids" value="">
                                     </th>
                                     <th>功能名称</th>
+                                    <th>所属模块</th>
                                     <th class="hidden-sm hidden-xs">功能路径</th>
                                     <th>添加时间</th>
                                     <th>修改时间</th>
@@ -128,7 +143,7 @@
                                         <td colspan="7" class="no_data">
                                             暂无功能，请
                                             <a href="#" data-toggle="modal"
-                                               data-target="#myModalEditFollowuper" title="新增功能">新增功能</a>
+                                               data-target="#myModalEditPermission" title="新增功能">新增功能</a>
                                         </td>
                                     </tr>
                                 </c:if>
@@ -143,13 +158,14 @@
                                         </label>
                                     </td>
                                     <td>${item.name}</td>
+                                    <td>${item.moduleName}</td>
                                     <td>${item.url}</td>
                                     <td class="hidden-sm hidden-xs"><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                     <td class="hidden-sm hidden-xs"><fmt:formatDate value="${item.updateTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                     <td>${item.description}</td>
                                     <td>
                                         <a href="#" data-id="${item.id}" data-toggle="modal"
-                                           data-target="#myModalEditFollowuper"
+                                           data-target="#myModalEditPermission"
                                            data-toggle="tooltip" title="修改">
                                             <i class="ace-icon fa fa-pencil bigger-130"></i>
                                         </a>
@@ -163,11 +179,11 @@
                                 </tbody>
                             </table>
 
-                            <%--<c:if test="${not empty page.items}">--%>
-                                <%--<div class="pagerBar" id="pagerBar">--%>
-                                    <%--<common:page2 url="${pageUrl}" type="3"/>--%>
-                                <%--</div>--%>
-                            <%--</c:if>--%>
+                            <%--<c:if test="${not empty page.items}">
+                                <div class="pagerBar" id="pagerBar">
+                                    <common:page2 url="${pageUrl}" type="3"/>
+                                </div>
+                            </c:if>--%>
 
                         </div>
                     </div>
@@ -178,55 +194,54 @@
 </div>
 
 <%--编辑模块模态框（Modal）--%>
-<div class="modal fade in" id="myModalEditFollowuper" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
+<div class="modal fade in" id="myModalEditPermission" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
 <%@include file="/inc/followup/script.jsp"%>
 <script>
-    seajs.use(["common","validate","template"],function(common,validate,template){
+    seajs.use(["common","validate","template"],function(common){
         //菜单高亮
-        common.head("system",1);
+        common.head("system",10);
 
         //添加、编辑功能方法
         var editDeptFn = function (id) {
-            var id = id || 0;
-            var url = "/permission/edit?id="+id
-            if (id = null) {
-                var url = "/permission/edit";
-            }
+            var id = id || null;
+            var type = "add";
             var html = "";
-
             common.ajax.handle({
                 type: "get",
-                url:url,
+                url:"/permission/edit",
+                data:{
+                    id:id
+                },
                 dataType: "html",
                 async: false,
                 succback: function (data) {
                     html = data;
                 }
             });
-            var $modal = $("#myModalEditFollowuper");
+            var $modal = $("#myModalEditPermission");
             $modal.html(html);
-            if (id > 0) {
+
+            var $form = $("#formPermission");
+            if (id !=null) {
+                type = "edit";
                 $(".modal-title").html("修改功能");
             }
-            var $form = $("#form-id");
+
+
             $form.validate({
                 rules: {
                     name:"required",
                     sort:{
-                        required:true,
                         number:true
                     },
                     url:"required",
-                    description:"required"
                 },
                 messages: {
                     name:"功能名称不能为空",
                     sort:{
-                        required:"功能排序不能为空",
                         number:"请输入数字"
                     },
                     url: "功能路径不能为空",
-                    description:"请输入功能描述"
 
                 },
                 errorPlacement: function (error, element) {
@@ -244,7 +259,7 @@
                 },
                 submitHandler: function (form) {
                     common.ajax.handle({
-                        url: "/permission/add/save.json",
+                        url: "/permission/"+type+"/save.json",
                         data: $form.serialize()
                     });
                     return false;
@@ -255,7 +270,7 @@
         };
 
         //新增、编辑功能按钮
-        var $editBtn = $('[data-target="#myModalEditFollowuper"]');
+        var $editBtn = $('[data-target="#myModalEditPermission"]');
         $editBtn.on("click", function () {
             var id = $(this).data('id') || null;
             editDeptFn(id);
@@ -266,7 +281,10 @@
             var id=$(this).closest("tr").data("id");
             layer.confirm('<p class="tc">是否删除该功能？</p>',{title:"温馨提示"},function () {
                 common.ajax.handle({
-                    url:"/permission/delete?id="+id
+                    url:"/permission/delete.json",
+                    data:{
+                        id:id
+                    }
                 });
             });
         });

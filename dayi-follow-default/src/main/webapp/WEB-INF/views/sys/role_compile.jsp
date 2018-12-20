@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@include file="/inc/followup/taglib.jsp"%>
-<form id="form-id" class="form-horizontal" autocomplete="off">
+<form id="formEditRole" class="form-horizontal" autocomplete="off">
     <div class="modal-dialog">
         <div class="modal-content">
 
