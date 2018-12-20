@@ -349,7 +349,7 @@ public class ReportController extends BaseController {
 
 
     /**
-     * 管理员月报
+     * 管理员月报导出
      *
      * @param request
      * @return
