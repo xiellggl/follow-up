@@ -153,7 +153,7 @@
                     </a>
                 </li>
                 <li data-index="2">
-                    <a href="/org/assign/list?flowTypeTab=2">
+                    <a href="/org/assign/list">
                         <i class="menu-icon fa fa-caret-right"></i>
                         创客
                     </a>
