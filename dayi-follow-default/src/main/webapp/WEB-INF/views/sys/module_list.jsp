@@ -120,6 +120,17 @@
 
                             <div class="space-4"></div>
                             <div class="form-group">
+                                <label class="col-sm-2 control-label no-padding-right">样式名称：</label>
+                                <div class="col-xs-12 col-sm-6">
+                                    <input type="text" name="css" value="{{css}}" class="form-control"/>
+                                </div>
+                                <div class="help-block col-xs-12 col-sm-reset inline">只针对顶级栏目有效</div>
+                                <span class="col-sm-2"></span>
+                                <span class="col-sm-10 col-xs-12" style="font-size:12px; color:#999; margin-top:5px;">预留样式：fa-tachometer ， fa-folder ， fa-list ， fa-list-alt ， fa-calendar</span>
+                            </div>
+
+                            <div class="space-4"></div>
+                            <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-right">模块排序：</label>
                                 <div class="col-xs-12 col-sm-6">
                                     <input type="text" name="sort" value="{{sort}}" class="form-control"/>
@@ -130,7 +141,7 @@
                             <div class="space-4"></div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-right">*模块状态：</label>
-                                <div class="col-sm-9 inline align-middle" >
+                                <div class="col-sm-9 inline align-middle" style="padding-top:8px;">
                                     <label style="margin-right: 15px;">
                                         <input type="radio" name="status" value="1" {{id==null||status==1?'checked':''}}/>
                                         开启

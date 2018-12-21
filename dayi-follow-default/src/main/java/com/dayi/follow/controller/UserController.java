@@ -11,12 +11,10 @@ import com.dayi.follow.dao.follow.FollowOrgMapper;
 import com.dayi.follow.dao.follow.FollowUpLogMapper;
 import com.dayi.follow.dao.follow.FollowUpMapper;
 import com.dayi.follow.enums.MemberStatusEnum;
-import com.dayi.follow.model.follow.Department;
-import com.dayi.follow.model.follow.FollowUp;
-import com.dayi.follow.model.follow.FollowUpLog;
-import com.dayi.follow.model.follow.Organization;
+import com.dayi.follow.model.follow.*;
 import com.dayi.follow.service.CountService;
 import com.dayi.follow.service.DeptService;
+import com.dayi.follow.service.RoleService;
 import com.dayi.follow.service.UserService;
 import com.dayi.follow.util.Md5Util;
 import com.dayi.follow.util.PageUtil;
@@ -69,6 +67,10 @@ public class UserController extends BaseController {
     String dayiDataBaseStr;
     @Resource
     CountService countService;
+
+    @Resource
+    RoleService roleService;
+
     private static Logger logger = LoggerFactory.getLogger(UserController.class);
 
     /**
@@ -108,7 +110,7 @@ public class UserController extends BaseController {
 
     @RequestMapping(value = "/list")
     public String list(HttpServletRequest request, Model model, Page page) {
-        LoginVo currVo = userComponent.getCurrUser(request);
+        //LoginVo currVo = userComponent.getCurrUser(request);
 
         String mobile = request.getParameter("mobile");
         String queryDeptId = request.getParameter("deptId");
@@ -120,10 +122,14 @@ public class UserController extends BaseController {
 
         List<Department> deptList = deptService.getDeptTree(null);//前端要求-用于新增修改的部门列表
 
+        List<Role> rolesList = roleService.listAll(true);
+
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
         model.addAttribute("pageUrl", pageUrl);
         model.addAttribute("page", page);
         model.addAttribute("deptList", deptList);
+        model.addAttribute("rolesList", rolesList);
+
         return "sys/user_list";
     }
 

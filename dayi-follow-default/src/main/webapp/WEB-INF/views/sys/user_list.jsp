@@ -193,8 +193,11 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label no-padding-right">角色 ：</label>
                             <div class="col-xs-12 col-sm-6">
-                                <select name="pid" class="form-control">
-
+                                <select name="roleids" class="form-control">
+                                    <option value="">请选择角色</option>
+                                    <c:forEach items="${rolesList}" var="item">
+                                        <option value="${item.id}">${item.name}</option>
+                                    </c:forEach>
                                 </select>
                             </div>
                         </div>

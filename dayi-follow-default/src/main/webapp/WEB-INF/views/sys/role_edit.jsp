@@ -50,7 +50,7 @@
                         </small>
                     </h1>
                     <a href="./list" class="pull-right">
-                        <span class="btn btn-primary">返回</span>
+                        <span class="btn btn-xs">返回</span>
                     </a>
                 </div>
 
@@ -77,7 +77,7 @@
                         </div>
 
                         <div class="space-4"></div>
-                        <div class="form-group">
+                        <div class="form-group" style="position: relative;">
                             <label class="col-sm-2 control-label no-padding-right">权限控制：</label>
                             <div class="col-xs-12 col-sm-10">
                                 <ul id="permissionSetlist" class="permission-setlist">
@@ -85,7 +85,7 @@
                                     <%@ include file="module_role_item.jsp" %>
                                 </ul>
                             </div>
-
+                            <div class="help-block col-xs-12 col-sm-reset inline tips_box" style="position: absolute; top:5px; left: 0; width: 100%; text-align: center;"></div>
                         </div>
                         <div class="form-group" style="text-align: center;">
                             <button type="submit" data-act="submit" class="btn btn-primary">提交</button>
