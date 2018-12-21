@@ -123,7 +123,10 @@ public class RoleServiceImpl implements RoleService {
         page.setPageNo(pageNo);
         page.setPageSize(pageSize);
 
-        return roleMapper.search(page);
+        Conditions conditions = new Conditions();
+        conditions.add(Restrictions.ne("status", Role.STATUS_DEL.id));
+
+        return roleMapper.searchByConditions(page, conditions);
     }
 
     @Override
