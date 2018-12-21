@@ -108,11 +108,11 @@ public class ModuleServiceImpl implements ModuleService {
 
         // 查询所有权限
         List<Permission> rootPermission = findAllPermissions(permission);
-        //根据需要，过滤未绑定的权限
+        //根据需要，过滤隐藏的权限
         Iterator<Permission> it = rootPermission.iterator();
         while (it.hasNext()) {
             Permission p = it.next();
-            if (Misc.isEmpty(p.getModuleid()) || "0".equals(p.getModuleid()) || p.getDisplayStatus().equals(Permission.DISPLAY_STATUS_DISABLE.id)) {
+            if (p.getDisplayStatus().equals(Permission.DISPLAY_STATUS_DISABLE.id)) {
                 it.remove();
             }
         }
