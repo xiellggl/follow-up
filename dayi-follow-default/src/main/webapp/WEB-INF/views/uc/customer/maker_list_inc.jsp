@@ -69,8 +69,8 @@
                 <th>年龄</th>
                 <th class="hidden-sm hidden-xs">注册时间</th>
                 <th>会员期限</th>
-                <th>管理代理商</th>
-                <th>有效代理商</th>
+                <th>管理代理商数量</th>
+                <th>有效代理商数量</th>
                 <th>管理资产规模</th>
                 <th class="hidden-sm hidden-xs">邀请码</th>
                 <c:if test="${pageType eq 'team'}"><th>跟进人</th></c:if>
@@ -98,9 +98,9 @@
                             <%-- 会员期限 --%>
                         <td>${item.deadLineStr}</td>
                             <%-- 管理代理商 --%>
-                        <td>${item.agentNum}人</td>
+                        <td>${item.agentNum}</td>
                             <%-- 有效代理商 --%>
-                        <td>${item.validAgentNum}人</td>
+                        <td>${item.validAgentNum}</td>
                             <%-- 管理资产规模 --%>
                         <td>${item.manageFundFm}</td>
                             <%-- 邀请码 --%>
@@ -118,7 +118,7 @@
         </table>
         <c:if test="${not empty page.results}">
             <div class="pagerBar" id="pagerBar">
-                <common:page2 url="${pageUrl}" type="3" />
+                <common:page url="${pageUrl}" type="3" />
             </div>
         </c:if>
     </div>

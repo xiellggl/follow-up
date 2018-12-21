@@ -37,19 +37,11 @@ public interface FollowOrgMapper extends BaseMapper<FollowOrg> {
     //获取联系记录
     int getContactsNum(@Param("orgId") Integer orgId);
 
-    List<OrgListVo> findOrgs(@Param("mobile") String mobile, @Param("inviteCode") String inviteCode,
-                             @Param("followId") String followId, @Param("assistDataBase") String assistDataBase,
-                             @Param("limitStart") Integer limitStart, @Param("limitEnd") Integer limitEnd);
+    Page<OrgListVo> findOrgs(Page page,@Param("mobile") String mobile, @Param("inviteCode") String inviteCode,
+                             @Param("followId") String followId, @Param("assistDataBase") String assistDataBase);
 
-    int getOrgsNum(@Param("mobile") String mobile, @Param("inviteCode") String inviteCode,
-                   @Param("followId") String followId, @Param("assistDataBase") String assistDataBase);
-
-    List<OrgListVo> findTeamOrgs(@Param("followUp") String followUp, @Param("inviteCode") String inviteCode,
-                                 @Param("followIds") List<String> followIds, @Param("assistDataBase") String assistDataBase,
-                                 @Param("limitStart") Integer limitStart, @Param("limitEnd") Integer limitEnd);
-
-    Integer getTeamOrgsNum(@Param("followUp") String followUp, @Param("inviteCode") String inviteCode,
-                           @Param("followIds") List<String> followIds, @Param("assistDataBase") String assistDataBase);
+    Page<OrgListVo> findTeamOrgs(Page page,@Param("followUp") String followUp, @Param("inviteCode") String inviteCode,
+                                 @Param("followIds") List<String> followIds, @Param("assistDataBase") String assistDataBase);
 
     //查找已分配跟进人的创客
     Page<AssignListVo> findAssignsFollow(Page page, @Param("searchVo") SearchVo searchVo, @Param("followIds") List<String> followIds, @Param("assistDataBase") String assistDataBase);

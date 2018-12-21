@@ -2,6 +2,7 @@ package com.dayi.follow.vo.org;
 
 import com.dayi.follow.enums.AgentCusTypeEnum;
 import com.dayi.follow.enums.AgentIntenTypeEnum;
+import com.dayi.follow.enums.OrgTypeEnum;
 import com.dayi.follow.util.CheckIdCardUtils;
 import com.dayi.follow.util.Misc;
 import org.apache.commons.lang3.StringUtils;
@@ -24,7 +25,7 @@ public class OrgListVo {
 
     private String mobile;//手机号
 
-    private Integer age;//年龄
+    private int age;//年龄
     private String idCard;//身份证
 
     private Date createDate;//注册时间，创建时间
@@ -32,9 +33,9 @@ public class OrgListVo {
     private Date expirationDate;//到期时间
     private String deadLineStr; //创客会员期限字符串
 
-    private Integer agentNum;//代理商数量
+    private int agentNum;//代理商数量
 
-    private Integer validAgentNum;//有效代理商
+    private int validAgentNum;//有效代理商
 
     private BigDecimal manageFund;//管理资产规模
     private String manageFundFm;//管理资产规模
@@ -42,6 +43,55 @@ public class OrgListVo {
     private String inviteCode;//邀请码
 
     private String followUp;//跟进人
+
+    private Integer orgType;//机构商类型
+    private String orgTypeStr;//机构商类型字符串
+
+    private Integer experienceMaker;// 是否体验创客
+
+    public Integer getExperienceMaker() {
+        return experienceMaker;
+    }
+
+    public void setExperienceMaker(Integer experienceMaker) {
+        this.experienceMaker = experienceMaker;
+    }
+
+    public String getOrgTypeStr() {
+        if (orgType != null) {
+            switch (orgType) {
+                case (1):
+                    orgTypeStr = OrgTypeEnum.Manager.getName();
+                    break;
+                case (2):
+                    orgTypeStr = OrgTypeEnum.Colligate.getName();
+                    break;
+                case (4):
+                    if (experienceMaker == 1) {
+                        orgTypeStr = "体验创客";
+                    } else {
+                        orgTypeStr = OrgTypeEnum.Maker.getName();
+                    }
+                    break;
+                case (5):
+                    orgTypeStr = OrgTypeEnum.CityServer.getName();
+                    break;
+            }
+        }
+        return orgTypeStr;
+    }
+
+    public void setOrgTypeStr(String orgTypeStr) {
+        this.orgTypeStr = orgTypeStr;
+    }
+
+    public Integer getOrgType() {
+        return orgType;
+    }
+
+    public void setOrgType(Integer orgType) {
+        this.orgType = orgType;
+    }
 
     public String getLinkPerson() {
         return linkPerson;

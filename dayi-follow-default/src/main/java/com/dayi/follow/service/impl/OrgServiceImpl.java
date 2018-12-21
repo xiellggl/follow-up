@@ -100,12 +100,8 @@ public class OrgServiceImpl implements OrgService {
 
     @Override
     public Page<OrgListVo> findOrgPage(Page<OrgListVo> page, String mobile, String inviteCode, String followId) {
-        List<OrgListVo> orgs = followOrgMapper.findOrgs(mobile, inviteCode, followId, dayiDataBaseStr, page.getStartRow(), page.getPageSize());
-
-        int orgsCount = followOrgMapper.getOrgsNum(mobile, inviteCode, followId, dayiDataBaseStr);
-
-        page.setResults(doOrgMore(orgs));
-        page.setTotalRecord(orgsCount);
+        page= followOrgMapper.findOrgs(page,mobile, inviteCode, followId, dayiDataBaseStr);
+        page.setResults(doOrgMore(page.getResults()));
         return page;
     }
 
@@ -120,6 +116,8 @@ public class OrgServiceImpl implements OrgService {
             item.setDeadLineStr(String.valueOf(daysBetween) + "天");//会员期限
 
             item.setAge(CheckIdCardUtils.getAgeByIdCard(item.getIdCard()));//年龄
+
+            if (!item.getOrgType().equals(OrgTypeEnum.Maker)) continue;//目前只算创客
 
             Organization org = orgMapper.get(item.getId());
             Integer switchStatus = org.getSwitchStatus();
@@ -155,11 +153,9 @@ public class OrgServiceImpl implements OrgService {
         List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
         followIds.remove(followId);
 
-        List<OrgListVo> orgs = followOrgMapper.findTeamOrgs(followUp, inviteCode, followIds, dayiDataBaseStr, page.getStartRow(), page.getPageSize());
+        page = followOrgMapper.findTeamOrgs(page, followUp, inviteCode, followIds, dayiDataBaseStr);
 
-        int orgsCount = followOrgMapper.getTeamOrgsNum(followUp, inviteCode, followIds, dayiDataBaseStr);
-        page.setResults(doOrgMore(orgs));
-        page.setTotalRecord(orgsCount);
+        page.setResults(doOrgMore(page.getResults()));
         return page;
     }
 

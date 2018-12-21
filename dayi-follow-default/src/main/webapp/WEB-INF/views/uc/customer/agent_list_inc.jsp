@@ -358,7 +358,7 @@
         </table>
         <c:if test="${not empty page.results}">
             <div class="pagerBar" id="pagerBar">
-                <common:page2 url="${pageUrl}" type="3" />
+                <common:page url="${pageUrl}" type="3" />
                 <input id="page-import" name="page-import" style="margin-left: 5px" class="input-sm" type="text" name="fname" placeholder="输入要跳转页数"/>
                 <a id="page-button" href="javascript:;" data-url="${pageUrl}">Go</a>
             </div>

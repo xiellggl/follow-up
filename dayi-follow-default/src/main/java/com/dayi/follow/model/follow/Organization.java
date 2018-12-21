@@ -8,8 +8,20 @@ import javax.persistence.Table;
  */
 public class Organization {
     private Integer id;
+    private Integer secondIncomeSwitch; /**二级收益开关(1：开启, -1:关闭)*/
+    private Integer switchStatus; //二级资管状态
+    private Integer orgType;//机构类型（1=经济会员，2=综合会员4=创客,5=城市服务商）
+    public Integer getSwitchStatus() {
+        return switchStatus;
+    }
 
+    public Integer getOrgType() {
+        return orgType;
+    }
 
+    public void setOrgType(Integer orgType) {
+        this.orgType = orgType;
+    }
 
     public Integer getId() {
         return id;
@@ -19,18 +31,9 @@ public class Organization {
         this.id = id;
     }
 
-    private Integer switchStatus; //二级资管状态
-
-    public Integer getSwitchStatus() {
-        return switchStatus;
-    }
-
     public void setSwitchStatus(Integer switchStatus) {
         this.switchStatus = switchStatus;
     }
-
-    /**二级收益开关(1：开启, -1:关闭)*/
-    private Integer secondIncomeSwitch;
 
     public Integer getSecondIncomeSwitch() {
         return secondIncomeSwitch;

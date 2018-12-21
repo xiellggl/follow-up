@@ -95,7 +95,7 @@ public class CountServiceImpl implements CountService {
         List<String> followIds = new ArrayList<String>();
         followIds.add(followId);
 
-        statusVo.setCusNum(countMapper.getCusNum(followIds, followDataBaseStr));// 跟进用户总数
+        statusVo.setCusNum(countMapper.getCusNum(followIds, followDataBaseStr));// 跟进代理商总数
         statusVo.setHadLinkNum(countMapper.getLinkCusNum(followIds, followDataBaseStr));   // 已联系--用户人数
         statusVo.setHadRealNameNum(countMapper.getNameCusNum(followIds, followDataBaseStr));// 已实名认证--用户人数
         statusVo.setHadSignNum(countMapper.getCardCusNum(followIds, followDataBaseStr));// 已绑卡--用户人数
@@ -201,9 +201,12 @@ public class CountServiceImpl implements CountService {
 
     @Override
     public int getValidAgentNum(List<Organization> orgs) {
-        int num = 0;
+        int num;
         int agentNum = 0;
         for (Organization orgVo : orgs) {
+
+            if (!orgVo.getOrgType().equals(OrgTypeEnum.Maker)) continue;//目前只算创客
+
             Integer switchStatus = orgVo.getSwitchStatus();
             if (switchStatus != null && switchStatus.equals(SwitchStatusEnum.OPEN.getKey())) {//二级资管开启
                 num = countMapper.getOrgValidAgentNum(orgVo.getId(), null);//包括2级
@@ -222,6 +225,9 @@ public class CountServiceImpl implements CountService {
         BigDecimal manageFund = BigDecimal.ZERO;//全部机构商资产
         BigDecimal orgManageFund;//单个机构商的管理资产
         for (Organization orgVo : orgs) {
+
+            if (!orgVo.getOrgType().equals(OrgTypeEnum.Maker)) continue;//目前只算创客
+
             BigDecimal oneLevel = orgMapper.getManageFundLevel1(orgVo.getId());//一级代理商资产
 
             BigDecimal twoLevel = BigDecimal.ZERO;//二级代理商资产
