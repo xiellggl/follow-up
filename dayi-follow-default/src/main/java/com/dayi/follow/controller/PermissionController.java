@@ -7,6 +7,7 @@ import com.dayi.follow.model.follow.Menu;
 import com.dayi.follow.model.follow.Permission;
 import com.dayi.follow.service.ModuleService;
 import com.dayi.follow.service.PermissionService;
+import com.dayi.follow.util.PageUtil;
 import com.dayi.follow.vo.sys.PermissionSearchVo;
 import com.dayi.mybatis.support.Page;
 import com.dayi.user.authorization.AuthorizationManager;
@@ -41,9 +42,11 @@ public class PermissionController {
      * 查询功能
      */
     @RequestMapping("/list")
-    public String list(PermissionSearchVo permissionSearchVo, Model model) {
+    public String list(HttpServletRequest request, PermissionSearchVo permissionSearchVo, Model model) {
         Page<Permission> page =  permissionService.searchPermissions(permissionSearchVo);
         model.addAttribute("page", page);
+        String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
+        model.addAttribute("pageUrl", pageUrl);
         List<Menu> menus = moduleService.listModule();
         model.addAttribute("menus", menus);
         return "sys/binding_list";

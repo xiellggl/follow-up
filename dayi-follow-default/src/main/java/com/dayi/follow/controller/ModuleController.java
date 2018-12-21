@@ -51,8 +51,33 @@ public class ModuleController {
         PermissionVo permissionVo =  new PermissionVo();
         permissionVo.setPermissions(permissionIds);
         List<Menu> menus = moduleService.queryMenus(permissionVo);
+
+
         return BizResult.succ(menus);
     }
+
+    @RequestMapping("/nav")
+    public String menusList(HttpServletRequest request, Model model){
+        // 获取权限
+        List<AuthorizationInfo> authorizationInfos = AuthorizationManager.getAuthorizationInfos(request);
+        if (null == authorizationInfos) {
+            return "redirect:/user/login";
+        }
+        List<String> permissionIds = new ArrayList<>(5);
+        for (AuthorizationInfo authorizationInfo : authorizationInfos) {
+            permissionIds.addAll(authorizationInfo.getPermissions());
+        }
+
+        PermissionVo permissionVo =  new PermissionVo();
+        permissionVo.setPermissions(permissionIds);
+        List<Menu> menus = moduleService.queryMenus(permissionVo);
+
+        model.addAttribute("navMenus",menus);
+
+        return "/sys/nav_menus";
+
+    }
+
 
     /**
      * 加载所有模块菜单

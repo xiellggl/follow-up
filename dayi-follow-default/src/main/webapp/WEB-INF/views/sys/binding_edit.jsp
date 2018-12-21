@@ -25,7 +25,7 @@
 
                         <div class="space-4"></div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label no-padding-right">*排序号：</label>
+                            <label class="col-sm-2 control-label no-padding-right">排序号：</label>
                             <div class="col-xs-12 col-sm-6">
                                 <input type="text" name="sort" value="${permission.sort}" class="form-control" />
                             </div>

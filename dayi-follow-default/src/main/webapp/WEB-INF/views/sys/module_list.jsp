@@ -352,7 +352,10 @@
             layer.confirm('<p class="tc">是否确定' + stateStr + '此模块</p>', {icon: 3, title: "温馨提示"}, function (index) {
                 layer.close(index);
                 common.ajax.handle({
-                    url: "/module/enableModule?id="+id,
+                    url: "/module/enableModule.json",
+                    data:{
+                        id:id
+                    },
                     succback: function (data) {
                         var btn = '<span class="btn btn-minier ' + className + '">' + stateStr + '</span>';
                         $btn.data("state", !state).html(btn).attr('data-original-title', "已" + stateStr);

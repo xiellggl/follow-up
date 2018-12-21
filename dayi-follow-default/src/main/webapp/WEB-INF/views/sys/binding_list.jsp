@@ -179,11 +179,11 @@
                                 </tbody>
                             </table>
 
-                            <%--<c:if test="${not empty page.items}">
+                            <c:if test="${not empty page.results}">
                                 <div class="pagerBar" id="pagerBar">
                                     <common:page2 url="${pageUrl}" type="3"/>
                                 </div>
-                            </c:if>--%>
+                            </c:if>
 
                         </div>
                     </div>
