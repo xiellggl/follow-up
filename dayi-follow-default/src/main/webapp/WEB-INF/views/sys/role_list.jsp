@@ -74,7 +74,7 @@
                                             <a class="state-btn" data-state="${item.status}" href="#"
                                                data-id="${item.id}" title="已${item.status eq 1 ? '启用':'禁用'}">
                                             <span class="btn btn-minier ${item.status eq 1 ? 'btn-yellow':'btn-danger'}">
-                                                    ${item.status  eq 1 ? '启动':'禁用'}
+                                                    ${item.status  eq 1 ? '启用':'禁用'}
                                             </span>
                                             </a>
                                         </td>
@@ -134,7 +134,7 @@
             var className = act == 1 ? "btn-yellow" : "btn-danger";
             var $btn = $(this);
             var id = $(this).closest("tr").data("id");
-            layer.confirm('<p class="tc">是否确定' + stateStr + '此用户</p>', {icon: 3, title: "温馨提示"}, function (index) {
+            layer.confirm('<p class="tc">是否确定' + stateStr + '此角色</p>', {icon: 3, title: "温馨提示"}, function (index) {
                 layer.close(index);
                 common.ajax.handle({
                     url: "/role/enableRole.json",

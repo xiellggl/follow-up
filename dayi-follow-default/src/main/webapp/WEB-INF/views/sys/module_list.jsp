@@ -46,7 +46,7 @@
                                 <tr>
                                     <th></th>
                                     <th>模块名称</th>
-                                    <th>菜单状态</th>
+                                    <th>模块状态</th>
                                     <th>功能路径</th>
                                     <th>排序</th>
                                     <th>操作</th>
@@ -122,7 +122,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-right">样式名称：</label>
                                 <div class="col-xs-12 col-sm-6">
-                                    <input type="text" name="css" value="{{css}}" class="form-control"/>
+                                    <input type="text" name="cssName" value="{{cssName}}" class="form-control"/>
                                 </div>
                                 <div class="help-block col-xs-12 col-sm-reset inline">只针对顶级栏目有效</div>
                                 <span class="col-sm-2"></span>
@@ -144,11 +144,11 @@
                                 <div class="col-sm-9 inline align-middle" style="padding-top:8px;">
                                     <label style="margin-right: 15px;">
                                         <input type="radio" name="status" value="1" {{id==null||status==1?'checked':''}}/>
-                                        开启
+                                        启用
                                     </label>
                                     <label>
                                         <input type="radio" name="status" value="0" {{status==0?'checked':''}}/>
-                                        关闭
+                                        禁用
                                     </label>
                                 </div>
                             </div>
@@ -344,9 +344,9 @@
         //禁用/启用
         $(".state-btn").on("click", function () {
             var state = $(this).data("state");
-            var act = state == 0 ? "true" : "false";
-            var stateStr = act == "true" ? "启用" : "禁用";
-            var className = act == "true" ? "btn-yellow" : "btn-danger";
+            var act = state == 0 ? 1 : 0;
+            var stateStr = act == 1 ? "启用" : "禁用";
+            var className = act == 1 ? "btn-yellow" : "btn-danger";
             var $btn = $(this);
             var id = $(this).closest("tr").data("id");
             layer.confirm('<p class="tc">是否确定' + stateStr + '此模块</p>', {icon: 3, title: "温馨提示"}, function (index) {
@@ -354,7 +354,8 @@
                 common.ajax.handle({
                     url: "/module/enableModule.json",
                     data:{
-                        id:id
+                        id:id,
+                        enable:act
                     },
                     succback: function (data) {
                         var btn = '<span class="btn btn-minier ' + className + '">' + stateStr + '</span>';

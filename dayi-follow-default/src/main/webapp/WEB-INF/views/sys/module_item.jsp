@@ -6,27 +6,31 @@
         <tr id="${cur.id} - ${cur.parentId}" data-id="${cur.id}">
             <td></td>
             <td><span style="padding-left:${level>0?2*level:0}em;">${cur.name}</span></td>
-            <td class="center">
-                <a class="state-btn" data-state="1" href="javascript:;" data-id="30" title="" data-original-title="已启用">
-                    <span class="btn btn-minier btn-yellow">启用</span>
-                </a>
+            <td>
+                <c:if test="${cur.type eq 0}">
+                    <a class="state-btn" data-state="${cur.status}" href="javascript:;" data-id="${cur.id}" title="已${cur.status eq 1 ? '启用':'禁用'}">
+                        <span class="btn btn-minier ${cur.status eq 1 ? 'btn-yellow':'btn-danger'}">
+                            ${cur.status  eq 1 ? '启用':'禁用'}
+                        </span>
+                    </a>
+                </c:if>
             </td>
             <td>${cur.url}</td>
             <td>${cur.order}</td>
             <td>
                 <c:if test="${cur.type eq 0}">
-                <a href="#" data-pid="${cur.id}" data-toggle="modal" data-target="#myModalEditModule" data-toggle="tooltip" title="添加子类">
-                    <i class="ace-icon fa fa-plus-circle bigger-130"></i>
-                </a>
-                <a href="#" data-id="${cur.id}" data-toggle="modal" data-target="#myModalEditModule" data-toggle="tooltip" title="修改">
-                    <i class="ace-icon fa fa-pencil bigger-130"></i>
-                </a>
-                <a href="#" data-act="del" data-toggle="tooltip" title="删除">
-                    <i class="ace-icon fa fa-trash-o bigger-130 red"></i>
-                </a>
-                <a href="#" data-act="bind" data-toggle="tooltip" title="绑定功能">
-                    <i class="ace-icon fa fa-link bigger-130"></i>
-                </a>
+                    <a href="#" data-pid="${cur.id}" data-toggle="modal" data-target="#myModalEditModule" data-toggle="tooltip" title="添加子类">
+                        <i class="ace-icon fa fa-plus-circle bigger-130"></i>
+                    </a>
+                    <a href="#" data-id="${cur.id}" data-toggle="modal" data-target="#myModalEditModule" data-toggle="tooltip" title="修改">
+                        <i class="ace-icon fa fa-pencil bigger-130"></i>
+                    </a>
+                    <a href="#" data-act="del" data-toggle="tooltip" title="删除">
+                        <i class="ace-icon fa fa-trash-o bigger-130 red"></i>
+                    </a>
+                    <%--<a href="#" data-act="bind" data-toggle="tooltip" title="绑定功能">
+                        <i class="ace-icon fa fa-link bigger-130"></i>
+                    </a>--%>
                 </c:if>
                 <c:if test="${cur.type eq 1}">
                     <a href="#" data-act="unbind" data-toggle="tooltip" title="解绑功能">

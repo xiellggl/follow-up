@@ -44,6 +44,7 @@ public class PermissionController {
     @RequestMapping("/list")
     public String list(HttpServletRequest request, PermissionSearchVo permissionSearchVo, Model model) {
         Page<Permission> page =  permissionService.searchPermissions(permissionSearchVo);
+        page.setPageSize(30);
         model.addAttribute("page", page);
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
         model.addAttribute("pageUrl", pageUrl);

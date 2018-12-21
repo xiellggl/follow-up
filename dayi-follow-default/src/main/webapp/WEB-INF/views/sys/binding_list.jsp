@@ -74,7 +74,7 @@
                                         <option value="">所属模块</option>
                                         <c:set var="selectedId" value="${param.moduleId}" scope="request" />
                                         <c:set var="selectList" value="${menus}" />
-                                        <%@ include file="module_option_item.jsp" %>
+                                        <%@ include file="module_option_item2.jsp" %>
                                     </select>
                                 </div>
                             </div>
@@ -127,10 +127,11 @@
                                         <input type="hidden" id="checkIds" name="ids" value="">
                                     </th>
                                     <th>功能名称</th>
-                                    <th>所属模块</th>
+                                    <th>显示状态</th>
                                     <th class="hidden-sm hidden-xs">功能路径</th>
-                                    <th>添加时间</th>
-                                    <th>修改时间</th>
+                                    <th>所属模块</th>
+                                    <th class="hidden-sm hidden-xs">添加时间</th>
+                                    <th class="hidden-sm hidden-xs">修改时间</th>
                                     <th>备注</th>
                                     <th>操作</th>
                                 </tr>
@@ -158,8 +159,16 @@
                                         </label>
                                     </td>
                                     <td>${item.name}</td>
-                                    <td>${item.moduleName}</td>
+                                    <td>
+                                        <a class="state-btn" data-state="${item.displayStatus}" href="#"
+                                           data-id="${item.id}" title="已${item.displayStatus eq 1 ? '显示':'隐藏'}">
+                                            <span class="btn btn-minier ${item.displayStatus eq 1 ? 'btn-yellow':'btn-danger'}">
+                                                    ${item.displayStatus  eq 1 ? '显示':'隐藏'}
+                                            </span>
+                                        </a>
+                                    </td>
                                     <td>${item.url}</td>
+                                    <td>${item.moduleName}</td>
                                     <td class="hidden-sm hidden-xs"><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                     <td class="hidden-sm hidden-xs"><fmt:formatDate value="${item.updateTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                     <td>${item.description}</td>
@@ -181,7 +190,7 @@
 
                             <c:if test="${not empty page.results}">
                                 <div class="pagerBar" id="pagerBar">
-                                    <common:page2 url="${pageUrl}" type="3"/>
+                                    <common:page url="${pageUrl}" type="3"/>
                                 </div>
                             </c:if>
 
@@ -288,6 +297,33 @@
                 });
             });
         });
+
+        //显示/隐藏
+        $(".state-btn").on("click", function () {
+            var state = $(this).data("state");
+            var act = state == 0 ? 1 : 0;
+            var stateStr = act == 1 ? "显示" : "隐藏";
+            var className = act == 1 ? "btn-yellow" : "btn-danger";
+            var $btn = $(this);
+            var id = $(this).closest("tr").data("id");
+            layer.confirm('<p class="tc">是否确定设置为' + stateStr + '</p>', {icon: 3, title: "温馨提示"}, function (index) {
+                layer.close(index);
+                common.ajax.handle({
+                    url: "/permission/displace.json",
+                    data:{
+                        id:id,
+                        displace:act
+                    },
+                    succback: function (data) {
+                        var btn = '<span class="btn btn-minier ' + className + '">' + stateStr + '</span>';
+                        $btn.data("state", !state).html(btn).attr('data-original-title', "已" + stateStr);
+                        return false;
+                    }
+                });
+            });
+            return false;
+        });
+
 
         var $list = $("#listPan");
         //全选、反选

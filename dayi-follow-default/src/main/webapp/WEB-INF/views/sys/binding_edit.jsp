@@ -43,13 +43,27 @@
 
                         <div class="space-4"></div>
                         <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right">*显示状态：</label>
+                            <div class="col-sm-9 inline align-middle" style="padding-top:8px;">
+                                <label style="margin-right: 15px;">
+                                    <input type="radio" name="displayStatus" value="1" ${permission.displayStatus eq 1 ? "checked" : ""} />
+                                    显示
+                                </label>
+                                <label>
+                                    <input type="radio" name="displayStatus" value="0" ${empty permission.id or permission.displayStatus eq 0 ? "checked" : ""} />
+                                    隐藏
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <label class="col-sm-2 control-label no-padding-right">所属模块：</label>
                             <div class="col-xs-12 col-sm-6">
                                 <select name="moduleid" class="chosen-select form-control">
                                     <option value="">选择所属模块</option>
                                     <c:set var="selectedId" value="${permission.moduleid}" scope="request" />
                                     <c:set var="selectList" value="${menus}" />
-                                    <%@ include file="module_option_item.jsp" %>
+                                    <%@ include file="module_option_item2.jsp" %>
                                 </select>
                             </div>
                             <div class="help-block col-xs-12 col-sm-reset inline tips_box"></div>
