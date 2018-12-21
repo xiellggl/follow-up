@@ -32,8 +32,7 @@
         </h5>
     </div>
 
-    <jsp:include page="/module/nav" />
-
+    <jsp:include page="/module/nav"/>
 
     <!-- 菜单列表开始 -->
     <ul class="nav nav-list" id="navSide">
