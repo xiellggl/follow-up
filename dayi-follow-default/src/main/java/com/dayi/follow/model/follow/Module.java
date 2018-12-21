@@ -30,6 +30,11 @@ public class Module extends BaseModel implements Comparable<Module> {
     private String url;
 
     /**
+     * 样式名称
+     */
+    private String cssName;
+
+    /**
      * 状态（0=禁用，1=启用）
      */
     private Integer status;
@@ -124,7 +129,13 @@ public class Module extends BaseModel implements Comparable<Module> {
         return this;
     }
 
+    public String getCssName() {
+        return cssName;
+    }
 
+    public void setCssName(String cssName) {
+        this.cssName = cssName;
+    }
 
     public String getUrl() {
         return url;

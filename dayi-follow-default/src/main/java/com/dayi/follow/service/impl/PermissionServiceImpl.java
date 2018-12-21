@@ -98,7 +98,6 @@ public class PermissionServiceImpl implements PermissionService {
     @Log(target = OperateLog.class, action = BaseLog.LogAction.UPDATE, what = "权限管理", note = "添加权限")
     public boolean addPermission(Permission permission) {
         permission.setStatus(Permission.STATUS_NORMAL.id);
-        permission.setDisplayStatus(Permission.DISPLAY_STATUS_DISABLE.id);
         permission.setDelStatus(Permission.DEL_STATUS_NO.id);
         permission.setId(permissionMapper.getNewId());
         return 1 == permissionMapper.add(permission);
