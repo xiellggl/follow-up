@@ -1,18 +1,18 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
-<%@include file="/inc/followup/taglib.jsp" %>
+<%@include file="/inc/followup/taglib.jsp"%>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="utf-8"/>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>跟进人分配</title>
-    <%@include file="/inc/followup/csslink.jsp" %>
-    <c:set var="typeStr" value="${flowTypeTab eq 2?'创客':'代理商'}"/>
+    <%@include file="/inc/followup/csslink.jsp"%>
     <link rel="stylesheet" type="text/css" media="all" href="/static/public/daterangepicker3/daterangepicker.css"/>
 </head>
 <body class="no-skin">
-<%@include file="/inc/followup/topbar.jsp" %>
+<%@include file="/inc/followup/topbar.jsp"%>
 <div class="main-container" id="main-container">
-    <%@include file="/inc/followup/sidebar.jsp" %>
+    <%@include file="/inc/followup/sidebar.jsp"%>
     <div class="main-content">
         <div class="main-content-inner">
             <div class="breadcrumbs ace-save-state breadcrumbs-fixed" id="breadcrumbs">
@@ -22,7 +22,7 @@
                         <a href="/followup/manage/index">首页</a>
                     </li>
                     <li>跟进人分配</li>
-                    <li class="active">${typeStr}</li>
+                    <li class="active">代理商</li>
                 </ul><!-- /.breadcrumb -->
             </div>
             <div class="page-content">
@@ -31,44 +31,41 @@
                         您当前操作
                         <small>
                             <i class="ace-icon fa fa-angle-double-right"></i>
-                            分配${typeStr}
+                            分配代理商
                         </small>
                     </h1>
                 </div>
                 <div class="row">
-                    <form class="form-horizontal" style="max-width: 800px;">
-                        <c:if test="${flowTypeTab eq 2}">
-                            <input type="hidden" name="flowTypeTab" value="2">
-                        </c:if>
+                    <form class="form-horizontal" >
                         <div class="clearfix maintop">
-                            <div class="col-sm-3 hidden-xs btn-sespan">
+                            <div class="col-sm-2 hidden-xs btn-sespan">
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-calendar"></i>
                                     </span>
-                                    <input type="text" class="form-control admin_sea dates" name="regdates" value="${param.regdates}"
+                                    <input type="text" class="form-control admin_sea dates" name="createDate" value="${param.createDate}"
                                            placeholder="注册时间"/>
                                 </div>
                             </div>
-                            <div class="col-xs-4 col-sm-3 btn-sespan">
+                            <div class="col-xs-4 col-sm-2 btn-sespan">
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <i class="ace-icon glyphicon glyphicon-phone"></i>
                                     </span>
-                                    <input type="text" name="filter_LIKEANYWHERES_mobile" class="form-control admin_sea"
-                                           value="${param.filter_LIKEANYWHERES_mobile}" placeholder="客户手机号码"/>
+                                    <input type="text" name="mobile" class="form-control admin_sea"
+                                           value="${param.mobile}" placeholder="客户手机号码"/>
                                 </div>
                             </div>
-                            <div class="col-xs-4 col-sm-3 btn-sespan">
+                            <div class="col-xs-4 col-sm-2 btn-sespan">
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-user"></i>
                                     </span>
-                                    <input type="text" name="filter_LIKEANYWHERES_linkPerson" class="form-control admin_sea"
-                                           value="${param.filter_LIKEANYWHERES_linkPerson}" placeholder="客户姓名"/>
+                                    <input type="text" name="cusName" class="form-control admin_sea"
+                                           value="${param.cusName}" placeholder="客户姓名"/>
                                 </div>
                             </div>
-                            <div class="col-xs-4 col-sm-3 btn-sespan">
+                            <div class="col-xs-4 col-sm-2 btn-sespan">
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-check-square-o"></i>
@@ -80,44 +77,38 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-xs-4 col-sm-2 btn-sespan">
+                            </div>
                         </div>
                         <div class="clearfix maintop">
-                            <div class="col-sm-3 hidden-xs btn-sespan">
+                            <div class="col-sm-2 hidden-xs btn-sespan">
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-calendar"></i>
                                     </span>
-                                    <input type="text" class="form-control admin_sea dates" name="assigndates" value="${param.assigndates}"
+                                    <input type="text" class="form-control admin_sea dates" name="assignStatus" value="${param.assignStatus}"
                                            placeholder="分配时间"/>
                                 </div>
                             </div>
-                            <div class="col-xs-4 col-sm-3 btn-sespan">
+                            <div class="col-xs-4 col-sm-2 btn-sespan">
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-check"></i>
                                     </span>
-                                    <input type="text" name="filter_LIKEANYWHERES_followUp" class="form-control admin_sea"
-                                           value="${param.filter_LIKEANYWHERES_followUp}" placeholder="跟进人"/>
+                                    <input type="text" name="followUp" class="form-control admin_sea"
+                                           value="${param.followUp}" placeholder="跟进人"/>
                                 </div>
                             </div>
-                            <div class="col-xs-4 col-sm-3 btn-sespan">
+                            <div class="col-xs-4 col-sm-2 btn-sespan">
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-barcode"></i>
                                     </span>
-                                    <c:choose>
-                                        <c:when test="${flowTypeTab eq 2}">
-                                            <input type="text" name="filter_LIKEANYWHERES_makerNum" class="form-control admin_sea"
-                                                   value="${param.filter_LIKEANYWHERES_makerNum}" placeholder="邀请码"/>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <input type="text" name="filter_LIKEANYWHERES_recordInviteCode" class="form-control admin_sea"
-                                                   value="${param.filter_LIKEANYWHERES_recordInviteCode}" placeholder="邀请码"/>
-                                        </c:otherwise>
-                                    </c:choose>
+                                    <input type="text" name="inviteCode" class="form-control admin_sea"
+                                           value="${param.inviteCode}" placeholder="邀请码"/>
                                 </div>
                             </div>
-                            <div class="col-xs-4 col-sm-3 btn-sespan">
+                            <div class="col-xs-4 col-sm-2 btn-sespan">
                                 <div class="btn-group dropup">
                                     <button type="submit" class="btn btn-xs btn-purple">
                                         <span class="ace-icon fa fa-search"></span>
@@ -132,7 +123,7 @@
                                         </li>
                                     </ul>
                                 </div>
-                                <a href="./list${flowTypeTab eq 2 ? '?flowTypeTab=2' : ''}"
+                                <a href="./list"
                                    class="btn btn-xs btn-info hidden-xs">
                                     <span class="ace-icon fa fa-globe"></span>
                                     显示全部
@@ -167,18 +158,12 @@
 
                                         <span class="lbl"></span>
                                     </label>
-                                    <input type="hidden" id="checkIds" name="ids">
+                                    <input type="hidden" id="checkIds" name="ids" value="">
                                 </th>
                                 <th>姓名</th>
                                 <th class="hidden-xs">注册时间</th>
                                 <th>手机号</th>
-                                <c:if test="${flowTypeTab eq 1}">
-                                    <th class="hidden-sm hidden-xs">开户银行</th>
-                                </c:if>
                                 <th class="hidden-sm hidden-xs">身份证号</th>
-                                <c:if test="${flowTypeTab eq 1}">
-                                    <th class="hidden-sm hidden-xs">银行卡号</th>
-                                </c:if>
                                 <th>跟进人</th>
                                 <th class="hidden-xs">分配时间</th>
                                 <th>邀请码</th>
@@ -186,15 +171,15 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:if test="${empty page.items}">
+                            <c:if test="${empty page.results}">
                                 <tr>
                                     <td colspan="12" class="no_data">暂无数据记录</td>
                                 </tr>
                             </c:if>
 
-                            <c:if test="${not empty page.items}">
-                                <c:forEach items="${page.items}" var="item">
-                                    <tr>
+                            <c:if test="${not empty page.results}">
+                                <c:forEach items="${page.results}" var="item" >
+                                    <tr data-id="${item.id}">
                                         <td class="center">
                                             <label class="pos-rel">
                                                 <input type="checkbox" class="ace check" name="id" value="${item.id}">
@@ -202,48 +187,33 @@
                                             </label>
                                         </td>
                                         <!-- 名称 -->
-                                        <td>${item.linkPersonStr}</td>
+                                        <td>${item.linkPersonFm}</td>
                                         <!-- 注册时间 -->
                                         <td class="hidden-xs"><fmt:formatDate value="${item.createDate}"
                                                                               pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                         <!-- 手机号 -->
                                         <td>${item.mobile}</td>
-                                        <!-- 开户银行 -->
-                                        <c:if test="${flowTypeTab eq 1}">
-                                            <td class="hidden-sm hidden-xs">${item.bankName}<c:if
-                                                test="${not empty item.bankRealName}"><br>(${item.bankRealName})</c:if>
-                                            </td>
-                                        </c:if>
                                         <!-- 身份证号 -->
                                         <td class="hidden-sm hidden-xs"><c:if
-                                            test="${not empty item.idCard}">${fn:substring(item.idCard, 0, fn:length(item.idCard) - 4)}****</c:if></td>
-                                        <!-- 银行卡号 -->
-                                        <c:if test="${flowTypeTab eq 1}">
-                                            <td class="hidden-sm hidden-xs"><c:if
-                                                test="${not empty item.bankAccount}">${fn:substring(item.bankAccount,0,3)}**********${fn:substring(item.bankAccount, fn:length(item.bankAccount)-3, -1)}</c:if></td>
-                                        </c:if>
+                                                test="${not empty item.idCard}">${fn:substring(item.idCard, 0, fn:length(item.idCard) - 4)}****</c:if></td>
                                         <!-- 跟进人 -->
                                         <td>${item.followUp}</td>
                                         <!-- 分配时间 -->
-                                        <td class="hidden-xs"><fmt:formatDate value="${item.flowDate}"
-                                                                              pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                        <td class="hidden-xs"><fmt:formatDate value="${item.assignDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                         <!-- 邀请码 -->
-                                        <td>
-                                            <c:if test="${flowTypeTab eq 1}">${item.recordInviteCode}</c:if>
-                                            <c:if test="${flowTypeTab eq 2}">${item.inviteCodeStr}</c:if>
-                                        </td>
+                                        <td>${item.inviteCode}</td>
                                         <!-- 操作 -->
                                         <td>
                                             <a style="margin: 0 5px;" href="javascript:;" class="green"
-                                               data-id="${item.id}" data-from="from=assign_list" data-flowid="${item.flowId}"
-                                               data-name='<c:if test="${not empty item.linkPerson}">${fn:substring(item.linkPerson,0,1)}**</c:if>'
+                                               data-id="${item.id}" data-from="from=assign_list" data-flowid="${item.followId}"
+                                               data-name='<c:if test="${not empty item.linkPersonFm}">${fn:substring(item.linkPersonFm,0,1)}**</c:if>'
                                                data-act="assign" data-toggle="tooltip" title="分配跟进人">
                                                 <i class="ace-icon glyphicon glyphicon-log-in"></i>
                                             </a>
-                                            <c:if test="${not empty item.flowId}">
+                                            <c:if test="${not empty item.followId}">
                                                 <a style="margin: 0 5px;" href="javascript:;" class="light-grey"
                                                    data-id="${item.id}"
-                                                   data-name='<c:if test="${not empty item.linkPerson}">${fn:substring(item.linkPerson,0,1)}**</c:if>'
+                                                   data-name='<c:if test="${not empty item.linkPersonFm}">${fn:substring(item.linkPersonFm,0,1)}**</c:if>'
                                                    data-act="clearAssign" data-toggle="tooltip" title="清除分配">
                                                     <i class="ace-icon glyphicon glyphicon-log-out"></i>
                                                 </a>
@@ -254,11 +224,11 @@
                             </c:if>
                             </tbody>
                         </table>
-                        <c:if test="${not empty page.items}">
-                            <div class="pagerBar" id="pagerBar">
-                                <common:page2 url="${pageUrl}" type="3"/>
-                            </div>
-                        </c:if>
+                        <%--<c:if test="${not empty page.items}">--%>
+                        <%--<div class="pagerBar" id="pagerBar">--%>
+                        <%--<common:page2 url="${pageUrl}" type="3"/>--%>
+                        <%--</div>--%>
+                        <%--</c:if>--%>
                     </div>
                 </div>
             </div>
@@ -285,13 +255,12 @@
         </div>
     </div>
 </div>
-
-<%@include file="/inc/followup/script.jsp" %>
-<script charset="UTF-8" src="/static/public/daterangepicker3/moment.min.js"></script>
+<%@include file="/inc/followup/script.jsp"%>
+<script charset="UTF-8" async="" src="/static/public/daterangepicker3/moment.min.js"></script>
 <script>
-    var flowTypeTab =${flowTypeTab}; // 页签状态：1--代理商；2--创客
     seajs.use(["common", "daterangepicker"], function (common) {
-        common.head("followuperAssign",flowTypeTab);
+        //菜单高亮
+        common.head("followuperAssign",1);
         var date_o = {
             autoUpdateInput: false,
             locale: locale_cn,
@@ -310,8 +279,6 @@
         //全选、反选
         common.checkBox($("#chkAll"), $list.find('[name="id"]'), $("#checkIds"));
 
-        var type = flowTypeTab == 2 ? "org" : "agent";
-
         //清除分配
         $('[data-act="clearAssign"]').on("click", function () {
             var $this = $(this), ids, name;
@@ -329,7 +296,7 @@
             }
             layer.confirm('<p class="tc red">是否清除【' + name + '】的跟进人</p>', {title: "温馨提示"}, function () {
                 common.ajax.handle({
-                    url: "/followup/manage/followuper/assign/" + type + "/clear.json",
+                    url: "/agent/assign/clear.json",
                     data: {ids: ids}
                 });
             });
@@ -339,17 +306,17 @@
         var $pageListPanel = $myModal.find(".selectlistbox");
         var ids = null;
         var select_data = null;
-        var url_selectlist = "/followup/manage/followuper/assign/select";
+        var url_selectlist = "/agent/assign/select";
 
         //分配跟进人
         $('[data-act="assign"]').on("click", function () {
             var $this = $(this);
             var from = $(this).data("from");
             var flowId = $(this).data("flowid");
-            var url_from = "/followup/manage/followuper/assign/select?" + from + "&flowId=" + flowId;
+            var url_from = "/agent/assign/select?" + from + "&followId=" + flowId;
 
             if ($this.hasClass("all")) {
-                url_from = "/followup/manage/followuper/assign/select?" + from;
+                url_from = "/agent/assign/select?" + from;
                 //批量操作
                 if ($(".check:checked").length <= 0) {
                     layer.alert('<p class="tc cRed">请最少选择一名用户！！！</p>', {title: "温馨提示"});
@@ -369,9 +336,9 @@
         //搜索
         $myModal.on("click", '[data-act="search"]', function () {
             var flowId = $(this).data("flowid");
-            var linkPerson = $myModal.find('[name="linkPerson"]').val();
+            var linkPerson = $myModal.find('[name="followUp"]').val();
             var from = $(this).data("from");
-            select_data = {filter_LIKEANYWHERES_linkPerson: linkPerson};
+            select_data = {followUp: linkPerson};
             select_data.from=from;
             select_data.flowId=flowId;
             common.loadPageHTML(url_selectlist, select_data, $pageListPanel, true);
@@ -381,8 +348,8 @@
         $myModal.on("click", '[data-act="check"]', function () {
             var id = $(this).data("id");
             common.ajax.handle({
-                url: "/followup/manage/followuper/assign/" + type + "/save.json",
-                data: {flowId: id, ids: ids},
+                url: "/agent/assign/save.json",
+                data: {followId: id, agentId: ids},
                 succback: function (data) {
                     $myModal.modal("hide");
                     ids = null;

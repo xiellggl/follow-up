@@ -60,7 +60,7 @@ public class AgentAssignController extends BaseController{
 
         request.setAttribute("pageUrl", pageUrl);
         model.addAttribute("page", page);
-        return "/manage/followuper/assign_list";
+        return "/manage/followuper/agent_assign_list";
     }
 
     /**
