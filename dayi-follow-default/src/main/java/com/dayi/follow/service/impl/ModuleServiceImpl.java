@@ -232,6 +232,7 @@ public class ModuleServiceImpl implements ModuleService {
         for (Module module : modules) {
             Menu menu = new Menu(module.getId(), module.getName(), module.getParentid(), module.getUrl(), module.getStatus(), module.getSort());
             menu.setType(Menu.TYPE_NONLEAF_NODE.id);
+            menu.setCssName(module.getCssName());
             menus.add(menu);
         }
         return menus;

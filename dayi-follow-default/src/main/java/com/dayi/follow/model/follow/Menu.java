@@ -46,6 +46,11 @@ public class Menu implements Serializable, Comparable<Menu> {
     private Integer status;
 
     /**
+     * 样式名称
+     */
+    private String cssName;
+
+    /**
      * 菜单顺序
      */
     private Integer order;
@@ -145,6 +150,14 @@ public class Menu implements Serializable, Comparable<Menu> {
     public Menu setType(int type) {
         this.type = type;
         return this;
+    }
+
+    public String getCssName() {
+        return cssName;
+    }
+
+    public void setCssName(String cssName) {
+        this.cssName = cssName;
     }
 
     @Override
