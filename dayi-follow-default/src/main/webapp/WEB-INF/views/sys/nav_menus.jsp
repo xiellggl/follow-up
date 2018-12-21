@@ -2,5 +2,5 @@
 <%@include file="/inc/followup/taglib.jsp"%>
 <!-- 菜单列表开始 -->
 <ul class="nav nav-list" id="navSide">
-    <c:import url="nav_item.jsp" />
+    <%@ include file="nav_item.jsp" %>
 </ul>
