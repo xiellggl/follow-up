@@ -24,6 +24,7 @@ public class OrgContact extends BaseModel {
     private String followUp;
     @Transient
     private String contactTypeStr;
+
     public Integer getOrgId() {
         return orgId;
     }
@@ -65,26 +66,7 @@ public class OrgContact extends BaseModel {
     }
 
     public String getContactTypeStr() {
-        if (contactType != null) {
-            switch (contactType) {
-                case (1):
-                    contactTypeStr = ContactTypeEnum.PHONE.getName();
-                    break;
-                case (2):
-                    contactTypeStr = ContactTypeEnum.WECHAT.getName();
-                    break;
-                case (3):
-                    contactTypeStr = ContactTypeEnum.QQ.getName();
-                    break;
-                case (4):
-                    contactTypeStr = ContactTypeEnum.EMAIL.getName();
-                    break;
-                case (5):
-                    contactTypeStr = ContactTypeEnum.MESSAGE.getName();
-                    break;
-            }
-        }
-        return contactTypeStr;
+        return ContactTypeEnum.getNameByValue(contactType);
     }
 
     public void setContactTypeStr(String contactTypeStr) {

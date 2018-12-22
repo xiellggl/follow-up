@@ -40,4 +40,13 @@ public enum AgentIntenTypeEnum {
         this.name = name;
         this.value = value;
     }
+
+    public static String getNameByValue(int value) {
+        for (AgentIntenTypeEnum item : AgentIntenTypeEnum.values()) {
+            if (item.value == value) {
+                return item.getName();
+            }
+        }
+        return "";
+    }
 }

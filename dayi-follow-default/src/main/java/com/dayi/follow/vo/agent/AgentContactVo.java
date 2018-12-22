@@ -93,29 +93,7 @@ public class AgentContactVo extends BaseModel {
     }
 
     public String getCustomerTypeStr() {
-        if (customerType != null) {
-            switch (customerType) {
-                case (1):
-                    customerTypeStr = AgentCusTypeEnum.NOT_LINK.getName();
-                    break;
-                case (2):
-                    customerTypeStr = AgentCusTypeEnum.OPEN_ACCOUNT.getName();
-                    break;
-                case (3):
-                    customerTypeStr = AgentCusTypeEnum.CAN_FOLLOWUP.getName();
-                    break;
-                case (4):
-                    customerTypeStr = AgentCusTypeEnum.NO_INTENTION.getName();
-                    break;
-                case (5):
-                    customerTypeStr = AgentCusTypeEnum.LOST.getName();
-                    break;
-                case (6):
-                    customerTypeStr = AgentCusTypeEnum.INVALID.getName();
-                    break;
-            }
-        }
-        return customerTypeStr;
+        return AgentCusTypeEnum.getNameByValue(customerType);
     }
 
     public void setCustomerTypeStr(String customerTypeStr) {
@@ -123,23 +101,7 @@ public class AgentContactVo extends BaseModel {
     }
 
     public String getCusIntentionTypeStr() {
-        if (cusIntentionType != null) {
-            switch (cusIntentionType) {
-                case (1):
-                    cusIntentionTypeStr = AgentIntenTypeEnum.STRONG.getName();
-                    break;
-                case (2):
-                    cusIntentionTypeStr = AgentIntenTypeEnum.MIDDLE.getName();
-                    break;
-                case (3):
-                    cusIntentionTypeStr = AgentIntenTypeEnum.WEAK.getName();
-                    break;
-                case (4):
-                    cusIntentionTypeStr = AgentIntenTypeEnum.NO.getName();
-                    break;
-            }
-        }
-        return cusIntentionTypeStr;
+        return AgentIntenTypeEnum.getNameByValue(cusIntentionType);
     }
 
     public void setCusIntentionTypeStr(String cusIntentionTypeStr) {
@@ -147,26 +109,7 @@ public class AgentContactVo extends BaseModel {
     }
 
     public String getContactTypeStr() {
-        if (contactType != null) {
-            switch (contactType) {
-                case (1):
-                    contactTypeStr = ContactTypeEnum.PHONE.getName();
-                    break;
-                case (2):
-                    contactTypeStr = ContactTypeEnum.WECHAT.getName();
-                    break;
-                case (3):
-                    contactTypeStr = ContactTypeEnum.QQ.getName();
-                    break;
-                case (4):
-                    contactTypeStr = ContactTypeEnum.EMAIL.getName();
-                    break;
-                case (5):
-                    contactTypeStr = ContactTypeEnum.MESSAGE.getName();
-                    break;
-            }
-        }
-        return contactTypeStr;
+        return ContactTypeEnum.getNameByValue(contactType);
     }
 
     public void setContactTypeStr(String contactTypeStr) {

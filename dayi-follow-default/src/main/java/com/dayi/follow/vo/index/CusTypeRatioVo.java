@@ -25,29 +25,7 @@ public class CusTypeRatioVo {
     }
 
     public String getCusTypeStr() {
-        if (cusType != null) {
-            switch (cusType) {
-                case (1):
-                    cusTypeStr = AgentCusTypeEnum.NOT_LINK.getName();
-                    break;
-                case (2):
-                    cusTypeStr = AgentCusTypeEnum.OPEN_ACCOUNT.getName();
-                    break;
-                case (3):
-                    cusTypeStr = AgentCusTypeEnum.CAN_FOLLOWUP.getName();
-                    break;
-                case (4):
-                    cusTypeStr = AgentCusTypeEnum.NO_INTENTION.getName();
-                    break;
-                case (5):
-                    cusTypeStr = AgentCusTypeEnum.LOST.getName();
-                    break;
-                case (6):
-                    cusTypeStr = AgentCusTypeEnum.INVALID.getName();
-                    break;
-            }
-        }
-        return cusTypeStr;
+        return AgentCusTypeEnum.getNameByValue(cusType);
     }
 
     public void setCusTypeStr(String cusTypeStr) {

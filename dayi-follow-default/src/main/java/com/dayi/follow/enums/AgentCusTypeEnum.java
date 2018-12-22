@@ -46,4 +46,15 @@ public enum AgentCusTypeEnum {
         this.name = name;
         this.value = value;
     }
+
+    public static String getNameByValue(int value) {
+        for (AgentCusTypeEnum item : AgentCusTypeEnum.values()) {
+            if (item.value == value) {
+                return item.getName();
+            }
+        }
+        return "";
+    }
+
+
 }

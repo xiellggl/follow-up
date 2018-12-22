@@ -45,4 +45,13 @@ public enum ContactTypeEnum {
         this.name = name;
         this.value = value;
     }
+
+    public static String getNameByValue(int value) {
+        for (ContactTypeEnum item : ContactTypeEnum.values()) {
+            if (item.value == value) {
+                return item.getName();
+            }
+        }
+        return "";
+    }
 }

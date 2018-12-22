@@ -52,4 +52,13 @@ public enum FundRankEnum {
         this.name = name;
         this.value = value;
     }
+
+    public static String getNameByValue(int value) {
+        for (FundRankEnum item : FundRankEnum.values()) {
+            if (item.value == value) {
+                return item.getName();
+            }
+        }
+        return "";
+    }
 }
