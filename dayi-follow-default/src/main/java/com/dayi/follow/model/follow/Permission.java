@@ -32,6 +32,17 @@ public class Permission extends BaseModel implements PermissionBase {
     private String moduleid;
 
     /**
+     * 父id
+     */
+    private String parentid;
+
+    /**
+     * 父权限名称
+     */
+    @Transient
+    private String parent;
+
+    /**
      * 所属模块名称
      */
     @Transient
@@ -242,5 +253,21 @@ public class Permission extends BaseModel implements PermissionBase {
     public Permission setUpdateBy(String updateBy) {
         this.updateBy = updateBy;
         return this;
+    }
+
+    public String getParentid() {
+        return parentid;
+    }
+
+    public void setParentid(String parentid) {
+        this.parentid = parentid;
+    }
+
+    public String getParent() {
+        return parent;
+    }
+
+    public void setParent(String parent) {
+        this.parent = parent;
     }
 }

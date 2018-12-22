@@ -116,4 +116,10 @@ public interface PermissionService {
      * @return
      */
     boolean delete(String id);
+
+    /**
+     * 加载所有一级权限
+     * @return
+     */
+    List<Permission> listParent();
 }

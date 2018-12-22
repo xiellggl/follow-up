@@ -68,6 +68,15 @@ public class PermissionServiceImpl implements PermissionService {
             if (null != module) {
                 permission.setModuleName(module.getName());
             }
+
+            // 设置父权限名称
+            String parentId = permission.getParentid();
+            if (!Misc.isEmpty(parentId)) {
+                Permission parent = get(parentId);
+                if (null != parent) {
+                    permission.setParent(parent.getName());
+                }
+            }
         }
 
         return page;
@@ -221,6 +230,14 @@ public class PermissionServiceImpl implements PermissionService {
         rolePermissionMapper.deleteByPerId(id);
 
         return true;
+    }
+
+    @Override
+    public List<Permission> listParent() {
+        Conditions conditions = new Conditions();
+        conditions.add(Restrictions.eq("del_status", Permission.DEL_STATUS_NO.id));
+        conditions.add(Restrictions.eq("parentid", ""));
+        return permissionMapper.searchByConditions(conditions);
     }
 
 }
