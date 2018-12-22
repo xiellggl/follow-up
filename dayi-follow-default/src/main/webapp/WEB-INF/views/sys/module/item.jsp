@@ -3,9 +3,17 @@
 <c:forEach var="cur" items="${moduleList}" varStatus="vs">
         <%-- 每一次循环，index+1--%>
         <c:set var="index" value="${index + 1}" scope="request" />
-        <tr id="${cur.id} - ${cur.parentId}" data-id="${cur.id}">
-            <td><span style="padding-left:${level>0?2*level:0}em;">${cur.name}</span></td>
+        <tr id="${cur.id}" data-pid="${cur.parentId}" data-id="${cur.id}" ${not empty cur.parentId and cur.type eq 1 ? 'style="display:none;"' : ''}>
             <td>
+                <c:if test="${fn:length(cur.childMenus) > 0}">
+                    <a data-act="togglePermissions" data-id="${cur.id}" href="javascript:;" style="cursor:pointer;" class="rule-list">
+                        <span class="fa fa-plus blue"></span>
+                        <span class="fa fa-minus blue" style="display: none;"></span>
+                    </a>
+                </c:if>
+            </td>
+            <td><span style="padding-left:${level>0?2*level:0}em;">${cur.name}</span></td>
+            <td class="center">
                 <c:if test="${cur.type eq 0}">
                     <a class="state-btn" data-state="${cur.status}" href="javascript:;" data-id="${cur.id}" title="已${cur.status eq 1 ? '启用':'禁用'}">
                         <span class="btn btn-minier ${cur.status eq 1 ? 'btn-yellow':'btn-danger'}">

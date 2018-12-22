@@ -178,7 +178,7 @@
                     url: "/role/"+type+"/save.json",
                     data: $form.serialize(),
                     succback:function () {
-                        $form[0].reset();
+                        //$form[0].reset();
                         common.successMsg("操作成功",function(){
                             location.href="./list"
                         });
