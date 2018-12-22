@@ -83,31 +83,6 @@ public class AgentAssignController extends BaseController{
         return "/manage/followuper/assign_select";
     }
 
-    /**
-     * 跟进人分配 -- 代理商 -- 分配保存
-     */
-    @RequestMapping("/save")
-    @ResponseBody
-    public BizResult assignSave(HttpServletRequest request, @Valid FollowAgent followAgent, BindingResult result) {
-        BizResult bizResult = checkErrors(result);
-
-        if (!bizResult.isSucc()) return bizResult;//参数传入错误
-
-        return followAgentService.add(followAgent);
-    }
-
-    /**
-     * 跟进人分配 -- 代理商  -- 清除分配
-     */
-    @RequestMapping("/clear")
-    @ResponseBody
-    public BizResult assignClear(HttpServletRequest request, @RequestParam Integer id) {
-        FollowAgent followAgent = followAgentService.getFollowAgentByAgentId(id);
-
-        if (followAgent == null) return BizResult.FAIL;
-
-        return followAgentService.clear(followAgent);
-    }
 
     /**
      * 跟进人分配 -- 代理商 -- 分配保存

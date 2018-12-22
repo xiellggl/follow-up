@@ -68,32 +68,6 @@ public class OrgAssignController extends BaseController {
     /**
      * 跟进人分配 -- 创客 -- 分配保存
      */
-    @RequestMapping("/save")
-    @ResponseBody
-    public BizResult assignSave(HttpServletRequest request, @Valid FollowOrg followOrg, BindingResult result) {
-        BizResult bizResult = checkErrors(result);
-
-        if (!bizResult.isSucc()) return bizResult;//参数传入错误
-
-        return followOrgService.add(followOrg);
-    }
-
-    /**
-     * 跟进人分配 --创客 -- 清除分配
-     */
-    @RequestMapping("/clear")
-    @ResponseBody
-    public BizResult assignClear(HttpServletRequest request, @RequestParam Integer id) {
-        FollowOrg followOrg = followOrgService.getFollowOrgByOrgId(id);
-
-        if (followOrg == null) return BizResult.FAIL;
-
-        return followOrgService.clear(followOrg);
-    }
-
-    /**
-     * 跟进人分配 -- 创客 -- 分配保存
-     */
     @RequestMapping("/save/batch")
     @ResponseBody
     public BizResult assignSave(HttpServletRequest request, @RequestParam("orgIds") String orgIds, @RequestParam("followId") String followId) {
