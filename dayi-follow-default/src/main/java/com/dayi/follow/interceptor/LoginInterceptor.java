@@ -26,6 +26,19 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        String requestURI = request.getRequestURI();
+        request.getSession().setAttribute("requestURI", requestURI);
+
+        AccountInfo accountInfo = AuthorizationManager.getCurrentLoginUser(request);
+        if (accountInfo == null) {
+            response.sendRedirect("/user/login");
+            return false;
+        }
+
+        String userId = accountInfo.getUserId();
+
+        FollowUp user = userService.get(userId);
+        request.getSession().setAttribute("name", user.getName());
         return true;
     }
 
@@ -33,14 +46,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
                            ModelAndView modelAndView) throws Exception {
 
-        String requestURI = request.getRequestURI();
-        request.getSession().setAttribute("requestURI",requestURI);
 
-        AccountInfo accountInfo = AuthorizationManager.getCurrentLoginUser(request);
-        String userId = accountInfo.getUserId();
-
-        FollowUp user = userService.get(userId);
-        request.getSession().setAttribute("name",user.getName());
     }
 
     @Override
