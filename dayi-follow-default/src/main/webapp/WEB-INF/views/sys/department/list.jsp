@@ -56,21 +56,21 @@
                                         </tr>
                                     </c:if>
                                     <c:if test="${not empty deptTree}">
-                                    <c:forEach var="item" items="${deptTree}" varStatus="vs">
-                                        <tr data-id="${item.id}" data-pid="${item.pid}">
-                                            <td>
-                                                <div style="margin-left:${level*2}em;">${item.treeName}</div>
-                                            </td>
-                                            <td class="hidden-sm hidden-xs">${item.remark}</td>
-                                            <td>${item.personNum}</td>
-                                            <td>
-                                                <a href="#"  data-toggle="modal" data-target="#myModalEditFollowuper" data-act="edit" data-toggle="tooltip" title="修改">
-                                                    <i class="ace-icon fa fa-pencil bigger-130"></i></a>
-                                                <a href="#" data-act="del" data-toggle="tooltip" title="删除">
-                                                    <i class="ace-icon fa fa-trash-o bigger-130 red"></i></a>
-                                            </td>
-                                        </tr>
-                                    </c:forEach>
+                                        <c:forEach var="item" items="${deptTree}" varStatus="vs">
+                                            <tr data-id="${item.id}" data-pid="${item.pid}">
+                                                <td>
+                                                    <div style="margin-left:${level*2}em;">${item.treeName}</div>
+                                                </td>
+                                                <td class="hidden-sm hidden-xs">${item.remark}</td>
+                                                <td>${item.personNum}</td>
+                                                <td>
+                                                    <a href="#"  data-toggle="modal" data-target="#myModalEditFollowuper" data-act="edit" data-toggle="tooltip" title="修改">
+                                                        <i class="ace-icon fa fa-pencil bigger-130"></i></a>
+                                                    <a href="#" data-act="del" data-toggle="tooltip" title="删除">
+                                                        <i class="ace-icon fa fa-trash-o bigger-130 red"></i></a>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
                                     </c:if>
                                     </tbody>
                                 </table>

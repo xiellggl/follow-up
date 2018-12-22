@@ -11,7 +11,7 @@
                 </a>
                 <ul class="submenu">
                     <c:set var="navMenus" value="${cur.childMenus}" scope="request" />
-                    <c:import url="/WEB-INF/views/sys/nav_item.jsp" />
+                    <c:import url="/WEB-INF/views/sys/nav/item.jsp" />
                 </ul>
             </li>
         </c:when>

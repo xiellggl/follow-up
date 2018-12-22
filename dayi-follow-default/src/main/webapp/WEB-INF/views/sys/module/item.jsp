@@ -70,7 +70,7 @@
         <%--注意此处，子列表覆盖treeList，在request作用域--%>
         <c:set var="moduleList" value="${cur.childMenus}" scope="request" />
         <%--递归--%>
-        <c:import url="module_item.jsp" />
+        <c:import url="item.jsp" />
     </c:if>
 </c:forEach>
 <%--退出时，level-1--%>

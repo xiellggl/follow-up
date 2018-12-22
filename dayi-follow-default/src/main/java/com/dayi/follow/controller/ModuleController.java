@@ -61,7 +61,7 @@ public class ModuleController {
         // 获取权限
         List<AuthorizationInfo> authorizationInfos = AuthorizationManager.getAuthorizationInfos(request);
         if (null == authorizationInfos) {
-            return "redirect:/user/login";
+            return "redirect:/login";
         }
         List<String> permissionIds = new ArrayList<>(5);
         for (AuthorizationInfo authorizationInfo : authorizationInfos) {
@@ -74,7 +74,7 @@ public class ModuleController {
 
         model.addAttribute("navMenus",menus);
 
-        return "/sys/nav_menus";
+        return "/sys/nav/menus";
 
     }
 
@@ -112,7 +112,7 @@ public class ModuleController {
         model.addAttribute("allMenus", allMenus);
         List<Menu> menus = moduleService.listModule();
         model.addAttribute("menus", menus);
-        return "sys/module_list";
+        return "sys/module/list";
     }
 
     /**
@@ -132,16 +132,6 @@ public class ModuleController {
         module.setCreateBy(accountInfo.getUserName());
 
         return moduleService.addModule(module) ? BizResult.SUCCESS : BizResult.FAIL;
-    }
-
-    /**
-     * 编辑模块
-     */
-    @RequestMapping("/edit")
-    public String edit(String id, Model model) {
-        Module module = moduleService.getModule(id);
-        model.addAttribute("module", module);
-        return "sys/module_edit";
     }
 
     /**

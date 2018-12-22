@@ -82,7 +82,7 @@
                             <div class="col-xs-12 col-sm-10">
                                 <ul id="permissionSetlist" class="permission-setlist">
                                     <c:set var="moduleList" value="${menus}" />
-                                    <%@ include file="module_role_item.jsp" %>
+                                    <%@ include file="item.jsp" %>
                                 </ul>
                             </div>
                             <div class="help-block col-xs-12 col-sm-reset inline tips_box" style="position: absolute; top:5px; left: 0; width: 100%; text-align: center;"></div>
