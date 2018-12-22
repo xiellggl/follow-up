@@ -34,7 +34,7 @@
                         </small>
                     </h1>
                     <a href="./edit" class="pull-right">
-                        <span class="btn btn-primary">添加角色</span>
+                        <span class="btn btn-xs btn-primary">添加角色</span>
                     </a>
                 </div>
 
@@ -45,8 +45,8 @@
                             <thead>
                             <tr>
                                 <th>角色名称</th>
-                                <th>角色备注</th>
-                                <th>添加时间</th>
+                                <th class="hidden-xs">角色备注</th>
+                                <th class="hidden-xs">添加时间</th>
                                 <th>状态</th>
                                 <th>操作</th>
                             </tr>
@@ -55,12 +55,7 @@
 
                             <c:if test="${empty page}">
                                 <tr>
-                                    <td colspan="6" class="no_data">暂无角色，请
-                                        <a href="#" data-toggle="modal"
-                                           data-target="#myModalEditRole" title="新增角色">
-                                            新增角色
-                                        </a>
-                                    </td>
+                                    <td colspan="10" class="no_data">暂无角色，请 <a href="./edit">新增角色</a></td>
                                 </tr>
                             </c:if>
 
@@ -68,8 +63,8 @@
                                 <c:forEach items="${page.results}" var="item">
                                     <tr data-id="${item.id}">
                                         <td>${item.name}</td>
-                                        <td>${item.descript}</td>
-                                        <td class="hidden-sm hidden-xs"><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                        <td class="hidden-xs">${item.descript}</td>
+                                        <td class="hidden-xs"><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                         <td>
                                             <a class="state-btn" data-state="${item.status}" href="#"
                                                data-id="${item.id}" title="已${item.status eq 1 ? '启用':'禁用'}">

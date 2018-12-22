@@ -33,7 +33,7 @@
                         </small>
                     </h1>
                     <a href="#" class="pull-right">
-                    <span class="btn btn-primary" data-toggle="modal" data-target="#myModalEditModule">添加模块</span>
+                    <span class="btn btn-xs btn-primary" data-toggle="modal" data-target="#myModalEditModule">添加模块</span>
                     </a>
                 </div>
 
@@ -43,14 +43,13 @@
                             <table class="table table-striped table-bordered table-hover">
 
                                 <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>模块名称</th>
-                                    <th>模块状态</th>
-                                    <th>功能路径</th>
-                                    <th>排序</th>
-                                    <th>操作</th>
-                                </tr>
+                                    <tr>
+                                        <th>模块名称</th>
+                                        <th>模块状态</th>
+                                        <th>功能路径</th>
+                                        <th class="hidden-xs">排序</th>
+                                        <th>操作</th>
+                                    </tr>
                                 </thead>
 
                                 <tbody>

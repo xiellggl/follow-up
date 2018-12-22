@@ -34,7 +34,7 @@
                         </small>
                     </h1>
                     <a href="#" class="pull-right">
-                        <span class="btn btn-primary" data-toggle="modal" data-target="#myModalEditPermission">添加功能</span>
+                        <span class="btn btn-xs btn-primary" data-toggle="modal" data-target="#myModalEditPermission">添加功能</span>
                     </a>
                 </div>
 
@@ -42,30 +42,20 @@
                     <form class="form-horizontal" style="max-width: 1000px;">
                         <div class="clearfix maintop">
 
-                            <div class="col-xs-3 col-sm-3 btn-sespan">
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="ace-icon glyphicon glyphicon-phone"></i>
-                                    </span>
-                                    <input type="text" name="name" class="form-control admin_sea"
-                                           value="${param.name}" placeholder="功能名称："/>
-                                </div>
-                            </div>
-
-                            <div class="col-xs-3 col-sm-3 btn-sespan">
+                            <div class="col-xs-12 col-sm-3 btn-sespan maintop">
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-cog"></i>
                                     </span>
-                                    <select name="isBinding" class="form-control admin_sea">
-                                        <option value="">绑定状态</option>
-                                        <option value="0"  ${!param.isBinding?"selected":''}>未绑定</option>
-                                        <option value="1"  ${param.isBinding?"selected":''}>已绑定</option>
+                                    <select name="parentid" class="form-control admin_sea" data-m="${param.moduleId}">
+                                        <option value="">所属页面</option>
+                                        <c:forEach items="${parentList}" var="item">
+                                            <option value="${item.id}" ${permission.parentid eq item.id ? 'selected' : ''}>${item.name}</option>
+                                        </c:forEach>
                                     </select>
                                 </div>
                             </div>
-
-                            <div class="col-xs-3 col-sm-3 btn-sespan">
+                            <div class="col-xs-12 col-sm-3 btn-sespan maintop">
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-cog"></i>
@@ -79,33 +69,39 @@
                                 </div>
                             </div>
 
-                            <div class="col-xs-3 col-sm-3 btn-sespan">
-                                <div class="btn-group dropup">
-                                    <button type="submit" class="btn btn-xs btn-purple">
-                                        <span class="ace-icon fa fa-search"></span>
-                                        查询
-                                    </button>
-                                    <button data-toggle="dropdown" class="btn btn-xs btn-info dropdown-toggle hidden visible-xs" aria-expanded="false">
-                                        <span class="ace-icon fa fa-caret-down icon-only"></span>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <a href="">绑定功能</a>
-                                        </li>
-                                        <li>
-                                            <a href="">返回列表</a>
-                                        </li>
-                                    </ul>
+                            <div class="col-xs-12 col-sm-2 btn-sespan maintop">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="ace-icon fa fa-link"></i>
+                                    </span>
+                                    <select name="isBinding" class="form-control admin_sea">
+                                        <option value="">绑定状态</option>
+                                        <option value="0"  ${!param.isBinding?"selected":''}>未绑定</option>
+                                        <option value="1"  ${param.isBinding?"selected":''}>已绑定</option>
+                                    </select>
                                 </div>
-                                <a href="#" data-act="binding" class="btn btn-xs btn-pink hidden-xs">
-                                    <span class="ace-icon fa fa-globe"></span>
-                                    绑定功能
-                                </a>
-                                <a href="#" class="btn btn-xs btn-info hidden-xs">
-                                    <span class="ace-icon fa fa-globe"></span>
-                                    返回列表
-                                </a>
                             </div>
+
+                            <div class="col-xs-12 col-sm-4 btn-sespan">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="ace-icon fa fa-check"></i>
+                                    </span>
+                                    <input type="text" name="name" class="form-control admin_sea"
+                                           value="${param.name}" placeholder="功能名称："/>
+                                    <div class="input-group-btn">
+                                        <button type="submit" class="btn btn-xs btn-purple">
+                                            <span class="ace-icon fa fa-search"></span>
+                                            查询
+                                        </button>
+                                        <a href="?" class="btn btn-xs btn-info">
+                                            <span class="ace-icon fa fa-globe"></span>
+                                            显示全部
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
 
                     </form>
@@ -118,21 +114,23 @@
                             <table class="table table-striped table-bordered table-hover">
                                 <thead>
                                 <tr>
+                                    <c:if test="${not empty param.bindModuleId}">
                                     <th class="center sorting_disabled" rowspan="1" colspan="1" aria-label="">
                                         <label class="pos-rel">
                                             <input type="checkbox" id="chkAll" class="ace">
-
                                             <span class="lbl"></span>
                                         </label>
                                         <input type="hidden" id="checkIds" name="ids" value="">
                                     </th>
+                                    </c:if>
                                     <th>功能名称</th>
                                     <th>显示状态</th>
                                     <th class="hidden-sm hidden-xs">功能路径</th>
+                                    <th>所属页面</th>
                                     <th>所属模块</th>
                                     <th class="hidden-sm hidden-xs">添加时间</th>
                                     <th class="hidden-sm hidden-xs">修改时间</th>
-                                    <th>备注</th>
+                                    <th class="hidden-sm hidden-xs">备注</th>
                                     <th>操作</th>
                                 </tr>
                                 </thead>
@@ -152,12 +150,14 @@
                                 <c:if test="${not empty page.results}">
                                 <c:forEach items="${page.results}" var="item" >
                                 <tr data-id="${item.id}">
+                                    <c:if test="${not empty param.bindModuleId}">
                                     <td class="center">
                                         <label class="pos-rel">
                                             <input type="checkbox" class="ace check" name="id" value="${item.id}">
                                             <span class="lbl"></span>
                                         </label>
                                     </td>
+                                    </c:if>
                                     <td>${item.name}</td>
                                     <td>
                                         <a class="state-btn" data-state="${item.displayStatus}" href="#"
@@ -167,11 +167,12 @@
                                             </span>
                                         </a>
                                     </td>
-                                    <td>${item.url}</td>
+                                    <td class="hidden-sm hidden-xs">${item.url}</td>
+                                    <td>${item.parent}</td>
                                     <td>${item.moduleName}</td>
                                     <td class="hidden-sm hidden-xs"><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                     <td class="hidden-sm hidden-xs"><fmt:formatDate value="${item.updateTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                    <td>${item.description}</td>
+                                    <td class="hidden-sm hidden-xs">${item.description}</td>
                                     <td>
                                         <a href="#" data-id="${item.id}" data-toggle="modal"
                                            data-target="#myModalEditPermission"
@@ -187,7 +188,18 @@
 
                                 </tbody>
                             </table>
-
+                            <c:if test="${not empty param.bindModuleId}">
+                            <div class="center">
+                                <a href="#" data-act="binding" class="btn btn-xs btn-pink">
+                                    <span class="ace-icon fa fa-globe"></span>
+                                    绑定功能
+                                </a>
+                                <a href="/module/list" class="btn btn-xs btn-info">
+                                    <span class="ace-icon fa fa-globe"></span>
+                                    返回列表
+                                </a>
+                            </div>
+                            </c:if>
                             <c:if test="${not empty page.results}">
                                 <div class="pagerBar" id="pagerBar">
                                     <common:page url="${pageUrl}" type="3"/>
@@ -207,6 +219,7 @@
 <%@include file="/inc/followup/script.jsp"%>
 <script>
     seajs.use(["common","validate","template"],function(common){
+        var bindModuleId = "${param.bindModuleId}";
         //菜单高亮
         common.head("system",10);
 
@@ -331,11 +344,13 @@
 
         //绑定功能
         $('[data-act="binding"]').on("click", function () {
-            var pid = $("#checkIds").val();
-
+            var permissionIds = $("#checkIds").val();
             common.ajax.handle({
-                url:"/permission/bind/save.json"+pid,
-                type: "post",
+                url:"/permission/bind/save.json",
+                data:{
+                    moduleId:bindModuleId,
+                    permissionIds:permissionIds
+                }
             });
         });
 
