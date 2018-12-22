@@ -24,13 +24,14 @@
              <c:if test="${cur.type eq 1}">
                  <li class="option-item">
                      <label>
-                         <c:set var="checked" value="false" scope="request" />
+                         <c:set var="checked" value="false" />
                          <c:forEach var="permission" items="${role.permissionList}">
                              <c:if test="${permission.id eq cur.id}">
                                  <c:set var="checked" value="true" />
                              </c:if>
                          </c:forEach>
                          <input type="checkbox" data-rel="permission" name="permissionId" value="${cur.id}" ${checked?'checked':''} /> ${cur.name}
+
                      </label>
                  </li>
              </c:if>
