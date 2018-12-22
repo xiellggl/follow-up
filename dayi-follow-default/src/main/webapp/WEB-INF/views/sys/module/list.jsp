@@ -44,6 +44,7 @@
 
                                 <thead>
                                     <tr>
+                                        <th width="30"></th>
                                         <th>模块名称</th>
                                         <th>模块状态</th>
                                         <th>功能路径</th>
@@ -188,8 +189,6 @@
         //菜单高亮
         common.head("system",1);
 
-        var menus = null;
-
         //添加、编辑模块方法
         var editModuleFn = function (id,pid) {
             var id = id || null;
@@ -291,6 +290,13 @@
                     }
                 });
             });
+        });
+
+
+        $('[data-act="togglePermissions"]').on("click",function () {
+            var cur_id =  $(this).data("id");
+            $('[data-pid="'+cur_id+'"]').toggle();
+            $(this).find("fa").toggle();
         });
 
 
