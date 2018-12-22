@@ -179,7 +179,6 @@ public class FollowOrgServiceImpl implements FollowOrgService {
         List<String> followIds = new ArrayList<>();
 
         List<String> deptIds = deptService.getSubDeptIds(deptId);
-        deptIds.add(deptId);
 
         for (String id : deptIds) {
             followIds.addAll(followUpMapper.findIdsByDeptId(id));
