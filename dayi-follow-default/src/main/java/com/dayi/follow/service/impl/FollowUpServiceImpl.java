@@ -108,6 +108,8 @@ public class FollowUpServiceImpl implements FollowUpService {
             followIds.addAll(this.findIdsByDeptId(subDeptId));
         }
 
+        if (followIds.isEmpty()) return page;
+
         page = followUpMapper.findAssignSelect(page, followUp, followIds);
 
         for (FollowUpListVo vo : page.getResults()) {
