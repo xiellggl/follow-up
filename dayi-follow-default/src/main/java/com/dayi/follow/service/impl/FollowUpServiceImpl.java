@@ -103,7 +103,6 @@ public class FollowUpServiceImpl implements FollowUpService {
         List<String> followIds = new ArrayList<>();
 
         List<String> subDeptIds = deptService.getSubDeptIds(deptId);
-        subDeptIds.add(deptId);
 
         for (String subDeptId : subDeptIds) {
             followIds.addAll(this.findIdsByDeptId(subDeptId));
