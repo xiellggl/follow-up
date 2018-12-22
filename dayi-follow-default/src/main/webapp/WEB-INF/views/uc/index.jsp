@@ -199,7 +199,7 @@
 <%@include file="/inc/followup/script.jsp"%>
 <script>
     seajs.use(["common","echarts_common"],function (common) {
-        common.head("home");
+        common.head();
 
         // 基于准备好的dom，初始化echarts实例
         var charts1 = echarts.init(document.getElementById('charts1'));

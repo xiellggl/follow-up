@@ -146,7 +146,7 @@
 <script charset="UTF-8" async="" src="/static/public/daterangepicker3/moment.min.js"></script>
 <script>
     seajs.use(["common", "daterangepicker"], function (common) {
-        common.head("manageLog",1);
+        common.head();
         var date_o = {
             autoUpdateInput: false,
             locale: locale_cn,

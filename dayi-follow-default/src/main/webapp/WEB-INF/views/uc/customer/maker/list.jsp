@@ -33,7 +33,7 @@
 <%@include file="/inc/followup/script.jsp"%>
 <script>
     seajs.use("common",function (common) {
-        common.head("myCustomer",2);
+        common.head();
     });
 </script>
 </body>

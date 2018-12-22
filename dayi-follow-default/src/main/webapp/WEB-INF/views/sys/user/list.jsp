@@ -257,7 +257,7 @@
 <script>
     seajs.use(["common", "template", "validate", "addMethod"], function (common, template) {
         //菜单高亮
-        common.head("system",2);
+        common.head();
 
         //新增，修改用户方法
         var editDeptFn = function (id) {

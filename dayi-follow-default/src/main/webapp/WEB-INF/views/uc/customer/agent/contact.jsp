@@ -128,7 +128,7 @@
 <script charset="UTF-8" src="/static/public/daterangepicker3/moment.min.js"></script>
 <script>
     seajs.use(["common", "template", "validate", "addMethod","daterangepicker"], function (common, template) {
-        common.head("myCustomer",1);
+        common.head();
         var $formEdit = $("#formEdit");
         var $list = $("#list");
 

@@ -167,7 +167,7 @@
 <script>
     seajs.use(["common", "template", "validate", "addMethod","daterangepicker"], function (common, template) {
         var agentId = ${param.agentId};
-        common.head("myCustomer",1);
+        common.head();
 
         var $logList = $("#logList");
         var log_url = "/agent/loginlog?agentId=" + agentId;

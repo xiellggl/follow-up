@@ -259,7 +259,7 @@
 <script>
     seajs.use(["common", "daterangepicker"], function (common) {
         //菜单高亮
-        common.head("followuperAssign",1);
+        common.head();
         var date_o = {
             autoUpdateInput: false,
             locale: locale_cn,

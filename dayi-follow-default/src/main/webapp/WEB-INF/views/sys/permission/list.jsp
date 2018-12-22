@@ -221,7 +221,7 @@
     seajs.use(["common","validate","template"],function(common){
         var bindModuleId = "${param.bindModuleId}";
         //菜单高亮
-        common.head("system",10);
+        common.head();
 
         //添加、编辑功能方法
         var editDeptFn = function (id) {

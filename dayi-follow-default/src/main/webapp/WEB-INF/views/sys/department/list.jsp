@@ -89,7 +89,7 @@
 
 <script>
     seajs.use(["common","validate","template"],function(common,validate,template){
-        common.head("manageDept");
+        common.head();
         var editDeptFn = function (id,pid) {
             var id = id || 0, pid = pid||0;
                 url = "/dept/update/" + id;

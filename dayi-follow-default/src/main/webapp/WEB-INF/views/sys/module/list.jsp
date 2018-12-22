@@ -187,7 +187,7 @@
 <script>
     seajs.use(["common","validate","template",],function(common,validate,template){
         //菜单高亮
-        common.head("system",1);
+        common.head();
 
         //添加、编辑模块方法
         var editModuleFn = function (id,pid) {

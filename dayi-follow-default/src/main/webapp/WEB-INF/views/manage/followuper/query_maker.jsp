@@ -200,7 +200,7 @@
 <script>
     seajs.use(["common","template","validate","addMethod","daterangepicker"], function (common, template) {
         //菜单高亮
-        common.head("followuper");
+        common.head();
 
         //href设置
         (function($){

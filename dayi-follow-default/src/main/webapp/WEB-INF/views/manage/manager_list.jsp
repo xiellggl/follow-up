@@ -189,7 +189,7 @@
 <%--页面js入口--%>
 <script>
     seajs.use(["common","template","multiselect","validate","addMethod"],function(common,template){
-        common.head("manageManager");
+        common.head();
 
         var editAdminFn=function (id,pid) {
 
