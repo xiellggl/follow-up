@@ -232,5 +232,13 @@ public class PermissionServiceImpl implements PermissionService {
         return true;
     }
 
+    @Override
+    public List<Permission> listParent() {
+        Conditions conditions = new Conditions();
+        conditions.add(Restrictions.eq("del_status", Permission.DEL_STATUS_NO.id));
+        conditions.add(Restrictions.eq("parentid", ""));
+        return permissionMapper.searchByConditions(conditions);
+    }
+
 }
 

@@ -81,8 +81,12 @@ public class PermissionController {
     public String edit(String id, Model model) {
         Permission permission = permissionService.get(id);
         model.addAttribute("permission", permission);
+
         List<Menu> menus = moduleService.listModule();
         model.addAttribute("menus", menus);
+
+        List<Permission> parentList = permissionService.listParent();
+        model.addAttribute("parentList", parentList);
 
         return "sys/binding_edit";
     }
