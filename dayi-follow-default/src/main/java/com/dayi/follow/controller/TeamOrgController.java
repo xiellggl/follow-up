@@ -3,6 +3,7 @@ package com.dayi.follow.controller;
 import com.dayi.common.util.BizResult;
 import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.conf.Constants;
+import com.dayi.follow.enums.OrgTypeEnum;
 import com.dayi.follow.model.follow.OrgContact;
 import com.dayi.follow.service.FollowOrgService;
 import com.dayi.follow.service.FollowUpService;
@@ -59,6 +60,7 @@ public class TeamOrgController {
 
         request.setAttribute("pageUrl", pageUrl);
         model.addAttribute("page", page);
+        model.addAttribute("orgTypes", OrgTypeEnum.values());//机构商类型
         return "uc/customer/team/maker";
     }
 
