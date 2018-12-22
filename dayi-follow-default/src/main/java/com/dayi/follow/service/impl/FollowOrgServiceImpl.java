@@ -179,9 +179,13 @@ public class FollowOrgServiceImpl implements FollowOrgService {
         List<String> followIds = new ArrayList<>();
 
         List<String> deptIds = deptService.getSubDeptIds(deptId);
+        deptIds.add(deptId);
+
         for (String id : deptIds) {
             followIds.addAll(followUpMapper.findIdsByDeptId(id));
         }
+
+        if (followIds.isEmpty()) return page;
 
         if (searchVo.getAssignStatus() == null || searchVo.getAssignStatus() != 1) {//查未分配
             page = followOrgMapper.findAssignsNoFollow(page, searchVo, dayiDataBaseStr);

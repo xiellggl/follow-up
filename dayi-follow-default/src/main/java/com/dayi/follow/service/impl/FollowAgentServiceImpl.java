@@ -205,6 +205,8 @@ public class FollowAgentServiceImpl implements FollowAgentService {
             followIds.addAll(followUpMapper.findIdsByDeptId(subDeptId));
         }
 
+        if (followIds.isEmpty()) return page;
+
         if (searchVo.getAssignStatus() == null || searchVo.getAssignStatus() != 1) {//查未分配
             page = followAgentMapper.findAssignsNoFollow(page, searchVo, dayiDataBaseStr);
         } else {//查已分配
