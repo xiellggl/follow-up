@@ -158,10 +158,7 @@ public class IndexController {
             return BizResult.FAIL;
         }
 
-        //获取下级部门
-        List<String> deptIds = deptService.getSubDeptIds(currVo.getDeptId());
-
-        AdminCusStatusVo serCusStatus = countService.countSerCusStatus(deptIds);
+        AdminCusStatusVo serCusStatus = countService.countSerCusStatus(currVo.getDeptId());
         return BizResult.succ(serCusStatus);
     }
 

@@ -40,7 +40,7 @@ public interface CountService {
     List<SevenInCashVo> countSevenInCash(String followId);
 
     //    统计客服的客户状态
-    AdminCusStatusVo countSerCusStatus(List<String> deptIds);
+    AdminCusStatusVo countSerCusStatus(String deptIds);
 
     //统计创客数据
     OrgDataVo countOrgData(String followId);

@@ -107,8 +107,11 @@ public class CountServiceImpl implements CountService {
         return statusVo;
     }
 
-    public AdminCusStatusVo countSerCusStatus(List<String> deptIds) {
+    public AdminCusStatusVo countSerCusStatus(String deptId) {
         AdminCusStatusVo serCusStatusVo = new AdminCusStatusVo();
+
+        //获取下级部门
+        List<String> deptIds = deptService.getSubDeptIds(deptId);
 
         if (deptIds.isEmpty()) return serCusStatusVo;
 
