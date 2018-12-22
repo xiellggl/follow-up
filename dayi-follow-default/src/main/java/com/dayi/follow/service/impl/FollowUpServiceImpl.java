@@ -100,7 +100,14 @@ public class FollowUpServiceImpl implements FollowUpService {
 
     @Override
     public Page<FollowUpListVo> findAssignSelect(Page<FollowUpListVo> page, String followUp, String deptId) {
-        List<String> followIds = this.findIdsByDeptId(deptId);
+        List<String> followIds = new ArrayList<>();
+
+        List<String> subDeptIds = deptService.getSubDeptIds(deptId);
+
+        for (String subDeptId : subDeptIds) {
+            followIds.addAll(this.findIdsByDeptId(subDeptId));
+        }
+
         page = followUpMapper.findAssignSelect(page, followUp, followIds);
 
         for (FollowUpListVo vo : page.getResults()) {
