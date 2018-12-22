@@ -70,10 +70,9 @@
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-check-square-o"></i>
                                     </span>
-                                    <select name="assignStat" class="form-control admin_sea">
-                                        <option value="">分配状态</option>
-                                        <option value="1"  ${assignStat=='1'?"selected":''}>未分配</option>
-                                        <option value="2"  ${assignStat=='2'?"selected":''}>已分配</option>
+                                    <select name="assignStatus" class="form-control admin_sea">
+                                        <option value="0"  ${assignStat=='0'?"selected":''}>未分配</option>
+                                        <option value="1"  ${assignStat=='1'?"selected":''}>已分配</option>
                                     </select>
                                 </div>
                             </div>
@@ -86,7 +85,7 @@
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-calendar"></i>
                                     </span>
-                                    <input type="text" class="form-control admin_sea dates" name="assignStatus" value="${param.assignStatus}"
+                                    <input type="text" class="form-control admin_sea dates" name="assignDate" value="${param.assignDate}"
                                            placeholder="分配时间"/>
                                 </div>
                             </div>
@@ -296,7 +295,7 @@
             }
             layer.confirm('<p class="tc red">是否清除【' + name + '】的跟进人</p>', {title: "温馨提示"}, function () {
                 common.ajax.handle({
-                    url: "/agent/assign/clear.json",
+                    url: "/agent/assign/clear/batch.json",
                     data: {ids: ids}
                 });
             });
@@ -348,8 +347,8 @@
         $myModal.on("click", '[data-act="check"]', function () {
             var id = $(this).data("id");
             common.ajax.handle({
-                url: "/agent/assign/save.json",
-                data: {followId: id, agentId: ids},
+                url: "/agent/assign/save/batch.json",
+                data: {followId: id, agentIds: ids},
                 succback: function (data) {
                     $myModal.modal("hide");
                     ids = null;

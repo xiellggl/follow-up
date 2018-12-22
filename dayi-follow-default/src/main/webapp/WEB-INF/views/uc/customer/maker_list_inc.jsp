@@ -35,6 +35,19 @@
                 </div>
             </c:if>
             <div class="col-xs-4 col-sm-3 btn-sespan">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="ace-icon fa fa-flag"></i>
+                    </span>
+                    <select name="orgType">
+                        <option value="">机构类型</option>
+                        <c:forEach items="${orgTypes}" var="item">
+                            <option value="${item.value}" <c:if test="${param.orgTypeStr eq item.value}">selected</c:if>>${item.name}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-4 col-sm-3 btn-sespan">
                 <div class="input-group-btn">
                     <div class="btn-group dropup">
                         <button type="submit" class="btn btn-xs btn-purple">

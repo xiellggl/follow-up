@@ -70,10 +70,9 @@
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-check-square-o"></i>
                                     </span>
-                                    <select name="assignStat" class="form-control admin_sea">
-                                        <option value="">分配状态</option>
-                                        <option value="1"  ${assignStat=='1'?"selected":''}>未分配</option>
-                                        <option value="2"  ${assignStat=='2'?"selected":''}>已分配</option>
+                                    <select name="assignStatus" class="form-control admin_sea">
+                                        <option value="0"  ${assignStat=='0'?"selected":''}>未分配</option>
+                                        <option value="1"  ${assignStat=='1'?"selected":''}>已分配</option>
                                     </select>
                                 </div>
                             </div>
@@ -86,7 +85,7 @@
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-calendar"></i>
                                     </span>
-                                    <input type="text" class="form-control admin_sea dates" name="assignStatus" value="${param.assignStatus}"
+                                    <input type="text" class="form-control admin_sea dates" name="assignDate" value="${param.assignDate}"
                                            placeholder="分配时间"/>
                                 </div>
                             </div>
@@ -111,12 +110,12 @@
                             <div class="col-xs-4 col-sm-2 btn-sespan">
                                 <div class="input-group">
                                     <span class="input-group-addon">
-                                        <i class="ace-icon fa fa-check-square-o"></i>
+                                        <i class="ace-icon fa fa-flag"></i>
                                     </span>
-                                    <select name="deptId" class="form-control">
+                                    <select name="orgType" class="form-control">
                                         <option value="">机构类型</option>
-                                        <c:forEach items="${orgType}" var="item">
-                                            <option value="${item.id}">${item.orgTypeStr}</option>
+                                        <c:forEach items="${orgTypes}" var="item">
+                                            <option value="${item.value}" <c:if test="${param.orgTypeStr eq item.value}">selected</c:if>>${item.name}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
@@ -309,7 +308,7 @@
             }
             layer.confirm('<p class="tc red">是否清除【' + name + '】的跟进人</p>', {title: "温馨提示"}, function () {
                 common.ajax.handle({
-                    url: "/org/assign/clear.json",
+                    url: "/org/assign/clear/batch.json",
                     data: {ids: ids}
                 });
             });
@@ -361,8 +360,8 @@
         $myModal.on("click", '[data-act="check"]', function () {
             var id = $(this).data("id");
             common.ajax.handle({
-                url: "/org/assign/save.json",
-                data: {followId: id, agentId: ids},
+                url: "/org/assign/save/batch.json",
+                data: {followId: id, orgIds: ids},
                 succback: function (data) {
                     $myModal.modal("hide");
                     ids = null;
