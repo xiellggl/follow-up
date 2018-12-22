@@ -48,6 +48,8 @@ public class PermissionServiceImpl implements PermissionService {
         Conditions conditions = new Conditions();
         String name = permissionSearchVo.getName();
         Boolean isBinding = permissionSearchVo.getBinding();
+        String parentId = permissionSearchVo.getParentId();
+        String moduleId = permissionSearchVo.getModuleId();
         if (!Misc.isEmpty(name)) {
             conditions.add(Restrictions.like("name", "%" + name + "%"));
         }
@@ -57,6 +59,12 @@ public class PermissionServiceImpl implements PermissionService {
             } else {
                 conditions.add(Restrictions.isNull("moduleid"));
             }
+        }
+        if (!Misc.isEmpty(parentId)) {
+            conditions.add(Restrictions.eq("parentid", parentId));
+        }
+        if (!Misc.isEmpty(moduleId)) {
+            conditions.add(Restrictions.eq("moduleid", moduleId));
         }
         conditions.add(Restrictions.eq("del_status", Permission.DEL_STATUS_NO.id));
 
@@ -70,9 +78,8 @@ public class PermissionServiceImpl implements PermissionService {
             }
 
             // 设置父权限名称
-            String parentId = permission.getParentid();
-            if (!Misc.isEmpty(parentId)) {
-                Permission parent = get(parentId);
+            if (!Misc.isEmpty(permission.getParentid())) {
+                Permission parent = get(permission.getParentid());
                 if (null != parent) {
                     permission.setParent(parent.getName());
                 }

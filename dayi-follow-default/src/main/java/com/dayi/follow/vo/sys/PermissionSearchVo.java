@@ -33,6 +33,11 @@ public class PermissionSearchVo {
      */
     private String moduleId;
 
+    /**
+     * 父id
+     */
+    private String parentId;
+
     public int getPageNo() {
         return pageNo > 0 ? pageNo : 1;
     }
@@ -73,6 +78,14 @@ public class PermissionSearchVo {
         this.moduleId = moduleId;
     }
 
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+    }
+
     @Override
     public String toString() {
         return "PermissionSearchVo{" +
@@ -81,6 +94,7 @@ public class PermissionSearchVo {
                 ", name='" + name + '\'' +
                 ", isBinding=" + isBinding +
                 ", moduleId='" + moduleId + '\'' +
+                ", parentId='" + parentId + '\'' +
                 '}';
     }
 }
