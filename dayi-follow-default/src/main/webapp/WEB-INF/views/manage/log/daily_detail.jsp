@@ -130,7 +130,7 @@
 <%@include file="/inc/followup/script.jsp" %>
 <script>
     seajs.use(["common"], function (common) {
-        common.head("manageLog",1);
+        common.head();
     });
 </script>
 </body>

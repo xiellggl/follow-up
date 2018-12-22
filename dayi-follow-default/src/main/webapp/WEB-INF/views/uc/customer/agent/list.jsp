@@ -39,7 +39,7 @@
 <%@include file="/inc/followup/script.jsp"%>
 <script>
     seajs.use(["common","multiselect"],function (common) {
-        common.head("myCustomer",1);
+        common.head();
         //多选下拉
         var $bankType = $("#bankType");
         $bankType.multiselect({

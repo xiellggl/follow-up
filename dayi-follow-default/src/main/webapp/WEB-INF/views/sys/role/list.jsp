@@ -106,7 +106,7 @@
 <script>
     seajs.use(["common","validate"],function(common){
         //菜单高亮
-        common.head("system",4);
+        common.head();
 
         //删除
         $('[data-act="del"]').on("click",function () {

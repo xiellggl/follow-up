@@ -96,8 +96,7 @@
 <%@include file="/inc/followup/script.jsp" %>
 <script>
     seajs.use(["common", "flexoCalendar"], function (common) {
-        common.head("teamLog",3);
-        common.head("myLog",3);
+        common.head();
         $("#showmonthlyPicker").popover({
             container:"body",
             placement:"bottom",

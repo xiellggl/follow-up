@@ -127,7 +127,7 @@
 </script>
 <script>
     seajs.use(["common", "template", "validate", "addMethod"], function (common, template) {
-        common.head("myCustomer",2);
+        common.head();
         template.helper("dateFormat",common.dateFormat);
 
         var $formEdit = $("#formEdit");

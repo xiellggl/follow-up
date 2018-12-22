@@ -256,7 +256,7 @@
 <%@include file="/inc/followup/script.jsp"%>
 <script>
     seajs.use("common",function (common) {
-        common.head("manageHome");
+        common.head();
     });
 </script>
 </body>

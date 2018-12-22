@@ -285,7 +285,7 @@
 </script>
 <script>
     seajs.use(["common", "template", "validate", "addMethod"], function (common, template) {
-        common.head("followuper");
+        common.head();
         var editFlowUpFn = function (id) {
             var id = id || 0;
             var data = {};

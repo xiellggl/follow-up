@@ -134,7 +134,7 @@
 <script charset="UTF-8" async="" src="/static/public/daterangepicker3/moment.min.js"></script>
 <script>
     seajs.use(["common", "daterangepicker"], function (common) {
-        common.head("system",3);
+        common.head();
         var date_o = {
             singleDatePicker: true,
             autoUpdateInput: false,

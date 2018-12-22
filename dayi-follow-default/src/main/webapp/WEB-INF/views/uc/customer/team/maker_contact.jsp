@@ -88,7 +88,7 @@
 </script>
 <script>
     seajs.use(["common", "template", "validate", "addMethod"], function (common, template) {
-        common.head("teamCustomer",2);
+        common.head();
         template.helper("dateFormat",common.dateFormat);
     });
 </script>
