@@ -41,7 +41,7 @@ public enum AgentIntenTypeEnum {
         this.value = value;
     }
 
-    public static String getNameByValue(int value) {
+    public static String getNameByValue(Integer value) {
         for (AgentIntenTypeEnum item : AgentIntenTypeEnum.values()) {
             if (item.value == value) {
                 return item.getName();
