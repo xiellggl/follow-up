@@ -21,22 +21,8 @@
                     <a data-toggle="dropdown" href="#" class="dropdown-toggle">
                         <span class="user-info">
                             <small>
-                                <c:choose>
-                                    <c:when test="${flowUpVo.userName eq 'admin'}">
-                                        你好！
-                                    </c:when>
-                                    <c:when test="${flowUpVo.isAdmin eq 1}">
-                                        管理员
-                                    </c:when>
-                                    <c:when test="${flowUpVo.isManager eq 1}">
-                                        团队负责人
-                                    </c:when>
-                                    <c:otherwise>
-                                        你好！
-                                    </c:otherwise>
-                                </c:choose>
+                               你好！${name}
                             </small>
-                            ${empty flowUpVo.linkPerson ? flowUpVo.mobile : flowUpVo.linkPerson}
 						</span>
                         <i class="ace-icon fa fa-caret-down"></i>
                     </a>

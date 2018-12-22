@@ -30,7 +30,7 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(loginInterceptor).addPathPatterns("/user/login/post");
+        registry.addInterceptor(loginInterceptor).addPathPatterns("/*");
         super.addInterceptors(registry);
     }
 
