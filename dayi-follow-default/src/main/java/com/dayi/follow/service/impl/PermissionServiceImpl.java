@@ -68,6 +68,15 @@ public class PermissionServiceImpl implements PermissionService {
             if (null != module) {
                 permission.setModuleName(module.getName());
             }
+
+            // 设置父权限名称
+            String parentId = permission.getParentid();
+            if (!Misc.isEmpty(parentId)) {
+                Permission parent = get(parentId);
+                if (null != parent) {
+                    permission.setParent(parent.getName());
+                }
+            }
         }
 
         return page;
