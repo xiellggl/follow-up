@@ -42,7 +42,7 @@ public class DeptController extends BaseController {
     public String list(HttpServletRequest request, Model model) throws Exception {
         List<Department> deptTree = deptService.getDeptTree(null);
         model.addAttribute("deptTree", deptTree);
-        return "manage/dept_list";
+        return "sys/department/list";
     }
 
     /**
@@ -52,7 +52,7 @@ public class DeptController extends BaseController {
     public String add(HttpServletRequest request, Model model) {
         List<Department> deptTree = deptService.getDeptTree(null);
         model.addAttribute("deptList", deptTree);  // 上级部门下拉选择数据
-        return "manage/dept_edit";
+        return "sys/department/edit";
     }
 
     @RequestMapping("/add/save")
@@ -100,7 +100,7 @@ public class DeptController extends BaseController {
         model.addAttribute("deptVo", department);
 
         model.addAttribute("deptList", deptTree);  // 上级部门下拉选择数据（排除本部门及下属部门）
-        return "manage/dept_edit";
+        return "sys/department/edit";
     }
 
     @RequestMapping("/update/save")

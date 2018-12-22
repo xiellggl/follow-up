@@ -28,6 +28,6 @@ public class OperateLogController {
     public String list(OperateLogSearchVo operateLogSearchVo, Model model) {
         Page<OperateLog> page = operateLogService.searchOperateLog(operateLogSearchVo);
         model.addAttribute("page", page);
-        return "sys/system_log";
+        return "sys/log/system_log";
     }
 }

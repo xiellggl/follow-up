@@ -9,7 +9,7 @@
                  </div>
                  <ul class="${cur.childMenus[0].type eq 1 ? 'last clearfix' : ''}">
                      <c:set var="moduleList" value="${cur.childMenus}" scope="request" />
-                     <c:import url="module_role_item.jsp" />
+                     <c:import url="item.jsp" />
                  </ul>
              </li>
          </c:when>

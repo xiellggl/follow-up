@@ -130,7 +130,7 @@ public class UserController extends BaseController {
         model.addAttribute("deptList", deptList);
         model.addAttribute("rolesList", rolesList);
 
-        return "sys/user_list";
+        return "sys/user/list";
     }
 
 

@@ -70,7 +70,7 @@ public class RoleController {
         model.addAttribute("role", role);
         List<Menu> menus = moduleService.listAll(true);
         model.addAttribute("menus",menus);
-        return "sys/role_edit";
+        return "sys/role/edit";
     }
 
     /**
@@ -136,6 +136,6 @@ public class RoleController {
                    @RequestParam(name = "pageSize", defaultValue = "10") int pageSize, Model model) {
         Page<Role> page = roleService.searchRole(pageNo, pageSize);
         model.addAttribute("page", page);
-        return "sys/role_list";
+        return "sys/role/list";
     }
 }

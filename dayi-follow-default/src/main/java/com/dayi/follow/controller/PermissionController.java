@@ -60,7 +60,7 @@ public class PermissionController {
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
         model.addAttribute("pageUrl", pageUrl);
 
-        return "sys/binding_list";
+        return "sys/permission/list";
     }
 
     /**
@@ -101,7 +101,7 @@ public class PermissionController {
         List<Permission> parentList = permissionService.listParent();
         model.addAttribute("parentList", parentList);
 
-        return "sys/binding_edit";
+        return "sys/permission/edit";
     }
 
     /**

@@ -78,7 +78,7 @@
                                     <option value="">顶级模块</option>
                                     <c:set var="selectedId" value="${permission.moduleid}" scope="request" />
                                     <c:set var="selectList" value="${menus}" />
-                                    <%@ include file="module_option_item.jsp" %>
+                                    <%@ include file="../module/option_item.jsp" %>
                                 </select>
                             </div>
                             <div class="help-block col-xs-12 col-sm-reset inline tips_box"></div>

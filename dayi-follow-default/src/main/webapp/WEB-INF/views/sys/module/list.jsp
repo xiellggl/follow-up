@@ -65,7 +65,7 @@
 
                                 <c:if test="${not empty menus}">
                                     <c:set var="moduleList" value="${allMenus}" />
-                                    <%@ include file="module_item.jsp" %>
+                                    <%@ include file="item.jsp" %>
                                 </c:if>
 
                                 </tbody>
@@ -111,7 +111,7 @@
                                     <select name="parentid" class="chosen-select form-control">
                                         <option value="">顶级模块</option>
                                         <c:set var="selectList" value="${menus}" />
-                                        <%@ include file="module_option_item.jsp" %>
+                                        <%@ include file="option_item.jsp" %>
                                     </select>
                                 </div>
                                 <div class="help-block col-xs-12 col-sm-reset inline tips_box"></div>

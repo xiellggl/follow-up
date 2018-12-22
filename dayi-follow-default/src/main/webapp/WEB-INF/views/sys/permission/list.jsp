@@ -64,7 +64,7 @@
                                         <option value="">所属模块</option>
                                         <c:set var="selectedId" value="${param.moduleId}" scope="request" />
                                         <c:set var="selectList" value="${menus}" />
-                                        <%@ include file="module_option_item2.jsp" %>
+                                        <%@ include file="../module/option_item.jsp" %>
                                     </select>
                                 </div>
                             </div>
