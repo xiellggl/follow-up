@@ -76,6 +76,7 @@ public class AgentServiceImpl implements AgentService {
         List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
         followIds.remove(followId);//过滤自己
 
+        if (followIds.isEmpty()) return page;
 
         List<Integer> ids = null;
         if (searchVo.getWaitToLinkToday() != null) {

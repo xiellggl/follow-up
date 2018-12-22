@@ -3,6 +3,7 @@ package com.dayi.follow.service;
 
 import com.dayi.common.util.BizResult;
 import com.dayi.follow.model.follow.OrgContact;
+import com.dayi.follow.vo.SearchVo;
 import com.dayi.follow.vo.org.OrgListVo;
 import com.dayi.follow.model.follow.Organization;
 import com.dayi.mybatis.support.Page;
@@ -31,12 +32,12 @@ public interface OrgService {
     /**
      * 获取代理商列表
      */
-    Page<OrgListVo> findOrgPage(Page<OrgListVo> page, String mobile, String inviteCode, String followId);
+    Page<OrgListVo> findOrgPage(Page<OrgListVo> page, SearchVo vo, String followId);
 
     /**
      * 获取代理商列表
      */
-    Page<OrgListVo> findTeamOrgPage(Page<OrgListVo> page, String inviteCode, String followUp, String followId, String deptId);
+    Page<OrgListVo> findTeamOrgPage(Page<OrgListVo> page,SearchVo vo, String followId, String deptId);
 
     Organization get(Integer orgId);
 

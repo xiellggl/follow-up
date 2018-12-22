@@ -10,6 +10,7 @@ import com.dayi.follow.service.OrgService;
 import com.dayi.follow.util.PageUtil;
 import com.dayi.follow.util.StringUtil;
 import com.dayi.follow.vo.LoginVo;
+import com.dayi.follow.vo.SearchVo;
 import com.dayi.mybatis.common.util.Misc;
 import com.dayi.mybatis.support.Page;
 import org.springframework.stereotype.Controller;
@@ -44,14 +45,11 @@ public class TeamOrgController {
      * @return
      */
     @RequestMapping("/list")
-    public String agentList(HttpServletRequest request, Model model, Page page) {
+    public String agentList(HttpServletRequest request, Model model, SearchVo vo, Page page) {
         LoginVo currVo = userComponent.getCurrUser(request);
         page.setPageSize(Constants.SEARCH_PAGE_SIZE);
 
-        String followUp = request.getParameter("followUp");
-        String inviteCode = request.getParameter("inviteCode");
-
-        page = orgService.findTeamOrgPage(page, inviteCode, followUp, currVo.getId(), currVo.getDeptId());
+        page = orgService.findTeamOrgPage(page, vo, currVo.getId(), currVo.getDeptId());
 
         String queryStr = request.getQueryString();//返回地址
         String returnUrl = StringUtil.urlEncode(queryStr);

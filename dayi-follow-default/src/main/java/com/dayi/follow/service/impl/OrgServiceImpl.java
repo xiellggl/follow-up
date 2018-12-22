@@ -23,6 +23,7 @@ import com.dayi.follow.util.CheckIdCardUtils;
 import com.dayi.follow.util.StringUtil;
 import com.dayi.follow.util.WordLetterUtil;
 import com.dayi.follow.vo.InviteCodeVo;
+import com.dayi.follow.vo.SearchVo;
 import com.dayi.follow.vo.org.OrgListVo;
 import com.dayi.follow.model.follow.Organization;
 import com.dayi.mybatis.support.Conditions;
@@ -99,8 +100,8 @@ public class OrgServiceImpl implements OrgService {
     }
 
     @Override
-    public Page<OrgListVo> findOrgPage(Page<OrgListVo> page, String mobile, String inviteCode, String followId) {
-        page= followOrgMapper.findOrgs(page,mobile, inviteCode, followId, dayiDataBaseStr);
+    public Page<OrgListVo> findOrgPage(Page<OrgListVo> page, SearchVo vo, String followId) {
+        page = followOrgMapper.findOrgs(page, vo, followId, dayiDataBaseStr);
         page.setResults(doOrgMore(page.getResults()));
         return page;
     }
@@ -148,12 +149,14 @@ public class OrgServiceImpl implements OrgService {
     }
 
     @Override
-    public Page<OrgListVo> findTeamOrgPage(Page<OrgListVo> page, String inviteCode, String followUp, String followId, String deptId) {
+    public Page<OrgListVo> findTeamOrgPage(Page<OrgListVo> page, SearchVo vo, String followId, String deptId) {
 
         List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
         followIds.remove(followId);
 
-        page = followOrgMapper.findTeamOrgs(page, followUp, inviteCode, followIds, dayiDataBaseStr);
+        if (followIds.isEmpty()) return page;
+
+        page = followOrgMapper.findTeamOrgs(page,vo, followIds, dayiDataBaseStr);
 
         page.setResults(doOrgMore(page.getResults()));
         return page;

@@ -10,6 +10,7 @@ import com.dayi.follow.service.*;
 import com.dayi.follow.util.PageUtil;
 import com.dayi.follow.util.StringUtil;
 import com.dayi.follow.vo.LoginVo;
+import com.dayi.follow.vo.SearchVo;
 import com.dayi.mybatis.common.util.Misc;
 import com.dayi.mybatis.support.Page;
 import com.fasterxml.jackson.databind.ser.Serializers;
@@ -46,14 +47,11 @@ public class OrgController extends BaseController {
      * @return
      */
     @RequestMapping("/list")
-    public String agentList(HttpServletRequest request, Model model, Page page) {
+    public String agentList(HttpServletRequest request, Model model, SearchVo vo, Page page) {
         LoginVo currVo = userComponent.getCurrUser(request);
         page.setPageSize(Constants.SEARCH_PAGE_SIZE);
 
-        String mobile = request.getParameter("mobile");
-        String inviteCode = request.getParameter("inviteCode");
-
-        page = orgService.findOrgPage(page, mobile, inviteCode, currVo.getId());
+        page = orgService.findOrgPage(page,vo, currVo.getId());
 
         String queryStr = request.getQueryString();//返回地址
         String returnUrl = StringUtil.urlEncode(queryStr);

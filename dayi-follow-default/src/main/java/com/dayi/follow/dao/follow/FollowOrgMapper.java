@@ -29,7 +29,7 @@ public interface FollowOrgMapper extends BaseMapper<FollowOrg> {
     String getFollowIdByOrgId(Integer orgId);
 
     //获取follow_org
-    FollowOrg getFollowOrgByOrgId(@Param("orgId")Integer orgId);
+    FollowOrg getFollowOrgByOrgId(@Param("orgId") Integer orgId);
 
     //获取联系记录
     List<OrgContact> findContacts(@Param("orgId") Integer orgId, @Param("limitStart") Integer limitStart, @Param("limitEnd") Integer limitEnd);
@@ -37,10 +37,10 @@ public interface FollowOrgMapper extends BaseMapper<FollowOrg> {
     //获取联系记录
     int getContactsNum(@Param("orgId") Integer orgId);
 
-    Page<OrgListVo> findOrgs(Page page,@Param("mobile") String mobile, @Param("inviteCode") String inviteCode,
+    Page<OrgListVo> findOrgs(Page page, @Param("searchVo") SearchVo vo,
                              @Param("followId") String followId, @Param("assistDataBase") String assistDataBase);
 
-    Page<OrgListVo> findTeamOrgs(Page page,@Param("followUp") String followUp, @Param("inviteCode") String inviteCode,
+    Page<OrgListVo> findTeamOrgs(Page page, @Param("searchVo") SearchVo vo,
                                  @Param("followIds") List<String> followIds, @Param("assistDataBase") String assistDataBase);
 
     //查找已分配跟进人的创客

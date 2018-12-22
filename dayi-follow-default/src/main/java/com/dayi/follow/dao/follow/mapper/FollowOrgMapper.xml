@@ -80,11 +80,14 @@
             select org_id,assign_date from follow_org  where follow_id =#{followId}
         )b on a.id = b.org_id
         where b.org_id is not null
-        <if test="''!=inviteCode and null!=inviteCode">
-        and a.maker_num like CONCAT('%','${inviteCode}','%' )
+        <if test="''!=searchVo.inviteCode and null!=searchVo.inviteCode">
+        and a.maker_num like CONCAT('%','${searchVo.inviteCode}','%' )
         </if>
-        <if test="''!=mobile and null!=mobile">
-            and a.mobile like CONCAT('%','${mobile}','%' )
+        <if test="''!=searchVo.mobile and null!=searchVo.mobile">
+            and a.mobile like CONCAT('%','${searchVo.mobile}','%' )
+        </if>
+        <if test="null!=searchVo.orgType">
+            and a.org_type=#{searchVo.orgType}
         </if>
 
         ORDER BY b.assign_date DESC
@@ -105,13 +108,15 @@
             SELECT id ,name from follow_up where disable!=0
         )c on c.id =b.follow_id
         where b.org_id is not null
-        <if test="''!=inviteCode and null!=inviteCode">
-            and a.maker_num like CONCAT('%','${inviteCode}','%')
+        <if test="''!=searchVo.inviteCode and null!=searchVo.inviteCode">
+            and a.maker_num like CONCAT('%','${searchVo.inviteCode}','%')
         </if>
-        <if test="''!=followUp and null!=followUp">
-            and c.id is not null and c.name like CONCAT('%','${followUp}','%')
+        <if test="''!=searchVo.followUp and null!=searchVo.followUp">
+            and c.id is not null and c.name like CONCAT('%','${searchVo.followUp}','%')
         </if>
-
+        <if test="''!=searchVo.orgType and null!=searchVo.orgType">
+            and c.org_type=#{searchVo.orgType}
+        </if>
         ORDER BY b.create_time DESC
     </select>
 
