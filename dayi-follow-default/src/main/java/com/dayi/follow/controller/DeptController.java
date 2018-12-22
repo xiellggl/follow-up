@@ -36,7 +36,7 @@ public class DeptController extends BaseController {
     private UserService userService;
 
     /**
-     * 查询 -- 一级部门（前端需自行递归层级部门）
+     * 查询
      */
     @RequestMapping("/list")
     public String list(HttpServletRequest request, Model model) throws Exception {
