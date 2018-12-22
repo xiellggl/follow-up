@@ -43,13 +43,23 @@ public class PermissionController {
      */
     @RequestMapping("/list")
     public String list(HttpServletRequest request, PermissionSearchVo permissionSearchVo, Model model) {
+        //功能页面
         Page<Permission> page =  permissionService.searchPermissions(permissionSearchVo);
         page.setPageSize(30);
         model.addAttribute("page", page);
-        String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
-        model.addAttribute("pageUrl", pageUrl);
+
+        //模块列表
         List<Menu> menus = moduleService.listModule();
         model.addAttribute("menus", menus);
+
+        //功能页面列表
+        List<Permission> parentList = permissionService.listParent();
+        model.addAttribute("parentList", parentList);
+
+        //分页：当前URL
+        String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
+        model.addAttribute("pageUrl", pageUrl);
+
         return "sys/binding_list";
     }
 
@@ -79,12 +89,15 @@ public class PermissionController {
      */
     @RequestMapping("/edit")
     public String edit(String id, Model model) {
+        //当前功能信息
         Permission permission = permissionService.get(id);
         model.addAttribute("permission", permission);
 
+        //模块列表
         List<Menu> menus = moduleService.listModule();
         model.addAttribute("menus", menus);
 
+        //功能页面列表
         List<Permission> parentList = permissionService.listParent();
         model.addAttribute("parentList", parentList);
 
@@ -131,7 +144,7 @@ public class PermissionController {
     @ResponseBody
     public BizResult bindSave(HttpServletRequest request) {
         String moduleId = request.getParameter("moduleId");
-        String permissionIds = request.getParameter("id");
+        String permissionIds = request.getParameter("permissionIds");
         if (Misc.isEmpty(moduleId)) {
             return BizResult.fail("请选择模块");
         }

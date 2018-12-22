@@ -23,6 +23,20 @@
                             <div class="help-block col-xs-12 col-sm-reset inline tips_box"></div>
                         </div>
 
+                        <div class="form-group">
+
+                            <label class="col-sm-2 control-label no-padding-right">所属页面：</label>
+                            <div class="col-xs-12 col-sm-6">
+                                <select name="parentid" class="chosen-select form-control">
+                                    <option value="">模块页面级</option>
+                                    <c:forEach items="${parentList}" var="item">
+                                        <option value="${item.id}" ${permission.parentid eq item.id ? 'selected' : ''}>${item.name}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                            <div class="help-block col-xs-12 col-sm-reset inline tips_box"></div>
+                        </div>
+
                         <div class="space-4"></div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label no-padding-right">排序号：</label>
@@ -31,6 +45,7 @@
                             </div>
                             <div class="help-block col-xs-12 col-sm-reset inline tips_box"></div>
                         </div>
+
 
                         <div class="space-4"></div>
                         <div class="form-group">
@@ -60,10 +75,10 @@
                             <label class="col-sm-2 control-label no-padding-right">所属模块：</label>
                             <div class="col-xs-12 col-sm-6">
                                 <select name="moduleid" class="chosen-select form-control">
-                                    <option value="">选择所属模块</option>
+                                    <option value="">顶级模块</option>
                                     <c:set var="selectedId" value="${permission.moduleid}" scope="request" />
                                     <c:set var="selectList" value="${menus}" />
-                                    <%@ include file="module_option_item2.jsp" %>
+                                    <%@ include file="module_option_item.jsp" %>
                                 </select>
                             </div>
                             <div class="help-block col-xs-12 col-sm-reset inline tips_box"></div>

@@ -6,7 +6,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>日志管理</title>
-    <%@include file="/inc/followup/csslink.jsp"%><link rel="stylesheet" type="text/css" media="all" href="/static/public/daterangepicker3/daterangepicker.css"/>
+    <%@include file="/inc/followup/csslink.jsp"%>
+    <link rel="stylesheet" type="text/css" media="all" href="/static/public/daterangepicker3/daterangepicker.css"/>
 
 </head>
 <body class="no-skin">
@@ -95,7 +96,7 @@
 
                             <c:if test="${empty page}">
                             <tr>
-                            <td colspan="8" class="no_data">暂无数据记录</td>
+                                <td colspan="8" class="no_data">暂无数据记录</td>
                             </tr>
                             </c:if>
 
@@ -105,7 +106,7 @@
                                     <td>${item.authorName}</td>
                                     <td>${item.what}</td>
                                     <td>${item.note}</td>
-                                    <td class="hidden-sm hidden-xs"><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                    <td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                     <td>${item.ip}</td>
                                 </tr>
                             </c:forEach>
@@ -115,9 +116,9 @@
                         </table>
 
                         <c:if test="${not empty page}">
-                        <div class="pagerBar" id="pagerBar">
-                        <common:page2 url="${pageUrl}" type="3"/>
-                        </div>
+                            <div class="pagerBar" id="pagerBar">
+                                <common:page url="${pageUrl}" type="3"/>
+                            </div>
                         </c:if>
 
                     </div>

@@ -33,7 +33,7 @@
                         </small>
                     </h1>
                     <a href="#" class="pull-right" data-toggle="modal" data-target="#myModalEditFollowuper">
-                        <span class="btn btn-primary">新增用户</span>
+                        <span class="btn btn-xs btn-primary">新增用户</span>
                     </a>
                 </div>
 
@@ -49,7 +49,7 @@
                                 <th>角色</th>
                                 <th>部门</th>
                                 <th>状态</th>
-                                <th>创建时间</th>
+                                <th class="hidden-xs">创建时间</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
@@ -81,7 +81,7 @@
                                         </span>
                                     </a>
                                 </td>
-                                <td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/> </td>
+                                <td class="hidden-xs"><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/> </td>
                                 <td>
                                     <a class="green" href="#" data-toggle="modal"
                                        data-target="#myModalEditFollowuper" data-id="${item.id}"

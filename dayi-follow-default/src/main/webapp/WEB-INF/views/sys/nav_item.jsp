@@ -5,7 +5,7 @@
         <c:when test='${not empty cur.childMenus and fn:length(cur.childMenus) > 0}'>
             <li>
                 <a href="javascript:void(0);" class="dropdown-toggle">
-                    <i class="menu-icon fa fa-users"></i>
+                    <i class="menu-icon fa ${cur.cssName}"></i>
                     <span class="menu-text">${cur.name}</span>
                     <b class="arrow fa fa-angle-down"></b>
                 </a>

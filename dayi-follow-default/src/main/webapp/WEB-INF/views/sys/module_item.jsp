@@ -4,7 +4,6 @@
         <%-- 每一次循环，index+1--%>
         <c:set var="index" value="${index + 1}" scope="request" />
         <tr id="${cur.id} - ${cur.parentId}" data-id="${cur.id}">
-            <td></td>
             <td><span style="padding-left:${level>0?2*level:0}em;">${cur.name}</span></td>
             <td>
                 <c:if test="${cur.type eq 0}">
@@ -16,21 +15,45 @@
                 </c:if>
             </td>
             <td>${cur.url}</td>
-            <td>${cur.order}</td>
+            <td class="hidden-xs">${cur.order}</td>
             <td>
                 <c:if test="${cur.type eq 0}">
-                    <a href="#" data-pid="${cur.id}" data-toggle="modal" data-target="#myModalEditModule" data-toggle="tooltip" title="添加子类">
-                        <i class="ace-icon fa fa-plus-circle bigger-130"></i>
-                    </a>
-                    <a href="#" data-id="${cur.id}" data-toggle="modal" data-target="#myModalEditModule" data-toggle="tooltip" title="修改">
-                        <i class="ace-icon fa fa-pencil bigger-130"></i>
-                    </a>
-                    <a href="#" data-act="del" data-toggle="tooltip" title="删除">
-                        <i class="ace-icon fa fa-trash-o bigger-130 red"></i>
-                    </a>
-                    <%--<a href="#" data-act="bind" data-toggle="tooltip" title="绑定功能">
-                        <i class="ace-icon fa fa-link bigger-130"></i>
-                    </a>--%>
+                    <div class="btn-group dropup">
+                        <div class="hidden-xs">
+                            <a href="#" data-pid="${cur.id}" data-toggle="modal" data-target="#myModalEditModule" data-toggle="tooltip" title="添加子类">
+                                <i class="ace-icon fa fa-plus-circle bigger-130"></i>
+                            </a>
+                            <a href="#" data-id="${cur.id}" data-toggle="modal" data-target="#myModalEditModule" data-toggle="tooltip" title="修改">
+                                <i class="ace-icon fa fa-pencil bigger-130"></i>
+                            </a>
+                            <a href="#" data-act="del" data-toggle="tooltip" title="删除">
+                                <i class="ace-icon fa fa-trash-o bigger-130 red"></i>
+                            </a>
+                            <a href="/permission/list?bindModuleId=${cur.id}" data-act="bind" data-toggle="tooltip" title="绑定功能">
+                                <i class="ace-icon fa fa-link bigger-130"></i>
+                            </a>
+                        </div>
+                        <button data-toggle="dropdown" class="btn btn-xs btn-info dropdown-toggle hidden visible-xs" aria-expanded="false">
+                            <span class="ace-icon fa fa-caret-down icon-only"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="#" data-pid="${cur.id}" data-toggle="modal" data-target="#myModalEditModule">添加子类</a>
+                            </li>
+                            <li>
+                                <a href="#" data-id="${cur.id}" data-toggle="modal" data-target="#myModalEditModule">修改</a>
+                            </li>
+                            <li>
+                                <a href="#" data-act="del">删除</a>
+                            </li>
+                            <li>
+                                <a href="/permission/list?bindModuleId=${cur.id}" data-act="bind">绑定功能</a>
+                            </li>
+                        </ul>
+                    </div>
+
+
+
                 </c:if>
                 <c:if test="${cur.type eq 1}">
                     <a href="#" data-act="unbind" data-toggle="tooltip" title="解绑功能">
