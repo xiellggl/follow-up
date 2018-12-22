@@ -655,16 +655,15 @@ define(function(require, exports, module) {
         });
     };
 
-    exports.head = function(p,s) {
+    exports.head = function(n) {
         //导航标识
-        if(p != undefined) {
-            var $navSide = $("#navSide");
-            var $itemNav = $navSide.find('[data-rel="' + p + '"]').addClass("active");
+        var $navSide = $("#navSide");
 
-            if (s != undefined) {
-                $itemNav.addClass("open").find('[data-index="' + s + '"]').addClass("active");
-            }
+        //非菜单显示页面标识
+        if(n){
+            $navSide.find('[data-path="'+n+'"]').not("active").addClass("active").closest("ul").closest("li").addClass("open");
         }
+
         var $userMenu = $("#userMenu");
         //查看个人信息
         var $modal = $("#myModalInfo");

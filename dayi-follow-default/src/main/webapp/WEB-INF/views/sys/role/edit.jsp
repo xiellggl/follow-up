@@ -103,7 +103,7 @@
 <script>
     seajs.use(["common","validate","template"],function(common){
         //菜单高亮
-        common.head("system",4);
+        common.head("_role_list");
         var $form = $("#formEditRole");
         var type = "${empty role.id ? "add" : "edit"}";
 

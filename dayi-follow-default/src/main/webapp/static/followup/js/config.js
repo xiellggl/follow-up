@@ -11,8 +11,8 @@
     };
     /* Local variable */
     var host    = "//" + location.host;
-    var debug  = getCookie("debugFlag") ? true : false;
-    //var debug = true;
+    //var debug  = getCookie("debugFlag") ? true : false;
+    var debug = true;
     var config={
         vars : {
             "public":"/static/public/js/",

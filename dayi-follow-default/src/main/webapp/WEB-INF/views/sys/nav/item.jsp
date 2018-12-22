@@ -3,7 +3,13 @@
 <c:forEach var="cur" items="${navMenus}">
     <c:choose>
         <c:when test='${not empty cur.childMenus and fn:length(cur.childMenus) > 0}'>
-            <li>
+            <c:set var="hasActive" value="false" />
+            <c:forEach var="item" items="${cur.childMenus}">
+                <c:if test="${item.url eq path}">
+                    <c:set var="hasActive" value="true" />
+                </c:if>
+            </c:forEach>
+            <li ${hasActive?'class="open"':''}>
                 <a href="javascript:void(0);" class="dropdown-toggle">
                     <i class="menu-icon fa ${cur.cssName}"></i>
                     <span class="menu-text">${cur.name}</span>
@@ -16,7 +22,7 @@
             </li>
         </c:when>
         <c:otherwise>
-            <li>
+            <li data-path="${fn:replace(cur.url,"/","_")}" ${cur.url eq path ? 'class="active"' : ''}>
                 <a href="${cur.url}">
                     <c:choose>
                         <c:when test="${empty cur.parentId}">
