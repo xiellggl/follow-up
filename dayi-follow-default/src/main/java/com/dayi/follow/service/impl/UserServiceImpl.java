@@ -329,12 +329,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String getUnAuthorizedUrl(String s) {
-        return "/followup/login";
+        return "/user/login";
     }
 
     @Override
     public String getUnAuthenticatedUrl(String s) {
-        return "/followup/login";
+        return "/user/login";
     }
 
     @Override

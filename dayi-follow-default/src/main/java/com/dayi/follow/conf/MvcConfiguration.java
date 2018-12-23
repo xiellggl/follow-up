@@ -1,11 +1,9 @@
 package com.dayi.follow.conf;
 
-import com.dayi.follow.interceptor.LoginInterceptor;
-import org.springframework.context.annotation.ComponentScan;
+import com.dayi.follow.interceptor.GlobalInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
@@ -19,7 +17,7 @@ import javax.annotation.Resource;
 public class MvcConfiguration extends WebMvcConfigurerAdapter {
 
     @Resource
-    LoginInterceptor loginInterceptor;
+    GlobalInterceptor loginInterceptor;
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {

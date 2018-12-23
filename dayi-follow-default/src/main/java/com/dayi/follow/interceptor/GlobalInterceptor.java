@@ -18,8 +18,8 @@ import javax.servlet.http.HttpServletResponse;
  * @date 2018/11/13
  */
 @Component
-public class LoginInterceptor implements HandlerInterceptor {
-    private static Logger logger = Logger.getLogger(LoginInterceptor.class);
+public class GlobalInterceptor implements HandlerInterceptor {
+    private static Logger logger = Logger.getLogger(GlobalInterceptor.class);
 
     @Resource
     UserService userService;
