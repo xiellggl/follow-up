@@ -196,6 +196,16 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
+    public List<ReportDailyVo> findAdminDailyDetailList(String deptId, String date) {
+        List<ReportDailyVo> list = new ArrayList();
+        if (StringUtils.isBlank(deptId) || StringUtils.isBlank(date)) return list;//必须同时满足
+
+        String startDate = DateTime.parse(date).millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
+        String endDate = DateTime.parse(date).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
+        return reportMapper.findAdminDailyDetailList(deptId, startDate, endDate);
+    }
+
+    @Override
     public Page<AdminWeekVo> findAdminWeek(Page page, String deptId, String betweenDate) {
         if (StringUtils.isBlank(betweenDate)) return page;
 
@@ -235,7 +245,7 @@ public class ReportServiceImpl implements ReportService {
         String startDate = split[0];
         String endDate = DateTime.parse(split[1]).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
 
-        List<String> followIds=new ArrayList<>();
+        List<String> followIds = new ArrayList<>();
 
         List<String> subDeptIds = deptService.getSubDeptIds(deptId);
         for (String subDeptId : subDeptIds) {

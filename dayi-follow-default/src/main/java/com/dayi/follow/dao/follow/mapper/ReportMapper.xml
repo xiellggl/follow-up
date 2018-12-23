@@ -308,32 +308,21 @@
         ORDER BY create_time desc
     </select>
 
-    <!--<select id="findAdminMonth" parameterType="map" resultType="com.dayi.follow.vo.report.AdminMonthVo">-->
-        <!--SELECT deptName,followUpName,inviteCode,count(c.flow_id)signOrgNum,-->
-        <!--openAccountNum,inCash,manage_asset manageAsset,dept_id,a.flow_id-->
-        <!--from (-->
-            <!--SELECT flow_id,sum(open_account_num)openAccountNum,sum(in_cash)inCash,-->
-            <!--a2.name deptName,a3.name name,a3.invite_code inviteCode,a2.id dept_id-->
-            <!--from follow_up_log a1-->
-            <!--left join (-->
-                <!--SELECT name,id from follow_dept-->
-            <!--)a2 on a2.id = a1.dept_id-->
-            <!--left join(-->
-                <!--SELECT name,id,invite_code from follow_up-->
-            <!--)a3 on a3.id=a1.flow_id where 1=1-->
-            <!--<if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">-->
-            <!--and date(create_date) BETWEEN '#{startDate}' and '#{endDate}'-->
-            <!--</if>-->
-            <!--GROUP BY flow_id-->
-        <!--)a left join(-->
-            <!--SELECT manage_asset,flow_id from follow_up_log  where date(create_date)= last_day('')-->
-        <!--)b on a.flow_id=b.flow_id-->
-        <!--GROUP BY a.flow_id-->
-        <!--<if test="''!=followId and null!=followId">-->
-        <!--having flow_id = #{followId}-->
-        <!--</if>-->
-        <!--ORDER BY  dept_id asc , flow_id asc-->
-        <!--LIMIT #{limitStart,limitEnd}-->
-    <!--</select>-->
+    <select id="findAdminDailyDetailList" parameterType="map" resultType="com.dayi.follow.vo.report.ReportDailyVo">
+        SELECT date(create_time)date,b.name deptName,c.name,dept_id ,open_account_num,
+        manage_growth_fund,in_cash,in_cash_num,
+        out_cash,out_cash_num
+        from follow_up_log  a
+        left join(
+        SELECT name,id from department
+        )b on b.id=a.dept_id
+        left join(
+        SELECT id,name FROM follow_up
+        )c on c.id=a.follow_id
+        WHERE 1=1
+        and a.create_time BETWEEN #{startDate} and #{endDate}
+        and a.dept_id=#{deptId}
+        ORDER BY create_time desc
+    </select>
 
 </mapper>

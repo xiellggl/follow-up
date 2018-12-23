@@ -109,7 +109,7 @@ public class ReportController extends BaseController {
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
         request.setAttribute("pageUrl", pageUrl);
         model.addAttribute("page", page);
-        model.addAttribute("date",date);
+        model.addAttribute("date", date);
         return "/followup/uc/log/mydaily";
     }
 
@@ -154,7 +154,7 @@ public class ReportController extends BaseController {
         ReportDailyVo week = reportService.getWeek(currVo.getId(), date);
 
         model.addAttribute("week", week);
-        model.addAttribute("date",date);
+        model.addAttribute("date", date);
         return "/followup/uc/log/mydaily";
     }
 
@@ -181,7 +181,7 @@ public class ReportController extends BaseController {
         List<ReportDailyVo> teamWeek = reportService.findTeamWeek(currVo.getDeptId(), date);
 
         model.addAttribute("teamWeek", teamWeek);
-        model.addAttribute("date",date);
+        model.addAttribute("date", date);
         return "/followup/uc/log/mydaily";
     }
 
@@ -201,7 +201,7 @@ public class ReportController extends BaseController {
         ReportDailyVo month = reportService.getMonth(currVo.getId(), date);
 
         model.addAttribute("month", month);
-        model.addAttribute("date",date);
+        model.addAttribute("date", date);
         return "/followup/uc/log/mydaily";
     }
 
@@ -224,7 +224,7 @@ public class ReportController extends BaseController {
         List<ReportDailyVo> teamMonth = reportService.findTeamMonth(currVo.getDeptId(), date);
 
         model.addAttribute("teamMonth", teamMonth);
-        model.addAttribute("date",date);
+        model.addAttribute("date", date);
         return "/followup/uc/log/mydaily";
     }
 
@@ -268,6 +268,27 @@ public class ReportController extends BaseController {
         request.setAttribute("pageUrl", pageUrl);
         model.addAttribute("page", page);
         return "/followup/uc/log/mydaily";
+    }
+
+    /**
+     * 管理员日报详情导出
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping("/admin/daily/export")
+    public void adminDailyExport(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        LoginVo currVo = userComponent.getCurrUser(request);
+        String deptId = request.getParameter("deptId");
+        String date = request.getParameter("date");
+
+        List list = reportService.findAdminDailyDetailList(deptId, date);
+
+        String fileTitle = "团队日报详情";
+        String fileName = currVo.getName() + "-" + fileTitle + new DateTime().toString("yyyy-MM-dd HH:mm:ss");
+
+        TeamDailyDetailExport export = new TeamDailyDetailExport(fileName, fileTitle, list);
+        export.exportExcel(request, response);
     }
 
     /**
@@ -318,7 +339,7 @@ public class ReportController extends BaseController {
         String[] split = date.split(" - ");
         String fileTitle = "资产管理部" + split[0] + "至" + split[1] + "周报";
 
-        List<AdminWeekVo> adminWeekList = reportService.findAdminWeekList(currVo.getDeptId(),date);
+        List<AdminWeekVo> adminWeekList = reportService.findAdminWeekList(currVo.getDeptId(), date);
 
         String fileName = fileTitle;
         AdminWeekExport export = new AdminWeekExport(fileName, fileTitle, adminWeekList);
