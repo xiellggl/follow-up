@@ -4,7 +4,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8"/>
-    <title>团队报表-团队周报</title>
+    <title>团队报表-团队月报</title>
     <%@include file="/inc/followup/csslink.jsp" %>
     <link rel="stylesheet" type="text/css" media="all" href="/static/public/flexoCalendar/flexoCalendar.css"/>
 </head>
@@ -20,7 +20,7 @@
                         <i class="ace-icon fa fa-home home-icon"></i>
                         <a href="/followup/manage/index">首页</a>
                     </li>
-                    <li class="active">团队周报</li>
+                    <li class="active">团队月报</li>
                 </ul><!-- /.breadcrumb -->
             </div>
             <div class="page-content">
@@ -29,20 +29,20 @@
                         您当前操作
                         <small>
                             <i class="ace-icon fa fa-angle-double-right"></i>
-                            团队周报(${startDate} - ${endDate})
+                            团队月报(${monthVo.month})
                         </small>
                     </h1>
                 </div>
                 <div class="row">
                     <div class="col-xs-12">
                         <ul class="nav nav-tabs">
-                            <li ${startDate eq thisWeekStart ? 'class="active"':''}><a href="?date=${thisWeekStart} - ${thisWeekEnd}">本周</a></li>
-                            <li ${startDate eq lastWeekStart ? 'class="active"':''}><a href="?date=${lastWeekStart} - ${lastWeekEnd}">上一周</a></li>
-                            <c:if test="${startDate ne thisWeekStart and startDate ne lastWeekStart}">
-                                <li class="active"><a>${startDate} - ${endDate}</a></li>
+                            <li ${monthVo.month eq monthVo.thisMonth ? 'class="active"':''}><a href="?date=${monthVo.thisMonth}">本月</a></li>
+                            <li ${monthVo.month eq monthVo.lastMonth ? 'class="active"':''}><a href="?date=${monthVo.lastMonth}">上一月</a></li>
+                            <c:if test="${monthVo.month ne monthVo.thisMonth and monthVo.month ne monthVo.lastMonth}">
+                                <li class="active"><a>${monthVo.month}</a></li>
                             </c:if>
                             <li>
-                                <a class="dates" data-toggle="popover" id="showWeeklyPicker">
+                                <a class="dates" data-toggle="popover" id="showmonthlyPicker">
                                     更多 <i class="ace-icon fa fa-angle-double-right"></i>
                                 </a>
                             </li>
@@ -56,36 +56,31 @@
                             <thead>
                             <tr>
                                 <th>姓名</th>
-                                <th>${flowUpVo.deptName eq 'KA及渠道部' ? '创客管理资金净增' : '本周新开户'}</th>
-                                <th>本周入金总额</th>
-                                <th>本周出金总额</th>
-                                <th>本周资金净增</th>
+                                <th>本月新开户</th>
+                                <th>创客管理资金净增</th>
+                                <th>本月入金总额</th>
+                                <th>本月出金总额</th>
+                                <th>本月资金净增</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <c:if test="${empty page.items}">
+                            <c:if test="${monthVo.name eq null or monthVo.name eq ''}">
                                 <tr>
                                     <td colspan="8" class="no_data">暂无数据记录</td>
                                 </tr>
                             </c:if>
-                            <c:if test="${not empty page.items}">
-                                <c:forEach items="${page.items}" var="item">
+                            <c:if test="${not empty monthVo.name}">
                                     <tr>
-                                        <td>${item.followUpName}</td>
-                                        <td>${flowUpVo.deptName eq 'KA及渠道部' ? item.manageAssetGrowthFormat : item.openAccountNum }</td>
-                                        <td>${item.inCashFormat}</td>
-                                        <td>${item.outCashFormat}</td>
-                                        <td>${item.moneyGrowthFm}</td>
+                                        <td>${monthVo.name}</td>
+                                        <td>${monthVo.openAccountNum}</td>
+                                        <td>${monthVo.manageGrowthFundFm}</td>
+                                        <td>${monthVo.inCashFm}</td>
+                                        <td>${monthVo.outCashFm}</td>
+                                        <td>${monthVo.growthFundFm}</td>
                                     </tr>
-                                </c:forEach>
                             </c:if>
                             </tbody>
                         </table>
-                        <c:if test="${not empty page}">
-                            <div class="pagerBar" id="pagerBar">
-                                <common:page url="${pageUrl}" type="3"/>
-                            </div>
-                        </c:if>
                     </div>
                 </div>
             </div>
@@ -97,19 +92,16 @@
 <script>
     seajs.use(["common", "flexoCalendar"], function (common) {
         common.head();
-        $("#showWeeklyPicker").popover({
+        $("#showmonthlyPicker").popover({
             container:"body",
             placement:"bottom",
             html:true,
-            content:'<div id="weeklyContent" style="width: 230px;"></div>'
+            content:'<div id="monthlyContent" style="width: 230px;"></div>'
         }).on("shown.bs.popover",function () {
-            $("#weeklyContent").flexoCalendar({
-                type:'weekly',
-                //allowDate:['2018-01','2018-08'],
+            $("#monthlyContent").flexoCalendar({
+                type:'monthly',
                 onselect:function (date) {
-                    var dateArr = date.split(",");
-                    var endDate = new Date(dateArr[0]).getTime() + 1000*60*60*24*4;
-                    window.location.href = "?date=" + dateArr[0] + " - " + common.dateFormat(endDate,"yyyy-MM-dd");
+                    window.location.href = "?date=" + date;
                 }
             });
         });

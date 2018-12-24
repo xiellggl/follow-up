@@ -28,7 +28,7 @@
                     <div class="page-header clearfix">
                         <div class="pull-left">
                             日期：${date}<br>
-                            团队：${flowUpVo.deptName}
+                            团队：${deptName}
                         </div>
                         <div class="pull-right">
                             <a href="./export?date=${date}" class="btn btn-xs btn-danger">
@@ -44,9 +44,8 @@
                                 <thead>
                                 <tr>
                                     <th>姓名</th>
-                                    <th class="hidden-xs">
-                                        ${flowUpVo.deptName eq 'KA及渠道部' ? '创客净增资金规模' : '今日新开户'}
-                                    </th>
+                                    <th>今日新开户</th>
+                                    <th>创客净增资金规模</th>
                                     <th>入金总额</th>
                                     <th>入金人数</th>
                                     <th>实际出金总额</th>
@@ -54,23 +53,21 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <c:if test="${empty page.items}">
+                                <c:if test="${empty page.results}">
                                     <tr>
                                         <td colspan="9" class="no_data">暂无数据记录</td>
                                     </tr>
                                 </c:if>
 
-                                <c:if test="${not empty page.items}">
-                                    <c:forEach items="${page.items}" var="item">
-                                        <fmt:formatDate var="date" value="${item.createDate}" pattern="yyyy-MM-dd"/>
+                                <c:if test="${not empty page.results}">
+                                    <c:forEach items="${page.results}" var="item">
                                         <tr>
-                                            <td>${item.followUpName}</td>
-                                            <td class="hidden-xs">
-                                                ${flowUpVo.deptName eq "KA及渠道部" ? item.manageAssetGrowthFormat : item.openAccountNum}
-                                            </td>
-                                            <td>${item.inCashFormat}</td>
+                                            <td>${item.name}</td>
+                                            <td>${item.openAccountNum}</td>
+                                            <td>${item.manageGrowthFundFm}</td>
+                                            <td>${item.inCashFm}</td>
                                             <td>${item.inCashNum}</td>
-                                            <td>${item.outCashFormat}</td>
+                                            <td>${item.outCashFm}</td>
                                             <td>${item.outCashNum}</td>
                                         </tr>
                                     </c:forEach>

@@ -67,7 +67,7 @@
 
 
 
-    <select id="getWeek" parameterType="map" resultType="com.dayi.follow.vo.report.ReportDailyVo">
+    <select id="getWeek" parameterType="map" resultType="com.dayi.follow.vo.report.WeekVo">
         SELECT dept_id,b.name deptName,c.name ,follow_id,
               sum(open_account_num)openAccountNum,sum(in_cash)inCash,
               sum(out_cash)outCash,sum(manage_growth_fund)manageGrowthFund
@@ -84,7 +84,7 @@
         </if>
     </select>
 
-    <select id="findTeamWeek" parameterType="map" resultType="com.dayi.follow.vo.report.ReportDailyVo">
+    <select id="findTeamWeek" parameterType="map" resultType="com.dayi.follow.vo.report.ReportVo">
         select follow_id,dept_id,c.name ,sum(open_account_num)openAccountNum,sum(manage_growth_fund)manageGrowthFund,
                 sum(in_cash)inCash,sum(in_cash_num)inCashNum,sum(out_cash)outCash,sum(out_cash_num)outCashNum
         from follow_up_log a
@@ -101,7 +101,7 @@
         group by follow_id  ORDER BY dept_id asc, follow_id asc
     </select>
 
-    <select id="getMonth" parameterType="map" resultType="com.dayi.follow.vo.report.ReportDailyVo">
+    <select id="getMonth" parameterType="map" resultType="com.dayi.follow.vo.report.MonthVo">
         SELECT dept_id,b.name deptName,c.name ,follow_id,
         sum(open_account_num)openAccountNum,sum(in_cash)inCash,
         sum(out_cash)outCash,sum(manage_growth_fund)manageGrowthFund
@@ -118,7 +118,7 @@
         </if>
     </select>
 
-    <select id="findTeamMonth" parameterType="map" resultType="com.dayi.follow.vo.report.ReportDailyVo">
+    <select id="findTeamMonth" parameterType="map" resultType="com.dayi.follow.vo.report.ReportVo">
         select follow_id,dept_id,b.name deptName,c.name,sum(open_account_num)openAccountNum,
                 sum(manage_growth_fund)manageGrowthFund,
                 sum(in_cash)inCash,sum(out_cash)outCash
@@ -269,7 +269,7 @@
         and follow_id=#{followId}
     </select>
 
-    <select id="findAdminDaily" parameterType="map" resultType="com.dayi.follow.vo.report.ReportDailyVo">
+    <select id="findAdminDaily" parameterType="map" resultType="com.dayi.follow.vo.report.ReportVo">
         SELECT date(create_time)date,b.name deptName,dept_id ,sum(open_account_num)openAccountNum,
                 sum(manage_growth_fund)manageGrowthFund,sum(in_cash)inCash,sum(in_cash_num)inCashNum,
                 sum(out_cash)outCash,sum(out_cash_num)outCashNum

@@ -4,7 +4,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8" />
-    <title>我的日报</title>
+    <title>团队报表-团队日报</title>
     <%@include file="/inc/followup/csslink.jsp"%>
     <link rel="stylesheet" type="text/css" media="all" href="/static/public/daterangepicker3/daterangepicker.css" />
 </head>
@@ -20,7 +20,7 @@
                         <i class="ace-icon fa fa-home home-icon"></i>
                         <a href="#">首页</a>
                     </li>
-                    <li class="active">我的日报</li>
+                    <li class="active">团队日报</li>
                 </ul>
             </div>
             <div class="page-content">
@@ -49,32 +49,38 @@
                             <thead>
                             <tr>
                                 <th>日期</th>
-                                <th class="hidden-xs">所在团队</th>
-                                <th>${flowUpVo.deptName eq 'KA及渠道部' ? '创客净增资金规模' : '今日新开户'}</th>
+                                <th class="hidden-xs">团队名称</th>
+                                <th class="hidden-xs">今日新开户</th>
+                                <th class="hidden-xs">创客净增资金规模</th>
                                 <th class="hidden-xs">入金总额</th>
                                 <th>入金人数</th>
                                 <th class="hidden-xs">实际出金总额</th>
                                 <th>实际出金人数</th>
+                                <th>操作</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <c:if test="${empty page.items}">
+                            <c:if test="${empty page.results}">
                                 <tr>
-                                    <td colspan="7" class="no_data">暂无数据记录</td>
+                                    <td colspan="12" class="no_data">暂无数据记录</td>
                                 </tr>
                             </c:if>
-                            <c:if test="${not empty page.items}">
-                                <c:forEach items="${page.items}" var="item">
+                            <c:if test="${not empty page.results}">
+                                <c:forEach items="${page.results}" var="item">
                                     <tr>
-                                        <td><fmt:formatDate value="${item.createDate}" pattern="yyyy-MM-dd"/></td>
-                                        <td class="hidden-xs">${flowUpVo.deptName}</td>
-                                        <td>
-                                             ${flowUpVo.deptName eq "KA及渠道部" ? item.manageAssetGrowthFormat : item.openAccountNum}
-                                        </td>
-                                        <td class="hidden-xs">${item.inCashFormat}</td>
+                                        <td>${item.date}</td>
+                                        <td class="hidden-xs">${item.deptName}</td>
+                                        <td class="hidden-xs">${item.openAccountNum}</td>
+                                        <td class="hidden-xs">${item.manageGrowthFundFm}</td>
+                                        <td class="hidden-xs">${item.inCashFm}</td>
                                         <td>${item.inCashNum}</td>
-                                        <td class="hidden-xs">${item.outCashFormat}</td>
+                                        <td class="hidden-xs">${item.outCashFm}</td>
                                         <td>${item.outCashNum}</td>
+                                        <td>
+                                            <a href="./daily/detail?date=${item.date}">
+                                                <i class="ace-icon fa fa-external-link"></i> 查看
+                                            </a>
+                                        </td>
                                     </tr>
                                 </c:forEach>
                             </c:if>

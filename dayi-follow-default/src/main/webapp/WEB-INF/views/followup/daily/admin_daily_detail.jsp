@@ -4,7 +4,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8"/>
-    <title><c:if test="${flowUpSession.userName eq 'admin'}">团队报表-</c:if>团队日报</title>
+    <title>团队报表-团队日报</title>
     <%@include file="/inc/followup/csslink.jsp" %>
 </head>
 <body class="no-skin">
@@ -19,9 +19,6 @@
                         <i class="ace-icon fa fa-home home-icon"></i>
                         <a href="/followup/manage/index">首页</a>
                     </li>
-                    <c:if test="${flowUpSession.userName eq 'admin'}">
-                        <li>团队报表</li>
-                    </c:if>
                     <li class="active">团队日报详情</li>
                 </ul><!-- /.breadcrumb -->
             </div>
@@ -33,7 +30,7 @@
                             团队：${deptName}
                         </div>
                         <div class="pull-right">
-                            <a href="./export?did=${deptId}&date=${date}" class="btn btn-xs btn-danger">
+                            <a href="./export?deptId=${deptId}&date=${date}" class="btn btn-xs btn-danger">
                                 <span class="ace-icon glyphicon glyphicon-export"></span>
                                 一键导出
                             </a>
@@ -46,9 +43,8 @@
                                 <thead>
                                 <tr>
                                     <th>姓名</th>
-                                    <th class="hidden-xs">
-                                         ${deptName eq 'KA及渠道部' ? '创客净增资金规模' : '今日新开户'}
-                                    </th>
+                                    <th>今日新开户</th>
+                                    <th>创客净增资金规模</th>
                                     <th>入金总额</th>
                                     <th>入金人数</th>
                                     <th>实际出金总额</th>
@@ -56,37 +52,22 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <c:if test="${empty page.items}">
+                                <c:if test="${empty page.results}">
                                     <tr>
                                         <td colspan="9" class="no_data">暂无数据记录</td>
                                     </tr>
                                 </c:if>
 
-                                <c:if test="${not empty page.items}">
-                                    <c:forEach items="${page.items}" var="item">
-                                        <fmt:formatDate var="date" value="${item.createDate}" pattern="yyyy-MM-dd"/>
+                                <c:if test="${not empty page.results}">
+                                    <c:forEach items="${page.results}" var="item">
                                         <tr>
-                                            <td>${item.followUpName}</td>
-                                            <c:choose>
-                                                <c:when test="${'admin' eq flowUpSession.userName}">
-                                                    <td class="hidden-xs">
-                                                            ${item.deptName eq "KA及渠道部" ? item.manageAssetGrowth : item.openAccountNum}
-                                                    </td>
-                                                    <td>${item.inCash}</td>
-                                                    <td>${item.inCashNum}</td>
-                                                    <td>${item.outCash}</td>
-                                                    <td>${item.outCashNum}</td>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <td class="hidden-xs">
-                                                            ${item.deptName eq "KA及渠道部" ? item.manageAssetGrowthFormat : item.openAccountNum}
-                                                    </td>
-                                                    <td>${item.inCashFormat}</td>
-                                                    <td>${item.inCashNum}</td>
-                                                    <td>${item.outCashFormat}</td>
-                                                    <td>${item.outCashNum}</td>
-                                                </c:otherwise>
-                                            </c:choose>
+                                            <td>${item.name}</td>
+                                            <td>${item.openAccountNum}</td>
+                                            <td>${item.manageGrowthFund}</td>
+                                            <td>${item.inCash}</td>
+                                            <td>${item.inCashNum}</td>
+                                            <td>${item.outCash}</td>
+                                            <td>${item.outCashNum}</td>
                                         </tr>
                                     </c:forEach>
                                 </c:if>

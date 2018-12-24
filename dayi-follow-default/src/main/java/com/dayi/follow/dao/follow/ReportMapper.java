@@ -1,8 +1,7 @@
 package com.dayi.follow.dao.follow;
 
 import com.dayi.follow.base.BaseVo;
-import com.dayi.follow.vo.report.AdminMonthVo;
-import com.dayi.follow.vo.report.ReportDailyVo;
+import com.dayi.follow.vo.report.*;
 import com.dayi.mybatis.support.BaseMapper;
 import com.dayi.mybatis.support.Page;
 import org.apache.ibatis.annotations.Param;
@@ -24,19 +23,20 @@ public interface ReportMapper extends BaseMapper<BaseVo> {
 
     List<ReportDailyVo> findTeamDailyDetailList(@Param("deptId") String deptId, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
-    ReportDailyVo getWeek(@Param("followId") String followId, @Param("startDate") String startDate, @Param("endDate") String endDate);
+    WeekVo getWeek(@Param("followId") String followId, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
-    List<ReportDailyVo> findTeamWeek(@Param("deptId") String deptId, @Param("startDate") String startDate, @Param("endDate") String endDate);
+    List<ReportVo> findTeamWeek(@Param("deptId") String deptId, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
-    ReportDailyVo getMonth(@Param("followId") String followId, @Param("startDate") String startDate, @Param("endDate") String endDate);
+    MonthVo getMonth(@Param("followId") String followId, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
-    List<ReportDailyVo> findTeamMonth(@Param("deptId") String deptId, @Param("startDate") String startDate, @Param("endDate") String endDate);
+    List<ReportVo> findTeamMonth(@Param("deptId") String deptId, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
     //管理员日报
-    Page<ReportDailyVo> findAdminDaily(Page page, @Param("followIds") List<String> followIds, @Param("deptName") String deptName, @Param("startDate") String startDate, @Param("endDate") String endDate);
+    Page<ReportVo> findAdminDaily(Page page, @Param("followIds") List<String> followIds, @Param("deptName") String deptName, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
     //管理员日报详情
     Page<ReportDailyVo> findAdminDailyDetail(Page page, @Param("deptId") String deptId, @Param("startDate") String startDate, @Param("endDate") String endDate);
+
     //查找管理员日报详情列表
     List<ReportDailyVo> findAdminDailyDetailList(@Param("deptId") String deptId, @Param("startDate") String startDate, @Param("endDate") String endDate);
 

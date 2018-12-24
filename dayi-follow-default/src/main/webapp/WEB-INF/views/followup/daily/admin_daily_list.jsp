@@ -76,8 +76,9 @@
                             <thead>
                             <tr>
                                 <th>日期</th>
-                                <th class="${not empty param.deptName?'hidden-xs':''}">团队名称</th>
-                                <th class="hidden-xs">今日新开户/创客净增资金规模</th>
+                                <th>团队名称</th>
+                                <th>今日新开户</th>
+                                <th>创客净增资金规模</th>
                                 <th>入金总额</th>
                                 <th>入金人数</th>
                                 <th>实际出金总额</th>
@@ -86,40 +87,25 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:if test="${empty page.items}">
+                            <c:if test="${empty page.results}">
                                 <tr>
-                                    <td colspan="8" class="no_data">暂无数据记录</td>
+                                    <td colspan="9" class="no_data">暂无数据记录</td>
                                 </tr>
                             </c:if>
 
-                            <c:if test="${not empty page.items}">
-                                <c:forEach items="${page.items}" var="item">
-                                    <fmt:formatDate var="date" value="${item.createDate}" pattern="yyyy-MM-dd"/>
+                            <c:if test="${not empty page.results}">
+                                <c:forEach items="${page.results}" var="item">
                                     <tr>
-                                        <td>${date}</td>
-                                        <td class="${not empty param.deptName?'hidden-xs':''}">${item.deptName}</td>
-                                            <c:choose>
-                                                <c:when test="${'admin' eq flowUpSession.userName}">
-                                                    <td class="hidden-xs">
-                                                    ${item.deptName eq "KA及渠道部" ? item.manageAssetGrowth : item.openAccountNum}
-                                                    </td>
-                                                    <td>${item.inCash}</td>
-                                                    <td>${item.inCashNum}</td>
-                                                    <td>${item.outCash}</td>
-                                                    <td>${item.outCashNum}</td>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <td class="hidden-xs">
-                                                            ${item.deptName eq "KA及渠道部" ? item.manageAssetGrowthFormat : item.openAccountNum}
-                                                    </td>
-                                                    <td>${item.inCashFormat}</td>
-                                                    <td>${item.inCashNum}</td>
-                                                    <td>${item.outCashFormat}</td>
-                                                    <td>${item.outCashNum}</td>
-                                                </c:otherwise>
-                                            </c:choose>
+                                            <td>${item.date}</td>
+                                            <td>${item.deptName}</td>
+                                            <td>${item.openAccountNum}</td>
+                                            <td>${item.manageGrowthFund}</td>
+                                            <td>${item.inCash}</td>
+                                            <td>${item.inCashNum}</td>
+                                            <td>${item.outCash}</td>
+                                            <td>${item.outCashNum}</td>
                                         <td>
-                                            <a href="./detail?did=${item.deptId}&date=${date}">
+                                            <a href="./daily/detail?deptId=${item.deptId}&date=${item.date}">
                                                 <i class="ace-icon fa fa-external-link"></i> 查看
                                             </a>
                                         </td>

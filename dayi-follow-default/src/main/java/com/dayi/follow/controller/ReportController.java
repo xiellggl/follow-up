@@ -3,6 +3,7 @@ package com.dayi.follow.controller;
 import com.dayi.follow.base.BaseController;
 import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.conf.Constants;
+import com.dayi.follow.model.follow.Department;
 import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.FollowUpService;
 import com.dayi.follow.service.ReportService;
@@ -11,9 +12,7 @@ import com.dayi.follow.vo.LoginVo;
 import com.dayi.follow.vo.export.AdminMonthExport;
 import com.dayi.follow.vo.export.AdminWeekExport;
 import com.dayi.follow.vo.export.TeamDailyDetailExport;
-import com.dayi.follow.vo.report.AdminMonthVo;
-import com.dayi.follow.vo.report.AdminWeekVo;
-import com.dayi.follow.vo.report.ReportDailyVo;
+import com.dayi.follow.vo.report.*;
 import com.dayi.mybatis.support.Page;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.apache.commons.lang3.StringUtils;
@@ -63,7 +62,7 @@ public class ReportController extends BaseController {
         request.setAttribute("pageUrl", pageUrl);
         model.addAttribute("page", page);
         model.addAttribute("date", date);
-        return "/followup/uc/log/mydaily";
+        return "/followup/daily/daily_list";
     }
 
     /**
@@ -86,7 +85,7 @@ public class ReportController extends BaseController {
         request.setAttribute("pageUrl", pageUrl);
         model.addAttribute("page", page);
         model.addAttribute("date", date);
-        return "/uc/log/mydaily";
+        return "/followup/daily/team_daily_list";
     }
 
     /**
@@ -110,7 +109,8 @@ public class ReportController extends BaseController {
         request.setAttribute("pageUrl", pageUrl);
         model.addAttribute("page", page);
         model.addAttribute("date", date);
-        return "/followup/uc/log/mydaily";
+        model.addAttribute("deptName", currUser.getDeptName());
+        return "/followup/daily/team_daily_detail";
     }
 
     /**
@@ -119,7 +119,7 @@ public class ReportController extends BaseController {
      * @param request
      * @return
      */
-    @RequestMapping("/team/detail/export")
+    @RequestMapping("/team/daily/export")
     public void teamDetailExport(HttpServletRequest request, HttpServletResponse response) throws IOException {
         LoginVo currVo = userComponent.getCurrUser(request);
         String date = request.getParameter("date");
@@ -145,17 +145,10 @@ public class ReportController extends BaseController {
 
         String date = request.getParameter("date");
 
-        if (StringUtils.isBlank(date)) {
-            String one = DateTime.now().plusWeeks(-1).withDayOfWeek(1).toString("yyyy-MM-dd");
-            String five = DateTime.now().plusWeeks(-1).withDayOfWeek(5).toString("yyyy-MM-dd");
-            date = one + " - " + five;
-        }
+        WeekVo weekVo = reportService.getWeek(currVo.getId(), date);
 
-        ReportDailyVo week = reportService.getWeek(currVo.getId(), date);
-
-        model.addAttribute("week", week);
-        model.addAttribute("date", date);
-        return "/followup/uc/log/mydaily";
+        model.addAttribute("weekVo", weekVo);
+        return "/followup/week/week_list";
     }
 
     /**
@@ -165,24 +158,15 @@ public class ReportController extends BaseController {
      * @return
      */
     @RequestMapping("/team/week")
-    public String teamWeek(HttpServletRequest request, Page page, Model model) {
+    public String teamWeek(HttpServletRequest request, Model model) {
         LoginVo currVo = userComponent.getCurrUser(request);
 
         String date = request.getParameter("date");
 
-        if (StringUtils.isBlank(date)) {
-            String one = DateTime.now().plusWeeks(-1).withDayOfWeek(1).toString("yyyy-MM-dd");
-            String five = DateTime.now().plusWeeks(-1).withDayOfWeek(5).toString("yyyy-MM-dd");
-            date = one + " - " + five;
-        }
+        TeamWeekVo teamWeekVo = reportService.countTeamWeek(currVo.getDeptId(), date);
 
-        page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
-
-        List<ReportDailyVo> teamWeek = reportService.findTeamWeek(currVo.getDeptId(), date);
-
-        model.addAttribute("teamWeek", teamWeek);
-        model.addAttribute("date", date);
-        return "/followup/uc/log/mydaily";
+        model.addAttribute("teamWeekVo", teamWeekVo);
+        return "/followup/week/team_week_list";
     }
 
     /**
@@ -196,13 +180,11 @@ public class ReportController extends BaseController {
         LoginVo currVo = userComponent.getCurrUser(request);
 
         String date = request.getParameter("date");
-        if (StringUtils.isBlank(date)) date = DateTime.now().plusMonths(-1).toString("yyyy-MM");
 
-        ReportDailyVo month = reportService.getMonth(currVo.getId(), date);
+        MonthVo monthVo = reportService.getMonth(currVo.getId(), date);
 
-        model.addAttribute("month", month);
-        model.addAttribute("date", date);
-        return "/followup/uc/log/mydaily";
+        model.addAttribute("monthVo", monthVo);
+        return "/followup/month/month_list";
     }
 
     /**
@@ -212,20 +194,15 @@ public class ReportController extends BaseController {
      * @return
      */
     @RequestMapping("/team/month")
-    public String teamMonth(HttpServletRequest request, Page page, Model model) {
+    public String teamMonth(HttpServletRequest request, Model model) {
         LoginVo currVo = userComponent.getCurrUser(request);
 
         String date = request.getParameter("date");
 
-        if (StringUtils.isBlank(date)) date = DateTime.now().plusMonths(-1).toString("yyyy-MM");
+        TeamMonthVo teamMonthVo = reportService.countTeamMonth(currVo.getDeptId(), date);
 
-        page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
-
-        List<ReportDailyVo> teamMonth = reportService.findTeamMonth(currVo.getDeptId(), date);
-
-        model.addAttribute("teamMonth", teamMonth);
-        model.addAttribute("date", date);
-        return "/followup/uc/log/mydaily";
+        model.addAttribute("teamMonthVo", teamMonthVo);
+        return "/followup/month/team_month_list";
     }
 
     /**
@@ -245,8 +222,10 @@ public class ReportController extends BaseController {
 
         page = reportService.findAdminDaily(page, currVo.getDeptId(), deptName, date);
 
+        String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
         model.addAttribute("page", page);
-        return "/followup/uc/log/mydaily";
+        request.setAttribute("pageUrl", pageUrl);
+        return "/followup/daily/admin_daily_list";
     }
 
     /**
@@ -262,12 +241,17 @@ public class ReportController extends BaseController {
 
         page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
 
+        Department department = deptService.get(deptId);
+
         page = reportService.findAdminDailyDetail(page, deptId, date);
 
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
         request.setAttribute("pageUrl", pageUrl);
         model.addAttribute("page", page);
-        return "/followup/uc/log/mydaily";
+        model.addAttribute("deptName",department.getName());
+        model.addAttribute("date",date);
+        model.addAttribute("deptId",deptId);
+        return "followup/daily/admin_daily_detail";
     }
 
     /**
