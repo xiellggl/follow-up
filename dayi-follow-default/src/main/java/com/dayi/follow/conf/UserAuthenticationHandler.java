@@ -66,14 +66,29 @@ public class UserAuthenticationHandler implements AuthenticationHandler {
     @Override
     public boolean handlerUnAuthenticated(HttpServletRequest request, HttpServletResponse response, AuthorizationManager.AuthorizedResult authorizedResult) {
         //String unAuthenticatedUrl = userService.getUnAuthenticatedUrl(null);
-        try {
-           // response.sendRedirect(unAuthenticatedUrl);
-            String message="登录超时";
-            response.setContentType("text/html; charset=utf-8");
-            response.getWriter().write("{\"status\" : \"300\", \"succ\" : true, \"msg\" :\""+ message+"\"}");
-            response.getWriter().flush();
-        } catch (IOException e) {
+        String message="登录超时";
+        if(isAjax(request)){
+            try {
+                // response.sendRedirect(unAuthenticatedUrl);
+                response.setContentType("text/html; charset=utf-8");
+                response.getWriter().write("{\"status\" : \"300\", \"succ\" : true, \"msg\" :\""+ message+"\"}");
+                response.getWriter().flush();
+            } catch (IOException e) {
+            }
+        }else {
+            try {
+                String path = request.getContextPath();
+                String basePath = request.getScheme()+"://"+request.getServerName();
+                if(request.getServerPort() != 80){
+                    basePath = basePath+":"+request.getServerPort();
+                }
+                basePath = basePath+path;
+                response.sendRedirect(basePath + "/user/login" + "?errmsg=" + java.net.URLEncoder.encode(message, "UTF-8"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+
         return false;
     }
 
