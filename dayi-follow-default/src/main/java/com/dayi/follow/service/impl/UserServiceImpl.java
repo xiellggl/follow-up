@@ -406,6 +406,19 @@ public class UserServiceImpl implements UserService {
         } else {
             goToUrl = "/index";
         }
+
+        // 查询权限信息
+        FollowUp flowUp = userMapper.getByUserName(StringUtils.trim(loginVo.getUsername()));
+        List<Role> roles = roleService.queryRolesByIds(flowUp.getRoleids());
+        List<String> permissions = new ArrayList<>(5);
+        for (RoleBase<String> role : roles) {
+            List<Permission> permissionList = permissionService.getPermissionsByRoleId(role.getId());
+            for (Permission permission : permissionList) {
+                permissions.add(permission.getUrl());
+            }
+        }
+        request.getSession().setAttribute("permissions", permissions);
+
         return BizResult.succ(goToUrl, "登录成功！");
     }
 
