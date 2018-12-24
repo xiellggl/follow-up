@@ -1,6 +1,10 @@
 package com.dayi.follow.interceptor;
 
 import com.dayi.follow.model.follow.FollowUp;
+import com.dayi.follow.model.follow.Permission;
+import com.dayi.follow.model.follow.Role;
+import com.dayi.follow.service.PermissionService;
+import com.dayi.follow.service.RoleService;
 import com.dayi.follow.service.UserService;
 import com.dayi.user.authorization.AuthorizationManager;
 import com.dayi.user.authorization.authc.AccountInfo;
@@ -12,6 +16,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author xiell
@@ -23,6 +29,12 @@ public class GlobalInterceptor implements HandlerInterceptor {
 
     @Resource
     UserService userService;
+
+    @Resource
+    PermissionService permissionService;
+
+    @Resource
+    RoleService roleService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -39,6 +51,16 @@ public class GlobalInterceptor implements HandlerInterceptor {
 
         FollowUp user = userService.get(userId);
         request.getSession().setAttribute("name", user.getName());
+
+        //获取权限列表
+        List<Permission> permissions = new ArrayList<>();
+        List<Role> roles = roleService.queryRolesByIds(user.getRoleids());
+        for (Role role : roles) {
+            List<Permission> permissionList = permissionService.getPermissionsByRoleId(role.getId());
+            permissions.addAll(permissionList);
+        }
+        request.getSession().setAttribute("permissions", permissions);
+
         return true;
     }
 
