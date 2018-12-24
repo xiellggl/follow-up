@@ -47,10 +47,10 @@
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-cog"></i>
                                     </span>
-                                    <select name="parentid" class="form-control admin_sea" data-m="${param.moduleId}">
+                                    <select name="parentId" class="form-control admin_sea">
                                         <option value="">所属页面</option>
                                         <c:forEach items="${parentList}" var="item">
-                                            <option value="${item.id}" ${permission.parentid eq item.id ? 'selected' : ''}>${item.name}</option>
+                                            <option value="${item.id}" ${param.parentId eq item.id ? 'selected' : ''}>${item.name}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
@@ -60,7 +60,7 @@
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-cog"></i>
                                     </span>
-                                    <select name="moduleId" class="form-control admin_sea" data-m="${param.moduleId}">
+                                    <select name="moduleId" class="form-control admin_sea">
                                         <option value="">所属模块</option>
                                         <c:set var="selectedId" value="${param.moduleId}" scope="request" />
                                         <c:set var="selectList" value="${menus}" />

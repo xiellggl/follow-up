@@ -61,7 +61,7 @@ public class ModuleController {
         // 获取权限
         List<AuthorizationInfo> authorizationInfos = AuthorizationManager.getAuthorizationInfos(request);
         if (null == authorizationInfos) {
-            return "redirect:/login";
+            return "redirect:/user/login";
         }
         List<String> permissionIds = new ArrayList<>(5);
         for (AuthorizationInfo authorizationInfo : authorizationInfos) {

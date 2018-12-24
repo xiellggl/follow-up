@@ -73,6 +73,7 @@
 <%@include file="/inc/followup/script.jsp"%>
 <script>
     seajs.use(["common", "validate", "addMethod"], function (common) {
+        var param_message = "${param.errmsg}";
         if (param_message != "") {
             layer.alert('<div style="text-align: center;color: red; font-size: 16px;">' + param_message + '</div>', {title: "温馨提示"})
         }
