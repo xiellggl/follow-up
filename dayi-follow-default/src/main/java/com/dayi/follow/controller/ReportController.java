@@ -179,7 +179,7 @@ public class ReportController extends BaseController {
 
         String date = request.getParameter("date");
 
-        MonthVo monthVo = reportService.getMonth(currVo.getId(), date);
+        MyMonthVo monthVo = reportService.getMonth(currVo.getId(), date);
 
         model.addAttribute("monthVo", monthVo);
         return "/followup/month/month_list";
@@ -335,12 +335,12 @@ public class ReportController extends BaseController {
 
         page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
 
-        if (StringUtils.isBlank(date)) date = DateTime.now().plusMonths(-1).toString("yyyy-MM");
+        AdminMonthVo adminMonthVo = reportService.countAdminMonth(page, currVo.getDeptId(), date);
 
-        page = reportService.findAdminMonth(page, currVo.getDeptId(), date);
-
-        model.addAttribute("page", page);
-        return "/followup/uc/log/mydaily";
+        String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
+        model.addAttribute("adminMonthVo", adminMonthVo);
+        request.setAttribute("pageUrl", pageUrl);
+        return "/followup/month/admin_month_list";
     }
 
 
@@ -358,7 +358,7 @@ public class ReportController extends BaseController {
 
         if (StringUtils.isBlank(date)) date = DateTime.now().plusMonths(-1).toString("yyyy-MM");
 
-        List<AdminMonthVo> adminMonthVos = reportService.findAdminMonthList(currVo.getDeptId(), date);
+        List<MonthVo> adminMonthVos = reportService.findAdminMonthList(currVo.getDeptId(), date);
 
         String fileTitle = "资产管理部" + date + "月报";
         String fileName = fileTitle;

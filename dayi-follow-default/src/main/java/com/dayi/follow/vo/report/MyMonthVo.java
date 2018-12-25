@@ -2,24 +2,14 @@ package com.dayi.follow.vo.report;
 
 
 import java.math.BigDecimal;
-import java.util.List;
 
-//管理员月报
-public class AdminMonthVo {
+//周报
+public class MyMonthVo extends ReportVo {
+
     private String month;//月份
     private String thisMonth;//这月
 
     private String lastMonth;//上月
-
-    private List<MonthVo> monthVos;
-
-    public List<MonthVo> getMonthVos() {
-        return monthVos;
-    }
-
-    public void setMonthVos(List<MonthVo> monthVos) {
-        this.monthVos = monthVos;
-    }
 
     public String getMonth() {
         return month;

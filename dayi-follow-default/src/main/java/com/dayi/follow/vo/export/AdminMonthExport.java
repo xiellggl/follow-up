@@ -3,6 +3,7 @@ package com.dayi.follow.vo.export;
 import com.dayi.common.web.excel.AbstractExcel;
 import com.dayi.common.web.excel.Column;
 import com.dayi.follow.vo.report.AdminMonthVo;
+import com.dayi.follow.vo.report.MonthVo;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  *
  * @author xiell
  */
-public class AdminMonthExport extends AbstractExcel<AdminMonthVo> {
+public class AdminMonthExport extends AbstractExcel<MonthVo> {
     // 按照文档列头顺序添加
     private Column column1 = addColumn("团队", 3500);
     private Column column2 = addColumn("姓名", 3500);
@@ -23,12 +24,12 @@ public class AdminMonthExport extends AbstractExcel<AdminMonthVo> {
     private Column column7 = addColumn("当前管理总资产规模", 4000);
     private Column column8 = addColumn("管理资产规模净值（环比上个月）", 6000);
 
-    public AdminMonthExport(String fileName, String fileTitle, List<AdminMonthVo> datas) {
+    public AdminMonthExport(String fileName, String fileTitle, List<MonthVo> datas) {
         super(fileName, fileTitle, datas);
     }
 
 
-    protected void fillData(AdminMonthVo vo) {
+    protected void fillData(MonthVo vo) {
         // 团队
         column1.setValue(vo.getDeptName());
         // 姓名

@@ -35,7 +35,7 @@ public interface ReportService {
     TeamWeekVo countTeamWeek(String deptId, String betweenDate);
 
     //个人月报
-    MonthVo getMonth(String followId, String month);
+    MyMonthVo getMonth(String followId, String month);
 
     //团队月报
     TeamMonthVo countTeamMonth(String deptId, String month);
@@ -56,8 +56,8 @@ public interface ReportService {
     List<WeekVo> findAdminWeekList(String deptId,  String betweenDate);
 
     //管理员月报
-    Page<AdminMonthVo> findAdminMonth(Page page, String deptId, String month);
+    AdminMonthVo countAdminMonth(Page page, String deptId, String month);
 
     //管理员月报导出
-    List<AdminMonthVo> findAdminMonthList(String deptId, String month);
+    List<MonthVo> findAdminMonthList(String deptId, String month);
 }
