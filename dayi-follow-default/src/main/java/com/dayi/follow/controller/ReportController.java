@@ -117,7 +117,7 @@ public class ReportController extends BaseController {
      * @param request
      * @return
      */
-    @RequestMapping("/team/daily/export")
+    @RequestMapping("/team/daily/detail/export")
     public void teamDetailExport(HttpServletRequest request, HttpServletResponse response) throws IOException {
         LoginVo currVo = userComponent.getCurrUser(request);
         String date = request.getParameter("date");
@@ -258,7 +258,7 @@ public class ReportController extends BaseController {
      * @param request
      * @return
      */
-    @RequestMapping("/admin/daily/export")
+    @RequestMapping("/admin/daily/detail/export")
     public void adminDailyExport(HttpServletRequest request, HttpServletResponse response) throws IOException {
         LoginVo currVo = userComponent.getCurrUser(request);
         String deptId = request.getParameter("deptId");
