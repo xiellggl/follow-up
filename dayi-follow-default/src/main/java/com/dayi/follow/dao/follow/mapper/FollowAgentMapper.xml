@@ -58,8 +58,8 @@
 
         IFNULL(d.total_in_cash, 0) inCash,
         d.frist_in_cash_date ,
-        IFNULL(d.useable + d.frozen + d.out_frozen + IFNULL(e.amount, 0), 0) totalFund,
-
+        IFNULL(d.useable + d.frozen + d.out_frozen + 0.8*d.cargo_interest+d.cargo_interest_puchas, 0) totalFund,
+        
         IFNULL(f.outCash, 0) dayOutCash,
         IFNULL(f.inCash, 0) dayInCash,
         f.dayLastInCashTime,
@@ -87,10 +87,6 @@
         )c on c.id = a.agent_id
 
         left join ${assistDataBase}.finance_account d on d.id = c.account_id
-
-        left join (
-        SELECT agent, IFNULL(SUM(amount), 0) amount from ${assistDataBase}.protocol WHERE status in (1,2) GROUP BY agent
-        )e on e.agent=c.id
 
         left join (
         SELECT pay_uc_id, MAX( CASE WHEN pay_type = '1' THEN accrual END ) AS inCash,
@@ -189,36 +185,36 @@
         <if test="null!=searchVo.totalFound">
             -- 总资产为0
             <if test="1==searchVo.totalFound">
-                AND IFNULL(d.useable + d.frozen + d.out_frozen + IFNULL(e.amount, 0), 0) = 0
+                AND IFNULL(d.useable + d.frozen + d.out_frozen +  0.8*d.cargo_interest+d.cargo_interest_puchas, 0) = 0
             </if>
             -- 2W及2W以下(不包括0)不包括0
             <if test="2==searchVo.totalFound">
-                AND 0 &lt; IFNULL (d.useable + d.frozen + d.out_frozen + IFNULL(e.amount, 0), 0)
-                AND IFNULL(d.useable + d.frozen + d.out_frozen + IFNULL(e.amount, 0), 0) &lt;= 20000
+                AND 0 &lt; IFNULL (d.useable + d.frozen + d.out_frozen +  0.8*d.cargo_interest+d.cargo_interest_puchas, 0)
+                AND IFNULL(d.useable + d.frozen + d.out_frozen +  0.8*d.cargo_interest+d.cargo_interest_puchas, 0) &lt;= 20000
             </if>
             -- 2W~10W
             <if test="3==searchVo.totalFound">
-                AND 20000 &lt; IFNULL(d.useable + d.frozen + d.out_frozen + IFNULL(e.amount, 0), 0)
-                AND IFNULL(d.useable + d.frozen + d.out_frozen + IFNULL(e.amount, 0), 0) &lt;= 100000
+                AND 20000 &lt; IFNULL(d.useable + d.frozen + d.out_frozen +  0.8*d.cargo_interest+d.cargo_interest_puchas, 0)
+                AND IFNULL(d.useable + d.frozen + d.out_frozen +  0.8*d.cargo_interest+d.cargo_interest_puchas, 0) &lt;= 100000
             </if>
             -- 10W~50W
             <if test="4==searchVo.totalFound">
-                AND 100000 &lt; IFNULL(d.useable + d.frozen + d.out_frozen + IFNULL(e.amount, 0), 0)
-                AND IFNULL(d.useable + d.frozen + d.out_frozen + IFNULL(e.amount, 0), 0) &lt;= 500000
+                AND 100000 &lt; IFNULL(d.useable + d.frozen + d.out_frozen +  0.8*d.cargo_interest+d.cargo_interest_puchas, 0)
+                AND IFNULL(d.useable + d.frozen + d.out_frozen +  0.8*d.cargo_interest+d.cargo_interest_puchas, 0) &lt;= 500000
             </if>
             -- 50W~100W
             <if test="5==searchVo.totalFound">
-                AND 500000 &lt; IFNULL(d.useable + d.frozen + d.out_frozen + IFNULL(e.amount, 0), 0)
-                AND IFNULL(d.useable + d.frozen + d.out_frozen + IFNULL(e.amount, 0), 0) &lt;= 1000000
+                AND 500000 &lt; IFNULL(d.useable + d.frozen + d.out_frozen +  0.8*d.cargo_interest+d.cargo_interest_puchas, 0)
+                AND IFNULL(d.useable + d.frozen + d.out_frozen +  0.8*d.cargo_interest+d.cargo_interest_puchas, 0) &lt;= 1000000
             </if>
             -- 100W~300W
             <if test="6==searchVo.totalFound">
-                AND 1000000 &lt; IFNULL(d.useable + d.frozen + d.out_frozen + IFNULL(e.amount, 0), 0)
-                AND IFNULL(d.useable + d.frozen + d.out_frozen + IFNULL(e.amount, 0), 0) &lt;= 3000000
+                AND 1000000 &lt; IFNULL(d.useable + d.frozen + d.out_frozen +  0.8*d.cargo_interest+d.cargo_interest_puchas, 0)
+                AND IFNULL(d.useable + d.frozen + d.out_frozen +  0.8*d.cargo_interest+d.cargo_interest_puchas, 0) &lt;= 3000000
             </if>
             -- 300W以上
             <if test="7==searchVo.totalFound">
-                AND IFNULL(d.useable + d.frozen + d.out_frozen + IFNULL(e.amount, 0), 0) > 3000000
+                AND IFNULL(d.useable + d.frozen + d.out_frozen +  0.8*d.cargo_interest+d.cargo_interest_puchas, 0) > 3000000
             </if>
         </if>
 
