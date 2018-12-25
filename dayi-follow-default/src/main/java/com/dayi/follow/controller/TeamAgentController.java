@@ -6,6 +6,7 @@ import com.dayi.follow.enums.AgentCusTypeEnum;
 import com.dayi.follow.enums.AgentIntenTypeEnum;
 import com.dayi.follow.enums.BankTypeEnum;
 import com.dayi.follow.enums.ContactTypeEnum;
+import com.dayi.follow.model.follow.FollowUp;
 import com.dayi.follow.service.AgentService;
 import com.dayi.follow.service.FollowAgentService;
 import com.dayi.follow.service.FollowOrgService;
@@ -108,6 +109,26 @@ public class TeamAgentController {
         model.addAttribute("customerIntentionTypes", AgentIntenTypeEnum.values());//客户意向度
         model.addAttribute("returnUrl", returnUrl);//返回代理商进来列表的路径
         return "/followup/uc/customer/agent/detail";
+    }
+
+    /**
+     * 跟进人分配 -- 选择弹窗列表
+     */
+    @RequestMapping(value = "/followup/select")
+    public String assignSelect(HttpServletRequest request, Model model, Page page) {
+        LoginVo currVo = userComponent.getCurrUser(request);
+
+        String followUpStr = request.getParameter("followUp");
+        String followId = request.getParameter("followId");
+        FollowUp followUp = followUpService.get(followId);
+
+        page = followUpService.findTeamAssignSelect(page, followUpStr, currVo.getDeptId());
+
+        String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
+        model.addAttribute("followUp", followUp);
+        model.addAttribute("page", page);
+        model.addAttribute("pageUrl", pageUrl);
+        return "/manage/followuper/assign_select";
     }
 
     /**

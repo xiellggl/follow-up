@@ -36,6 +36,9 @@ public interface FollowUpService {
     //查询全部跟进人
     Page<FollowUpListVo> findAssignSelect(Page<FollowUpListVo> page, String followUp, String deptId);
 
+    //查询全部跟进人
+    Page<FollowUpListVo> findTeamAssignSelect(Page<FollowUpListVo> page, String followUp, String deptId);
+
     //查询跟进人管理的代理商明细列表-分页
     Page<FMDetailListVo> findAgentPage(Page page, SearchVo searchVo, String followId);
 

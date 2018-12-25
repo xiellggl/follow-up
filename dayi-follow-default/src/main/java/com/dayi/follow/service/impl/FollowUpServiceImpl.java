@@ -118,6 +118,24 @@ public class FollowUpServiceImpl implements FollowUpService {
     }
 
     @Override
+    public Page<FollowUpListVo> findTeamAssignSelect(Page<FollowUpListVo> page, String followUp, String deptId) {
+        List<String> followIds = new ArrayList<>();
+
+        followIds = followUpMapper.findIdsByDeptId(deptId);
+
+        if (followIds.isEmpty()) return page;
+
+        page = followUpMapper.findAssignSelect(page, followUp, followIds);
+
+        for (FollowUpListVo vo : page.getResults()) {
+            int agentNum = followAgentMapper.getAgentNum(vo.getId(), dayiDataBaseStr);
+            int orgNum = followAgentMapper.getOrgNum(vo.getId(), dayiDataBaseStr);
+            vo.setCusNum(agentNum + orgNum);
+        }
+        return page;
+    }
+
+    @Override
     @Log(target = OperateLog.class, action = BaseLog.LogAction.SEARCH, what = "跟进人管理", note = "查询代理商明细列表")
     public Page<FMDetailListVo> findAgentPage(Page page, SearchVo searchVo, String followId) {
         if (StringUtils.isBlank(followId)) return page;
