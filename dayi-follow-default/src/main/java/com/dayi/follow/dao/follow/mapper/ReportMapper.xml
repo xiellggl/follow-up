@@ -67,7 +67,7 @@
 
 
 
-    <select id="getWeek" parameterType="map" resultType="com.dayi.follow.vo.report.WeekVo">
+    <select id="getWeek" parameterType="map" resultType="com.dayi.follow.vo.report.MyWeekVo">
         SELECT dept_id,b.name deptName,c.name ,follow_id,
               sum(open_account_num)openAccountNum,sum(in_cash)inCash,
               sum(out_cash)outCash,sum(manage_growth_fund)manageGrowthFund
@@ -137,7 +137,7 @@
     </select>
 
 
-    <select id="findAdminWeekPer" parameterType="map" resultType="com.dayi.follow.vo.report.ReportDailyVo">
+    <select id="findAdminWeekPer" parameterType="map" resultType="com.dayi.follow.vo.report.WeekVo">
      	SELECT date,follow_id,sum(num1)openAccountNum,sum(num2)inCash,e.id deptId
         from  (
                 SELECT date,follow_id,if(date=createDate,openNum,0)num1,if(date=createDate,inCashNum,0)num2,d.id
@@ -169,7 +169,7 @@
          )e GROUP BY follow_id,date ORDER BY deptId asc, follow_id asc,date asc
     </select>
 
-    <select id="findAdminWeekSum" parameterType="map" resultType="com.dayi.follow.vo.report.ReportDailyVo">
+    <select id="findAdminWeekSum" parameterType="map" resultType="com.dayi.follow.vo.report.WeekVo">
         SELECT dept_id,b.name deptName,c.name,follow_id,
               sum(open_account_num)openAccountNum,sum(in_cash)inCash
         from follow_up_log a
@@ -192,7 +192,7 @@
         group by follow_id  ORDER BY dept_id asc, follow_id asc
     </select>
 
-    <select id="findAdminWeekSumList" parameterType="map" resultType="com.dayi.follow.vo.report.ReportDailyVo">
+    <select id="findAdminWeekSumList" parameterType="map" resultType="com.dayi.follow.vo.report.WeekVo">
         SELECT dept_id,b.name deptName,c.name,follow_id,
         sum(open_account_num)openAccountNum,sum(in_cash)inCash
         from follow_up_log a

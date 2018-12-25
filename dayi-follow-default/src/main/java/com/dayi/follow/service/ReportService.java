@@ -10,9 +10,6 @@ package com.dayi.follow.service;
 import com.dayi.follow.vo.report.*;
 import com.dayi.mybatis.support.Page;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -32,7 +29,7 @@ public interface ReportService {
     List<ReportDailyVo> exportTeamDailyDetail(String deptId,String date);
 
     //个人周报
-    WeekVo getWeek(String followId, String betweenDate);
+    MyWeekVo getWeek(String followId, String betweenDate);
 
     //团队周报
     TeamWeekVo countTeamWeek(String deptId, String betweenDate);
@@ -53,10 +50,10 @@ public interface ReportService {
     List<ReportDailyVo>findAdminDailyDetailList(String deptId, String date);
 
     //管理员周报
-    Page<AdminWeekVo> findAdminWeek(Page page, String deptId, String betweenDate);
+    AdminWeekVo countAdminWeek(Page page, String deptId, String betweenDate);
 
     //管理员周报导出
-    List<AdminWeekVo> findAdminWeekList(String deptId,  String betweenDate);
+    List<WeekVo> findAdminWeekList(String deptId,  String betweenDate);
 
     //管理员月报
     Page<AdminMonthVo> findAdminMonth(Page page, String deptId, String month);

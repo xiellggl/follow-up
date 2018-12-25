@@ -14,10 +14,8 @@ import com.dayi.follow.vo.export.AdminWeekExport;
 import com.dayi.follow.vo.export.TeamDailyDetailExport;
 import com.dayi.follow.vo.report.*;
 import com.dayi.mybatis.support.Page;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -145,7 +143,7 @@ public class ReportController extends BaseController {
 
         String date = request.getParameter("date");
 
-        WeekVo weekVo = reportService.getWeek(currVo.getId(), date);
+        MyWeekVo weekVo = reportService.getWeek(currVo.getId(), date);
 
         model.addAttribute("weekVo", weekVo);
         return "/followup/week/week_list";
@@ -248,9 +246,9 @@ public class ReportController extends BaseController {
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
         request.setAttribute("pageUrl", pageUrl);
         model.addAttribute("page", page);
-        model.addAttribute("deptName",department.getName());
-        model.addAttribute("date",date);
-        model.addAttribute("deptId",deptId);
+        model.addAttribute("deptName", department.getName());
+        model.addAttribute("date", date);
+        model.addAttribute("deptId", deptId);
         return "followup/daily/admin_daily_detail";
     }
 
@@ -287,23 +285,16 @@ public class ReportController extends BaseController {
 
         String date = request.getParameter("date");
 
-        if (StringUtils.isBlank(date)) {
-            String one = DateTime.now().plusWeeks(-1).withDayOfWeek(1).toString("yyyy-MM-dd");
-            String five = DateTime.now().plusWeeks(-1).withDayOfWeek(5).toString("yyyy-MM-dd");
-            date = one + " - " + five;
-        }
-
         page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
 
-        page = reportService.findAdminWeek(page, currVo.getDeptId(), date);
+        AdminWeekVo adminWeekVo = reportService.countAdminWeek(page, currVo.getDeptId(), date);
 
-        page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
-        model.addAttribute("page", page);
-        return "/followup/uc/log/mydaily";
+        model.addAttribute("adminWeekVo", adminWeekVo);
+        return "/followup/week/admin_week_list";
     }
 
     /**
-     * 管理员周报
+     * 管理员周报导出
      *
      * @param request
      * @return
@@ -323,7 +314,7 @@ public class ReportController extends BaseController {
         String[] split = date.split(" - ");
         String fileTitle = "资产管理部" + split[0] + "至" + split[1] + "周报";
 
-        List<AdminWeekVo> adminWeekList = reportService.findAdminWeekList(currVo.getDeptId(), date);
+        List<WeekVo> adminWeekList = reportService.findAdminWeekList(currVo.getDeptId(), date);
 
         String fileName = fileTitle;
         AdminWeekExport export = new AdminWeekExport(fileName, fileTitle, adminWeekList);

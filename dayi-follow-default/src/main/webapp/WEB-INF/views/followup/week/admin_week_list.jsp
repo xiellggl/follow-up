@@ -30,11 +30,11 @@
                         您当前操作
                         <small>
                             <i class="ace-icon fa fa-angle-double-right"></i>
-                            团队周报(${startDate} - ${endDate})
+                            团队周报(${adminWeekVo.startDate} - ${adminWeekVo.endDate})
                         </small>
                     </h1>
                     <div class="pull-right">
-                        <a href="./export?date=${startDate} - ${endDate}" class="btn btn-xs btn-danger">
+                        <a href="./week/export?date=${adminWeekVo.startDate} - ${adminWeekVo.endDate}" class="btn btn-xs btn-danger">
                             <span class="ace-icon glyphicon glyphicon-export"></span>
                             一键导出
                         </a>
@@ -43,10 +43,10 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <ul class="nav nav-tabs">
-                            <li ${startDate eq thisWeekStart ? 'class="active"':''}><a href="?date=${thisWeekStart} - ${thisWeekEnd}">本周</a></li>
-                            <li ${startDate eq lastWeekStart ? 'class="active"':''}><a href="?date=${lastWeekStart} - ${lastWeekEnd}">上一周</a></li>
-                            <c:if test="${startDate ne thisWeekStart and startDate ne lastWeekStart}">
-                                <li class="active"><a>${startDate} - ${endDate}</a></li>
+                            <li ${adminWeekVo.startDate eq adminWeekVo.thisWeekStart ? 'class="active"':''}><a href="?date=${adminWeekVo.thisWeekStart} - ${adminWeekVo.thisWeekEnd}">本周</a></li>
+                            <li ${adminWeekVo.startDate eq adminWeekVo.lastWeekStart ? 'class="active"':''}><a href="?date=${adminWeekVo.lastWeekStart} - ${adminWeekVo.lastWeekEnd}">上一周</a></li>
+                            <c:if test="${adminWeekVo.startDate ne adminWeekVo.thisWeekStart and adminWeekVo.startDate ne adminWeekVo.lastWeekStart}">
+                                <li class="active"><a>${adminWeekVo.startDate} - ${adminWeekVo.endDate}</a></li>
                             </c:if>
                             <li>
                                 <a class="dates" data-toggle="popover" id="showWeeklyPicker">
@@ -76,25 +76,25 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:if test="${empty page.items}">
+                            <c:if test="${empty adminWeekVo.weekVos}">
                                 <tr>
                                     <td colspan="10" class="no_data">暂无数据记录</td>
                                 </tr>
                             </c:if>
 
-                            <c:if test="${not empty page.items}">
-                                <c:forEach items="${page.items}" var="item">
+                            <c:if test="${not empty adminWeekVo.weekVos}">
+                                <c:forEach items="${adminWeekVo.weekVos}" var="item">
                                     <tr>
                                         <td rowspan="2">${item.deptName}</td>
-                                        <td rowspan="2">${item.followUpName}</td>
+                                        <td rowspan="2">${item.name}</td>
                                         <td style="text-align: right;">有效新开户</td>
-                                        <td>${item.monOpenAccountNum}</td>
-                                        <td>${item.tueOpenAccountNum}</td>
-                                        <td>${item.wedOpenAccountNum}</td>
-                                        <td>${item.thuOpenAccountNum}</td>
-                                        <td>${item.friOpenAccountNum}</td>
-                                        <td rowspan="2">${item.weekOpenAccountNum}</td>
-                                        <td rowspan="2">${item.weekInCash}</td>
+                                        <td>${item.monOpen}</td>
+                                        <td>${item.tueOpen}</td>
+                                        <td>${item.wedOpen}</td>
+                                        <td>${item.thuOpen}</td>
+                                        <td>${item.friOpen}</td>
+                                        <td rowspan="2">${item.openAccountNum}</td>
+                                        <td rowspan="2">${item.inCash}</td>
                                     </tr>
                                     <tr style="text-align: right; color: orangered;">
                                         <td>入金总额</td>

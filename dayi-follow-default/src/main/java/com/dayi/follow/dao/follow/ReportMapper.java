@@ -23,7 +23,7 @@ public interface ReportMapper extends BaseMapper<BaseVo> {
 
     List<ReportDailyVo> findTeamDailyDetailList(@Param("deptId") String deptId, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
-    WeekVo getWeek(@Param("followId") String followId, @Param("startDate") String startDate, @Param("endDate") String endDate);
+    MyWeekVo getWeek(@Param("followId") String followId, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
     List<ReportVo> findTeamWeek(@Param("deptId") String deptId, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
@@ -41,13 +41,13 @@ public interface ReportMapper extends BaseMapper<BaseVo> {
     List<ReportDailyVo> findAdminDailyDetailList(@Param("deptId") String deptId, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
     //管理员周报
-    Page<ReportDailyVo> findAdminWeekSum(Page page, @Param("followIds") List<String> followIds, @Param("startDate") String startDate, @Param("endDate") String endDate);
+    Page<WeekVo> findAdminWeekSum(Page page, @Param("followIds") List<String> followIds, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
     //管理员周报
-    List<ReportDailyVo> findAdminWeekSumList(@Param("followIds") List<String> followIds, @Param("startDate") String startDate, @Param("endDate") String endDate);
+    List<WeekVo> findAdminWeekSumList(@Param("followIds") List<String> followIds, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
     //管理员周报
-    Page<ReportDailyVo> findAdminWeekPer(Page page, @Param("followIds") List<String> followIds, @Param("startDate") String startDate, @Param("endDate") String endDate);
+    Page<WeekVo> findAdminWeekPer(Page page, @Param("followIds") List<String> followIds, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
     //管理员月报
     Page<AdminMonthVo> findAdminMonth(Page page, @Param("followIds") List<String> followIds, @Param("startDate") String startDate, @Param("endDate") String endDate);

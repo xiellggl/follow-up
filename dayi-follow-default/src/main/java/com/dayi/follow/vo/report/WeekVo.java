@@ -1,64 +1,146 @@
 package com.dayi.follow.vo.report;
 
 
+import java.math.BigDecimal;
+
 //周报
-public class WeekVo extends ReportVo {
+public class WeekVo {
 
-    private String startDate;//开始时间
+    //加于管理员周报
 
-    private String endDate;//结束时间
+    private String deptName;//部门名称
 
-    private String thisWeekStart;//这周开始时间
-    private String thisWeekEnd;//这周结束时间
+    private String name;//姓名
 
-    private String lastWeekStart;//上周开始时间
-    private String lastWeekEnd;//上周结束时间
+    private Integer monOpen;  // 周一有效新开户
+    private BigDecimal monInCash;  // 周一入金代理
 
-    public String getStartDate() {
-        return startDate;
+    private Integer tueOpen;  // 周二有效新开户
+    private BigDecimal tueInCash;  // 周二入金代理
+
+    private Integer wedOpen;  // 周三有效新开户
+    private BigDecimal wedInCash;  // 周三入金代理
+
+    private Integer thuOpen;  // 周四有效新开户
+    private BigDecimal thuInCash;  // 周四入金代理
+
+    private Integer friOpen;  // 周五有效新开户
+    private BigDecimal friInCash;  // 周五入金代理
+
+    private Integer openAccountNum;  // 周有效新开户
+
+    private BigDecimal inCash;//入金总额
+
+    public String getDeptName() {
+        return deptName;
     }
 
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
     }
 
-    public String getEndDate() {
-        return endDate;
+    public String getName() {
+        return name;
     }
 
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getThisWeekStart() {
-        return thisWeekStart;
+    public Integer getOpenAccountNum() {
+        return openAccountNum;
     }
 
-    public void setThisWeekStart(String thisWeekStart) {
-        this.thisWeekStart = thisWeekStart;
+    public void setOpenAccountNum(Integer openAccountNum) {
+        this.openAccountNum = openAccountNum;
     }
 
-    public String getThisWeekEnd() {
-        return thisWeekEnd;
+    public BigDecimal getInCash() {
+        return inCash;
     }
 
-    public void setThisWeekEnd(String thisWeekEnd) {
-        this.thisWeekEnd = thisWeekEnd;
+    public void setInCash(BigDecimal inCash) {
+        this.inCash = inCash;
     }
 
-    public String getLastWeekStart() {
-        return lastWeekStart;
+    public Integer getMonOpen() {
+        return monOpen;
     }
 
-    public void setLastWeekStart(String lastWeekStart) {
-        this.lastWeekStart = lastWeekStart;
+    public void setMonOpen(Integer monOpen) {
+        this.monOpen = monOpen;
     }
 
-    public String getLastWeekEnd() {
-        return lastWeekEnd;
+    public BigDecimal getMonInCash() {
+        return monInCash;
     }
 
-    public void setLastWeekEnd(String lastWeekEnd) {
-        this.lastWeekEnd = lastWeekEnd;
+    public void setMonInCash(BigDecimal monInCash) {
+        this.monInCash = monInCash;
     }
+
+    public Integer getTueOpen() {
+        return tueOpen;
+    }
+
+    public void setTueOpen(Integer tueOpen) {
+        this.tueOpen = tueOpen;
+    }
+
+    public BigDecimal getTueInCash() {
+        return tueInCash;
+    }
+
+    public void setTueInCash(BigDecimal tueInCash) {
+        this.tueInCash = tueInCash;
+    }
+
+    public Integer getWedOpen() {
+        return wedOpen;
+    }
+
+    public void setWedOpen(Integer wedOpen) {
+        this.wedOpen = wedOpen;
+    }
+
+    public BigDecimal getWedInCash() {
+        return wedInCash;
+    }
+
+    public void setWedInCash(BigDecimal wedInCash) {
+        this.wedInCash = wedInCash;
+    }
+
+    public Integer getThuOpen() {
+        return thuOpen;
+    }
+
+    public void setThuOpen(Integer thuOpen) {
+        this.thuOpen = thuOpen;
+    }
+
+    public BigDecimal getThuInCash() {
+        return thuInCash;
+    }
+
+    public void setThuInCash(BigDecimal thuInCash) {
+        this.thuInCash = thuInCash;
+    }
+
+    public Integer getFriOpen() {
+        return friOpen;
+    }
+
+    public void setFriOpen(Integer friOpen) {
+        this.friOpen = friOpen;
+    }
+
+    public BigDecimal getFriInCash() {
+        return friInCash;
+    }
+
+    public void setFriInCash(BigDecimal friInCash) {
+        this.friInCash = friInCash;
+    }
+
 }

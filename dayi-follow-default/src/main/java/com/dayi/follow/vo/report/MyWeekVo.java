@@ -1,13 +1,11 @@
 package com.dayi.follow.vo.report;
 
 
-import java.util.List;
-
-//管理员周报
-public class AdminWeekVo {
-    //周报
+//团队周报
+public class MyWeekVo extends ReportVo {
 
     private String startDate;//开始时间
+
     private String endDate;//结束时间
 
     private String thisWeekStart;//这周开始时间
@@ -15,8 +13,6 @@ public class AdminWeekVo {
 
     private String lastWeekStart;//上周开始时间
     private String lastWeekEnd;//上周结束时间
-
-    private List<WeekVo> weekVos;
 
     public String getStartDate() {
         return startDate;
@@ -64,13 +60,5 @@ public class AdminWeekVo {
 
     public void setLastWeekEnd(String lastWeekEnd) {
         this.lastWeekEnd = lastWeekEnd;
-    }
-
-    public List<WeekVo> getWeekVos() {
-        return weekVos;
-    }
-
-    public void setWeekVos(List<WeekVo> weekVos) {
-        this.weekVos = weekVos;
     }
 }

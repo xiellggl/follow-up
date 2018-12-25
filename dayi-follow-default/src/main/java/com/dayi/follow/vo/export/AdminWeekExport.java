@@ -3,6 +3,7 @@ package com.dayi.follow.vo.export;
 import com.dayi.common.web.excel.AbstractExcel;
 import com.dayi.common.web.excel.Column;
 import com.dayi.follow.vo.report.AdminWeekVo;
+import com.dayi.follow.vo.report.WeekVo;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  *
  * @author xiell
  */
-public class AdminWeekExport extends AbstractExcel<AdminWeekVo> {
+public class AdminWeekExport extends AbstractExcel<WeekVo> {
     // 按照文档列头顺序添加
     private Column column1 = addColumn("团队", 3500);
     private Column column2 = addColumn("姓名", 3500);
@@ -28,13 +29,13 @@ public class AdminWeekExport extends AbstractExcel<AdminWeekVo> {
     private Column column13 = addColumn("本周完成新开户", 3500);
     private Column column14 = addColumn("本周完成入金总额", 3500);
 
-    public AdminWeekExport(String fileName, String fileTitle, List<AdminWeekVo> datas) {
+    public AdminWeekExport(String fileName, String fileTitle, List<WeekVo> datas) {
         super(fileName, fileTitle, datas);
     }
 
 
 
-    protected void fillData(AdminWeekVo vo) {
+    protected void fillData(WeekVo vo) {
         // 团队
         column1.setValue(vo.getDeptName());
         // 姓名
@@ -60,13 +61,9 @@ public class AdminWeekExport extends AbstractExcel<AdminWeekVo> {
         // 周五入金代理
         column12.setValue(vo.getFriInCash().toString());
         // 周有效新开户
-        column13.setValue(vo.getOpenNum());
+        column13.setValue(vo.getOpenAccountNum());
         // 周入金代理
         column14.setValue(vo.getInCash().toString());
-
-
     }
-
-
 }
 

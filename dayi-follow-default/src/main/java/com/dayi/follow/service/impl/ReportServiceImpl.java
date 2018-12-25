@@ -6,26 +6,17 @@ import com.dayi.follow.dao.follow.ReportMapper;
 import com.dayi.follow.service.CountService;
 import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.ReportService;
-import com.dayi.follow.vo.export.AdminWeekExport;
 import com.dayi.follow.vo.report.*;
 import com.dayi.mybatis.support.Page;
-import com.fasterxml.jackson.databind.util.BeanUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.BeanUtils;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOError;
-import java.io.IOException;
 import java.math.BigDecimal;
-import java.text.DateFormat;
 import java.util.*;
 
 /**
@@ -104,8 +95,8 @@ public class ReportServiceImpl implements ReportService {
 
     //个人周报
     @Override
-    public WeekVo getWeek(String followId, String betweenDate) {
-        WeekVo weekVo;
+    public MyWeekVo getWeek(String followId, String betweenDate) {
+        MyWeekVo weekVo;
 
         DateVo dateVo = this.doWeekDate(betweenDate);
 
@@ -114,7 +105,7 @@ public class ReportServiceImpl implements ReportService {
         dateVo.setEndDate(DateTime.parse(dateVo.getEndDate(), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toString("yyyy-MM-dd"));
 
         if (weekVo == null) {
-            weekVo = new WeekVo();
+            weekVo = new MyWeekVo();
         }
 
         BeanUtils.copyProperties(dateVo, weekVo);
@@ -265,12 +256,24 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public Page<AdminWeekVo> findAdminWeek(Page page, String deptId, String betweenDate) {
-        if (StringUtils.isBlank(betweenDate)) return page;
+    public AdminWeekVo countAdminWeek(Page page, String deptId, String betweenDate) {
+        AdminWeekVo adminWeekVo = new AdminWeekVo();
+        String startDate;
+        String endDate;
 
-        String[] split = betweenDate.split(" - ");
-        String startDate = split[0];
-        String endDate = DateTime.parse(split[1]).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
+        DateVo dateVo = doWeekDate(betweenDate);
+
+        if (StringUtils.isBlank(betweenDate)) {
+            startDate = dateVo.getLastWeekStart();
+            endDate = dateVo.getLastWeekEnd();
+        } else {
+            String[] split = betweenDate.split(" - ");
+            startDate = split[0];
+            endDate = DateTime.parse(split[1]).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
+        }
+
+        dateVo.setEndDate(DateTime.parse(dateVo.getEndDate(), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toString("yyyy-MM-dd"));
+        BeanUtils.copyProperties(dateVo, adminWeekVo);
 
         List<String> followIds = new ArrayList<>();
         List<String> subDeptIds = deptService.getSubDeptIds(deptId);
@@ -278,7 +281,7 @@ public class ReportServiceImpl implements ReportService {
             followIds.addAll(followUpMapper.findIdsByDeptId(subDeptId));
         }
 
-        if (followIds.isEmpty()) return page;
+        if (followIds.isEmpty()) return adminWeekVo;
 
         page = reportMapper.findAdminWeekSum(page, followIds, startDate, endDate);
 
@@ -288,15 +291,14 @@ public class ReportServiceImpl implements ReportService {
 
         per = reportMapper.findAdminWeekPer(per, followIds, startDate, endDate);
 
-        page.setResults(mergeData(page.getResults(), per.getResults()));
+        adminWeekVo.setWeekVos(mergeData(page.getResults(), per.getResults()));
 
-        return page;
-
+        return adminWeekVo;
     }
 
     @Override
-    public List<AdminWeekVo> findAdminWeekList(String deptId, String betweenDate) {
-        List<AdminWeekVo> list = new ArrayList<>();
+    public List<WeekVo> findAdminWeekList(String deptId, String betweenDate) {
+        List<WeekVo> list = new ArrayList<>();
 
         if (StringUtils.isBlank(betweenDate)) return list;
 
@@ -313,13 +315,13 @@ public class ReportServiceImpl implements ReportService {
 
         if (followIds.isEmpty()) return list;
 
-        List<ReportDailyVo> sum = reportMapper.findAdminWeekSumList(followIds, startDate, endDate);
+        List<WeekVo> sum = reportMapper.findAdminWeekSumList(followIds, startDate, endDate);
 
         Page page = new Page();
         page.setPageSize(sum.size() * 5);
-        Page<ReportDailyVo> per = reportMapper.findAdminWeekPer(page, followIds, startDate, endDate);
-        return mergeData(sum, per.getResults());
+        Page<WeekVo> per = reportMapper.findAdminWeekPer(page, followIds, startDate, endDate);
 
+        return mergeData(sum, per.getResults());
     }
 
     @Override
@@ -394,15 +396,14 @@ public class ReportServiceImpl implements ReportService {
         return list;
     }
 
-    private List<AdminWeekVo> mergeData(List<ReportDailyVo> sum, List<ReportDailyVo> per) {
+    private List<WeekVo> mergeData(List<WeekVo> sum, List<WeekVo> per) {
+        List<WeekVo> adminWeekVos = new ArrayList<>();
 
-        List<AdminWeekVo> adminWeekVos = new ArrayList<AdminWeekVo>();
         for (int j = 0; j < sum.size(); j++) {
-            AdminWeekVo vo = new AdminWeekVo();
-
+            WeekVo vo = new WeekVo();
             vo.setDeptName(sum.get(j).getDeptName());
             vo.setName(sum.get(j).getName());
-            vo.setOpenNum(sum.get(j).getOpenAccountNum());
+            vo.setOpenAccountNum(sum.get(j).getOpenAccountNum());
             vo.setInCash(sum.get(j).getInCash());
 
             for (int i = 0 + 5 * j; i < 5 + 5 * j; i++) {
