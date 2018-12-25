@@ -70,7 +70,7 @@
                                     <tbody>
                                     <c:if test="${empty deptTree}">
                                         <tr>
-                                            <td colspan="4" class="no_data">暂无部门，请<a href="javascript:;" data-act="addDept">新增部门</a></td>
+                                            <td colspan="4" class="no_data">暂无部门<c:if test="${addDeptPermission}">，请<a href="javascript:;" data-act="addDept">新增部门</c:if></a></td>
                                         </tr>
                                     </c:if>
                                     <c:if test="${not empty deptTree}">

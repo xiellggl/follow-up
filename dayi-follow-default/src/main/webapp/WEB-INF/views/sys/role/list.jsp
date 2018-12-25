@@ -1,5 +1,20 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@include file="/inc/followup/taglib.jsp"%>
+<%--权限判断--%>
+<c:set var="editRolePermission" value="false" />
+<c:set var="deleteRolePermission" value="false" />
+<c:set var="enableRolePermission" value="false" />
+<c:forEach items="${permissions}" var="item">
+    <c:if test="${item.url eq '/role/edit'}">
+        <c:set var="editRolePermission" value="true" />
+    </c:if>
+    <c:if test="${item.url eq '/role/delete'}">
+        <c:set var="deleteRolePermission" value="true" />
+    </c:if>
+    <c:if test="${item.url eq '/role/enableRole'}">
+        <c:set var="enableRolePermission" value="true" />
+    </c:if>
+</c:forEach>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -33,9 +48,12 @@
                             角色管理
                         </small>
                     </h1>
-                    <a href="./edit" class="pull-right">
-                        <span class="btn btn-xs btn-primary">添加角色</span>
-                    </a>
+                    <c:if test="${editRolePermission}">
+                        <a href="./edit" class="pull-right">
+                            <span class="btn btn-xs btn-primary">添加角色</span>
+                        </a>
+                    </c:if>
+
                 </div>
 
                 <div class="col-xs-12">
@@ -48,14 +66,17 @@
                                 <th class="hidden-xs">角色备注</th>
                                 <th class="hidden-xs">添加时间</th>
                                 <th>状态</th>
-                                <th>操作</th>
+                                <c:if test="${deleteRolePermission or editRolePermission}">
+                                    <th>操作</th>
+                                </c:if>
+
                             </tr>
                             </thead>
                             <tbody>
 
                             <c:if test="${empty page}">
                                 <tr>
-                                    <td colspan="10" class="no_data">暂无角色，请 <a href="./edit">新增角色</a></td>
+                                    <td colspan="10" class="no_data">暂无角色<c:if test="${editRolePermission}">，请 <a href="./edit">新增角色</a></c:if></td>
                                 </tr>
                             </c:if>
 
@@ -73,13 +94,19 @@
                                             </span>
                                             </a>
                                         </td>
+                                        <c:if test="${deleteRolePermission or editRolePermission}">
                                         <td>
+                                            <c:if test="${editRolePermission}">
                                             <a href="./edit?id=${item.id}" title="修改">
                                                 <i class="ace-icon fa fa-pencil bigger-130"></i>
                                             </a>
+                                            </c:if>
+                                            <c:if test="${deleteRolePermission}">
                                             <a href="#" data-act="del" data-toggle="tooltip" title="删除">
                                                 <i class="ace-icon fa fa-trash-o bigger-130 red"></i></a>
+                                            </c:if>
                                         </td>
+                                        </c:if>
                                     </tr>
                                 </c:forEach>
                             </c:if>
@@ -121,6 +148,7 @@
             });
         });
 
+        <c:if test="${enableRolePermission}">
         //禁用/启用
         $(".state-btn").on("click", function () {
             var state = $(this).data("state");
@@ -146,6 +174,7 @@
             });
             return false;
         });
+        </c:if>
 
     });
 

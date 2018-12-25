@@ -1,5 +1,32 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@include file="/inc/followup/taglib.jsp"%>
+<%--权限判断--%>
+<c:set var="addUserPermission" value="false" />
+<c:set var="updateUserPermission" value="false" />
+<c:set var="deleteUserPermission" value="false" />
+<c:set var="disableUserPermission" value="false" />
+<c:set var="enableUserPermission" value="false" />
+<c:set var="resetpwdUserPermission" value="false" />
+<c:forEach items="${permissions}" var="item">
+    <c:if test="${item.url eq '/user/add/save'}">
+        <c:set var="addUserPermission" value="true" />
+    </c:if>
+    <c:if test="${item.url eq '/user/edit/save'}">
+        <c:set var="updateUserPermission" value="true" />
+    </c:if>
+    <c:if test="${item.url eq '/user/delete'}">
+        <c:set var="deleteUserPermission" value="true" />
+    </c:if>
+    <c:if test="${item.url eq '/user/displace'}">
+        <c:set var="disableUserPermission" value="true" />
+    </c:if>
+    <c:if test="${item.url eq '/user/enable'}">
+        <c:set var="enableUserPermission" value="true" />
+    </c:if>
+    <c:if test="${item.url eq '/user/resetpwd'}">
+        <c:set var="resetpwdUserPermission" value="true" />
+    </c:if>
+</c:forEach>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -32,9 +59,11 @@
                             用户管理
                         </small>
                     </h1>
+                    <c:if test="${addUserPermission}">
                     <a href="#" class="pull-right" data-toggle="modal" data-target="#myModalEditFollowuper">
                         <span class="btn btn-xs btn-primary">新增用户</span>
                     </a>
+                    </c:if>
                 </div>
 
                 <div class="col-xs-12">
@@ -58,9 +87,9 @@
                             <c:if test="${empty page.results}">
                             <tr>
                                 <td colspan="6" class="no_data">
-                                    暂无用户，请
+                                    暂无用户<c:if test="${addUserPermission}">，请
                                     <a href="#" data-toggle="modal"
-                                       data-target="#myModalEditFollowuper">新增用户</a>
+                                       data-target="#myModalEditFollowuper">新增用户</a></c:if>
                                 </td>
                             </tr>
                             </c:if>
@@ -83,17 +112,23 @@
                                 </td>
                                 <td class="hidden-xs"><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/> </td>
                                 <td>
+                                    <c:if test="${updateUserPermission}">
                                     <a class="green" href="#" data-toggle="modal"
                                        data-target="#myModalEditFollowuper" data-id="${item.id}"
                                        data-toggle="tooltip" title="修改">
                                         <i class="ace-icon fa fa-pencil bigger-130"></i>
                                     </a>
+                                    </c:if>
+                                    <c:if test="${deleteUserPermission}">
                                     <a href="#" data-act="del" data-toggle="tooltip" title="删除">
                                         <i class="ace-icon fa fa-trash-o bigger-130 red"></i></a>
+                                    </c:if>
+                                    <c:if test="${resetpwdUserPermission}">
                                     <a href="#" data-act="resetpwd" data-toggle="tooltip"
                                        title="重置密码">
                                         <i class="ace-icon fa fa-key bigger-130"></i>
                                     </a>
+                                    </c:if>
                                 </td>
                             </tr>
                             </c:forEach>
@@ -399,6 +434,8 @@
             });
         });
 
+
+        <c:if test="${enableUserPermission and disableUserPermission}">
         //禁用/启用
         $(".state-btn").on("click", function () {
             var state = $(this).data("state");
@@ -420,6 +457,7 @@
             });
             return false;
         });
+        </c:if>
 
         //重置密码
         $('[data-act="resetpwd"]').on("click", function () {

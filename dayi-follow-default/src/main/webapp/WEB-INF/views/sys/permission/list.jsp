@@ -1,5 +1,28 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@include file="/inc/followup/taglib.jsp"%>
+<%--权限判断--%>
+<c:set var="addPermission" value="false" />
+<c:set var="updatePermission" value="false" />
+<c:set var="deletePermission" value="false" />
+<c:set var="bindPermission" value="false" />
+<c:set var="displacePermission" value="false" />
+<c:forEach items="${permissions}" var="item">
+    <c:if test="${item.url eq '/permission/add/save'}">
+        <c:set var="addPermission" value="true" />
+    </c:if>
+    <c:if test="${item.url eq '/permission/edit/save'}">
+        <c:set var="updatePermission" value="true" />
+    </c:if>
+    <c:if test="${item.url eq '/permission/delete'}">
+        <c:set var="deletePermission" value="true" />
+    </c:if>
+    <c:if test="${item.url eq '/permission/bind/save'}">
+        <c:set var="bindPermission" value="true" />
+    </c:if>
+    <c:if test="${item.url eq '/permission/displace'}">
+        <c:set var="displacePermission" value="true" />
+    </c:if>
+</c:forEach>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -33,9 +56,12 @@
                             功能管理
                         </small>
                     </h1>
-                    <a href="#" class="pull-right">
-                        <span class="btn btn-xs btn-primary" data-toggle="modal" data-target="#myModalEditPermission">添加功能</span>
-                    </a>
+                    <c:if test="${addPermission}">
+                        <a href="#" class="pull-right">
+                            <span class="btn btn-xs btn-primary" data-toggle="modal" data-target="#myModalEditPermission">添加功能</span>
+                        </a>
+                    </c:if>
+
                 </div>
 
                 <div class="row">
@@ -114,7 +140,7 @@
                             <table class="table table-striped table-bordered table-hover">
                                 <thead>
                                 <tr>
-                                    <c:if test="${not empty param.bindModuleId}">
+                                    <c:if test="${not empty param.bindModuleId and bindPermission}">
                                     <th class="center sorting_disabled" rowspan="1" colspan="1" aria-label="">
                                         <label class="pos-rel">
                                             <input type="checkbox" id="chkAll" class="ace">
@@ -131,7 +157,9 @@
                                     <th class="hidden-sm hidden-xs">添加时间</th>
                                     <th class="hidden-sm hidden-xs">修改时间</th>
                                     <th class="hidden-sm hidden-xs">备注</th>
+                                    <c:if test="${updatePermission or deletePermission}">
                                     <th>操作</th>
+                                    </c:if>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -140,9 +168,9 @@
                                 <c:if test="${empty page}">
                                     <tr>
                                         <td colspan="7" class="no_data">
-                                            暂无功能，请
+                                            暂无功能<c:if test="${addPermission}">，请
                                             <a href="#" data-toggle="modal"
-                                               data-target="#myModalEditPermission" title="新增功能">新增功能</a>
+                                               data-target="#myModalEditPermission" title="新增功能">新增功能</a></c:if>
                                         </td>
                                     </tr>
                                 </c:if>
@@ -150,7 +178,7 @@
                                 <c:if test="${not empty page.results}">
                                 <c:forEach items="${page.results}" var="item" >
                                 <tr data-id="${item.id}">
-                                    <c:if test="${not empty param.bindModuleId}">
+                                    <c:if test="${not empty param.bindModuleId and bindPermission}">
                                     <td class="center">
                                         <label class="pos-rel">
                                             <input type="checkbox" class="ace check" name="id" value="${item.id}">
@@ -173,22 +201,28 @@
                                     <td class="hidden-sm hidden-xs"><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                     <td class="hidden-sm hidden-xs"><fmt:formatDate value="${item.updateTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                     <td class="hidden-sm hidden-xs">${item.description}</td>
+                                    <c:if test="${updatePermission or deletePermission}">
                                     <td>
-                                        <a href="#" data-id="${item.id}" data-toggle="modal"
-                                           data-target="#myModalEditPermission"
-                                           data-toggle="tooltip" title="修改">
-                                            <i class="ace-icon fa fa-pencil bigger-130"></i>
-                                        </a>
-                                        <a href="#" data-act="del" data-toggle="tooltip" title="删除">
-                                            <i class="ace-icon fa fa-trash-o bigger-130 red"></i></a>
+                                        <c:if test="${updatePermission}">
+                                            <a href="#" data-id="${item.id}" data-toggle="modal"
+                                               data-target="#myModalEditPermission"
+                                               data-toggle="tooltip" title="修改">
+                                                <i class="ace-icon fa fa-pencil bigger-130"></i>
+                                            </a>
+                                        </c:if>
+                                        <c:if test="${deletePermission}">
+                                            <a href="#" data-act="del" data-toggle="tooltip" title="删除">
+                                                <i class="ace-icon fa fa-trash-o bigger-130 red"></i></a>
+                                        </c:if>
                                     </td>
+                                    </c:if>
                                 </tr>
                                 </c:forEach>
                                 </c:if>
 
                                 </tbody>
                             </table>
-                            <c:if test="${not empty param.bindModuleId}">
+                            <c:if test="${not empty param.bindModuleId and bindPermission}">
                             <div class="center">
                                 <a href="#" data-act="binding" class="btn btn-xs btn-pink">
                                     <span class="ace-icon fa fa-globe"></span>
@@ -311,6 +345,7 @@
             });
         });
 
+        <c:if test="${displacePermission}">
         //显示/隐藏
         $(".state-btn").on("click", function () {
             var state = $(this).data("state");
@@ -336,6 +371,7 @@
             });
             return false;
         });
+        </c:if>
 
 
         var $list = $("#listPan");

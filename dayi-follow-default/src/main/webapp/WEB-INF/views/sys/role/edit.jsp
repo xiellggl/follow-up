@@ -13,8 +13,9 @@
         .permission-setlist ul{padding:5px 0;margin: 0;}
         .permission-setlist .last{background-color: #f5f5f5; padding-left: 20px; margin-bottom: 10px;}
         .permission-setlist li{ clear: both;}
-        .permission-setlist .last .option-item{ clear: none; float: left; width: 160px; margin: 0;}
+        .permission-setlist .last .option-item{ clear: none; float: left; width: 200px; margin: 0;}
         .permission-setlist .tit{padding-top: 10px;color:#933;}
+        .permission-setlist label{line-height: 1.2;padding-left: 18px;text-indent: -18px;padding-right: 10px;}
         .permission-setlist .checked{color: #00aeef;}
 
     </style>
