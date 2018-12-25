@@ -1,35 +1,98 @@
 package com.dayi.follow.vo.report;
 
 
+import java.math.BigDecimal;
+
 //周报
-public class MonthVo extends ReportVo {
+public class MonthVo {
 
-    private String month;//月份
-    private String thisMonth;//这月
+    private String followId;
 
-    private String lastMonth;//上月
+    private String deptName;//部门名称
 
-    public String getMonth() {
-        return month;
+    private String name;//姓名
+
+    private String inviteCode;//邀请码
+
+    private Integer orgNum;//新签创客
+
+    private Integer openNum;//开户量
+
+    private BigDecimal inCash;  // 入金
+
+    private BigDecimal manageFund;//管理资产
+
+    private String ringGrowthRatio;//环比净增
+
+    public String getFollowId() {
+        return followId;
     }
 
-    public void setMonth(String month) {
-        this.month = month;
+    public void setFollowId(String followId) {
+        this.followId = followId;
     }
 
-    public String getThisMonth() {
-        return thisMonth;
+    public String getInviteCode() {
+        return inviteCode;
     }
 
-    public void setThisMonth(String thisMonth) {
-        this.thisMonth = thisMonth;
+    public void setInviteCode(String inviteCode) {
+        this.inviteCode = inviteCode;
     }
 
-    public String getLastMonth() {
-        return lastMonth;
+    public Integer getOrgNum() {
+        return orgNum;
     }
 
-    public void setLastMonth(String lastMonth) {
-        this.lastMonth = lastMonth;
+    public void setOrgNum(Integer orgNum) {
+        this.orgNum = orgNum;
+    }
+
+    public Integer getOpenNum() {
+        return openNum;
+    }
+
+    public void setOpenNum(Integer openNum) {
+        this.openNum = openNum;
+    }
+
+    public String getDeptName() {
+        return deptName;
+    }
+
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public BigDecimal getInCash() {
+        return inCash;
+    }
+
+    public void setInCash(BigDecimal inCash) {
+        this.inCash = inCash;
+    }
+
+    public BigDecimal getManageFund() {
+        return manageFund;
+    }
+
+    public void setManageFund(BigDecimal manageFund) {
+        this.manageFund = manageFund;
+    }
+
+    public String getRingGrowthRatio() {
+        return ringGrowthRatio;
+    }
+
+    public void setRingGrowthRatio(String ringGrowthRatio) {
+        this.ringGrowthRatio = ringGrowthRatio;
     }
 }

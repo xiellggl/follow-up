@@ -170,9 +170,9 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public MonthVo getMonth(String followId, String month) {
+    public MyMonthVo getMonth(String followId, String month) {
 
-        MonthVo monthVo;
+        MyMonthVo monthVo;
 
         DateVo dateVo = this.doMonthDate(month);
 
@@ -182,7 +182,7 @@ public class ReportServiceImpl implements ReportService {
         monthVo = reportMapper.getMonth(followId, startDate, endDate);
 
         if (monthVo == null) {
-            monthVo = new MonthVo();
+            monthVo = new MyMonthVo();
         }
 
         BeanUtils.copyProperties(dateVo, monthVo);
@@ -325,10 +325,13 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public Page<AdminMonthVo> findAdminMonth(Page page, String deptId, String month) {
-        if (StringUtils.isBlank(month)) return page;
-        String startDate = DateTime.parse(month).toString("yyyy-MM-dd HH:mm:ss");//本月开始
-        String endDate = DateTime.parse(month).dayOfMonth().withMaximumValue().millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");//本月结束
+    public AdminMonthVo countAdminMonth(Page page, String deptId, String month) {
+        AdminMonthVo adminMonthVo = new AdminMonthVo();
+
+        DateVo dateVo = doMonthDate(month);
+
+        String startDate = DateTime.parse(dateVo.getMonth()).toString("yyyy-MM-dd HH:mm:ss");//本月开始
+        String endDate = DateTime.parse(dateVo.getMonth()).dayOfMonth().withMaximumValue().millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");//本月结束
 
         List<String> followIds = new ArrayList<>();
         List<String> subDeptIds = deptService.getSubDeptIds(deptId);
@@ -336,16 +339,18 @@ public class ReportServiceImpl implements ReportService {
             followIds.addAll(followUpMapper.findIdsByDeptId(subDeptId));
         }
 
-        if (followIds.isEmpty()) return page;
+        BeanUtils.copyProperties(dateVo, adminMonthVo);
+
+        if (followIds.isEmpty()) return adminMonthVo;
 
         page = reportMapper.findAdminMonth(page, followIds, startDate, endDate);//本月
-        page.setResults(countGrowthRatio(page.getResults(), month));
-        return page;
+        adminMonthVo.setMonthVos(countGrowthRatio(page.getResults(), month));
+        return adminMonthVo;
     }
 
     @Override
-    public List<AdminMonthVo> findAdminMonthList(String deptId, String month) {
-        List<AdminMonthVo> list = new ArrayList<>();
+    public List<MonthVo> findAdminMonthList(String deptId, String month) {
+        List<MonthVo> list = new ArrayList<>();
         if (StringUtils.isBlank(month)) return list;
 
         String startDate = DateTime.parse(month).toString("yyyy-MM-dd HH:mm:ss");//本月开始
@@ -359,11 +364,11 @@ public class ReportServiceImpl implements ReportService {
 
         if (followIds.isEmpty()) return list;
 
-        List<AdminMonthVo> monthList = reportMapper.findAdminMonthList(followIds, startDate, endDate);//本月
+        List<MonthVo> monthList = reportMapper.findAdminMonthList(followIds, startDate, endDate);//本月
         return countGrowthRatio(monthList, month);
     }
 
-    private List<AdminMonthVo> countGrowthRatio(List<AdminMonthVo> list, String month) {
+    private List<MonthVo> countGrowthRatio(List<MonthVo> list, String month) {
         String date1 = "";
         String date2 = "";
         String date3 = "";
@@ -375,18 +380,19 @@ public class ReportServiceImpl implements ReportService {
             date3 = DateTime.parse(month).plusMonths(-1).dayOfMonth().withMaximumValue().millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");//上月最后一天开始
             date4 = DateTime.parse(month).plusMonths(-1).dayOfMonth().withMaximumValue().millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");//上月结束
         }
-        for (AdminMonthVo vo : list) {
+        for (MonthVo vo : list) {
             if (vo == null) continue;
             BigDecimal manageFund1 = reportMapper.getLastManageFund(vo.getFollowId(), date1, date2);//当月最后一天管理资产
             vo.setManageFund(manageFund1.setScale(2));
-            if (manageFund1 == BigDecimal.ZERO) {
+            if (BigDecimal.ZERO.compareTo(manageFund1) == 0) {
                 vo.setRingGrowthRatio("暂无数据");
-                break;
+                vo.setManageFund(null);
+                continue;
             }
             BigDecimal manageFund2 = reportMapper.getLastManageFund(vo.getFollowId(), date3, date4);//上月最后一天管理资产
-            if (manageFund2 == BigDecimal.ZERO) {
+            if (BigDecimal.ZERO.compareTo(manageFund2) == 0) {
                 vo.setRingGrowthRatio("上月无数据");
-                break;
+                continue;
             }
             BigDecimal subtract = manageFund1.subtract(manageFund2);//获取净增
             BigDecimal divide = subtract.divide(manageFund2, 2, BigDecimal.ROUND_HALF_UP);

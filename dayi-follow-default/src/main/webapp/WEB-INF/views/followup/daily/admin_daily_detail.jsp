@@ -30,7 +30,7 @@
                             团队：${deptName}
                         </div>
                         <div class="pull-right">
-                            <a href="./export?deptId=${deptId}&date=${date}" class="btn btn-xs btn-danger">
+                            <a href="./detail/export?deptId=${deptId}&date=${date}" class="btn btn-xs btn-danger">
                                 <span class="ace-icon glyphicon glyphicon-export"></span>
                                 一键导出
                             </a>

@@ -117,7 +117,7 @@ public class ReportController extends BaseController {
      * @param request
      * @return
      */
-    @RequestMapping("/team/daily/export")
+    @RequestMapping("/team/daily/detail/export")
     public void teamDetailExport(HttpServletRequest request, HttpServletResponse response) throws IOException {
         LoginVo currVo = userComponent.getCurrUser(request);
         String date = request.getParameter("date");
@@ -179,7 +179,7 @@ public class ReportController extends BaseController {
 
         String date = request.getParameter("date");
 
-        MonthVo monthVo = reportService.getMonth(currVo.getId(), date);
+        MyMonthVo monthVo = reportService.getMonth(currVo.getId(), date);
 
         model.addAttribute("monthVo", monthVo);
         return "/followup/month/month_list";
@@ -258,7 +258,7 @@ public class ReportController extends BaseController {
      * @param request
      * @return
      */
-    @RequestMapping("/admin/daily/export")
+    @RequestMapping("/admin/daily/detail/export")
     public void adminDailyExport(HttpServletRequest request, HttpServletResponse response) throws IOException {
         LoginVo currVo = userComponent.getCurrUser(request);
         String deptId = request.getParameter("deptId");
@@ -288,7 +288,8 @@ public class ReportController extends BaseController {
         page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
 
         AdminWeekVo adminWeekVo = reportService.countAdminWeek(page, currVo.getDeptId(), date);
-
+        String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
+        request.setAttribute("pageUrl", pageUrl);
         model.addAttribute("adminWeekVo", adminWeekVo);
         return "/followup/week/admin_week_list";
     }
@@ -335,12 +336,12 @@ public class ReportController extends BaseController {
 
         page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
 
-        if (StringUtils.isBlank(date)) date = DateTime.now().plusMonths(-1).toString("yyyy-MM");
+        AdminMonthVo adminMonthVo = reportService.countAdminMonth(page, currVo.getDeptId(), date);
 
-        page = reportService.findAdminMonth(page, currVo.getDeptId(), date);
-
-        model.addAttribute("page", page);
-        return "/followup/uc/log/mydaily";
+        String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
+        model.addAttribute("adminMonthVo", adminMonthVo);
+        request.setAttribute("pageUrl", pageUrl);
+        return "/followup/month/admin_month_list";
     }
 
 
@@ -358,7 +359,7 @@ public class ReportController extends BaseController {
 
         if (StringUtils.isBlank(date)) date = DateTime.now().plusMonths(-1).toString("yyyy-MM");
 
-        List<AdminMonthVo> adminMonthVos = reportService.findAdminMonthList(currVo.getDeptId(), date);
+        List<MonthVo> adminMonthVos = reportService.findAdminMonthList(currVo.getDeptId(), date);
 
         String fileTitle = "资产管理部" + date + "月报";
         String fileName = fileTitle;

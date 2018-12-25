@@ -30,11 +30,11 @@
                         您当前操作
                         <small>
                             <i class="ace-icon fa fa-angle-double-right"></i>
-                            团队月报(${date})
+                            团队月报(${adminMonthVo.month})
                         </small>
                     </h1>
                     <div class="pull-right">
-                        <a href="./export?date=${date}" class="btn btn-xs btn-danger">
+                        <a href="./month/export?date=${adminMonthVo.month}" class="btn btn-xs btn-danger">
                             <span class="ace-icon glyphicon glyphicon-export"></span>
                             一键导出
                         </a>
@@ -43,10 +43,10 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <ul class="nav nav-tabs">
-                            <li ${date eq thisMonth ? 'class="active"':''}><a href="?date=${thisMonth}">本月</a></li>
-                            <li ${date eq lastMonth ? 'class="active"':''}><a href="?date=${lastMonth}">上一月</a></li>
-                            <c:if test="${date ne thisMonth and date ne lastMonth}">
-                                <li class="active"><a>${date}</a></li>
+                            <li ${adminMonthVo.month eq adminMonthVo.thisMonth ? 'class="active"':''}><a href="?date=${adminMonthVo.thisMonth}">本月</a></li>
+                            <li ${adminMonthVo.month eq adminMonthVo.lastMonth ? 'class="active"':''}><a href="?date=${adminMonthVo.lastMonth}">上一月</a></li>
+                            <c:if test="${adminMonthVo.month ne adminMonthVo.thisMonth and adminMonthVo.month ne adminMonthVo.lastMonth}">
+                                <li class="active"><a>${adminMonthVo.month}</a></li>
                             </c:if>
                             <li>
                                 <a class="dates" data-toggle="popover" id="showmonthlyPicker">
@@ -73,28 +73,28 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:if test="${empty page.items}">
+                            <c:if test="${empty adminMonthVo.monthVos}">
                                 <tr>
                                     <td colspan="8" class="no_data">暂无数据记录</td>
                                 </tr>
                             </c:if>
-                            <c:if test="${not empty page.items}">
-                                <c:forEach items="${page.items}" var="item">
+                            <c:if test="${not empty adminMonthVo.monthVos}">
+                                <c:forEach items="${adminMonthVo.monthVos}" var="item">
                                     <tr>
                                         <td>${item.deptName}</td>
-                                        <td>${item.followUpName}</td>
+                                        <td>${item.name}</td>
                                         <td>${item.inviteCode}</td>
-                                        <td>${item.signOrgNum}</td>
-                                        <td>${item.openAccountNum}</td>
+                                        <td>${item.orgNum}</td>
+                                        <td>${item.openNum}</td>
                                         <td>${item.inCash}</td>
-                                        <td>${item.manageAsset eq null ? '暂无数据':item.manageAsset}</td>
+                                        <td>${item.manageFund eq null ? '暂无数据':item.manageFund}</td>
                                         <td>${item.ringGrowthRatio}</td>
                                     </tr>
                                 </c:forEach>
                             </c:if>
                             </tbody>
                         </table>
-                        <c:if test="${not empty page}">
+                        <c:if test="${not empty adminMonthVo.monthVos}">
                             <div class="pagerBar" id="pagerBar">
                                 <common:page url="${pageUrl}" type="3"/>
                             </div>

@@ -101,7 +101,7 @@
         group by follow_id  ORDER BY dept_id asc, follow_id asc
     </select>
 
-    <select id="getMonth" parameterType="map" resultType="com.dayi.follow.vo.report.MonthVo">
+    <select id="getMonth" parameterType="map" resultType="com.dayi.follow.vo.report.MyMonthVo">
         SELECT dept_id,b.name deptName,c.name ,follow_id,
         sum(open_account_num)openAccountNum,sum(in_cash)inCash,
         sum(out_cash)outCash,sum(manage_growth_fund)manageGrowthFund
@@ -215,8 +215,8 @@
         group by follow_id  ORDER BY dept_id asc, follow_id asc
     </select>
 
-    <select id="findAdminMonth" parameterType="map" resultType="com.dayi.follow.vo.report.AdminMonthVo">
-        SELECT a.follow_id,c.name deptName,b.name,b.invite_code,sum(d.org_id)orgNum,sum(open_account_num)openNum,sum(in_cash)inCash
+    <select id="findAdminMonth" parameterType="map" resultType="com.dayi.follow.vo.report.MonthVo">
+        SELECT a.follow_id,c.name deptName,b.name,b.invite_code,count(d.org_id)orgNum,sum(open_account_num)openNum,sum(in_cash)inCash
         from follow_up_log a
         LEFT join (
             SELECT id,name,invite_code from follow_up
@@ -236,11 +236,12 @@
                  open="(" separator="," close=")">
             #{item}
         </foreach>
+        group by a.follow_id
         ORDER BY c.id asc , a.follow_id asc
     </select>
 
-    <select id="findAdminMonthList" parameterType="map" resultType="com.dayi.follow.vo.report.AdminMonthVo">
-        SELECT a.follow_id,c.name deptName,b.name,b.invite_code,sum(d.org_id)orgNum,sum(open_account_num)openNum,sum(in_cash)inCash
+    <select id="findAdminMonthList" parameterType="map" resultType="com.dayi.follow.vo.report.MonthVo">
+        SELECT a.follow_id,c.name deptName,b.name,b.invite_code,count(d.org_id)orgNum,sum(open_account_num)openNum,sum(in_cash)inCash
         from follow_up_log a
         LEFT join (
         SELECT id,name,invite_code from follow_up
@@ -260,6 +261,7 @@
                  open="(" separator="," close=")">
             #{item}
         </foreach>
+        GROUP by a.follow_id
         ORDER BY c.id asc , a.follow_id asc
     </select>
 
