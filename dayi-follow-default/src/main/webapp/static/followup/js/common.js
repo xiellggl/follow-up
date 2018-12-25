@@ -668,7 +668,7 @@ define(function(require, exports, module) {
         //查看个人信息
         var $modal = $("#myModalInfo");
         $userMenu.find('[data-act="info"]').on("click",function () {
-            exports.loadPageHTML("/followup/uc/myinfo",null,function (html) {
+            exports.loadPageHTML("/user/myinfo",null,function (html) {
                 $modal.html(html).show(300);
                 require.async("clipboard",function () {
                     var clipboard = new Clipboard("#copyLink");
@@ -688,7 +688,7 @@ define(function(require, exports, module) {
 
         //修改密码
         $userMenu.find('[data-act="pwd"]').on("click",function () {
-            exports.loadPageHTML("/followup/uc/pwd",null,function (html) {
+            exports.loadPageHTML("/user/pwd",null,function (html) {
                 $modal.html(html).show(300);
                 var $form = $modal.find("form");
                 require.async(["validate","addMethod"],function () {
@@ -734,7 +734,7 @@ define(function(require, exports, module) {
                         },
                         submitHandler: function (form) {
                             exports.ajax.handle({
-                                url: "/followup/uc/update/pwd.json",
+                                url: "/user/update/pwd.json",
                                 data: $form.serialize(),
                             });
                             return false;
