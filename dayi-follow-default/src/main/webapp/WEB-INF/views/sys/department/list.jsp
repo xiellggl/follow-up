@@ -1,5 +1,20 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@include file="/inc/followup/taglib.jsp"%>
+<%--权限判断--%>
+<c:set var="addDeptPermission" value="false" />
+<c:set var="updateDeptPermission" value="false" />
+<c:set var="deleteDeptPermission" value="false" />
+<c:forEach items="${permissions}" var="item">
+    <c:if test="${item.url eq '/dept/add**'}">
+        <c:set var="addDeptPermission" value="true" />
+    </c:if>
+    <c:if test="${item.url eq '/dept/update**'}">
+        <c:set var="updateDeptPermission" value="true" />
+    </c:if>
+    <c:if test="${item.url eq '/dept/delete'}">
+        <c:set var="deleteDeptPermission" value="true" />
+    </c:if>
+</c:forEach>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -31,10 +46,11 @@
                             部门管理
                         </small>
                     </h1>
-
-                    <a href="#" class="pull-right" data-act="addDept" data-toggle="modal" data-target="#myModalEditFollowuper">
-                        <span class="btn btn-xs btn-danger">新增部门</span>
-                    </a>
+                    <c:if test="${addDeptPermission}">
+                        <a href="#" class="pull-right" data-act="addDept" data-toggle="modal" data-target="#myModalEditFollowuper">
+                            <span class="btn btn-xs btn-danger">新增部门</span>
+                        </a>
+                    </c:if>
                 </div>
                 <div class="col-xs-12">
                         <div class="row">
@@ -46,7 +62,9 @@
                                         <th>部门名称</th>
                                         <th class="hidden-sm hidden-xs">部门描述</th>
                                         <th>部门人数</th>
+                                        <c:if test="${deleteDeptPermission or updateDeptPermission}">
                                         <th>操作</th>
+                                        </c:if>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -63,12 +81,18 @@
                                                 </td>
                                                 <td class="hidden-sm hidden-xs">${item.remark}</td>
                                                 <td>${item.personNum}</td>
+                                                <c:if test="${deleteDeptPermission or updateDeptPermission}">
                                                 <td>
-                                                    <a href="#"  data-toggle="modal" data-target="#myModalEditFollowuper" data-act="edit" data-toggle="tooltip" title="修改">
-                                                        <i class="ace-icon fa fa-pencil bigger-130"></i></a>
-                                                    <a href="#" data-act="del" data-toggle="tooltip" title="删除">
-                                                        <i class="ace-icon fa fa-trash-o bigger-130 red"></i></a>
+                                                    <c:if test="${updateDeptPermission}">
+                                                        <a href="#"  data-toggle="modal" data-target="#myModalEditFollowuper" data-act="edit" data-toggle="tooltip" title="修改">
+                                                            <i class="ace-icon fa fa-pencil bigger-130"></i></a>
+                                                    </c:if>
+                                                    <c:if test="${deleteDeptPermission}">
+                                                        <a href="#" data-act="del" data-toggle="tooltip" title="删除">
+                                                            <i class="ace-icon fa fa-trash-o bigger-130 red"></i></a>
+                                                    </c:if>
                                                 </td>
+                                                </c:if>
                                             </tr>
                                         </c:forEach>
                                     </c:if>
