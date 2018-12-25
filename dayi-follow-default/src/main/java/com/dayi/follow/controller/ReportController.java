@@ -288,7 +288,8 @@ public class ReportController extends BaseController {
         page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
 
         AdminWeekVo adminWeekVo = reportService.countAdminWeek(page, currVo.getDeptId(), date);
-
+        String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
+        request.setAttribute("pageUrl", pageUrl);
         model.addAttribute("adminWeekVo", adminWeekVo);
         return "/followup/week/admin_week_list";
     }
