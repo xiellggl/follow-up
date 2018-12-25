@@ -1,5 +1,32 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@include file="/inc/followup/taglib.jsp"%>
+<%--权限判断--%>
+<c:set var="addModulePermission" value="false" scope="request" />
+<c:set var="updateModulePermission" value="false" scope="request" />
+<c:set var="deleteModulePermission" value="false" scope="request" />
+<c:set var="enableModulePermission" value="false" scope="request" />
+<c:set var="bindModulePermission" value="false" scope="request" />
+<c:set var="untyingModulePermission" value="false" scope="request" />
+<c:forEach items="${permissions}" var="item">
+    <c:if test="${item.url eq '/module/add/save'}">
+        <c:set var="addModulePermission" value="true" scope="request" />
+    </c:if>
+    <c:if test="${item.url eq '/module/edit/save'}">
+        <c:set var="updateModulePermission" value="true" scope="request" />
+    </c:if>
+    <c:if test="${item.url eq '/module/delete'}">
+        <c:set var="deleteModulePermission" value="true" scope="request" />
+    </c:if>
+    <c:if test="${item.url eq '/module/enableModule'}">
+        <c:set var="enableModulePermission" value="true" scope="request" />
+    </c:if>
+    <c:if test="${item.url eq '/permission/bind/save'}">
+        <c:set var="bindModulePermission" value="true" scope="request" />
+    </c:if>
+    <c:if test="${item.url eq '/module/untying'}">
+        <c:set var="untyingModulePermission" value="true" scope="request" />
+    </c:if>
+</c:forEach>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -32,9 +59,11 @@
                             模块管理
                         </small>
                     </h1>
-                    <a href="#" class="pull-right">
-                    <span class="btn btn-xs btn-primary" data-toggle="modal" data-target="#myModalEditModule">添加模块</span>
-                    </a>
+                    <c:if test="${addModulePermission}">
+                        <a href="#" class="pull-right">
+                            <span class="btn btn-xs btn-primary" data-toggle="modal" data-target="#myModalEditModule">添加模块</span>
+                        </a>
+                    </c:if>
                 </div>
 
                 <div class="col-xs-12">
@@ -49,7 +78,9 @@
                                         <th>模块状态</th>
                                         <th>功能路径</th>
                                         <th class="hidden-xs">排序</th>
+                                        <c:if test="${addModulePermission or editModulePermission or deleteModulePermission or bindModulePermission or untyingModulePermission}">
                                         <th>操作</th>
+                                        </c:if>
                                     </tr>
                                 </thead>
 
@@ -57,9 +88,9 @@
                                 <c:if test="${empty menus}">
                                     <tr>
                                         <td colspan="7" class="no_data">
-                                            暂无模块，请
+                                            暂无模块<c:if test="${addModulePermission}">，请
                                             <a href="#" data-toggle="modal"
-                                               data-target="#myModalEditModule">新增模块</a>
+                                               data-target="#myModalEditModule">新增模块</a></c:if>
                                         </td>
                                     </tr>
                                 </c:if>
@@ -293,59 +324,14 @@
         });
 
 
+        //菜单展开
         $('[data-act="togglePermissions"]').on("click",function () {
             var cur_id =  $(this).data("id");
             $('[data-pid="'+cur_id+'"]').toggle();
-            $(this).find("fa").toggle();
+            $(this).find(".fa").toggle();
         });
 
-
-        //打开子菜单
-        $('body').on('click','.rule-list',function () {
-
-            var $a=$(this),$tr=$a.parents('tr');
-            var pid=$tr.attr('id');
-
-            if($a.find('span').hasClass('fa-minus')){
-                $("tr[id^='"+pid+"-']").attr('style','display:none');
-                $a.find('span').removeClass('fa-minus').addClass('fa-plus');
-            }else{
-                if($("tr[id^='"+pid+"-']").length>0){
-                    $("tr[id^='"+pid+"-']").attr('style','');
-                    $a.find('span').removeClass('fa-plus').addClass('fa-minus');
-                }else{
-                    var url = this.href,id=$a.data('id'),level=$a.data('level');
-                    $.post(url,{pid:id,level:level,id:pid}, function (data) {
-                        if (data) {
-                            $a.find('span').removeClass('fa-plus').addClass('fa-minus');
-                            $tr.after(data);
-                        }else{
-                            $a.find('span').removeClass('fa-plus').addClass('fa-minus');
-                        }
-                        return false;
-                    }, "json");
-                }
-            }
-            return false;
-        });
-
-        //展开收起交互
-        $('[data-ac="eye"]').on('click', function(event) {
-            var me = this;
-            var id = $(this).data('id');
-            var curr = this.innerHTML;
-            if(curr === '收起'){
-                me.ip = 0;
-
-            }else{
-                me.ip = 1;
-            }
-            this.innerHTML = ['展开','收起'][me.ip];
-            $('.link'+id)[['fadeOut','fadeIn'][me.ip]]();
-
-        });
-
-
+        <c:if test="${enableModulePermission}">
         //禁用/启用
         $(".state-btn").on("click", function () {
             var state = $(this).data("state");
@@ -371,6 +357,7 @@
             });
             return false;
         });
+        </c:if>
 
     });
 
