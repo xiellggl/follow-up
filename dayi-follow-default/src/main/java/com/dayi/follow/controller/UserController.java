@@ -293,23 +293,38 @@ public class UserController extends BaseController {
     @RequestMapping("/myinfo")
     public String myInfo(HttpServletRequest request, Model model) {
         LoginVo currVo = userComponent.getCurrUser(request);
+        UserVo userVo = new UserVo();
 
         FollowUp followUp = userService.get(currVo.getId());
+        if (followUp != null) {
+            Department department = deptService.get(currVo.getDeptId());
 
-        Department department = deptService.get(currVo.getDeptId());
+            userVo.setName(followUp.getName());
+            userVo.setUserName(followUp.getUserName());
 
-        UserVo userVo = new UserVo();
-        userVo.setName(followUp.getName());
-        userVo.setUserName(followUp.getUserName());
+            if (department != null) {
+                userVo.setDepartment(department);
+                userVo.setDeptName(department.getName());
+            }
 
-        if (department != null) {
-            userVo.setDepartment(department);
-            userVo.setDeptName(department.getName());
+            userVo.setInviteCode(followUp.getInviteCode());
+            userVo.setCreateTimeFm(DateUtil.formatDate(followUp.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));
+            userVo.setUpdateTimeFm(DateUtil.formatDate(followUp.getUpdateTime(), "yyyy-MM-dd HH:mm:ss"));
+
+            //处理角色名称
+            if (!StringUtils.isBlank(followUp.getRoleids())) {
+                String[] split = StringUtils.split(followUp.getRoleids(), ",");
+                for (String roleId : split) {
+                    Role role = roleService.getRole(roleId);
+                    if (role == null) break;
+                    userVo.setRolesName(role.getName() + ",");
+                }
+                //处理最后一个,
+                if (!StringUtils.isBlank(userVo.getRolesName())) {
+                    userVo.setRolesName(userVo.getRolesName().substring(0, userVo.getRolesName().length() - 1));
+                }
+            }
         }
-
-        userVo.setInviteCode(followUp.getInviteCode());
-        userVo.setCreateTimeFm(DateUtil.formatDate(followUp.getCreateTime(), "yyyy-MM-dd HH:mm:ss"));
-        userVo.setUpdateTimeFm(DateUtil.formatDate(followUp.getUpdateTime(), "yyyy-MM-dd HH:mm:ss"));
 
         model.addAttribute("user", userVo);
         return "uc/myinfo";

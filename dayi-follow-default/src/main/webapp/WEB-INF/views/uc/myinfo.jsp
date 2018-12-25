@@ -37,21 +37,7 @@
                 </c:if>
             </c:if>
             <div class="col-xs-12 maintop">
-                权限：
-                <c:choose>
-                    <c:when test="${user.userName eq 'admin'}">
-                        超级管理员
-                    </c:when>
-                    <c:when test="${user.isAdmin eq 1}">
-                        管理员
-                    </c:when>
-                    <c:when test="${user.isManager eq 1}">
-                        团队负责人
-                    </c:when>
-                    <c:otherwise>
-                        销售员
-                    </c:otherwise>
-                </c:choose>
+                角色：${user.rolesName}
             </div>
             <div class="col-xs-12 maintop">创建时间：${user.createTimeFm}</div>
             <div class="col-xs-12 maintop">最后修改时间：${user.updateTimeFm}</div>
