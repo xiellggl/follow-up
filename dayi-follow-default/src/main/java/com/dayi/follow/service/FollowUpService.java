@@ -31,7 +31,7 @@ public interface FollowUpService {
     List<String> findIdsByDeptId(String deptId);
 
     //查询全部跟进人
-    Page<FollowUpListVo> findPage(Page page, String deptId, String mobile, String queryDeptId, String inviteCode);
+    Page<FollowUpListVo> findPage(Page<FollowUpListVo> page, String deptId, String mobile, String queryDeptId, String inviteCode);
 
     //查询全部跟进人
     Page<FollowUpListVo> findAssignSelect(Page<FollowUpListVo> page, String followUp, String deptId);
@@ -51,11 +51,13 @@ public interface FollowUpService {
 
     //查询跟进人管理的创客明细列表
     Page<FMDetailListVo> findOrgPage(Page page, SearchVo searchVo, String followId);
+
     //查询跟进人管理的创客明细列表-不分页
     List<FMDetailListVo> findOrgList(SearchVo searchVo, String followId);
 
     //查询跟进人管理的全部创客明细列表
     Page<FMDetailListVo> findAllOrgPage(Page page, SearchVo searchVo, String deptId);
+
     //查询跟进人管理的全部代理商明细列表-不分页
     List<FMDetailListVo> findAllOrgList(SearchVo searchVo, String deptId);
 

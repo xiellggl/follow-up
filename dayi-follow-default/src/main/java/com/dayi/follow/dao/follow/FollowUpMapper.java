@@ -25,25 +25,22 @@ public interface FollowUpMapper extends BaseMapper<FollowUp> {
 
     List<String> findIdsByDeptId(@Param("deptId") String deptId);
 
-    List<FollowUpListVo> findFollowUps(@Param("mobile") String mobile, @Param("followIds") List<String> followIds,
-                                       @Param("inviteCode") String inviteCode, @Param("limitStart") Integer limitStart,
-                                       @Param("limitEnd") Integer limitEnd,@Param("assistDataBase") String assistDataBase);
+    Page<FollowUpListVo> findFollowUps(Page page, @Param("mobile") String mobile, @Param("followIds") List<String> followIds,
+                                       @Param("inviteCode") String inviteCode, @Param("assistDataBase") String assistDataBase);
 
-    int getFollowUpsNum(@Param("mobile") String mobile, @Param("followIds") List<String> followIds, @Param("inviteCode") String inviteCode);
+    Page<FollowUpListVo> findAssignSelect(Page page, @Param("followUp") String followUp, @Param("followIds") List<String> followIds);
 
-    Page<FollowUpListVo> findAssignSelect(Page page,@Param("followUp") String followUp, @Param("followIds") List<String> followIds);
-
-    Page<FMDetailListVo> findAgents(Page page,@Param("searchVo") SearchVo searchVo, @Param("followIds") List<String> followIds,
+    Page<FMDetailListVo> findAgents(Page page, @Param("searchVo") SearchVo searchVo, @Param("followIds") List<String> followIds,
                                     @Param("assistDataBase") String assistDataBase);
 
     List<FMDetailListVo> findAgentList(@Param("searchVo") SearchVo searchVo, @Param("followIds") List<String> followIds,
-                                    @Param("assistDataBase") String assistDataBase);
+                                       @Param("assistDataBase") String assistDataBase);
 
-    Page<FMDetailListVo> findOrgs(Page page,@Param("searchVo") SearchVo searchVo, @Param("followIds") List<String> followIds,
+    Page<FMDetailListVo> findOrgs(Page page, @Param("searchVo") SearchVo searchVo, @Param("followIds") List<String> followIds,
                                   @Param("assistDataBase") String assistDataBase);
 
     List<FMDetailListVo> findOrgList(@Param("searchVo") SearchVo searchVo, @Param("followIds") List<String> followIds,
-                                  @Param("assistDataBase") String assistDataBase);
+                                     @Param("assistDataBase") String assistDataBase);
 
     List<FollowUp> findAll();
 

@@ -69,7 +69,7 @@ public class FollowUpServiceImpl implements FollowUpService {
 
     @Override
     @Log(target = OperateLog.class, action = BaseLog.LogAction.SEARCH, what = "跟进人管理", note = "查询跟进人列表")
-    public Page<FollowUpListVo> findPage(Page page, String deptId, String mobile, String queryDeptId, String inviteCode) {
+    public Page<FollowUpListVo> findPage(Page<FollowUpListVo> page, String deptId, String mobile, String queryDeptId, String inviteCode) {
         List<String> followIds = new ArrayList<String>();
         List<String> subDeptIds;
         if (StringUtils.isBlank(queryDeptId)) subDeptIds = deptService.getSubDeptIds(deptId);
@@ -81,9 +81,9 @@ public class FollowUpServiceImpl implements FollowUpService {
 
         if (followIds.isEmpty()) return page;
 
-        List<FollowUpListVo> followUps = followUpMapper.findFollowUps(mobile, followIds, inviteCode, page.getStartRow(), page.getPageSize(), dayiDataBaseStr);
+        page = followUpMapper.findFollowUps(page, mobile, followIds, inviteCode, dayiDataBaseStr);
 
-        for (FollowUpListVo vo : followUps) {
+        for (FollowUpListVo vo : page.getResults()) {
             List<Organization> orgs = followOrgMapper.findOrgsByfollowId(vo.getId(), null, dayiDataBaseStr);
             vo.setOrgNum(orgs.size());
 
@@ -91,10 +91,6 @@ public class FollowUpServiceImpl implements FollowUpService {
             vo.setOrgFund(orgFund);
         }
 
-        int num = followUpMapper.getFollowUpsNum(mobile, followIds, inviteCode);
-
-        page.setResults(followUps);
-        page.setTotalRecord(num);
         return page;
     }
 
@@ -160,8 +156,14 @@ public class FollowUpServiceImpl implements FollowUpService {
     @Override
     @Log(target = OperateLog.class, action = BaseLog.LogAction.SEARCH, what = "跟进人管理", note = "查询全部代理商明细列表")
     public Page<FMDetailListVo> findAllAgentPage(Page page, SearchVo searchVo, String deptId) {
+        List<String> followIds = new ArrayList<>();
 
-        List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
+        List<String> subDeptIds = deptService.getSubDeptIds(deptId);
+        for (String subDeptId : subDeptIds) {
+            followIds.addAll(followUpMapper.findIdsByDeptId(subDeptId));
+        }
+
+        if (followIds.isEmpty()) return page;
 
         page = followUpMapper.findAgents(page, searchVo, followIds, dayiDataBaseStr);
 

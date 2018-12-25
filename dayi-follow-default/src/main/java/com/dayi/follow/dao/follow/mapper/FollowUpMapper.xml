@@ -39,7 +39,7 @@
     </select>
 
     <select id="findFollowUps" resultType="com.dayi.follow.vo.followup.FollowUpListVo" parameterType="map">
-        SELECT a.id,a.name,a.invite_code,e.name deptName,a.user_name,e.name,a.disable,count(DISTINCT c.id)agentNum,sum(d.amount)agentFund,a.create_time
+        SELECT a.id,a.name,a.invite_code,e.name deptName,a.user_name,a.disable,count(DISTINCT c.id)agentNum,sum(d.amount)agentFund,a.create_time
         from follow_up a
         left join (
             select follow_id,agent_id from follow_agent
@@ -66,7 +66,6 @@
             and a.invite_code =#{inviteCode}
         </if>
         GROUP BY a.id
-        limit #{limitStart},#{limitEnd}
     </select>
 
     <select id="getFollowUpsNum" resultType="java.lang.Integer">

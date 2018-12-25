@@ -55,16 +55,14 @@ public class FollowupController extends BaseController {
 
         page = followUpService.findPage(page, currVo.getDeptId(), mobile, queryDeptId, inviteCode);
 
-        Department department = deptService.get(currVo.getDeptId());
-
-        List<Department> deptList = deptService.getDeptTree(department);
+        List<Department> deptList = deptService.getDeptTree(null);
 
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
         model.addAttribute("pageUrl", pageUrl);
         model.addAttribute("page", page);
         model.addAttribute("deptList", deptList);  // 所属部门下拉选择数据
         model.addAttribute("queryDeptId", queryDeptId);  // 查询条件 -- 所属部门
-        return "manage/followuper/list";
+        return "followup/list";
     }
 
 
