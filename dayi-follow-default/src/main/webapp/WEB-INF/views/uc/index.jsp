@@ -34,7 +34,7 @@
         <c:set var="personalOrgPermission" value="true" />
     </c:if>
 
-    <c:if test="${item.url eq '/index/sale/tean/daily'}">
+    <c:if test="${item.url eq '/index/sale/team/daily'}">
         <c:set var="saleTeamDailyPermission" value="true" />
     </c:if>
 

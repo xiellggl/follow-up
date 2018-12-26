@@ -31,9 +31,6 @@
                             跟进人管理
                         </small>
                     </h1>
-                    <a href="#" class="pull-right" data-toggle="modal" data-target="#myModalEditFollowuper">
-                        <span class="btn btn-xs btn-danger">新增跟进人</span>
-                    </a>
                 </div>
                 <div class="row">
                     <form class="form-horizontal" style="max-width: 1000px;">

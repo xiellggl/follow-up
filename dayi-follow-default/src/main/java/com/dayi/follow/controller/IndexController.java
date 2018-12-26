@@ -51,6 +51,7 @@ public class IndexController {
     }
 
     @RequestMapping("sale/team/daily")
+    @ResponseBody
     public BizResult saleTeamDaily(HttpServletRequest request) {//销售团队日报
         LoginVo currVo = userComponent.getCurrUser(request);
         if (currVo == null) {

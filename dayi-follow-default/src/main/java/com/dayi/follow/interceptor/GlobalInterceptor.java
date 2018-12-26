@@ -27,40 +27,8 @@ import java.util.List;
 public class GlobalInterceptor implements HandlerInterceptor {
     private static Logger logger = Logger.getLogger(GlobalInterceptor.class);
 
-    @Resource
-    UserService userService;
-
-    @Resource
-    PermissionService permissionService;
-
-    @Resource
-    RoleService roleService;
-
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String requestURI = request.getRequestURI();
-        request.getSession().setAttribute("requestURI", requestURI);
-
-        AccountInfo accountInfo = AuthorizationManager.getCurrentLoginUser(request);
-        if (accountInfo == null) {
-            response.sendRedirect("/user/login");
-            return false;
-        }
-
-        String userId = accountInfo.getUserId();
-
-        FollowUp user = userService.get(userId);
-        request.getSession().setAttribute("name", user.getName());
-
-        //获取权限列表
-        List<Permission> permissions = new ArrayList<>();
-        List<Role> roles = roleService.queryRolesByIds(user.getRoleids());
-        for (Role role : roles) {
-            List<Permission> permissionList = permissionService.getPermissionsByRoleId(role.getId());
-            permissions.addAll(permissionList);
-        }
-        request.getSession().setAttribute("permissions", permissions);
-
         return true;
     }
 

@@ -74,8 +74,9 @@ public class FollowupController extends BaseController {
 
         page = followUpService.findAgentPage(page, searchVo, followId);
 
+        String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
         model.addAttribute("page", page);
-
+        model.addAttribute("pageUrl", pageUrl);
         return "manage/followuper/query_agent";
     }
 
@@ -89,8 +90,9 @@ public class FollowupController extends BaseController {
 
         page = followUpService.findAllAgentPage(page, searchVo, currVo.getDeptId());
 
+        String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
         model.addAttribute("page", page);
-
+        model.addAttribute("pageUrl", pageUrl);
         return "manage/followuper/query_agent";
     }
 
@@ -103,8 +105,9 @@ public class FollowupController extends BaseController {
 
         page = followUpService.findOrgPage(page, searchVo, followId);
 
+        String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
         model.addAttribute("page", page);
-
+        model.addAttribute("pageUrl", pageUrl);
         return "manage/followuper/query_maker";
     }
 
@@ -117,7 +120,9 @@ public class FollowupController extends BaseController {
 
         page = followUpService.findAllOrgPage(page, searchVo, currVo.getDeptId());
 
+        String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
         model.addAttribute("page", page);
+        model.addAttribute("pageUrl", pageUrl);
         return "manage/followuper/query_maker";
     }
 
