@@ -80,6 +80,7 @@ define(function(require, exports, module) {
         },
         //隐藏金额部分数字
         hideMoney:function (money) {
+            var money = money || 0;
             var r = money.toFixed(2).toString();
             //两位数以下的不处处理
             if(money<100){

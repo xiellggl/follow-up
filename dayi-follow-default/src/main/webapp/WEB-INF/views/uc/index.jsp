@@ -699,7 +699,7 @@ KA团队日报
                             case "sevenIncash":
                                 for(var i=0;i<len;i++){
                                     value.option.xAxis[0].data.push(common.dateFormat(list[i].dateStr,"MM-dd"));
-                                    value.option.series[0].data.push(list[i].inCashFm);
+                                    value.option.series[0].data.push(list[i].inCash);
                                 }
                                 break;
                         }
