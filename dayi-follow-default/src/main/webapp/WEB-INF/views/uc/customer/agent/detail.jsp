@@ -141,27 +141,37 @@
                 </div>
             </div>
 
+            <c:if test="${loginlogAgent or contactAgent}">
             <div class="page-content">
                 <div class="tabbable">
                     <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
-                        <li class="active">
-                            <a data-toggle="tab" href="#profile4" aria-expanded="false">联系记录</a>
-                        </li>
-                        <li class="">
-                            <a data-toggle="tab" href="#home4" aria-expanded="true">登录日志</a>
-                        </li>
+                        <c:if test="${contactAgent}">
+                            <li class="active">
+                                <a data-toggle="tab" href="#profile4" aria-expanded="false">联系记录</a>
+                            </li>
+                        </c:if>
+                        <c:if test="${loginlogAgent}">
+                            <li ${!contactAgent ? 'class="active"' : ''} >
+                                <a data-toggle="tab" href="#home4" aria-expanded="true">登录日志</a>
+                            </li>
+                        </c:if>
                     </ul>
 
                     <div class="tab-content">
+                        <c:if test="${contactAgent}">
                         <div id="profile4" class="tab-pane active">
                             <div id="conList"></div>
                         </div>
-                        <div id="home4" class="tab-pane">
+                        </c:if>
+                        <c:if test="${loginlogAgent}">
+                        <div id="home4" class="tab-pane ${!contactAgent ? 'active' : ''}">
                             <div id="logList"></div>
                         </div>
+                        </c:if>
                     </div>
                 </div>
             </div>
+            </c:if>
 
         </div>
     </div>
@@ -180,17 +190,12 @@
             common.clickPageFn(log_url, null, $logList);
         </c:if>
 
-
-
         <c:if test="${contactAgent}">
             var $conList = $("#conList");
             var con_url = "/agent/contact?agentId=" + agentId;
-            //common.loadPageHTML(con_url, null,$conList);
-            //common.clickPageFn(con_url, null, $conList);
+            common.loadPageHTML(con_url, null,$conList);
+            common.clickPageFn(con_url, null, $conList);
         </c:if>
-
-
-
 
         var $formEdit = $("#formEdit");
         var $list = $("#list");
