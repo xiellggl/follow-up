@@ -1,5 +1,13 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@include file="/inc/followup/taglib.jsp"%>
+<%--权限判断--%>
+<c:set var="TeamDetailMaker" value="false" />
+<c:forEach items="${permissions}" var="item">
+    <%--查看团队创客联系记录--%>
+    <c:if test="${item.url eq '/team/org/contact'}">
+        <c:set var="TeamDetailMaker" value="true" />
+    </c:if>
+</c:forEach>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -28,6 +36,8 @@
                     <li class="active">联系记录</li>
                 </ul><!-- /.breadcrumb -->
             </div>
+            <%--查看团队创客联系记录--%>
+            <c:if test="${TeamDetailMaker}">
             <div class="page-content">
                 <div class="row">
                     <div class="col-xs-12">
@@ -74,6 +84,7 @@
                     </div>
                 </div>
             </div>
+            </c:if>
         </div>
     </div>
 </div>
