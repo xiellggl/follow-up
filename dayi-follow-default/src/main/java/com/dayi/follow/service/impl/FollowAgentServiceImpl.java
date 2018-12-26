@@ -188,6 +188,7 @@ public class FollowAgentServiceImpl implements FollowAgentService {
 
     @Override
     public Page findContacts(Page page, Integer agentId) {
+        if (agentId == null) return page;
         return followAgentMapper.findContacts(page, agentId);
     }
 

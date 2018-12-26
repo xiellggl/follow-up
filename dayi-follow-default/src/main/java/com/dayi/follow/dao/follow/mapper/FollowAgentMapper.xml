@@ -319,7 +319,7 @@
     </select>
 
     <select id="findContacts" resultType="com.dayi.follow.vo.agent.AgentContactVo" parameterType="java.lang.Integer" >
-        SELECT * FROM `agent_contact` WHERE agent_id = #{agentId} order by create_time desc LIMIT #{limitStart},#{limitEnd}
+        SELECT * FROM `agent_contact` WHERE agent_id = #{agentId} order by create_time desc
     </select>
 
     <select id="getAssignDate" parameterType="java.lang.Integer" resultType="java.util.Date">
