@@ -1,5 +1,28 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@include file="/inc/followup/taglib.jsp"%>
+<%--权限判断--%>
+<c:set var="addContactAgent" value="false" />
+<c:set var="DetailAgent" value="false" />
+<c:set var="ContactAgent" value="false" />
+<c:set var="LoginlogAgent" value="false" />
+<c:forEach items="${permissions}" var="item">
+    <%--添加代理商联系记录--%>
+    <c:if test="${item.url eq '/agent/contact/add**'}">
+        <c:set var="addContactAgent" value="true" />
+    </c:if>
+    <%--查看代理商详情--%>
+    <c:if test="${item.url eq '/agent/detail'}">
+        <c:set var="DetailAgent" value="true" />
+    </c:if>
+    <%--查看代理商联系记录--%>
+    <c:if test="${item.url eq '/agent/contact'}">
+        <c:set var="ContactAgent" value="true" />
+    </c:if>
+    <%--查看代理商登录日志--%>
+    <c:if test="${item.url eq '/agent/loginlog'}">
+        <c:set var="LoginlogAgent" value="true" />
+    </c:if>
+</c:forEach>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
