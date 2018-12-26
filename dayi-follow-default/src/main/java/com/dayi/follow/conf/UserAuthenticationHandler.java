@@ -36,12 +36,12 @@ public class UserAuthenticationHandler implements AuthenticationHandler {
 
     @Override
     public boolean handlerAuthorized(HttpServletRequest request, HttpServletResponse response, AuthorizationManager.AuthorizedResult authorizedResult) {
-        if(isAjax(request) && !Misc.isEmpty(request.getParameter("power"))){
+        if (isAjax(request) && !Misc.isEmpty(request.getParameter("power"))) {
             try {
                 response.setContentType("text/html; charset=utf-8");
                 response.getWriter().write("{\"status\" : \"200\", \"succ\" : true, \"msg\" :\"授权认证通过\"}");
                 response.getWriter().flush();
-            }catch (IOException e){
+            } catch (IOException e) {
 
             }
             return false;
@@ -51,39 +51,39 @@ public class UserAuthenticationHandler implements AuthenticationHandler {
 
     @Override
     public boolean handlerAuthenticated(HttpServletRequest request, HttpServletResponse response, AuthorizationManager.AuthorizedResult authorizedResult) {
-        //String unAuthorizedUrl = userService.getUnAuthorizedUrl(null);//登陆通过，没有权限
-        try {
-          //  response.sendRedirect(unAuthorizedUrl);
-            String message="未分配权限";
-            response.setContentType("text/html; charset=utf-8");
-            response.getWriter().write("{\"status\" : \"403\", \"msg\" :\""+ message+"\"}");
-            response.getWriter().flush();
-        } catch (IOException e) {
+        String unAuthorizedUrl = userService.getUnAuthorizedUrl(null);//登陆通过，没有权限
+        String message = "未分配权限";
+        if (isAjax(request)) {
+            try {
+                response.setContentType("text/html; charset=utf-8");
+                response.getWriter().write("{\"status\" : \"403\", \"msg\" :\"" + message + "\"}");
+                response.getWriter().flush();
+            } catch (IOException e) {
+            }
+        } else {
+            try {
+                response.sendRedirect(unAuthorizedUrl + "?errmsg=" + java.net.URLEncoder.encode(message, "UTF-8"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return false;
     }
 
     @Override
     public boolean handlerUnAuthenticated(HttpServletRequest request, HttpServletResponse response, AuthorizationManager.AuthorizedResult authorizedResult) {
-        //String unAuthenticatedUrl = userService.getUnAuthenticatedUrl(null);
-        String message="登录超时";
-        if(isAjax(request)){
+        String unAuthenticatedUrl = userService.getUnAuthenticatedUrl(null);
+        String message = "登录超时";
+        if (isAjax(request)) {
             try {
-                // response.sendRedirect(unAuthenticatedUrl);
                 response.setContentType("text/html; charset=utf-8");
-                response.getWriter().write("{\"status\" : \"300\", \"succ\" : true, \"msg\" :\""+ message+"\"}");
+                response.getWriter().write("{\"status\" : \"300\", \"succ\" : true, \"msg\" :\"" + message + "\"}");
                 response.getWriter().flush();
             } catch (IOException e) {
             }
-        }else {
+        } else {
             try {
-                String path = request.getContextPath();
-                String basePath = request.getScheme()+"://"+request.getServerName();
-                if(request.getServerPort() != 80){
-                    basePath = basePath+":"+request.getServerPort();
-                }
-                basePath = basePath+path;
-                response.sendRedirect(basePath + "/user/login" + "?errmsg=" + java.net.URLEncoder.encode(message, "UTF-8"));
+                response.sendRedirect(unAuthenticatedUrl + "?errmsg=" + java.net.URLEncoder.encode(message, "UTF-8"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -96,15 +96,17 @@ public class UserAuthenticationHandler implements AuthenticationHandler {
     public boolean handlerUnInitialization(HttpServletRequest request, HttpServletResponse response, AuthorizationManager.AuthorizedResult authorizedResult) {
         return false;
     }
+
     /**
      * 判断异步请求
+     *
      * @param request HttpServletRequest
      * @return bool
      */
-    private boolean isAjax(HttpServletRequest request){
+    private boolean isAjax(HttpServletRequest request) {
         String xrw = request.getHeader("X-Requested-With");
         String ajax = request.getParameter("ajax");
-        return Misc.eq(xrw,"XMLHttpRequest") || !Misc.isEmpty(ajax);
+        return Misc.eq(xrw, "XMLHttpRequest") || !Misc.isEmpty(ajax);
     }
 
 }
