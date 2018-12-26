@@ -34,11 +34,6 @@ public class IndexController {
     @Resource
     DeptService deptService;
 
-    @RequestMapping("")
-    public String index(HttpServletRequest request) {
-        return "uc/index";
-    }
-
     @RequestMapping("sale/personal/daily")
     @ResponseBody
     public BizResult salePersonalDaily(HttpServletRequest request) {//销售个人日报

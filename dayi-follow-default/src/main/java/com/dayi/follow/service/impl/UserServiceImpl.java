@@ -392,34 +392,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Log(target = OperateLog.class, action = BaseLog.LogAction.ADD, what = "登录管理", note = "用户登录")
-    public BizResult login(HttpServletRequest request, LoginVo loginVo, String goTo) {
-        boolean b = AuthorizationManager.login(request, new UsernamePasswordToken(loginVo.getUsername(), loginVo.getPassword(), IPUtil.getIp(request)));
-        if (!b) return BizResult.fail("账号密码错误！");
-
-        LoginVo currVo = userComponent.getCurrUser(request);
-        if (currVo == null) return BizResult.fail("登录失败！");
-        if (currVo.getDisable() != MemberStatusEnum.ENABLE.getValue()) return BizResult.fail("账号已被禁用！");
-
-        String goToUrl;
-        if (StringUtils.isNotBlank(goTo)) {//跳转
-            goToUrl = goTo;
-        } else {
-            goToUrl = "/index";
-        }
-
-        // 查询权限信息
-        FollowUp flowUp = userMapper.getByUserName(StringUtils.trim(loginVo.getUsername()));
-        List<Role> roles = roleService.queryRolesByIds(flowUp.getRoleids());
-        List<String> permissions = new ArrayList<>(5);
-        for (RoleBase<String> role : roles) {
-            List<Permission> permissionList = permissionService.getPermissionsByRoleId(role.getId());
-            for (Permission permission : permissionList) {
-                permissions.add(permission.getUrl());
-            }
-        }
-        request.getSession().setAttribute("permissions", permissions);
-
-        return BizResult.succ(goToUrl, "登录成功！");
+    public BizResult login(LoginVo loginVo) {
+        FollowUp user = userMapper.getByUserName(loginVo.getUsername());
+        if (user == null) return BizResult.fail("用户不存在！");
+        if (user.getDisable() != MemberStatusEnum.ENABLE.getValue()) return BizResult.fail("账号已被禁用！");
+        return BizResult.SUCCESS;
     }
 
     @Override

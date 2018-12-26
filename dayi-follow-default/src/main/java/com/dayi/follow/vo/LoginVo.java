@@ -13,7 +13,14 @@ public class LoginVo {
     //手机app登录的 TOKEN
     private String token;
 
-
+    private String id;
+    private String name;
+    private String mobile;
+    private String cookie;
+    private Integer disable;
+    private String deptId;     // 所属部门ID
+    private String deptName;     // 所属部门名称
+    private String date;//日期
 
     public String getUsername() {
         return username;
@@ -54,19 +61,6 @@ public class LoginVo {
     public void setToken(String token) {
         this.token = token;
     }
-
-    //--------------------------------------------------------
-    private String id;
-    private String name;
-    private String mobile;
-    private String cookie;
-    private Integer disable;
-    private String deptId;     // 所属部门ID
-    private String deptName;     // 所属部门名称
-    private Integer isManager;  // 是否负责人：0--否；1--是
-    private Integer isAdmin;    // 是否管理员：0--否；1--是
-    private String chargeDeptId;//负责部门ID
-    private String date;//日期
 
     public String getId() {
         return id;
@@ -122,30 +116,6 @@ public class LoginVo {
 
     public void setDeptName(String deptName) {
         this.deptName = deptName;
-    }
-
-    public Integer getIsManager() {
-        return isManager;
-    }
-
-    public void setIsManager(Integer isManager) {
-        this.isManager = isManager;
-    }
-
-    public Integer getIsAdmin() {
-        return isAdmin;
-    }
-
-    public void setIsAdmin(Integer isAdmin) {
-        this.isAdmin = isAdmin;
-    }
-
-    public String getChargeDeptId() {
-        return chargeDeptId;
-    }
-
-    public void setChargeDeptId(String chargeDeptId) {
-        this.chargeDeptId = chargeDeptId;
     }
 
     public String getDate() {

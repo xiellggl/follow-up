@@ -10,6 +10,7 @@ import com.dayi.follow.service.RoleService;
 import com.dayi.follow.service.UserService;
 import com.dayi.user.authorization.AuthorizationManager;
 import com.dayi.user.authorization.authc.AccountInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -47,25 +48,13 @@ public class GlobalFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
+        String goTo = request.getParameter("goTo");
+        if (StringUtils.isBlank(goTo)) goTo = "/index";
+        request.setAttribute("goTo", goTo);
+
         String requestURI = request.getRequestURI();
 
-        request.getSession().setAttribute("requestURI", requestURI);
-
-        AccountInfo accountInfo = AuthorizationManager.getCurrentLoginUser(request);
-        if (accountInfo != null) {
-            String userId = accountInfo.getUserId();
-            FollowUp user = userService.get(userId);
-            request.getSession().setAttribute("name", user.getName());
-
-            //获取权限列表
-            List<Permission> permissions = new ArrayList<>();
-            List<Role> roles = roleService.queryRolesByIds(user.getRoleids());
-            for (Role role : roles) {
-                List<Permission> permissionList = permissionService.getPermissionsByRoleId(role.getId());
-                permissions.addAll(permissionList);
-            }
-            request.getSession().setAttribute("permissions", permissions);
-        }
+        request.setAttribute("requestURI", requestURI);
 
         filterChain.doFilter(request, response);
     }

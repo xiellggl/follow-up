@@ -24,17 +24,16 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("frame");
+        registry.addViewController("/index").setViewName("/uc/index");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
         super.addViewControllers(registry);
     }
 
-//    @Override
-//    public void addInterceptors(InterceptorRegistry registry) {
-//        String[] excludes = new String[]{"/user/login/**", "/user/loginout"};
-//        registry.addInterceptor(loginInterceptor).addPathPatterns("/**").excludePathPatterns(excludes);
-//        super.addInterceptors(registry);
-//    }
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(loginInterceptor).addPathPatterns("/user/login/post");
+        super.addInterceptors(registry);
+    }
 
 //    @Override
 //    public void addResourceHandlers(ResourceHandlerRegistry registry) {

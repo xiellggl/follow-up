@@ -100,7 +100,7 @@
                     succback: function (data) {
                         $form[0].reset();
                         common.successMsg(data.msg, function () {
-                            window.location.href = data.result;
+                            window.location.href = "${goTo}";
                         });
                     }
                 });

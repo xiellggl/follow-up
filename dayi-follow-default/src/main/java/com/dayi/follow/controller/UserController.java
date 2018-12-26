@@ -73,16 +73,9 @@ public class UserController extends BaseController {
 
     private static Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    /**
-     * 登录表单页面
-     *
-     * @param request
-     * @param goTo
-     * @return
-     */
+
     @RequestMapping(value = "/login")
-    public String login(HttpServletRequest request, String goTo) {
-        request.setAttribute("goTo", goTo);
+    public String login(HttpServletRequest request) {
         return "login";
     }
 
@@ -92,12 +85,14 @@ public class UserController extends BaseController {
      */
     @RequestMapping("/login/post")
     @ResponseBody
-    public BizResult login(HttpServletRequest request, @Valid @ModelAttribute("loginVo") LoginVo loginVo, String goTo, BindingResult result) {
+    public BizResult login(HttpServletRequest request, @Valid @ModelAttribute("loginVo") LoginVo loginVo, BindingResult result) {
         BizResult bizResult = checkErrors(result);
         if (!bizResult.isSucc()) {
             return bizResult;//参数传入错误
         } else {
-            return userService.login(request, loginVo, goTo);
+            boolean b = AuthorizationManager.login(request, new UsernamePasswordToken(loginVo.getUsername(), loginVo.getPassword(), IPUtil.getIp(request)));
+            if (b) return userService.login(loginVo);
+            else return BizResult.fail("账号密码错误！");
         }
     }
 

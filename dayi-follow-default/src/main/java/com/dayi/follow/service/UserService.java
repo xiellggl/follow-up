@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * 跟进人 业务接口类
  */
-public interface UserService extends Realm{
+public interface UserService extends Realm {
 
     /**
      * 添加用户
@@ -53,7 +53,7 @@ public interface UserService extends Realm{
     BizResult editPwd(String id, String oldPwd, String newPwd, String confirmPwd);
 
     //查询全部用户
-    Page<UserVo> findPage(Page<UserVo>page, String mobile, String queryDeptId, String inviteCode);
+    Page<UserVo> findPage(Page<UserVo> page, String mobile, String queryDeptId, String inviteCode);
 
     //重置密码
     BizResult resetPwd(FollowUp followUp, String newPwd);
@@ -77,7 +77,8 @@ public interface UserService extends Realm{
     void doUpdatePerson(Department oldDept, String newId);
 
     //登录
-    BizResult login(HttpServletRequest request, LoginVo loginVo, String goTo);
+    BizResult login(LoginVo loginVo);
+
     //登出
     void loginOut(HttpServletRequest request, HttpServletResponse response);
 
