@@ -2,9 +2,9 @@
 <%@include file="/inc/followup/taglib.jsp"%>
 <%--权限判断--%>
 <c:set var="addContactAgent" value="false" />
-<c:set var="DetailAgent" value="false" />
-<c:set var="ContactAgent" value="false" />
-<c:set var="LoginlogAgent" value="false" />
+<c:set var="detailAgent" value="false" />
+<c:set var="contactAgent" value="false" />
+<c:set var="loginlogAgent" value="false" />
 <c:forEach items="${permissions}" var="item">
     <%--添加代理商联系记录--%>
     <c:if test="${item.url eq '/agent/contact/add**'}">
@@ -12,15 +12,15 @@
     </c:if>
     <%--查看代理商详情--%>
     <c:if test="${item.url eq '/agent/detail'}">
-        <c:set var="DetailAgent" value="true" />
+        <c:set var="detailAgent" value="true" />
     </c:if>
     <%--查看代理商联系记录--%>
     <c:if test="${item.url eq '/agent/contact'}">
-        <c:set var="ContactAgent" value="true" />
+        <c:set var="contactAgent" value="true" />
     </c:if>
     <%--查看代理商登录日志--%>
     <c:if test="${item.url eq '/agent/loginlog'}">
-        <c:set var="LoginlogAgent" value="true" />
+        <c:set var="loginlogAgent" value="true" />
     </c:if>
 </c:forEach>
 <!DOCTYPE html>
@@ -144,27 +144,21 @@
             <div class="page-content">
                 <div class="tabbable">
                     <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
-
                         <li class="active">
                             <a data-toggle="tab" href="#profile4" aria-expanded="false">联系记录</a>
                         </li>
-
                         <li class="">
                             <a data-toggle="tab" href="#home4" aria-expanded="true">登录日志</a>
                         </li>
-
                     </ul>
 
                     <div class="tab-content">
-
                         <div id="profile4" class="tab-pane active">
                             <div id="conList"></div>
                         </div>
-
                         <div id="home4" class="tab-pane">
                             <div id="logList"></div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -179,17 +173,22 @@
         var agentId = ${param.agentId};
         common.head();
 
-        var $logList = $("#logList");
-        var log_url = "/agent/loginlog?agentId=" + agentId;
-        common.loadPageHTML(log_url, null,$logList);
-        common.clickPageFn(log_url, null, $logList);
+        <c:if test="${loginlogAgent}">
+            var $logList = $("#logList");
+            var log_url = "/agent/loginlog?agentId=" + agentId;
+            common.loadPageHTML(log_url, null,$logList);
+            common.clickPageFn(log_url, null, $logList);
+        </c:if>
 
 
 
-        var $conList = $("#conList");
-        var con_url = "/agent/contact?agentId=" + agentId;
-        common.loadPageHTML(con_url, null,$conList);
-        common.clickPageFn(con_url, null, $conList);
+        <c:if test="${contactAgent}">
+            var $conList = $("#conList");
+            var con_url = "/agent/contact?agentId=" + agentId;
+            //common.loadPageHTML(con_url, null,$conList);
+            //common.clickPageFn(con_url, null, $conList);
+        </c:if>
+
 
 
 
