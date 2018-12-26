@@ -51,6 +51,22 @@ public class GlobalFilter implements Filter {
 
         request.getSession().setAttribute("requestURI", requestURI);
 
+        AccountInfo accountInfo = AuthorizationManager.getCurrentLoginUser(request);
+        if (accountInfo != null) {
+            String userId = accountInfo.getUserId();
+            FollowUp user = userService.get(userId);
+            request.getSession().setAttribute("name", user.getName());
+
+            //获取权限列表
+            List<Permission> permissions = new ArrayList<>();
+            List<Role> roles = roleService.queryRolesByIds(user.getRoleids());
+            for (Role role : roles) {
+                List<Permission> permissionList = permissionService.getPermissionsByRoleId(role.getId());
+                permissions.addAll(permissionList);
+            }
+            request.getSession().setAttribute("permissions", permissions);
+        }
+
         filterChain.doFilter(request, response);
     }
 
