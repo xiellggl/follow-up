@@ -115,8 +115,8 @@
                             <tbody>
                             <c:if test="${empty page.results}">
                                 <tr>
-                                    <td colspan="12" class="no_data">暂无跟进人， 请<a href="#" data-toggle="modal"
-                                                                                data-target="#myModalEditFollowuper">新增跟进人</a>
+                                    <td colspan="12" class="no_data">暂无跟进人， 请新增跟进人
+                                        <%--<a href="#" data-toggle="modal" data-target="#myModalEditFollowuper">新增跟进人</a>--%>
                                     </td>
                                 </tr>
                             </c:if>
