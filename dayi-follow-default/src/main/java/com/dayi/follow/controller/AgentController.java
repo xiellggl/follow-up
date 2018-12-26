@@ -111,7 +111,7 @@ public class AgentController extends BaseController{
         model.addAttribute("contactTypes", ContactTypeEnum.values());//联系方式
         model.addAttribute("customerIntentionTypes", AgentIntenTypeEnum.values());//客户意向度
         model.addAttribute("returnUrl", returnUrl);//返回代理商进来列表的路径
-        return "uc/customer/agent/detail";
+        return "/uc/customer/agent/detail";
     }
 
     /**
@@ -140,7 +140,7 @@ public class AgentController extends BaseController{
 
         model.addAttribute("page", page);//登录日志
         model.addAttribute("pageUrl", pageUrl);
-        return "/followup/uc/customer/login_list";
+        return "/uc/customer/login_list";
     }
 
     /**
@@ -172,7 +172,7 @@ public class AgentController extends BaseController{
         model.addAttribute("page", page);//联系时间取createDate
         model.addAttribute("returnUrl", returnUrl);//返回代理商进来列表的路径
         request.setAttribute("pageUrl", pageUrl);
-        return "/followup/uc/customer/contact_list";
+        return "/uc/customer/contact_list";
     }
 
     /**

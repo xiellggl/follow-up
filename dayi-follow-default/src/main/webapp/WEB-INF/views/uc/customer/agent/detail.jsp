@@ -54,16 +54,12 @@
                 </ul><!-- /.breadcrumb -->
             </div>
 
-            <%--查看代理商详情--%>
-            <c:if test="${DetailAgent}">
             <div class="page-content">
                 <c:set var="pageType" value="my" />
                 <%@include file="../agent_detail_inc.jsp"%>
             </div>
-            </c:if>
 
-            <%--添加代理商联系记录--%>
-            <c:if test="${addContactAgent}">
+
             <div class="page-content" >
                 <div class="row">
                     <div class="col-xs-12">
@@ -99,10 +95,7 @@
                                     <div class="col-xs-12 col-sm-6">
                                         <select name="customerType" class="width-100">
                                             <c:forEach items="${customerTypes}" var="item">
-                                                <option
-                                                    value="${item.value > 1 ? item.value : ''}" ${item.value eq 1 ? 'disabled' : ''}
-                                                    <c:if
-                                                        test="${detailVo.customerType eq item.value}"> style="color:red;" selected</c:if>>${item.name}</option>
+                                                <option value="${item.value > 1 ? item.value : ''}" ${item.value eq 1 ? 'disabled' : ''} >${item.name}</option>
                                             </c:forEach>
                                         </select>
                                     </div>
@@ -114,19 +107,8 @@
                                     <label class="col-sm-4 control-label no-padding-right">客户意向度： </label>
                                     <div class="col-xs-12 col-sm-6">
                                         <select name="customerIntentionType" class="width-100">
-                                            <c:if test="${empty detailVo.customerIntentionType}">
-                                                <option value="" disabled selected></option>
-                                            </c:if>
                                             <c:forEach items="${customerIntentionTypes}" var="item">
-                                                <c:choose>
-                                                    <c:when test="${detailVo.customerIntentionType eq item.value}"><%--这里拿不到agentVo，先用1测试--%>
-                                                        <option value="${item.value}"
-                                                                style="color: red" selected >${item.name}</option>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <option value="${item.value}">${item.name}</option>
-                                                    </c:otherwise>
-                                                </c:choose>
+                                                <option value="${item.value}">${item.name}</option>
                                             </c:forEach>
                                         </select>
                                     </div>
@@ -158,41 +140,30 @@
                     </div>
                 </div>
             </div>
-            </c:if>
 
             <div class="page-content">
                 <div class="tabbable">
                     <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
 
-                        <%--查看代理商联系记录--%>
-                        <c:if test="${ContactAgent}">
                         <li class="active">
                             <a data-toggle="tab" href="#profile4" aria-expanded="false">联系记录</a>
                         </li>
-                        </c:if>
-                        <%--查看代理商登录日志--%>
-                        <c:if test="${LoginlogAgent}">
+
                         <li class="">
                             <a data-toggle="tab" href="#home4" aria-expanded="true">登录日志</a>
                         </li>
-                        </c:if>
 
                     </ul>
 
                     <div class="tab-content">
 
-                        <%--查看代理商联系记录--%>
-                        <c:if test="${ContactAgent}">
                         <div id="profile4" class="tab-pane active">
                             <div id="conList"></div>
                         </div>
-                        </c:if>
-                        <%--查看代理商登录日志--%>
-                        <c:if test="${LoginlogAgent}">
+
                         <div id="home4" class="tab-pane">
                             <div id="logList"></div>
                         </div>
-                        </c:if>
 
                     </div>
                 </div>
