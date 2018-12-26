@@ -34,7 +34,7 @@
         <c:set var="personalOrgPermission" value="true" />
     </c:if>
 
-    <c:if test="${item.url eq '/index/sale/tean/daily'}">
+    <c:if test="${item.url eq '/index/sale/team/daily'}">
         <c:set var="saleTeamDailyPermission" value="true" />
     </c:if>
 
@@ -175,9 +175,9 @@ KA团队日报
 <script type="text/html" id="tplDailyItem">
     <h4 class="header smaller lighter clearfix">
         <span class="pull-left">{{deptName}}（{{date}}）</span>
-        <a href="/followup/manage/log/daily/detail?did={{deptId}}&date={{date}}" class="pull-right" style="font-size: 14px;">
+        <%--<a href="/followup/manage/log/daily/detail?did={{deptId}}&date={{date}}" class="pull-right" style="font-size: 14px;">
             <i class="ace-icon fa fa-external-link"></i> 查看详情
-        </a>
+        </a>--%>
     </h4>
     <div class="row">
         <div class="col-sm-4">
