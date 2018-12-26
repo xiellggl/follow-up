@@ -131,6 +131,9 @@ public class CountServiceImpl implements CountService {
 
         //跟进用户总数
         List<String> followIds = followUpMapper.findIdsByDeptIds(deptIds);
+
+        if (followIds.isEmpty()) return serCusStatusVo;
+
         agentNum = countMapper.getFollowAgentNum(followIds, followDataBaseStr);
         orgNum = countMapper.getFollowOrgNum(followIds, followDataBaseStr);
         serCusStatusVo.setFollowCusNum(agentNum + orgNum);
