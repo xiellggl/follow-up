@@ -72,13 +72,13 @@
         var $pageListPanel = $myModal.find(".selectlistbox");
         var ids = null;
         var select_data = null;
-        var url_selectlist = "/followup/manage/followuper/assign/select";
+        var url_selectlist = "/team/agent/followup/select";
 
         //分配跟进人
         $('[data-act="assign"]').on("click", function () {
             var $this = $(this);
             var flowId = $(this).data("flowid");
-            var url_from = "/followup/manage/followuper/assign/select"+"?flowId="+flowId;;
+            var url_from = "/team/agent/followup/select"+"?followId="+flowId;;
 
             if ($this.hasClass("all")) {
                 //批量操作
@@ -110,7 +110,7 @@
         $myModal.on("click", '[data-act="check"]', function () {
             var id = $(this).data("id");
             common.ajax.handle({
-                url: "/followup/manage/followuper/assign/agent/save.json",
+                url: "/agent/assign/save/batch.json",
                 data: {flowId:id,ids: ids},
                 succback: function (data) {
                     $myModal.modal("hide");
