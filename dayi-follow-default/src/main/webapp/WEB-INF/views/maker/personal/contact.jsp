@@ -183,7 +183,7 @@
             },
             submitHandler: function (form) {
                 common.ajax.handle({
-                    url: "/followup/uc/customer/maker/contact/add.json",
+                    url: "/org/contact/add/.json",
                     data: $formEdit.serialize(),
                     succback:function (data) {
                         $formEdit[0].reset();
