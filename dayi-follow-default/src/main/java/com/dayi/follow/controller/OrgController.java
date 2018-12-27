@@ -101,27 +101,6 @@ public class OrgController extends BaseController {
     }
 
     /**
-     * 返回添加创客联系记录所需数据
-     *
-     * @param request
-     * @return
-     */
-    @RequestMapping("/contact/add")
-    public String contactAdd(HttpServletRequest request, Model model) {
-        LoginVo currVo = userComponent.getCurrUser(request);
-
-        Integer orgId = Misc.toInt(request.getParameter("orgId"), 0);// 创客人ID
-
-        String followId = followOrgService.getFollowIdByOrgId(orgId);
-
-        if (currVo.getId() == followId) {
-            return "";//成功路径
-        } else {
-            return "redirect:/index";
-        }
-    }
-
-    /**
      * 添加创客联系记录
      *
      * @param request

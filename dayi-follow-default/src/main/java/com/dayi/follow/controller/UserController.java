@@ -205,20 +205,6 @@ public class UserController extends BaseController {
         return BizResult.succ(followUp, "操作成功！");
     }
 
-
-    /**
-     * 修改 -- 保存 -- 用户
-     */
-    @RequestMapping("/add")
-    public String updateSave(HttpServletRequest request, Model model) {
-        List<Department> deptTree = deptService.getDeptTree(null);
-        model.addAttribute("deptList", deptTree);  // 上级部门下拉选择数据
-        return "";
-
-
-    }
-
-
     /**
      * 禁用 -- 用户
      */
