@@ -64,7 +64,7 @@ public class OrgController extends BaseController {
         request.setAttribute("pageUrl", pageUrl);
         model.addAttribute("page", page);
         model.addAttribute("orgTypes", OrgTypeEnum.values());//机构商类型
-        return "uc/customer/maker/list";
+        return "/maker/personal/list";
     }
 
     /**
@@ -97,7 +97,7 @@ public class OrgController extends BaseController {
         model.addAttribute("returnUrl", returnUrl);//返回创客进来列表的路径
         model.addAttribute("contactTypes", ContactTypeEnum.values());//联系方式
         request.setAttribute("pageUrl", pageUrl);
-        return "uc/customer/maker/contact";
+        return "/maker/personal/contact";
     }
 
     /**

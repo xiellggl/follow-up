@@ -99,8 +99,9 @@
 <script charset="UTF-8" src="/static/public/daterangepicker3/moment.min.js"></script>
 <script>
     seajs.use(["common", "template", "validate", "addMethod","daterangepicker"], function (common, template) {
+        //菜单高亮
+        common.head("_team_agent_list");
         var agentId = ${param.agentId};
-        common.head();
 
         <c:if test="${teamLoginlogAgent}">
         var $logList = $("#logList");

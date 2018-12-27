@@ -148,7 +148,8 @@
 </script>
 <script>
     seajs.use(["common", "template", "validate", "addMethod"], function (common, template) {
-        common.head();
+        //菜单高亮
+        common.head("_org_list");
         template.helper("dateFormat",common.dateFormat);
 
         var $formEdit = $("#formEdit");
@@ -183,7 +184,7 @@
             },
             submitHandler: function (form) {
                 common.ajax.handle({
-                    url: "/followup/uc/customer/maker/contact/add.json",
+                    url: "/org/contact/add/.json",
                     data: $formEdit.serialize(),
                     succback:function (data) {
                         $formEdit[0].reset();

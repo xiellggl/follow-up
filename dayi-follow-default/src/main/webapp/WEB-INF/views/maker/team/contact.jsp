@@ -102,7 +102,8 @@
 </script>
 <script>
     seajs.use(["common", "template", "validate", "addMethod"], function (common, template) {
-        common.head();
+        //菜单高亮
+        common.head("_team_org_list");
         template.helper("dateFormat",common.dateFormat);
     });
 </script>
