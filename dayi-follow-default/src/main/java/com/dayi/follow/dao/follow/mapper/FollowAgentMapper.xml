@@ -11,6 +11,7 @@
         <id property="id" column="id" />
         <!--follow_up-->
         <result property="flowUpInviteCode" column="flowUpInviteCode" />
+        <result property="followUp" column="followUp" />
         <!--follow_agent-->
         <result property="customerType" column="customer_type" />
         <result property="cusIntentionType" column="cus_intention_type" />

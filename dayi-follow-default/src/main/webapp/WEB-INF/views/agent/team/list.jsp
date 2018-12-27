@@ -111,7 +111,7 @@
             var id = $(this).data("id");
             common.ajax.handle({
                 url: "/agent/assign/save/batch.json",
-                data: {flowId:id,ids: ids},
+                data: {followId:id,agentIds: ids},
                 succback: function (data) {
                     $myModal.modal("hide");
                     ids = null;
