@@ -61,7 +61,7 @@ public class OrgAssignController extends BaseController {
         request.setAttribute("pageUrl", pageUrl);
         model.addAttribute("page", page);
         model.addAttribute("orgTypes", OrgTypeEnum.values());//机构商类型
-        return "/manage/followuper/org_assign_list";
+        return "/maker/assign_list";
     }
 
 
