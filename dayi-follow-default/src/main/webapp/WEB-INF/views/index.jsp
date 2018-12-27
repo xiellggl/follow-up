@@ -27,11 +27,11 @@
     </c:if>
 
     <c:if test="${item.url eq '/index/ka/personal/orgdata'}">
-        <c:set var="teamOrgPermission" value="true" />
+        <c:set var="personalOrgPermission" value="true" />
     </c:if>
 
     <c:if test="${item.url eq '/index/ka/team/orgdata'}">
-        <c:set var="personalOrgPermission" value="true" />
+        <c:set var="teamOrgPermission" value="true" />
     </c:if>
 
     <c:if test="${item.url eq '/index/sale/team/daily'}">

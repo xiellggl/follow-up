@@ -37,7 +37,7 @@ import javax.validation.Valid;
  */
 @Controller
 @RequestMapping("/agent")
-public class AgentController extends BaseController{
+public class AgentController extends BaseController {
     @Resource
     FollowUpService followUpService;
     @Resource
@@ -77,7 +77,8 @@ public class AgentController extends BaseController{
         model.addAttribute("page", page);
         model.addAttribute("bankTypes", bankTypes);//银行类型
         model.addAttribute("bankTypesArr", bankTypesArr);
-        return "uc/customer/agent/list";
+        model.addAttribute("customerTypes", AgentCusTypeEnum.values());
+        return "agent/personal/list";
     }
 
     /**
@@ -88,16 +89,27 @@ public class AgentController extends BaseController{
      */
     @RequestMapping("/detail")
     public String agentDetail(HttpServletRequest request, Model model) {
+        LoginVo currVo = userComponent.getCurrUser(request);
+
         Integer agentId = Misc.toInt(request.getParameter("agentId"), 0);// 代理人ID
-        DetailVo detailVo = new DetailVo();
-        detailVo = followAgentService.getDetail(agentId);//代理商明细
+
+        String followId = followAgentService.getFollowIdByAgentId(agentId);
+
+        DetailVo detailVo;
+
+        if (currVo.getId().equals(followId)) {//客户属于当前登陆者
+            detailVo = followAgentService.getDetail(agentId);//代理商明细
+        } else {
+            return "redirect:/index";
+        }
+
         String returnUrl = request.getParameter("returnUrl");
         model.addAttribute("detailVo", detailVo);//明细
         model.addAttribute("customerTypes", AgentCusTypeEnum.values());//客户类型
         model.addAttribute("contactTypes", ContactTypeEnum.values());//联系方式
         model.addAttribute("customerIntentionTypes", AgentIntenTypeEnum.values());//客户意向度
         model.addAttribute("returnUrl", returnUrl);//返回代理商进来列表的路径
-        return "/uc/customer/agent/detail";
+        return "agent/personal/detail";
     }
 
     /**
@@ -108,14 +120,25 @@ public class AgentController extends BaseController{
      */
     @RequestMapping("/loginlog")
     public String loginlog(HttpServletRequest request, Model model, Page page) {
+        LoginVo currVo = userComponent.getCurrUser(request);
 
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
+
         Integer agentId = Misc.toInt(request.getParameter("agentId"), 0);// 代理人ID
+
+        String followId = followAgentService.getFollowIdByAgentId(agentId);
+
         page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
-        page = agentService.findLoginLog(page, agentId);
+
+        if (currVo.getId().equals(followId)) {
+            page = agentService.findLoginLog(page, agentId);
+        } else {
+            return "redirect:/index";
+        }
+
         model.addAttribute("page", page);//登录日志
         model.addAttribute("pageUrl", pageUrl);
-        return "/uc/customer/login_list";
+        return "agent/login_list";
     }
 
     /**
@@ -126,15 +149,28 @@ public class AgentController extends BaseController{
      */
     @RequestMapping("/contact")
     public String contact(HttpServletRequest request, Model model, Page page) {//page不接受代理商的分页
+        LoginVo currVo = userComponent.getCurrUser(request);
+
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
+
         Integer agentId = Misc.toInt(request.getParameter("agentId"), 0);// 代理人ID
+
+        String followId = followAgentService.getFollowIdByAgentId(agentId);
+
         page.setPageSize(Constants.CONTACT_PAGE_SIZE);
-        page = followAgentService.findContacts(page, agentId);
+
+        if (currVo.getId().equals(followId)) {
+            page = followAgentService.findContacts(page, agentId);
+        } else {
+            return "redirect:/index";
+        }
+
         String returnUrl = request.getParameter("returnUrl");//返回代理商进来列表的路径
+
         model.addAttribute("page", page);//联系时间取createDate
         model.addAttribute("returnUrl", returnUrl);//返回代理商进来列表的路径
         request.setAttribute("pageUrl", pageUrl);
-        return "/uc/customer/contact_list";
+        return "agent/contact_list";
     }
 
     /**
@@ -145,14 +181,23 @@ public class AgentController extends BaseController{
      */
     @RequestMapping("/contact/add")
     public String contactAdd(HttpServletRequest request, Model model) {
+        LoginVo currVo = userComponent.getCurrUser(request);
+
         Integer agentId = Misc.toInt(request.getParameter("agentId"), 0);// 代理人ID
+
+        String followId = followAgentService.getFollowIdByAgentId(agentId);
+
         FollowAgent followAgent = new FollowAgent();
-        followAgent = followAgentService.getFollowAgentByAgentId(agentId);
+        if (currVo.getId() == followId) {
+            followAgent = followAgentService.getFollowAgentByAgentId(agentId);
+        } else {
+            return "redirect:/index";
+        }
         model.addAttribute("customerTypes", AgentCusTypeEnum.values());//客户类型
-        model.addAttribute("cusIntentionTypes",AgentIntenTypeEnum.values());//客户意向度
-        model.addAttribute("contactTypes",ContactTypeEnum.values());//联系类型
+        model.addAttribute("cusIntentionTypes", AgentIntenTypeEnum.values());//客户意向度
+        model.addAttribute("contactTypes", ContactTypeEnum.values());//联系类型
         model.addAttribute("agent", followAgent);
-        return "/uc/customer/contact_list";
+        return "agent/contact_list";
     }
 
     /**

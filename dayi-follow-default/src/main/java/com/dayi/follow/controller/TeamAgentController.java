@@ -76,8 +76,9 @@ public class TeamAgentController {
         model.addAttribute("customerTypes", AgentCusTypeEnum.values());//客户类型
         model.addAttribute("bankTypes", bankTypes);//银行类型
         model.addAttribute("bankTypesArr", bankTypesArr);
-        return "uc/customer/agent/list";
+        return "agent/team/list";
     }
+
     /**
      * 团队代理商详细
      *
@@ -99,7 +100,7 @@ public class TeamAgentController {
         if (followIds.contains(followId)) {//客户属于当前登陆者
             detailVo = followAgentService.getDetail(agentId);//代理商明细
         } else {
-            return "redirect:/followup/uc/index";
+            return "redirect:/index";
         }
 
         String returnUrl = request.getParameter("returnUrl");
@@ -108,7 +109,7 @@ public class TeamAgentController {
         model.addAttribute("contactTypes", ContactTypeEnum.values());//联系方式
         model.addAttribute("customerIntentionTypes", AgentIntenTypeEnum.values());//客户意向度
         model.addAttribute("returnUrl", returnUrl);//返回代理商进来列表的路径
-        return "/followup/uc/customer/agent/detail";
+        return "agent/team/detail";
     }
 
     /**
@@ -128,7 +129,7 @@ public class TeamAgentController {
         model.addAttribute("followUp", followUp);
         model.addAttribute("page", page);
         model.addAttribute("pageUrl", pageUrl);
-        return "/manage/followuper/assign_select";
+        return "followup/select_list";
     }
 
     /**
@@ -154,12 +155,12 @@ public class TeamAgentController {
         if (followIds.contains(followId)) {
             page = agentService.findLoginLog(page, agentId);
         } else {
-            return "redirect:/followup/uc/index";
+            return "redirect:/index";
         }
 
         model.addAttribute("page", page);//登录日志
         model.addAttribute("pageUrl", pageUrl);
-        return "/followup/uc/customer/login_list";
+        return "agent/login_list";
     }
 
     /**
@@ -185,7 +186,7 @@ public class TeamAgentController {
         if (followIds.contains(followId)) {
             page = followAgentService.findContacts(page, agentId);
         } else {
-            return "redirect:/followup/uc/index";
+            return "redirect:/index";
         }
 
         String returnUrl = request.getParameter("returnUrl");//返回代理商进来列表的路径
@@ -193,6 +194,6 @@ public class TeamAgentController {
         model.addAttribute("page", page);//联系时间取createDate
         model.addAttribute("returnUrl", returnUrl);//返回代理商进来列表的路径
         request.setAttribute("pageUrl", pageUrl);
-        return "/followup/uc/customer/contact_list";
+        return "agent/contact_list";
     }
 }
