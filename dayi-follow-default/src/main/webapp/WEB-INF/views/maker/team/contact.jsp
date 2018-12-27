@@ -37,7 +37,8 @@
                 </ul><!-- /.breadcrumb -->
             </div>
 
-
+            <%--查看团队创客联系记录--%>
+            <c:if test="${teamDetailMaker}">
             <div class="page-content">
                 <div class="row">
                     <div class="col-xs-12">
@@ -48,8 +49,7 @@
                             <a href="/followup/uc/customer/team/maker/list?${returnUrl}" style="float: right;margin: -10px 10px 0 0;" class="btn btn-sm btn-info" type="reset">返回</a>
                         </h4>
                         <%--</div>--%>
-                        <%--查看团队创客联系记录--%>
-                        <c:if test="${TeamDetailMaker}">
+
 
                             <table class="table table-striped table-bordered table-hover" id="list">
                                 <thead>
@@ -84,12 +84,10 @@
                                     <common:page url="${pageUrl}" type="3" />
                                 </div>
                             </c:if>
-
-                        </c:if>
                     </div>
                 </div>
             </div>
-
+            </c:if>
         </div>
     </div>
 </div>
