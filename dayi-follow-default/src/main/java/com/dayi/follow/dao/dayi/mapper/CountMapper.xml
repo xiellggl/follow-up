@@ -102,11 +102,11 @@
     </select>
 
     <select id="countCusTypeRatio" parameterType="java.lang.String" resultType="com.dayi.follow.vo.index.CusTypeRatioVo">
-        SELECT customer_type cusType,count(*)num from agent a
-        LEFT JOIN (
-          SELECT agent_id from ${assistDataBase}.follow_agent where follow_id =${followId}
-        )fa on fa.agent_id=a.id
-        WHERE  a.del_status != -1 and fa.agent_id is not NULL GROUP BY customer_type
+        SELECT a.customer_type cusType,count(*)num from ${assistDataBase}.follow_agent a
+        left join (
+          SELECT * from agent WHERE del_status != -1
+        )b on a.agent_id=b.id
+         where a.follow_id =${followId} and b.id is not NULL GROUP BY a.customer_type
     </select>
     
     <select id="countCusFundRank" parameterType="java.lang.String" resultType="com.dayi.follow.vo.index.FundRankVo">
