@@ -4,6 +4,7 @@ import com.dayi.common.util.BizResult;
 import com.dayi.follow.base.BaseController;
 import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.conf.Constants;
+import com.dayi.follow.enums.AgentCusTypeEnum;
 import com.dayi.follow.enums.ContactTypeEnum;
 import com.dayi.follow.enums.OrgTypeEnum;
 import com.dayi.follow.model.follow.OrgContact;
@@ -52,7 +53,7 @@ public class OrgController extends BaseController {
         LoginVo currVo = userComponent.getCurrUser(request);
         page.setPageSize(Constants.SEARCH_PAGE_SIZE);
 
-        page = orgService.findOrgPage(page,vo, currVo.getId());
+        page = orgService.findOrgPage(page, vo, currVo.getId());
 
         String queryStr = request.getQueryString();//返回地址
         String returnUrl = StringUtil.urlEncode(queryStr);
@@ -105,18 +106,19 @@ public class OrgController extends BaseController {
      * @return
      */
     @RequestMapping("/contact/add")
-    @ResponseBody
-    public BizResult contactAdd(HttpServletRequest request) {
+    public String contactAdd(HttpServletRequest request, Model model) {
         LoginVo currVo = userComponent.getCurrUser(request);
 
         Integer orgId = Misc.toInt(request.getParameter("orgId"), 0);// 创客人ID
 
         String followId = followOrgService.getFollowIdByOrgId(orgId);
 
-        ContactTypeEnum.values();//联系方式
-
-        if (currVo.getId() != followId) return BizResult.FAIL;
-        return BizResult.SUCCESS;
+        if (currVo.getId() == followId) {
+            model.addAttribute("contactTypes", ContactTypeEnum.values());//联系方式
+            return "";//成功路径
+        } else {
+            return "redirect:/index";
+        }
     }
 
     /**
