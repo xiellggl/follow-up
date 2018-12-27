@@ -54,12 +54,14 @@
                 </ul><!-- /.breadcrumb -->
             </div>
 
+            <c:if test="${detailAgent}">
             <div class="page-content">
                 <c:set var="pageType" value="my" />
                 <%@include file="../agent_detail_inc.jsp"%>
             </div>
+            </c:if>
 
-
+            <c:if test="${addContactAgent}">
             <div class="page-content" >
                 <div class="row">
                     <div class="col-xs-12">
@@ -140,6 +142,7 @@
                     </div>
                 </div>
             </div>
+            </c:if>
 
             <c:if test="${loginlogAgent or contactAgent}">
             <div class="page-content">
