@@ -74,10 +74,7 @@
         SELECT count(b.id)  from ${assistDataBase}.follow_agent a
         left join (
             SELECT b1.id FROM agent b1 LEFT JOIN finance_account b2 ON b1.account_id = b2.id
-              LEFT JOIN (
-                  SELECT agent, IFNULL(SUM(amount), 0) amount from protocol WHERE status in(1,2) GROUP BY agent
-              ) b3 ON b1.id = b3.agent
-            WHERE b1.del_status != -1 and IFNULL(b2.useable + b2.frozen + b2.out_frozen + IFNULL(b3.amount, 0), 0) = 0
+            WHERE b1.del_status != -1 and IFNULL(b2.useable + b2.frozen + b2.out_frozen + 0.8*b2.cargo_interest+b2.cargo_interest_puchas, 0) = 0
         ) b on b.id = a.agent_id
         WHERE  a.follow_id IN
         <foreach item="item" index="index" collection="followIds"
@@ -113,22 +110,19 @@
         SELECT fam.type as fundRank,count(a.id) num
         from (
             SELECT fa.agent_org_id,
-                CASE WHEN fa.useable + fa.frozen + fa.out_frozen + IFNULL(d.amount, 0) = 0 THEN 1
-                WHEN 0  &lt;  fa.useable + fa.frozen + fa.out_frozen + IFNULL(d.amount, 0)
-                and fa.useable + fa.frozen + fa.out_frozen + IFNULL(d.amount, 0)  &lt;= 20000 THEN 2
-                WHEN 20000  &lt;  fa.useable + fa.frozen + fa.out_frozen + IFNULL(d.amount, 0)
-                and  fa.useable + fa.frozen + fa.out_frozen + IFNULL(d.amount, 0)  &lt;=100000 THEN 3
-                WHEN 100000 &lt; fa.useable + fa.frozen + fa.out_frozen + IFNULL(d.amount, 0)
-                and fa.useable + fa.frozen + fa.out_frozen + IFNULL(d.amount, 0)  &lt;=500000 THEN 4
-                WHEN 500000 &lt; fa.useable + fa.frozen + fa.out_frozen + IFNULL(d.amount, 0)
-                and fa.useable + fa.frozen + fa.out_frozen + IFNULL(d.amount, 0)  &lt;= 1000000 THEN 5
-                WHEN 1000000 &lt; fa.useable + fa.frozen + fa.out_frozen + IFNULL(d.amount, 0)
-                and fa.useable + fa.frozen + fa.out_frozen + IFNULL(d.amount, 0)  &lt;= 3000000 THEN 6
+                CASE WHEN IFNULL(useable + frozen + out_frozen +  0.8*cargo_interest+cargo_interest_puchas, 0) = 0 THEN 1
+                WHEN 0  &lt; IFNULL(useable + frozen + out_frozen +  0.8*cargo_interest+cargo_interest_puchas, 0)
+                and IFNULL(useable + frozen + out_frozen +  0.8*cargo_interest+cargo_interest_puchas, 0)  &lt;= 20000 THEN 2
+                WHEN 20000  &lt;  IFNULL(useable + frozen + out_frozen +  0.8*cargo_interest+cargo_interest_puchas, 0)
+                and  IFNULL(useable + frozen + out_frozen +  0.8*cargo_interest+cargo_interest_puchas, 0)  &lt;=100000 THEN 3
+                WHEN 100000 &lt; IFNULL(useable + frozen + out_frozen +  0.8*cargo_interest+cargo_interest_puchas, 0)
+                and IFNULL(useable + frozen + out_frozen +  0.8*cargo_interest+cargo_interest_puchas, 0)  &lt;=500000 THEN 4
+                WHEN 500000 &lt; IFNULL(useable + frozen + out_frozen +  0.8*cargo_interest+cargo_interest_puchas, 0)
+                and IFNULL(useable + frozen + out_frozen +  0.8*cargo_interest+cargo_interest_puchas, 0)  &lt;= 1000000 THEN 5
+                WHEN 1000000 &lt; IFNULL(useable + frozen + out_frozen +  0.8*cargo_interest+cargo_interest_puchas, 0)
+                and IFNULL(useable + frozen + out_frozen +  0.8*cargo_interest+cargo_interest_puchas, 0)  &lt;= 3000000 THEN 6
                 ELSE 7 END AS type
             FROM finance_account fa
-            LEFT JOIN (
-            SELECT agent, IFNULL(SUM(amount), 0) amount from protocol WHERE status in (1,2) GROUP BY agent
-            ) d ON fa.agent_org_id = d.agent
         ) fam
         left join (
             SELECT id from agent
