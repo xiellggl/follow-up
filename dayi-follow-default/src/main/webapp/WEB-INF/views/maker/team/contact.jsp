@@ -41,14 +41,10 @@
             <div class="page-content">
                 <div class="row">
                     <div class="col-xs-12">
-                    <%--<div class=" clearfix">--%>
                         <h4 class="header smaller lighter blue">
                             <i class="ace-icon fa fa-book"></i>
-                            联系记录（客户：${orgVo.linkPersonStr}）
-                            <a href="/followup/uc/customer/team/maker/list?${returnUrl}" style="float: right;margin: -10px 10px 0 0;" class="btn btn-sm btn-info" type="reset">返回</a>
+                            联系记录
                         </h4>
-
-                    <%--</div>--%>
                         <table class="table table-striped table-bordered table-hover" id="list">
                             <thead>
                             <tr>
@@ -59,16 +55,16 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:if test="${empty page.items}">
+                            <c:if test="${empty page.results}">
                                 <tr>
                                     <td colspan="7" class="no_data">暂无数据</td>
                                 </tr>
                             </c:if>
-                            <c:if test="${not empty page.items}">
-                                <c:forEach items="${page.items}" var="item" >
+                            <c:if test="${not empty page.results}">
+                                <c:forEach items="${page.results}" var="item" >
                                     <tr>
-                                        <td><fmt:formatDate value="${item.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                        <td>${item.followUpName}</td>
+                                        <td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                        <td>${item.followUp}</td>
                                         <td>${item.contactTypeStr}</td>
                                         <td>${item.content}</td>
                                     </tr>
@@ -76,7 +72,7 @@
                             </c:if>
                             </tbody>
                         </table>
-                        <c:if test="${not empty page.items}">
+                        <c:if test="${not empty page.results}">
                             <div class="pagerBar" id="pagerBar">
                                 <common:page url="${pageUrl}" type="3" />
                             </div>
