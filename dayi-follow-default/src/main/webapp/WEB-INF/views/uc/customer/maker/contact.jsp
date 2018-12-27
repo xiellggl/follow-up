@@ -2,7 +2,7 @@
 <%@include file="/inc/followup/taglib.jsp"%>
 <%--权限判断--%>
 <c:set var="addContactMaker" value="false" />
-<c:set var="DetailMaker" value="false" />
+<c:set var="detailMaker" value="false" />
 <c:forEach items="${permissions}" var="item">
     <%--添加创客联系记录--%>
     <c:if test="${item.url eq '/contact/add/save'}">
@@ -10,14 +10,14 @@
     </c:if>
     <%--查看创客联系记录--%>
     <c:if test="${item.url eq '/org/contact'}">
-        <c:set var="DetailMaker" value="true" />
+        <c:set var="detailMaker" value="true" />
     </c:if>
 </c:forEach>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8" />
-    <title>客户-创客</title>
+    <title>我的客户-创客明细</title>
     <%@include file="/inc/followup/csslink.jsp"%>
     <style>
         .customer-info tr th{text-align: right;}
@@ -87,8 +87,9 @@
                     </div>
                 </div>
                 </c:if>
+
                 <%--查看创客联系记录--%>
-                <c:if test="${DetailMaker}">
+                <c:if test="${detailMaker}">
                 <div class="row">
                     <div class="col-xs-12">
                         <h4 class="header smaller lighter blue">
@@ -130,6 +131,7 @@
                     </div>
                 </div>
                 </c:if>
+
             </div>
         </div>
     </div>
