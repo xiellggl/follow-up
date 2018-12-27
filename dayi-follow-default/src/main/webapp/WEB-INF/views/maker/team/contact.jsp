@@ -61,16 +61,16 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <c:if test="${empty page.items}">
+                                <c:if test="${empty page.results}">
                                     <tr>
                                         <td colspan="7" class="no_data">暂无数据</td>
                                     </tr>
                                 </c:if>
-                                <c:if test="${not empty page.items}">
-                                    <c:forEach items="${page.items}" var="item" >
+                                <c:if test="${not empty page.results}">
+                                    <c:forEach items="${page.results}" var="item" >
                                         <tr>
                                             <td><fmt:formatDate value="${item.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                            <td>${item.followUpName}</td>
+                                            <td>${item.followUp}</td>
                                             <td>${item.contactTypeStr}</td>
                                             <td>${item.content}</td>
                                         </tr>
@@ -79,7 +79,7 @@
                                 </tbody>
                             </table>
 
-                            <c:if test="${not empty page.items}">
+                            <c:if test="${not empty page.results}">
                                 <div class="pagerBar" id="pagerBar">
                                     <common:page url="${pageUrl}" type="3" />
                                 </div>
