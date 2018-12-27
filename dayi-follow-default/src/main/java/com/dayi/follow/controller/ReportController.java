@@ -239,7 +239,7 @@ public class ReportController extends BaseController {
 
         page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
 
-        Department department = deptService.get(deptId);
+        Department department = deptService.getDept(deptId);
 
         page = reportService.findAdminDailyDetail(page, deptId, date);
 

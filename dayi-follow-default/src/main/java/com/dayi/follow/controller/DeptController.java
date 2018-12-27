@@ -66,7 +66,7 @@ public class DeptController extends BaseController {
         } else if (department.getCityServer().equals(1) && !department.getCityInviteCode().isEmpty()) {
             //检查邀请码是否重复
             boolean b = deptService.checkInviteCode(department.getCityInviteCode());
-            if (!b) return BizResult.fail("邀请码已经存在！");
+            if (b) return BizResult.fail("邀请码已经存在！");
         }
 
         return deptService.add(department);
@@ -81,7 +81,7 @@ public class DeptController extends BaseController {
         if (StringUtils.isBlank(userId)) return BizResult.FAIL;
         FollowUp followUp = userService.get(userId);
         String deptId = followUp.getDeptId();
-        Department department = deptService.get(deptId);
+        Department department = deptService.getDept(deptId);
 
         List<Department> topList = deptService.getDeptTree(department);
 
@@ -93,7 +93,7 @@ public class DeptController extends BaseController {
      */
     @RequestMapping("/update/{deptId}")
     public String update(HttpServletRequest request, Model model, @PathVariable String deptId) {
-        Department department = deptService.get(deptId);
+        Department department = deptService.getDept(deptId);
 
         List<Department> deptTree = deptService.getDeptTree(department);
 
@@ -114,7 +114,7 @@ public class DeptController extends BaseController {
         } else if (department.getCityServer() != null && department.getCityServer().equals(1) && !department.getCityInviteCode().isEmpty()) {
             //检查邀请码是否重复
             boolean b = deptService.checkInviteCode(department.getCityInviteCode());
-            if (!b) return BizResult.fail("邀请码已经存在！");
+            if (b) return BizResult.fail("邀请码已经存在！");
         }
 
         return deptService.updateDept(department);
@@ -128,7 +128,7 @@ public class DeptController extends BaseController {
     public BizResult delete(HttpServletRequest request,String deptId) {
         if (StringUtils.isBlank(deptId)) return BizResult.FAIL;
 
-        Department department = deptService.get(deptId);
+        Department department = deptService.getDept(deptId);
         if (department == null) return BizResult.FAIL;
         return deptService.delete(department);
 

@@ -31,7 +31,7 @@ public class UserComponent {
         if (followUp != null) {
             LoginVo loginVo = new LoginVo();
             String deptId = followUp.getDeptId();
-            Department department = deptService.get(deptId);
+            Department department = deptService.getDept(deptId);
             if (department != null) {
                 loginVo.setDeptName(department.getName());
             }

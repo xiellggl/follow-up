@@ -41,7 +41,7 @@ public class DeptServiceImpl implements DeptService {
         List<String> deptIdList = new ArrayList<String>();
         if (StringUtils.isBlank(deptId)) return deptIdList;
 
-        Department me = deptMapper.get(deptId);
+        Department me = deptMapper.getDept(deptId);
         List<Department> subDeptList = me.getSubDeptList();
         if (CollectionUtils.isEmpty(subDeptList)) return deptIdList;
 
@@ -58,7 +58,7 @@ public class DeptServiceImpl implements DeptService {
         List<Department> deptList = new ArrayList<Department>();
         if (StringUtils.isBlank(deptId)) return deptList;
 
-        Department me = deptMapper.get(deptId);
+        Department me = deptMapper.getDept(deptId);
         List<Department> subDeptList = me.getSubDeptList();
         if (CollectionUtils.isEmpty(subDeptList)) return deptList;
 
@@ -70,15 +70,15 @@ public class DeptServiceImpl implements DeptService {
     }
 
     @Override
-    public Department get(String deptId) {
-        return deptMapper.get(deptId);
+    public Department getDept(String deptId) {
+        return deptMapper.getDept(deptId);
     }
 
     @Override
     @Log(target = OperateLog.class, action = BaseLog.LogAction.UPDATE, what = "部门管理", note = "修改部门")
     public BizResult updateDept(Department departmentVo) {
         //处理上级部门人数
-        Department department = deptMapper.get(departmentVo.getId());
+        Department department = deptMapper.getDept(departmentVo.getId());
 
         doUpdatePerson(department, departmentVo.getPid());
 
@@ -185,7 +185,7 @@ public class DeptServiceImpl implements DeptService {
             oldDept = oldDept.getParentDept();
         }
 
-        Department newDept = deptMapper.get(newPId);
+        Department newDept = deptMapper.getDept(newPId);
         while (newDept != null) {
             newDept.setPersonNum(newDept.getPersonNum() + department.getPersonNum());
             deptMapper.updateAll(newDept);

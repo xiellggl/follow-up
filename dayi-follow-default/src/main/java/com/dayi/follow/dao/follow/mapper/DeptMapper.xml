@@ -17,13 +17,13 @@
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="updateTime"/>
         <association property="parentDept" javaType="com.dayi.follow.model.follow.Department"
-                     select="com.dayi.follow.dao.follow.DeptMapper.get"
-                     column="pid" fetchType="eager">
+                     select="com.dayi.follow.dao.follow.DeptMapper.getDept"
+                     column="pid" fetchType="lazy">
 
         </association>
         <collection property="subDeptList" ofType="com.dayi.follow.model.follow.Department"
                     select="com.dayi.follow.dao.follow.DeptMapper.getSubDepts"
-                    column="id" fetchType="eager">
+                    column="id" fetchType="lazy">
         </collection>
     </resultMap>
 
@@ -31,11 +31,16 @@
         SELECT * from department where pid is null or pid='' ORDER by sort_no asc
     </select>
 
-    <select id="get" resultMap="BaseResultMap" parameterType="java.lang.String">
+    <select id="getDept" resultMap="BaseResultMap" parameterType="java.lang.String">
         SELECT * from department where id =#{deptId}
     </select>
 
     <select id="getSubDepts" resultMap="BaseResultMap">
         SELECT * from department where pid =#{deptId}
     </select>
+
+    <select id="getByInviteCode" parameterType="java.lang.String" resultType="com.dayi.follow.model.follow.Department">
+        SELECT * from department where city_invite_code =#{inviteCode}
+    </select>
+
 </mapper>

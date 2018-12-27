@@ -13,7 +13,7 @@ public interface DeptMapper extends BaseMapper<Department> {
 
     List<Department> getTopList();
 
-    Department get(String deptId);
+    Department getDept(String deptId);
 
     Department getByInviteCode(String inviteCode);
 }

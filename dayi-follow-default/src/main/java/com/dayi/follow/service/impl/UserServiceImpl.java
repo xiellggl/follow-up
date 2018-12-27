@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
             return BizResult.FAIL;
         }
         //处理部门关系
-        Department department = deptService.get(followUp.getDeptId());
+        Department department = deptService.getDept(followUp.getDeptId());
 
         doAddPerson(department);
         return BizResult.SUCCESS;
@@ -143,12 +143,12 @@ public class UserServiceImpl implements UserService {
         if (null == followUp) {
             return BizResult.fail("所选用户不存在.");
         }
-        Department oldDept = deptMapper.get(followUp.getDeptId());
+        Department oldDept = deptMapper.getDept(followUp.getDeptId());
         if (null == oldDept) {
             return BizResult.fail("原部门不存在.");
         }
 
-        Department newDept = deptMapper.get(userEditDto.getDeptId());
+        Department newDept = deptMapper.getDept(userEditDto.getDeptId());
         if (null == newDept) {
             return BizResult.fail("所选部门不存在.");
         }
@@ -225,7 +225,7 @@ public class UserServiceImpl implements UserService {
         followUp.setUpdateTime(new Date());
         userMapper.updateAll(followUp);
 
-        Department department = deptMapper.get(followUp.getDeptId());
+        Department department = deptMapper.getDept(followUp.getDeptId());
 
         this.doAddPerson(department);
         return BizResult.SUCCESS;
@@ -238,7 +238,7 @@ public class UserServiceImpl implements UserService {
         followUp.setUpdateTime(new Date());
         userMapper.updateAll(followUp);
 
-        Department department = deptService.get(followUp.getDeptId());
+        Department department = deptService.getDept(followUp.getDeptId());
 
         this.doReducePerson(department);
 
@@ -255,7 +255,7 @@ public class UserServiceImpl implements UserService {
         if (!agents.isEmpty() || !orgs.isEmpty()) return BizResult.fail("该账号存在跟进客户,无法删除！");
         userMapper.delete(followUp);
 
-        Department department = deptService.get(followUp.getDeptId());
+        Department department = deptService.getDept(followUp.getDeptId());
 
         this.doReducePerson(department);
         return BizResult.SUCCESS;
@@ -382,7 +382,7 @@ public class UserServiceImpl implements UserService {
             oldDept = oldDept.getParentDept();
         }
 
-        Department newDept = deptMapper.get(newId);
+        Department newDept = deptMapper.getDept(newId);
         while (newDept != null) {
             newDept.setPersonNum(newDept.getPersonNum() + 1);
             deptMapper.updateAll(newDept);

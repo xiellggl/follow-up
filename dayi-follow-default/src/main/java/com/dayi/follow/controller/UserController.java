@@ -278,7 +278,7 @@ public class UserController extends BaseController {
 
         FollowUp followUp = userService.get(currVo.getId());
         if (followUp != null) {
-            Department department = deptService.get(currVo.getDeptId());
+            Department department = deptService.getDept(currVo.getDeptId());
 
             userVo.setName(followUp.getName());
             userVo.setUserName(followUp.getUserName());

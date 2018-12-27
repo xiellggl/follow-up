@@ -27,9 +27,9 @@ public interface DeptService {
     List<Department> getSubDept(String deptId);
 
     /**
-     * 获取部门
+     * 获取部门-同时获取
      */
-    Department get(String deptId);
+    Department getDept(String deptId);
 
     /**
      * 更新部门

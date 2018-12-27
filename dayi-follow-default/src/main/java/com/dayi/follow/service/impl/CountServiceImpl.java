@@ -181,9 +181,6 @@ public class CountServiceImpl implements CountService {
         OrgDataVo orgDataVo = new OrgDataVo();
         if (StringUtils.isBlank(deptId)) return orgDataVo;
 
-        Department department = deptService.get(deptId);
-        if (department == null) return orgDataVo;
-
         List<String> deptIds = deptService.getSubDeptIds(deptId);//下级部门id
         deptIds.add(deptId);//加上自己
 
