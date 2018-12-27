@@ -54,123 +54,126 @@
                 </ul><!-- /.breadcrumb -->
             </div>
 
-            <div class="page-content">
-                <c:set var="pageType" value="my" />
-                <%@include file="../agent_detail_inc.jsp"%>
-            </div>
+            <c:if test="${detailAgent}">
+                <div class="page-content">
+                    <c:set var="pageType" value="my" />
+                    <%@include file="../agent_detail_inc.jsp"%>
+                </div>
+            </c:if>
 
+            <c:if test="${addContactAgent}">
+                <div class="page-content" >
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="page-header clearfix">
+                                <h4 class="pull-left blue">
+                                    <i class="ace-icon fa fa-comments-o"></i>
+                                    添加联系记录
+                                </h4>
+                                <c:if test="${not empty nextAgentVo}">
+                                    <a href="./detail?agentId=${nextAgentVo.id}&${condition}" class="pull-right">
+                                        <span class="btn btn-xs btn-info">联系下一客户 →</span>
+                                    </a>
+                                </c:if>
+                            </div>
+                            <form class="form-horizontal row" id="formEdit">
+                                <input type="hidden" name="agentId" value="${param.agentId}">
+                                <div class="col-xs-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label no-padding-right">联系方式： </label>
+                                        <div class="col-xs-12 col-sm-6">
+                                            <select name="contactType" class="width-100">
+                                                <c:forEach items="${contactTypes}" var="item">
+                                                    <option value="${item.value}">${item.name}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                    </div>
 
-            <div class="page-content" >
-                <div class="row">
-                    <div class="col-xs-12">
-                        <div class="page-header clearfix">
-                            <h4 class="pull-left blue">
-                                <i class="ace-icon fa fa-comments-o"></i>
-                                添加联系记录
-                            </h4>
-                            <c:if test="${not empty nextAgentVo}">
-                                <a href="./detail?agentId=${nextAgentVo.id}&${condition}" class="pull-right">
-                                    <span class="btn btn-xs btn-info">联系下一客户 →</span>
-                                </a>
-                            </c:if>
+                                    <div class="space-4"></div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label no-padding-right">客户类型： </label>
+                                        <div class="col-xs-12 col-sm-6">
+                                            <select name="customerType" class="width-100">
+                                                <c:forEach items="${customerTypes}" var="item">
+                                                    <option value="${item.value > 1 ? item.value : ''}" ${item.value eq 1 ? 'disabled' : ''} >${item.name}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="space-4"></div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label no-padding-right">客户意向度： </label>
+                                        <div class="col-xs-12 col-sm-6">
+                                            <select name="customerIntentionType" class="width-100">
+                                                <c:forEach items="${customerIntentionTypes}" var="item">
+                                                    <option value="${item.value}">${item.name}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="space-4"></div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label no-padding-right"> 下次联系时间： </label>
+                                        <div class="col-xs-12 col-sm-6">
+                                            <input type="text" name="nextContactTime" class="width-100" placeholder="选填" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-6">
+                                    <div class="form-group">
+                                        <div class="col-xs-12">
+                                            <label class="control-label">沟通内容： </label>
+                                            <textarea type="text" name="content" value="" style="height: 90px;" class="width-100" placeholder="140个字以内" required></textarea>
+                                        </div>
+                                        <div class="help-block col-xs-12 inline tips_box"></div>
+                                    </div>
+                                    <div class="form-group" style="text-align: center;">
+                                        <button type="submit" class="btn btn-primary">提交记录</button>
+                                        <button class="btn btn-info" type="reset">重置</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-                        <form class="form-horizontal row" id="formEdit">
-                            <input type="hidden" name="agentId" value="${param.agentId}">
-                            <div class="col-xs-12 col-sm-6">
-                                <div class="form-group">
-                                    <label class="col-sm-4 control-label no-padding-right">联系方式： </label>
-                                    <div class="col-xs-12 col-sm-6">
-                                        <select name="contactType" class="width-100">
-                                            <c:forEach items="${contactTypes}" var="item">
-                                                <option value="${item.value}">${item.name}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="space-4"></div>
-
-                                <div class="form-group">
-                                    <label class="col-sm-4 control-label no-padding-right">客户类型： </label>
-                                    <div class="col-xs-12 col-sm-6">
-                                        <select name="customerType" class="width-100">
-                                            <c:forEach items="${customerTypes}" var="item">
-                                                <option value="${item.value > 1 ? item.value : ''}" ${item.value eq 1 ? 'disabled' : ''} >${item.name}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="space-4"></div>
-
-                                <div class="form-group">
-                                    <label class="col-sm-4 control-label no-padding-right">客户意向度： </label>
-                                    <div class="col-xs-12 col-sm-6">
-                                        <select name="customerIntentionType" class="width-100">
-                                            <c:forEach items="${customerIntentionTypes}" var="item">
-                                                <option value="${item.value}">${item.name}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="space-4"></div>
-
-                                <div class="form-group">
-                                    <label class="col-sm-4 control-label no-padding-right"> 下次联系时间： </label>
-                                    <div class="col-xs-12 col-sm-6">
-                                        <input type="text" name="nextContactTime" class="width-100" placeholder="选填" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-6">
-                                <div class="form-group">
-                                    <div class="col-xs-12">
-                                        <label class="control-label">沟通内容： </label>
-                                        <textarea type="text" name="content" value="" style="height: 90px;" class="width-100" placeholder="140个字以内" required></textarea>
-                                    </div>
-                                    <div class="help-block col-xs-12 inline tips_box"></div>
-                                </div>
-                                <div class="form-group" style="text-align: center;">
-                                    <button type="submit" class="btn btn-primary">提交记录</button>
-                                    <button class="btn btn-info" type="reset">重置</button>
-                                </div>
-                            </div>
-                        </form>
                     </div>
                 </div>
-            </div>
+            </c:if>
 
             <c:if test="${loginlogAgent or contactAgent}">
-            <div class="page-content">
-                <div class="tabbable">
-                    <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
-                        <c:if test="${contactAgent}">
-                            <li class="active">
-                                <a data-toggle="tab" href="#profile4" aria-expanded="false">联系记录</a>
-                            </li>
-                        </c:if>
-                        <c:if test="${loginlogAgent}">
-                            <li ${!contactAgent ? 'class="active"' : ''} >
-                                <a data-toggle="tab" href="#home4" aria-expanded="true">登录日志</a>
-                            </li>
-                        </c:if>
-                    </ul>
+                <div class="page-content">
+                    <div class="tabbable">
+                        <ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
+                            <c:if test="${contactAgent}">
+                                <li class="active">
+                                    <a data-toggle="tab" href="#profile4" aria-expanded="false">联系记录</a>
+                                </li>
+                            </c:if>
+                            <c:if test="${loginlogAgent}">
+                                <li ${!contactAgent ? 'class="active"' : ''} >
+                                    <a data-toggle="tab" href="#home4" aria-expanded="true">登录日志</a>
+                                </li>
+                            </c:if>
+                        </ul>
 
-                    <div class="tab-content">
-                        <c:if test="${contactAgent}">
-                        <div id="profile4" class="tab-pane active">
-                            <div id="conList"></div>
+                        <div class="tab-content">
+                            <c:if test="${contactAgent}">
+                                <div id="profile4" class="tab-pane active">
+                                    <div id="conList"></div>
+                                </div>
+                            </c:if>
+                            <c:if test="${loginlogAgent}">
+                                <div id="home4" class="tab-pane ${!contactAgent ? 'active' : ''}">
+                                    <div id="logList"></div>
+                                </div>
+                            </c:if>
                         </div>
-                        </c:if>
-                        <c:if test="${loginlogAgent}">
-                        <div id="home4" class="tab-pane ${!contactAgent ? 'active' : ''}">
-                            <div id="logList"></div>
-                        </div>
-                        </c:if>
                     </div>
                 </div>
-            </div>
             </c:if>
 
         </div>
@@ -184,17 +187,17 @@
         common.head();
 
         <c:if test="${loginlogAgent}">
-            var $logList = $("#logList");
-            var log_url = "/agent/loginlog?agentId=" + agentId;
-            common.loadPageHTML(log_url, null,$logList);
-            common.clickPageFn(log_url, null, $logList);
+        var $logList = $("#logList");
+        var log_url = "/agent/loginlog?agentId=" + agentId;
+        common.loadPageHTML(log_url, null,$logList);
+        common.clickPageFn(log_url, null, $logList);
         </c:if>
 
         <c:if test="${contactAgent}">
-            var $conList = $("#conList");
-            var con_url = "/agent/contact?agentId=" + agentId;
-            common.loadPageHTML(con_url, null,$conList);
-            common.clickPageFn(con_url, null, $conList);
+        var $conList = $("#conList");
+        var con_url = "/agent/contact?agentId=" + agentId;
+        common.loadPageHTML(con_url, null,$conList);
+        common.clickPageFn(con_url, null, $conList);
         </c:if>
 
         var $formEdit = $("#formEdit");

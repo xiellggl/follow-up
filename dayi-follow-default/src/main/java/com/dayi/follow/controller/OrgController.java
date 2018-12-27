@@ -95,6 +95,7 @@ public class OrgController extends BaseController {
 
         model.addAttribute("page", page);//联系时间取createDate
         model.addAttribute("returnUrl", returnUrl);//返回创客进来列表的路径
+        model.addAttribute("contactTypes", ContactTypeEnum.values());//联系方式
         request.setAttribute("pageUrl", pageUrl);
         return "uc/customer/maker/contact";
     }
@@ -114,7 +115,6 @@ public class OrgController extends BaseController {
         String followId = followOrgService.getFollowIdByOrgId(orgId);
 
         if (currVo.getId() == followId) {
-            model.addAttribute("contactTypes", ContactTypeEnum.values());//联系方式
             return "";//成功路径
         } else {
             return "redirect:/index";

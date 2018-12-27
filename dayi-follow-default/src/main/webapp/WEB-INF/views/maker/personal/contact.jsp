@@ -1,23 +1,23 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@include file="/inc/followup/taglib.jsp"%>
 <%--权限判断--%>
-<c:set var="addContactMaker" value="false" />
-<c:set var="DetailMaker" value="false" />
+<c:set var="detailMaker" value="false" />
+<%--<c:set var="addContactMaker" value="false" />--%>
 <c:forEach items="${permissions}" var="item">
-    <%--添加创客联系记录--%>
-    <c:if test="${item.url eq '/contact/add/save'}">
-        <c:set var="addContactMaker" value="true" />
-    </c:if>
     <%--查看创客联系记录--%>
     <c:if test="${item.url eq '/org/contact'}">
-        <c:set var="DetailMaker" value="true" />
+        <c:set var="detailMaker" value="true" />
     </c:if>
+    <%--&lt;%&ndash;添加创客联系记录&ndash;%&gt;--%>
+    <%--<c:if test="${item.url eq '/contact/add/save'}">--%>
+        <%--<c:set var="addContactMaker" value="true" />--%>
+    <%--</c:if>--%>
 </c:forEach>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8" />
-    <title>客户-创客</title>
+    <title>我的客户-创客明细</title>
     <%@include file="/inc/followup/csslink.jsp"%>
     <style>
         .customer-info tr th{text-align: right;}
@@ -44,92 +44,95 @@
             <div class="page-content">
                 <div class=" clearfix">
                     <h2 class="pull-left blue">
-                            客户：${orgVo.linkPersonStr}
+                        客户：${orgVo.linkPersonStr}
                         &nbsp;&nbsp;&nbsp;
                     </h2>
                     <a href="/followup/uc/customer/maker/list?${returnUrl}" style="float: right;margin: 20px 10px 0 0;" class="btn btn-sm btn-info" type="reset">返回</a>
                 </div>
                 <%--添加创客联系记录--%>
-                <c:if test="${addContactMaker}">
-                <div class="row">
-                    <div class="col-xs-12">
+                <%--<c:if test="${addContactMaker}">--%>
+                    <div class="row">
+                        <div class="col-xs-12">
                             <h4 class="header smaller lighter blue ">
                                 <i class="ace-icon fa fa-comments-o"></i>
                                 添加联系记录
                             </h4>
-                        <form class="form-horizontal row" id="formEdit" style="max-width: 950px;">
-                            <input type="hidden" name="orgId" value="${orgId}">
-                            <div class="col-xs-12 col-sm-7">
-                                <div class="form-group">
-                                    <label class="col-sm-4 control-label no-padding-right">联系方式： </label>
-                                    <div class="col-xs-12 col-sm-8">
-                                        <select name="contactType">
-                                            <c:forEach items="${contactTypes}" var="item">
-                                                <option value="${item.value}">${item.name}</option>
-                                            </c:forEach>
-                                        </select>
+                            <form class="form-horizontal row" id="formEdit" style="max-width: 950px;">
+                                <input type="hidden" name="orgId" value="${orgId}">
+                                <div class="col-xs-12 col-sm-7">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label no-padding-right">联系方式： </label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <select name="contactType" class="width-100">
+                                                <c:forEach items="${contactTypes}" var="item">
+                                                    <option value="${item.value}">${item.name}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="space-4"></div>
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label no-padding-right">沟通内容： </label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <textarea type="text" name="content" value="" style="height: 90px;" class="width-100" placeholder="140个字以内" required></textarea>
+                                            <div class="help-block tips_box"></div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="text-align: center;">
+                                        <button type="submit" class="btn btn-primary">提交记录</button>
+                                        <button class="btn btn-info" type="reset">重置</button>
                                     </div>
                                 </div>
-                                <div class="space-4"></div>
-                                <div class="form-group">
-                                    <label class="col-sm-4 control-label no-padding-right">沟通内容： </label>
-                                    <div class="col-xs-12 col-sm-8">
-                                        <textarea type="text" name="content" value="" style="height: 90px;" class="width-100" placeholder="140个字以内" required></textarea>
-                                        <div class="help-block tips_box"></div>
-                                    </div>
-                                </div>
-                                <div class="form-group" style="text-align: center;">
-                                    <button type="submit" class="btn btn-primary">提交记录</button>
-                                    <button class="btn btn-info" type="reset">重置</button>
-                                </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
-                </div>
-                </c:if>
+                <%--</c:if>--%>
+
                 <%--查看创客联系记录--%>
-                <c:if test="${DetailMaker}">
-                <div class="row">
-                    <div class="col-xs-12">
-                        <h4 class="header smaller lighter blue">
-                            <i class="ace-icon fa fa-book"></i>
-                            联系记录
-                        </h4>
-                        <table class="table table-striped table-bordered table-hover" id="list">
-                            <thead>
-                            <tr>
-                                <th>联系时间</th>
-                                <th>联系人</th>
-                                <th>联系方式</th>
-                                <th>沟通内容</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <c:if test="${empty page.results}">
+                <c:if test="${detailMaker}">
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <h4 class="header smaller lighter blue">
+                                <i class="ace-icon fa fa-book"></i>
+                                联系记录
+                            </h4>
+                            <table class="table table-striped table-bordered table-hover" id="list">
+                                <thead>
                                 <tr>
-                                    <td colspan="7" class="no_data">暂无数据</td>
+                                    <th>联系时间</th>
+                                    <th>联系人</th>
+                                    <th>联系方式</th>
+                                    <th>沟通内容</th>
                                 </tr>
-                            </c:if>
-                            <c:if test="${not empty page.results}">
-                                <c:forEach items="${page.results}" var="item" >
+                                </thead>
+                                <tbody>
+                                <c:if test="${empty page.results}">
                                     <tr>
-                                        <td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                        <td>${item.followUp}</td>
-                                        <td>${item.contactTypeStr}</td>
-                                        <td>${item.content}</td>
+                                        <td colspan="7" class="no_data">暂无数据</td>
                                     </tr>
-                                </c:forEach>
+                                </c:if>
+                                <c:if test="${not empty page.results}">
+                                    <c:forEach items="${page.results}" var="item" >
+                                        <tr>
+                                            <td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                            <td>${item.followUp}</td>
+                                            <td>${item.contactTypeStr}</td>
+                                            <td>${item.content}</td>
+                                        </tr>
+                                    </c:forEach>
+                                </c:if>
+                                </tbody>
+                            </table>
+                            <c:if test="${not empty page.results}">
+                                <div class="pagerBar" id="pagerBar">
+                                    <common:page url="${pageUrl}" type="3" />
+                                </div>
                             </c:if>
-                            </tbody>
-                        </table>
-                        <c:if test="${not empty page.results}">
-                            <div class="pagerBar" id="pagerBar">
-                                <common:page url="${pageUrl}" type="3" />
-                            </div>
-                        </c:if>
+                        </div>
                     </div>
-                </div>
                 </c:if>
+
             </div>
         </div>
     </div>

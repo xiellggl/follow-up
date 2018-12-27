@@ -1,18 +1,18 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@include file="/inc/followup/taglib.jsp"%>
 <%--权限判断--%>
-<c:set var="TeamDetailMaker" value="false" />
+<c:set var="teamDetailMaker" value="false" />
 <c:forEach items="${permissions}" var="item">
     <%--查看团队创客联系记录--%>
     <c:if test="${item.url eq '/team/org/contact'}">
-        <c:set var="TeamDetailMaker" value="true" />
+        <c:set var="teamDetailMaker" value="true" />
     </c:if>
 </c:forEach>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8" />
-    <title>客户-创客</title>
+    <title>我的团队-创客明细</title>
     <%@include file="/inc/followup/csslink.jsp"%>
     <style>
         .customer-info tr th{text-align: right;}
@@ -36,55 +36,60 @@
                     <li class="active">联系记录</li>
                 </ul><!-- /.breadcrumb -->
             </div>
-            <%--查看团队创客联系记录--%>
-            <c:if test="${TeamDetailMaker}">
+
+
             <div class="page-content">
                 <div class="row">
                     <div class="col-xs-12">
-                    <%--<div class=" clearfix">--%>
+                        <%--<div class=" clearfix">--%>
                         <h4 class="header smaller lighter blue">
                             <i class="ace-icon fa fa-book"></i>
                             联系记录（客户：${orgVo.linkPersonStr}）
                             <a href="/followup/uc/customer/team/maker/list?${returnUrl}" style="float: right;margin: -10px 10px 0 0;" class="btn btn-sm btn-info" type="reset">返回</a>
                         </h4>
+                        <%--</div>--%>
+                        <%--查看团队创客联系记录--%>
+                        <c:if test="${TeamDetailMaker}">
 
-                    <%--</div>--%>
-                        <table class="table table-striped table-bordered table-hover" id="list">
-                            <thead>
-                            <tr>
-                                <th>联系时间</th>
-                                <th>联系人</th>
-                                <th>联系方式</th>
-                                <th>沟通内容</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <c:if test="${empty page.items}">
+                            <table class="table table-striped table-bordered table-hover" id="list">
+                                <thead>
                                 <tr>
-                                    <td colspan="7" class="no_data">暂无数据</td>
+                                    <th>联系时间</th>
+                                    <th>联系人</th>
+                                    <th>联系方式</th>
+                                    <th>沟通内容</th>
                                 </tr>
-                            </c:if>
-                            <c:if test="${not empty page.items}">
-                                <c:forEach items="${page.items}" var="item" >
+                                </thead>
+                                <tbody>
+                                <c:if test="${empty page.items}">
                                     <tr>
-                                        <td><fmt:formatDate value="${item.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                        <td>${item.followUpName}</td>
-                                        <td>${item.contactTypeStr}</td>
-                                        <td>${item.content}</td>
+                                        <td colspan="7" class="no_data">暂无数据</td>
                                     </tr>
-                                </c:forEach>
+                                </c:if>
+                                <c:if test="${not empty page.items}">
+                                    <c:forEach items="${page.items}" var="item" >
+                                        <tr>
+                                            <td><fmt:formatDate value="${item.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                            <td>${item.followUpName}</td>
+                                            <td>${item.contactTypeStr}</td>
+                                            <td>${item.content}</td>
+                                        </tr>
+                                    </c:forEach>
+                                </c:if>
+                                </tbody>
+                            </table>
+
+                            <c:if test="${not empty page.items}">
+                                <div class="pagerBar" id="pagerBar">
+                                    <common:page url="${pageUrl}" type="3" />
+                                </div>
                             </c:if>
-                            </tbody>
-                        </table>
-                        <c:if test="${not empty page.items}">
-                            <div class="pagerBar" id="pagerBar">
-                                <common:page url="${pageUrl}" type="3" />
-                            </div>
+
                         </c:if>
                     </div>
                 </div>
             </div>
-            </c:if>
+
         </div>
     </div>
 </div>
