@@ -9,10 +9,10 @@ import com.dayi.follow.service.FollowUpService;
 import com.dayi.follow.util.PageUtil;
 import com.dayi.follow.vo.LoginVo;
 import com.dayi.follow.vo.SearchVo;
-import com.dayi.follow.vo.export.FollowUpDetailExport;
+import com.dayi.follow.vo.export.AgentDetailExport;
+import com.dayi.follow.vo.export.MakerDetailExport;
 import com.dayi.follow.vo.followup.FMDetailListVo;
 import com.dayi.mybatis.support.Page;
-import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +25,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -127,7 +126,7 @@ public class FollowupController extends BaseController {
     }
 
 
-    @RequestMapping(value = "/org/export")
+    @RequestMapping(value = "/org/list/export")
     @ResponseBody
     public void orgExport(HttpServletRequest request, HttpServletResponse response, SearchVo searchVo) throws IOException {
         String followId = request.getParameter("followId");
@@ -135,11 +134,11 @@ public class FollowupController extends BaseController {
         List<FMDetailListVo> orgList = followUpService.findOrgList(searchVo, followId);
         String title = "跟进创客明细";
         String fileName = title + new DateTime().toString("yyyy-MM-dd HH:mm:ss");
-        FollowUpDetailExport export = new FollowUpDetailExport(fileName, title, orgList);
+        MakerDetailExport export = new MakerDetailExport(fileName, title, orgList);
         export.exportExcel(request, response);
     }
 
-    @RequestMapping(value = "/all/org/export")
+    @RequestMapping(value = "/all/org/list/export")
     @ResponseBody
     public void allOrgExport(HttpServletRequest request, HttpServletResponse response, SearchVo searchVo) throws IOException {
         LoginVo currVo = userComponent.getCurrUser(request);
@@ -148,11 +147,11 @@ public class FollowupController extends BaseController {
 
         String title = "跟进创客明细";
         String fileName = title + new DateTime().toString("yyyy-MM-dd HH:mm:ss");
-        FollowUpDetailExport export = new FollowUpDetailExport(fileName, title, allOrgList);
+        MakerDetailExport export = new MakerDetailExport(fileName, title, allOrgList);
         export.exportExcel(request, response);
     }
 
-    @RequestMapping(value = "/agent/export")
+    @RequestMapping(value = "/agent/list/export")
     @ResponseBody
     public void agentExport(HttpServletRequest request, HttpServletResponse response, SearchVo searchVo) throws IOException {
         String followId = request.getParameter("followId");
@@ -160,12 +159,12 @@ public class FollowupController extends BaseController {
         List<FMDetailListVo> agentList = followUpService.findAgentList(searchVo, followId);
         String title = "跟进代理商明细";
         String fileName = title + new DateTime().toString("yyyy-MM-dd HH:mm:ss");
-        FollowUpDetailExport export = new FollowUpDetailExport(fileName, title,agentList);
+        AgentDetailExport export = new AgentDetailExport(fileName, title,agentList);
         export.exportExcel(request, response);
 
     }
 
-    @RequestMapping(value = "/all/agent/export")
+    @RequestMapping(value = "/all/agent/list/export")
     @ResponseBody
     public void allAgentExport(HttpServletRequest request, HttpServletResponse response, SearchVo searchVo) throws IOException {
         LoginVo currVo = userComponent.getCurrUser(request);
@@ -174,7 +173,7 @@ public class FollowupController extends BaseController {
 
         String title = "跟进代理商明细";
         String fileName = title + new DateTime().toString("yyyy-MM-dd HH:mm:ss");
-        FollowUpDetailExport export = new FollowUpDetailExport(fileName, title, allAgentList);
+        AgentDetailExport export = new AgentDetailExport(fileName, title, allAgentList);
         export.exportExcel(request, response);
     }
 

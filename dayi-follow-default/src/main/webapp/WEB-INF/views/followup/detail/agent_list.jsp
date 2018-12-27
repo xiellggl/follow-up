@@ -102,7 +102,7 @@
                                             <span class="ace-icon fa fa-search"></span>
                                             搜索
                                         </button>
-                                        <a href="?" class="btn btn-xs btn-info">
+                                        <a href="${requestURI}/export" class="btn btn-xs btn-info">
                                             <span class="ace-icon fa fa-globe"></span>
                                             导出
                                         </a>

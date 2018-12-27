@@ -3,19 +3,19 @@
 <mapper namespace="com.dayi.follow.dao.dayi.OrgMapper">
 
     <select id="getManageFundLevel1" parameterType="map" resultType="java.math.BigDecimal">
-        select ifnull(sum(b.amount),0)  from agent a
+        select ifnull(sum(0.8*b.cargo_interest+b.cargo_interest_puchas),0)  from agent a
         LEFT  join (
-            SELECT agent,amount FROM protocol where status in(1,2)
-        )b on b.agent=a.id
-        where  b.agent is not null
+            SELECT agent_org_id,cargo_interest,cargo_interest_puchas from finance_account
+        )b on b.agent_org_id=a.id
+        where  b.agent_org_id is not null
         and a.org_id =#{orgId} and a.invite_level=1
     </select>
     <select id="getManageFundLevel2" parameterType="map" resultType="java.math.BigDecimal">
-        select ifnull(sum(b.amount),0)  from agent a
+        select ifnull(sum(0.8*b.cargo_interest+b.cargo_interest_puchas),0)  from agent a
         LEFT  join (
-        SELECT agent,amount FROM protocol where status in(1,2)
-        )b on b.agent=a.id
-        where  b.agent is not null
+            SELECT agent_org_id,cargo_interest,cargo_interest_puchas from finance_account
+        )b on b.agent_org_id=a.id
+        where  b.agent_org_id is not null
         and a.org_id =#{orgId} and a.invite_level=2
     </select>
 

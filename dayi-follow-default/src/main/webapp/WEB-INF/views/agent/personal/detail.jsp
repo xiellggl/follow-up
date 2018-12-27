@@ -57,6 +57,13 @@
             <c:if test="${detailAgent}">
                 <div class="page-content">
                     <c:set var="pageType" value="my" />
+                    <div class=" clearfix">
+                        <h2 class="pull-left blue">
+                            客户：${detailVo.linkPersonFm}
+                            &nbsp;&nbsp;&nbsp;
+                        </h2>
+                    <a href="/agent/list?${returnUrl}" style="float: right;margin: 20px 10px 0 0;" class="btn btn-sm btn-info" type="reset">返回</a>
+                    </div>
                     <%@include file="../agent_detail_inc.jsp"%>
                 </div>
             </c:if>

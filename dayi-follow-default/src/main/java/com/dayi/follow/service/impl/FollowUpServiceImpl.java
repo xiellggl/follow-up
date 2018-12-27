@@ -277,7 +277,7 @@ public class FollowUpServiceImpl implements FollowUpService {
 
     private List<FMDetailListVo> doAgentMore(List<FMDetailListVo> agents) {
         for (FMDetailListVo agent : agents) {
-            agent.setAgentCargo(agentMapper.getAgentFund(agent.getId()));//代理资金
+            //agent.setAgentCargo(agentMapper.getAgentFund(agent.getId()));//代理资金
 
             Account account = agentMapper.getAccount(agent.getId());
             if (account != null) {
@@ -290,8 +290,8 @@ public class FollowUpServiceImpl implements FollowUpService {
                 agent.setInterest(account.getInterest());//利息-服务费
             }
 
-            agent.setGrowthCargo(agent.getAgentCargo().subtract(agent.getAgentCargoBefore()));//净增货值
-            agent.setGrowthFund(agent.getTotalFund().subtract(agent.getTotalFundBefore()));//净增资金
+            //  agent.setGrowthCargo(agent.getAgentCargo().subtract(agent.getAgentCargoBefore()));//净增货值
+            //  agent.setGrowthFund(agent.getTotalFund().subtract(agent.getTotalFundBefore()));//净增资金
         }
         return agents;
     }
@@ -299,6 +299,8 @@ public class FollowUpServiceImpl implements FollowUpService {
     private List<FMDetailListVo> doOrgMore(List<FMDetailListVo> orgs) {
         for (FMDetailListVo org : orgs) {
             Organization organization = orgMapper.get(org.getId());
+
+            if (organization == null) continue;
 
             BigDecimal oneLevel = orgMapper.getManageFundLevel1(org.getId());//一级代理商资产
 

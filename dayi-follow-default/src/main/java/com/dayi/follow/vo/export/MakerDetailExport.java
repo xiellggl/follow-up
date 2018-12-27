@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * 跟进人管理，代理商/创客明细导出
  */
-public class FollowUpDetailExport extends AbstractExcel<FMDetailListVo> {
+public class MakerDetailExport extends AbstractExcel<FMDetailListVo> {
 
     // 按照文档列头顺序添加
     private Column column0 = addColumn("会员ID", 4000);
@@ -26,12 +26,7 @@ public class FollowUpDetailExport extends AbstractExcel<FMDetailListVo> {
     private Column column9 = addColumn("当前代理资金", 6000);
     private Column column10 = addColumn("净增代理资金", 6000);
 
-    private Column column11 = addColumn("变更前总资产", 4000);
-    private Column column12 = addColumn("当前总资产", 6000);
-    private Column column13 = addColumn("净增总资产", 6000);
-
-
-    public FollowUpDetailExport(String fileName, String fileTitle, List<FMDetailListVo> datas) {
+    public MakerDetailExport(String fileName, String fileTitle, List<FMDetailListVo> datas) {
         super(fileName, fileTitle, datas);
     }
 
@@ -55,10 +50,6 @@ public class FollowUpDetailExport extends AbstractExcel<FMDetailListVo> {
         column8.setValue(vo.getAgentCargoBefore());
         column9.setValue(vo.getAgentCargo());
         column10.setValue(vo.getGrowthCargo());
-
-        column11.setValue(vo.getTotalFundBefore());
-        column12.setValue(vo.getTotalFund());
-        column13.setValue(vo.getGrowthFund());
     }
 }
 

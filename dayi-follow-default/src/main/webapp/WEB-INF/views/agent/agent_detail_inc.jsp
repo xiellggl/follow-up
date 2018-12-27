@@ -2,13 +2,6 @@
 <%@include file="/inc/followup/taglib.jsp" %>
 <div class="row">
     <div class="col-xs-12">
-        <div class=" clearfix">
-            <h2 class="pull-left blue">
-                客户：${detailVo.linkPersonFm}
-                &nbsp;&nbsp;&nbsp;
-            </h2>
-            <a href="/followup/uc/customer/agent/list?${returnUrl}" style="float: right;margin: 20px 10px 0 0;" class="btn btn-sm btn-info" type="reset">返回</a>
-        </div>
         <h4 class="header smaller lighter blue">
             <i class="ace-icon fa fa-user"></i>
             客户信息

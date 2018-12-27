@@ -3,7 +3,7 @@
 <mapper namespace="com.dayi.follow.dao.follow.FollowOrgMapper">
 
     <select id="getTotalFund" parameterType="map" resultType="java.math.BigDecimal">
-        SELECT ifnull(sum(amount),0) from follow_org a
+        SELECT ifnull(sum(0.8*d.cargo_interest+d.cargo_interest_puchas),0) from follow_org a
         left join (
           SELECT id from ${assistDataBase}.organization where org_type = 4 and del_status !=-1
         )b on b.id = a.org_id
@@ -11,9 +11,9 @@
           SELECT id,org_id from ${assistDataBase}.agent where del_status !=-1
         )c on c.org_id=b.id
         left join (
-          SELECT agent,amount FROM ${assistDataBase}.protocol WHERE 1 = 1 and status in (1,2)
-        )d on d.agent = c.id
-        where b.id is not null and c.org_id is not NULL and d.agent is not NULL
+            SELECT agent_org_id,cargo_interest,cargo_interest_puchas from ${assistDataBase}.finance_account
+        )d on d.agent_org_id = c.id
+        where b.id is not null and c.org_id is not NULL and d.agent_org_id is not NULL
         and a.follow_id in
         <foreach item="item" index="index" collection="followIds"
                  open="(" separator="," close=")">
