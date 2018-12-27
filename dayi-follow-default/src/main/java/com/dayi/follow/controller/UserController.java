@@ -322,7 +322,7 @@ public class UserController extends BaseController {
         }
 
         model.addAttribute("user", userVo);
-        return "uc/myinfo";
+        return "/myinfo";
     }
 
     /**
@@ -330,7 +330,7 @@ public class UserController extends BaseController {
      */
     @RequestMapping("/pwd")
     public String pwd() {
-        return "uc/pwd";
+        return "/pwd";
     }
 
     /**
