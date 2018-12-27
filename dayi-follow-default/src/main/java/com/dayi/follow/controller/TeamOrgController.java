@@ -61,7 +61,7 @@ public class TeamOrgController {
         request.setAttribute("pageUrl", pageUrl);
         model.addAttribute("page", page);
         model.addAttribute("orgTypes", OrgTypeEnum.values());//机构商类型
-        return "uc/customer/team/maker";
+        return "maker/team/list";
     }
 
     /**
@@ -87,7 +87,7 @@ public class TeamOrgController {
         if (followIds.contains(followId)) {
             page = followOrgService.findContacts(page, orgId);
         } else {
-            return "redirect:/followup/uc/index";
+            return "redirect:/index";
         }
 
         String returnUrl = request.getParameter("returnUrl");//返回创客进来列表的路径
@@ -95,6 +95,6 @@ public class TeamOrgController {
         model.addAttribute("page", page);//联系时间取createDate
         model.addAttribute("returnUrl", returnUrl);//返回创客进来列表的路径
         request.setAttribute("pageUrl", pageUrl);
-        return "/followup/uc/customer/contact_list";
+        return "maker/team/contact";
     }
 }

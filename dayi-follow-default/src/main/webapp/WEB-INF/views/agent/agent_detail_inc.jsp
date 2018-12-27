@@ -7,7 +7,7 @@
                 客户：${detailVo.linkPersonFm}
                 &nbsp;&nbsp;&nbsp;
             </h2>
-            <a href="/followup/uc/customer${pageType eq "team" ? "/team" : ""}/agent/list?${returnUrl}" style="float: right;margin: 20px 10px 0 0;" class="btn btn-sm btn-info" type="reset">返回</a>
+            <a href="/followup/uc/customer/agent/list?${returnUrl}" style="float: right;margin: 20px 10px 0 0;" class="btn btn-sm btn-info" type="reset">返回</a>
         </div>
         <h4 class="header smaller lighter blue">
             <i class="ace-icon fa fa-user"></i>

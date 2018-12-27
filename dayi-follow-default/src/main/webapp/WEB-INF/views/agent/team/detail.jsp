@@ -104,14 +104,14 @@
 
         <c:if test="${teamLoginlogAgent}">
         var $logList = $("#logList");
-        var log_url = "/agent/loginlog?agentId=" + agentId;
+        var log_url = "/team/agent/loginlog?agentId=" + agentId;
         common.loadPageHTML(log_url, null,$logList);
         common.clickPageFn(log_url, null, $logList);
         </c:if>
 
         <c:if test="${teamContactAgent}">
         var $conList = $("#conList");
-        var con_url = "/agent/contact?agentId=" + agentId;
+        var con_url = "/team/agent/contact?agentId=" + agentId;
         common.loadPageHTML(con_url, null,$conList);
         common.clickPageFn(con_url, null, $conList);
         </c:if>
