@@ -54,6 +54,10 @@ public class GlobalFilter implements Filter {
 
         String requestURI = request.getRequestURI();
 
+        String queryString = request.getQueryString();
+
+        request.setAttribute("queryString", queryString);
+
         request.setAttribute("requestURI", requestURI);
 
         filterChain.doFilter(request, response);
