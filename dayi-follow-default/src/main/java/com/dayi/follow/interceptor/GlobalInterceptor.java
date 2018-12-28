@@ -50,15 +50,24 @@ public class GlobalInterceptor implements HandlerInterceptor {
         if (accountInfo != null) {
             String userId = accountInfo.getUserId();
             FollowUp user = userService.get(userId);
-            request.getSession().setAttribute("name", user.getName());
 
-            //获取权限列表
-            List<Permission> permissions = new ArrayList<>();
+
+            List<String> roleNameList = new ArrayList<>();
             List<Role> roles = roleService.queryRolesByIds(user.getRoleids());
+            List<Permission> permissions = new ArrayList<>();
             for (Role role : roles) {
+                roleNameList.add(role.getName());
                 List<Permission> permissionList = permissionService.getPermissionsByRoleId(role.getId());
                 permissions.addAll(permissionList);
             }
+
+            //用户名称
+            request.getSession().setAttribute("name", user.getName());
+
+            //用户权限名称
+            request.getSession().setAttribute("roleName", StringUtils.join(roleNameList,","));
+
+            //获取权限列表
             request.getSession().setAttribute("permissions", permissions);
         }
 

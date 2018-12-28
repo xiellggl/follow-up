@@ -111,7 +111,7 @@
 <%@include file="/inc/followup/script.jsp" %>
 <script>
     seajs.use(["common"], function (common) {
-        common.head();
+        common.head("_report_team_daily");
     });
 </script>
 </body>

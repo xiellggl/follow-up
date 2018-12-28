@@ -23,6 +23,7 @@
                             <small>
                                你好！${name}
                             </small>
+                            ${roleName}
 						</span>
                         <i class="ace-icon fa fa-caret-down"></i>
                     </a>
