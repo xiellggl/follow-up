@@ -46,6 +46,7 @@
                         <i class="ace-icon fa fa-home home-icon"></i>
                         <a href="/index">首页</a>
                     </li>
+                    <li>系统管理</li>
                     <li class="active">模块管理</li>
                 </ul><!-- /.breadcrumb -->
             </div>

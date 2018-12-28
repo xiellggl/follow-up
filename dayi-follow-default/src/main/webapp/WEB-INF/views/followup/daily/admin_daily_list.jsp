@@ -4,7 +4,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8"/>
-    <title><c:if test="${flowUpSession.userName eq 'admin'}">团队报表-</c:if>团队日报</title>
+    <title>管理员报表-管理员日报</title>
     <%@include file="/inc/followup/csslink.jsp" %>
     <link rel="stylesheet" type="text/css" media="all" href="/static/public/daterangepicker3/daterangepicker.css"/>
 </head>
@@ -20,10 +20,8 @@
                         <i class="ace-icon fa fa-home home-icon"></i>
                         <a href="/index">首页</a>
                     </li>
-                    <c:if test="${flowUpSession.userName eq 'admin'}">
-                        <li>团队报表</li>
-                    </c:if>
-                    <li class="active">团队日报</li>
+                    <li>管理员报表</li>
+                    <li class="active">管理员日报</li>
                 </ul><!-- /.breadcrumb -->
             </div>
             <div class="page-content">
