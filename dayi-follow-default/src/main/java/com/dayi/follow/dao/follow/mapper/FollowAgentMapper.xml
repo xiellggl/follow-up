@@ -119,8 +119,17 @@
        <if test="null!=followId">
            AND b.id =#{followId}
        </if>
-
-
+       -- 今日待联系代理商的ID集合
+       <if test="null!=ids and 0!=ids.size()">
+           and c.id in
+           <foreach item="item" index="index" collection="ids"
+                    open="(" separator="," close=")">
+               #{item}
+           </foreach>
+       </if>
+       <if test="null!=ids and 0==ids.size()">
+           and 0 = 1
+       </if>
    </sql>
     <sql id="followTeamConditionSql">
         <if test="null!=followIds and 0 != followIds.size ">
@@ -145,17 +154,6 @@
         </if>
 
         --         大易相关表查询条件
-        -- 今日待联系代理商的ID集合
-        <if test="null!=ids and 0!=ids.size()">
-            and c.id in
-            <foreach item="item" index="index" collection="ids"
-                     open="(" separator="," close=")">
-                #{item}
-            </foreach>
-        </if>
-        <if test="null!=ids and 0==ids.size()">
-            and 0 = 1
-        </if>
         -- 下面是页面查询条件
         -- 是否实名认证
         <if test="null!=searchVo.idCardValidate">
@@ -286,12 +284,12 @@
 
     <!--统计待联系代理商id集合-->
     <select id="getWaitLinkAgentIds" resultType="java.lang.Integer" parameterType="string">
-        select ac2.agent_id id FROM ( SELECT max( create_time ) create_time, agent_id
-        FROM agent_contact where 1=1
-        <if test="null != followUpId">
-            AND flow_id =#{followUpId}
-        </if>
-        GROUP BY agent_id ) ac1
+        select ac2.agent_id id FROM (
+            SELECT max( create_time ) create_time, agent_id
+            FROM agent_contact where 1=1
+                AND follow_id =#{followId}
+            GROUP BY agent_id
+        ) ac1
         LEFT JOIN ( SELECT create_time, agent_id, next_contact_time FROM agent_contact ) ac2
         ON ac2.create_time = ac1.create_time
         AND ac2.agent_id = ac1.agent_id WHERE next_contact_time = CURDATE()
@@ -303,11 +301,11 @@
 
 
     <select id="getTotalFund" parameterType="java.lang.String" resultType="java.math.BigDecimal">
-        SELECT sum(amount) from follow_agent a
+        SELECT ifnull(sum(0.8*b.cargo_interest+b.cargo_interest_puchas),0) from follow_agent a
         left join (
-        SELECT agent,amount FROM ${assistDataBase}.protocol WHERE 1 = 1 and status in (1,2)
-        )b on b.agent = a.agent_id
-        where b.agent is not NULL
+            SELECT agent_org_id,cargo_interest,cargo_interest_puchas from ${assistDataBase}.finance_account
+        )b on b.agent_org_id = a.agent_id
+        where b.agent_org_id is not NULL
         and a.follow_id in
         <foreach item="item" index="index" collection="followIds"
                  open="(" separator="," close=")">

@@ -22,7 +22,7 @@ import java.util.List;
  */
 public interface FollowAgentMapper extends BaseMapper<FollowAgent> {
     //获取待联系代理商的id集合
-    List<Integer> getWaitLinkAgentIds(@Param("followUpId") String followUpId);
+    List<Integer> getWaitLinkAgentIds(@Param("followId") String followId);
 
     //查找代理商最近的一条联系记录
     AgentContact findLastContact(@Param("agentId") Integer agentId);
@@ -32,9 +32,9 @@ public interface FollowAgentMapper extends BaseMapper<FollowAgent> {
                                  @Param("startStr") String startStr, @Param("endStr") String endStr,
                                  @Param("followId") String followId, @Param("assistDataBase") String assistDataBase);
 
-    Page<AgentListVo> findTeamAgents(Page page, @Param("searchVo") SearchVo searchVo, @Param("ids") List<Integer> ids,
-                                     @Param("startStr") String startStr, @Param("endStr") String endStr,
-                                     @Param("followIds") List<String> followIds, @Param("assistDataBase") String assistDataBase);
+    Page<AgentListVo> findTeamAgents(Page page, @Param("searchVo") SearchVo searchVo, @Param("startStr") String startStr,
+                                     @Param("endStr") String endStr, @Param("followIds") List<String> followIds,
+                                     @Param("assistDataBase") String assistDataBase);
 
     //统计资产规模
     BigDecimal getTotalFund(@Param("followIds") List<String> followIds, @Param("assistDataBase") String assistDataBase);

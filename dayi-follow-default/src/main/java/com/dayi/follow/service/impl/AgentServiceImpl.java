@@ -19,6 +19,8 @@ import com.dayi.follow.vo.*;
 import com.dayi.follow.vo.agent.AgentContactVo;
 import com.dayi.follow.vo.agent.AgentListVo;
 import com.dayi.mybatis.support.Page;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.util.StringUtil;
 import org.joda.time.DateTime;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -52,7 +54,6 @@ public class AgentServiceImpl implements AgentService {
 
     @Override
     public Page<AgentListVo> findAgentPage(Page<AgentListVo> page, SearchVo searchVo, String followId) {
-
         List<Integer> ids = null;
         if (searchVo.getWaitToLinkToday() != null) {
             ids = followAgentMapper.getWaitLinkAgentIds(followId);
@@ -78,17 +79,11 @@ public class AgentServiceImpl implements AgentService {
 
         if (followIds.isEmpty()) return page;
 
-        List<Integer> ids = null;
-        if (searchVo.getWaitToLinkToday() != null) {
-            ids = followAgentMapper.getWaitLinkAgentIds(followId);
-        }
-
         DateTime dateTime = new DateTime();
         String startStr = dateTime.millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
         String endStr = dateTime.millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
 
-        page = followAgentMapper.findTeamAgents(page, searchVo,
-                ids, startStr, endStr, followIds, dayiDataBaseStr);
+        page = followAgentMapper.findTeamAgents(page, searchVo, startStr, endStr, followIds, dayiDataBaseStr);
 
         this.queryByList(page.getResults());
 
