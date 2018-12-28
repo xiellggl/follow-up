@@ -244,7 +244,7 @@ user_name,`disable`,`password`,create_by,modify_by,create_date,modify_date,switc
 from dayi_spot.flow_up;
 
 #修补超管和管理员的部门id
-update dayi_follow_all.follow_up set dept_id = 2 WHERE user_name='admin' or user_name='chenyh1';
+update dayi_follow_all.follow_up set dept_id = 1 WHERE user_name='admin' or user_name='chenyh1';
 
 #修补超管和管理员的身份
 update dayi_follow_all.follow_up set identity = 2 WHERE user_name='admin' or user_name='chenyh1';
