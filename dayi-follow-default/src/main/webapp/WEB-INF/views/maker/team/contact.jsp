@@ -46,7 +46,7 @@
                         <h4 class="header smaller lighter blue">
                             <i class="ace-icon fa fa-book"></i>
                             联系记录（客户：${orgVo.linkPersonStr}）
-                            <a href="/followup/uc/customer/team/maker/list?${returnUrl}" style="float: right;margin: -10px 10px 0 0;" class="btn btn-sm btn-info" type="reset">返回</a>
+                            <a href="/team/org/list?${returnUrl}" style="float: right;margin: -10px 10px 0 0;" class="btn btn-sm btn-info" type="reset">返回</a>
                         </h4>
                         <%--</div>--%>
 

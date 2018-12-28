@@ -47,7 +47,7 @@
                         客户：${orgVo.linkPersonStr}
                         &nbsp;&nbsp;&nbsp;
                     </h2>
-                    <a href="/followup/uc/customer/maker/list?${returnUrl}" style="float: right;margin: 20px 10px 0 0;" class="btn btn-sm btn-info" type="reset">返回</a>
+                    <a href="/org/list?${returnUrl}" style="float: right;margin: 20px 10px 0 0;" class="btn btn-sm btn-info" type="reset">返回</a>
                 </div>
                 <%--添加创客联系记录--%>
                 <%--<c:if test="${addContactMaker}">--%>
