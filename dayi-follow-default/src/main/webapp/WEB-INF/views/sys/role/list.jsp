@@ -5,7 +5,7 @@
 <c:set var="deleteRolePermission" value="false" />
 <c:set var="enableRolePermission" value="false" />
 <c:forEach items="${permissions}" var="item">
-    <c:if test="${fn:contains(item.url, '/role/edit')}">
+    <c:if test="${item.url eq '/role/edit'}">
         <c:set var="editRolePermission" value="true" />
     </c:if>
     <c:if test="${item.url eq '/role/delete'}">

@@ -144,7 +144,7 @@ KA团队日报
         </h3>
         <div class="infobox-container">
             <div style="text-align: center; font-size:80px; font-weight: bold; line-height: 100px; width: 200px;">
-                <a href="/customer/agent/list?waitToLinkToday=1" class="red">{{result}}</a>
+                <a href="/agent/list?waitToLinkToday=1" class="red">{{result}}</a>
             </div>
         </div>
     </div>
