@@ -79,7 +79,7 @@
                                         <th>模块状态</th>
                                         <th>功能路径</th>
                                         <th class="hidden-xs">排序</th>
-                                        <c:if test="${addModulePermission or editModulePermission or deleteModulePermission or bindModulePermission or untyingModulePermission}">
+                                        <c:if test="${addModulePermission or updateModulePermission or deleteModulePermission or bindModulePermission or untyingModulePermission}">
                                         <th>操作</th>
                                         </c:if>
                                     </tr>

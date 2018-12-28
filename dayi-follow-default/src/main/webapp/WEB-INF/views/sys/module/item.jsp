@@ -24,9 +24,9 @@
         </td>
         <td>${cur.url}</td>
         <td class="hidden-xs">${cur.order}</td>
-        <c:if test="${addModulePermission or editModulePermission or deleteModulePermission or bindModulePermission or untyingModulePermission}">
+        <c:if test="${addModulePermission or updateModulePermission or deleteModulePermission or bindModulePermission or untyingModulePermission}">
             <td>
-                <c:if test="${cur.type eq 0 and (addModulePermission or editModulePermission or deleteModulePermission or bindModulePermission)}">
+                <c:if test="${cur.type eq 0 and (addModulePermission or updateModulePermission or deleteModulePermission or bindModulePermission)}">
                     <div class="btn-group dropup">
                         <div class="hidden-xs">
                             <c:if test="${addModulePermission}">
@@ -34,7 +34,7 @@
                                     <i class="ace-icon fa fa-plus-circle bigger-130"></i>
                                 </a>
                             </c:if>
-                            <c:if test="${editModulePermission}">
+                            <c:if test="${updateModulePermission}">
                                 <a href="#" data-id="${cur.id}" data-toggle="modal" data-target="#myModalEditModule" data-toggle="tooltip" title="修改">
                                     <i class="ace-icon fa fa-pencil bigger-130"></i>
                                 </a>
@@ -59,7 +59,7 @@
                                     <a href="#" data-pid="${cur.id}" data-toggle="modal" data-target="#myModalEditModule">添加子类</a>
                                 </li>
                             </c:if>
-                            <c:if test="${editModulePermission}">
+                            <c:if test="${updateModulePermission}">
                                 <li>
                                     <a href="#" data-id="${cur.id}" data-toggle="modal" data-target="#myModalEditModule">修改</a>
                                 </li>
