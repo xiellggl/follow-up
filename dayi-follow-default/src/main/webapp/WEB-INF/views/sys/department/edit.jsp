@@ -27,6 +27,7 @@
                             <label class="col-sm-2 control-label no-padding-right">上级部门：</label>
                             <div class="col-xs-12 col-sm-6">
                                 <select name="pid" class="form-control">
+                                    <option>请选择部门</option>
                                     <c:forEach items="${deptList}" var="item" >
                                         <option value="${item.id}" ${deptVo.pid eq item.id ? 'selected' : ''}>${item.treeName}</option>
                                     </c:forEach>
