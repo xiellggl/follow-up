@@ -20,6 +20,7 @@
                         <i class="ace-icon fa fa-home home-icon"></i>
                         <a href="/index">首页</a>
                     </li>
+                    <li>团队报表</li>
                     <li class="active">团队周报</li>
                 </ul><!-- /.breadcrumb -->
             </div>

@@ -4,7 +4,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8"/>
-    <title>团队报表-团队日报</title>
+    <title>管理员报表-管理员日报详情</title>
     <%@include file="/inc/followup/csslink.jsp" %>
 </head>
 <body class="no-skin">
@@ -19,7 +19,8 @@
                         <i class="ace-icon fa fa-home home-icon"></i>
                         <a href="/index">首页</a>
                     </li>
-                    <li class="active">团队日报详情</li>
+                    <li>管理员报表</li>
+                    <li class="active">管理员日报详情</li>
                 </ul><!-- /.breadcrumb -->
             </div>
             <div class="page-content">

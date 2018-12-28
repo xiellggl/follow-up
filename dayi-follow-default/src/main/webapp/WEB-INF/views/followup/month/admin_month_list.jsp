@@ -4,7 +4,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8"/>
-    <title>团队报表-团队月报</title>
+    <title>管理员报表-管理员月报</title>
     <%@include file="/inc/followup/csslink.jsp" %>
     <link rel="stylesheet" type="text/css" media="all" href="/static/public/flexoCalendar/flexoCalendar.css"/>
 </head>
@@ -20,8 +20,8 @@
                         <i class="ace-icon fa fa-home home-icon"></i>
                         <a href="/index">首页</a>
                     </li>
-                    <li>团队报表</li>
-                    <li class="active">团队月报</li>
+                    <li>管理员报表</li>
+                    <li class="active">管理员月报</li>
                 </ul><!-- /.breadcrumb -->
             </div>
             <div class="page-content">
