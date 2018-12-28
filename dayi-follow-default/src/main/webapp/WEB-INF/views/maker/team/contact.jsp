@@ -28,7 +28,7 @@
                 <ul class="breadcrumb">
                     <li>
                         <i class="ace-icon fa fa-home home-icon"></i>
-                        <a href="/followup/uc/index">首页</a>
+                        <a href="/index">首页</a>
                     </li>
                     <li>
                         <a href="./list">团队客户-创客</a>

@@ -20,7 +20,7 @@
                 <ul class="breadcrumb">
                     <li>
                         <i class="ace-icon fa fa-home home-icon"></i>
-                        <a href="/followup/manage/index">首页</a>
+                        <a href="/index">首页</a>
                     </li>
                     <li class="active">日志管理</li>
                 </ul><!-- /.breadcrumb -->

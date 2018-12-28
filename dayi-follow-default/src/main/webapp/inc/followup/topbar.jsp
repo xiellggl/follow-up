@@ -9,7 +9,7 @@
             <span class="icon-bar"></span>
         </button>
         <div class="navbar-header pull-left">
-            <a href="/followup/${(flowUpVo.isAdmin eq 1 or flowUpVo.userName eq 'admin') ? 'manage':'uc'}/index"
+            <a href="/index"
                class="navbar-brand">
                 <small>塑如意跟进人管理系统</small>
             </a>
