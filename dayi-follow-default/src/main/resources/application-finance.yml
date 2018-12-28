@@ -19,7 +19,7 @@ spring:
 
 dayi:
   mq:
-    nameservAddr: 172.28.1.60:9876
+    nameservAddr: 172.28.1.61:9876
     consumerGroup: dayi-follow-consumer
   component:
     constant: #常量参数
