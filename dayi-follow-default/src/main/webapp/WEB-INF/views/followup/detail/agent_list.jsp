@@ -170,11 +170,11 @@
                                             <%--变更日期--%>
                                         <td class="hidden-sm hidden-xs"><fmt:formatDate value="${item.changeDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                             <%--变更前总资产--%>
-                                        <td>${item.totalFundBefore}</td>
+                                        <td><fmt:formatNumber value="${item.totalFundBefore}" pattern="0.00" type="number"/></td>
                                             <%--当前总资产--%>
-                                        <td>${item.totalFund}</td>
+                                        <td><fmt:formatNumber value="${item.totalFund}" pattern="0.00" type="number"/></td>
                                             <%--新增代理商服务费--%>
-                                        <td>${item.interest}</td>
+                                        <td><fmt:formatNumber value="${item.interest}" pattern="0.00" type="number"/></td>
                                     </tr>
                                 </c:forEach>
                             </c:if>
