@@ -279,6 +279,8 @@ public class FollowUpServiceImpl implements FollowUpService {
         for (FMDetailListVo agent : agents) {
             //agent.setAgentCargo(agentMapper.getAgentFund(agent.getId()));//代理资金
 
+            if (agent == null) continue;
+
             Account account = agentMapper.getAccount(agent.getId());
             if (account != null) {
                 double totalFund = account.getCargoInterest().multiply(BigDecimal.valueOf(0.8))//总资金
