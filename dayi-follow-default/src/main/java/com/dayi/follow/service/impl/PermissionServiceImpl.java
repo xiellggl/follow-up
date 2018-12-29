@@ -112,11 +112,21 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     @Log(target = OperateLog.class, action = BaseLog.LogAction.UPDATE, what = "权限管理", note = "添加权限")
-    public boolean addPermission(Permission permission) {
+    public BizResult addPermission(Permission permission) {
+        // 判断url是否重复
+        String url = permission.getUrl();
+        Conditions conditions = new Conditions();
+        conditions.add(Restrictions.eq("url", url));
+        conditions.add(Restrictions.eq("del_status", Permission.DEL_STATUS_NO.id));
+        if (null != permissionMapper.getByConditions(conditions)) {
+            return BizResult.fail("添加失败，路径不允许重复");
+        }
+
+        // 添加权限
         permission.setStatus(Permission.STATUS_NORMAL.id);
         permission.setDelStatus(Permission.DEL_STATUS_NO.id);
         permission.setId(permissionMapper.getNewId());
-        return 1 == permissionMapper.add(permission);
+        return 1 == permissionMapper.add(permission) ? BizResult.SUCCESS : BizResult.FAIL;
     }
 
     @Override
@@ -178,6 +188,15 @@ public class PermissionServiceImpl implements PermissionService {
         Permission findPermission = permissionMapper.get(permission.getId());
         if (null == findPermission) {
             return BizResult.fail("功能模块不存在.");
+        }
+
+        // 判断url是否重复
+        String url = permission.getUrl();
+        Conditions conditions = new Conditions();
+        conditions.add(Restrictions.eq("url", url));
+        conditions.add(Restrictions.eq("del_status", Permission.DEL_STATUS_NO.id));
+        if (null != permissionMapper.getByConditions(conditions)) {
+            return BizResult.fail("修改失败，路径不允许重复");
         }
 
         // 所属模块若有变更则删除角色权限关联
