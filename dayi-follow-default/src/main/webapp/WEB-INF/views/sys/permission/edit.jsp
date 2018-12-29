@@ -76,9 +76,9 @@
                             <div class="col-xs-12 col-sm-6">
                                 <select name="moduleid" class="chosen-select form-control">
                                     <option value="">顶级模块</option>
-                                    <c:set var="selectedId" value="${permission.moduleid}" scope="request" />
-                                    <c:set var="selectList" value="${menus}" />
-                                    <%@ include file="../module/option_item.jsp" %>
+                                    <c:forEach var="item" items="${menus}">
+                                        <option value="${item.id}"  ${permission.moduleid eq item.id ? 'selected' : ''} >${item.name}</option>
+                                    </c:forEach>
                                 </select>
                             </div>
                             <div class="help-block col-xs-12 col-sm-reset inline tips_box"></div>

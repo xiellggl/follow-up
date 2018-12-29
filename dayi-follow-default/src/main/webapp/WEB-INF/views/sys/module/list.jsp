@@ -139,19 +139,6 @@
 
                             <div class="space-4"></div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label no-padding-right">*所属模块：</label>
-                                <div class="col-xs-12 col-sm-6">
-                                    <select name="parentid" class="chosen-select form-control">
-                                        <option value="">顶级模块</option>
-                                        <c:set var="selectList" value="${menus}" />
-                                        <%@ include file="option_item.jsp" %>
-                                    </select>
-                                </div>
-                                <div class="help-block col-xs-12 col-sm-reset inline tips_box"></div>
-                            </div>
-
-                            <div class="space-4"></div>
-                            <div class="form-group">
                                 <label class="col-sm-2 control-label no-padding-right">样式名称：</label>
                                 <div class="col-xs-12 col-sm-6">
                                     <input type="text" name="cssName" value="{{cssName}}" class="form-control"/>
