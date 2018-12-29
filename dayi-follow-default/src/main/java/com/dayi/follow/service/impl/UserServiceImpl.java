@@ -26,6 +26,8 @@ import com.dayi.user.authorization.authz.RoleBase;
 import com.dayi.user.authorization.authz.RolePermissionResult;
 import com.dayi.user.authorization.authz.support.SimpleAuthorizationInfo;
 import com.dayi.user.authorization.realm.Realm;
+import com.dayi.user.model.Manager;
+import com.dayi.user.model.ManagerLoginLog;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.jdbc.Null;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -379,20 +381,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Log(target = OperateLog.class, action = BaseLog.LogAction.ADD, what = "登录管理", note = "用户登录")
     public BizResult login(LoginVo loginVo) {
         FollowUp user = userMapper.getByUserName(loginVo.getUsername());
         if (user == null) return BizResult.fail("用户不存在！");
         if (user.getDisable() != MemberStatusEnum.ENABLE.getValue()) return BizResult.fail("账号已被禁用！");
         return BizResult.SUCCESS;
     }
-
-    @Override
-    @Log(target = OperateLog.class, action = BaseLog.LogAction.ADD, what = "登录管理", note = "用户登出")
-    public void loginOut(HttpServletRequest request, HttpServletResponse response) {
-        AuthorizationManager.cleanAllAuthenticationInfo(request, response);
-    }
-
 
 }
 
