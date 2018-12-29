@@ -325,6 +325,8 @@
             var $userName = $form.find('[name="userName"]');
             var $inviteCode = $form.find('[name="inviteCode"]');
             $form.find('[name="deptId"]').val(data.deptId);
+            $form.find('[name="roleids"]').val(data.roleids);
+
             $form.validate({
                 rules: {
                     //用户姓名：
