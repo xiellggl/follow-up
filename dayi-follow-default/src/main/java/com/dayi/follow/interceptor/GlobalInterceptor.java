@@ -1,9 +1,13 @@
 package com.dayi.follow.interceptor;
 
+import com.dayi.component.model.BaseLog;
+import com.dayi.follow.dao.follow.OperateLogMapper;
 import com.dayi.follow.dao.follow.UserMapper;
 import com.dayi.follow.model.follow.FollowUp;
+import com.dayi.follow.model.follow.OperateLog;
 import com.dayi.follow.model.follow.Permission;
 import com.dayi.follow.model.follow.Role;
+import com.dayi.follow.service.OperateLogService;
 import com.dayi.follow.service.PermissionService;
 import com.dayi.follow.service.RoleService;
 import com.dayi.follow.service.UserService;
@@ -37,6 +41,8 @@ public class GlobalInterceptor implements HandlerInterceptor {
     UserService userService;
     @Resource
     PermissionService permissionService;
+    @Resource
+    OperateLogMapper operateLogMapper;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -47,10 +53,21 @@ public class GlobalInterceptor implements HandlerInterceptor {
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
                            ModelAndView modelAndView) throws Exception {
         AccountInfo accountInfo = AuthorizationManager.getCurrentLoginUser(request);
+
         if (accountInfo != null) {
             String userId = accountInfo.getUserId();
             FollowUp user = userService.get(userId);
 
+            //添加登录日志
+            OperateLog operateLog = new OperateLog();
+            operateLog.setId(operateLogMapper.getNewId());
+            operateLog.setAction(BaseLog.LogAction.SEARCH.id)
+                    .setAuthorId(user.getId())
+                    .setAuthorName(user.getUserName())
+                    .setWhat("登录管理")
+                    .setNote("用户登录")
+                    .setIp(accountInfo.getLoginIP());
+            operateLogMapper.add(operateLog);
 
             List<String> roleNameList = new ArrayList<>();
             List<Role> roles = roleService.queryRolesByIds(user.getRoleids());
@@ -65,7 +82,7 @@ public class GlobalInterceptor implements HandlerInterceptor {
             request.getSession().setAttribute("name", user.getName());
 
             //用户权限名称
-            request.getSession().setAttribute("roleName", StringUtils.join(roleNameList,","));
+            request.getSession().setAttribute("roleName", StringUtils.join(roleNameList, ","));
 
             //获取权限列表
             request.getSession().setAttribute("permissions", permissions);
