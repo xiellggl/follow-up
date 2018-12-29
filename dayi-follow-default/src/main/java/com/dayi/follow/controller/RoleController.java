@@ -6,6 +6,7 @@ import com.dayi.follow.model.follow.Menu;
 import com.dayi.follow.model.follow.Role;
 import com.dayi.follow.service.ModuleService;
 import com.dayi.follow.service.RoleService;
+import com.dayi.follow.util.PageUtil;
 import com.dayi.mybatis.support.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -132,10 +133,13 @@ public class RoleController {
      * @return
      */
     @RequestMapping("/list")
-    public String list(@RequestParam(name = "pageNo", defaultValue = "1") int pageNo,
+    public String list(HttpServletRequest request, @RequestParam(name = "pageNo", defaultValue = "1") int pageNo,
                    @RequestParam(name = "pageSize", defaultValue = "10") int pageSize, Model model) {
         Page<Role> page = roleService.searchRole(pageNo, pageSize);
         model.addAttribute("page", page);
+        //分页：当前URL
+        String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
+        model.addAttribute("pageUrl", pageUrl);
         return "sys/role/list";
     }
 }
