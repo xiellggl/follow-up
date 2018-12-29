@@ -191,7 +191,7 @@
                                         <td class="hidden-xs"><fmt:formatDate value="${item.createDate}"
                                                                               pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                         <!-- 手机号 -->
-                                        <td>${item.mobile}</td>
+                                        <td> ${fn:substring(item.mobile, 0, 3)}****${fn:substring(item.mobile, 7, 11)}</td>
                                         <!-- 身份证号 -->
                                         <td class="hidden-sm hidden-xs"><c:if
                                                 test="${not empty item.idCard}">${fn:substring(item.idCard, 0, fn:length(item.idCard) - 4)}****</c:if></td>

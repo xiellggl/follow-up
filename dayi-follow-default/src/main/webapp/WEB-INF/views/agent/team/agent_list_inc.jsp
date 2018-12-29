@@ -243,14 +243,7 @@
                         <td class="hidden-sm hidden-xs"><fmt:formatDate value="${item.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                             <%-- 手机号 --%>
                         <td>
-                            <c:choose>
-                                <c:when test="${pageType eq 'team'}">
-                                    ${fn:substring(item.mobile, 0, 3)}****${fn:substring(item.mobile, 7, 11)}
-                                </c:when>
-                                <c:otherwise>
-                                    ${item.mobile}
-                                </c:otherwise>
-                            </c:choose>
+                             ${fn:substring(item.mobile, 0, 3)}****${fn:substring(item.mobile, 7, 11)}
                         </td>
                             <%-- 实名认证 --%>
                         <td>
