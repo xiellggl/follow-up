@@ -194,5 +194,27 @@ public class FollowOrgServiceImpl implements FollowOrgService {
 
         return page;
     }
+
+    @Override
+    public List findAssignList(SearchVo searchVo, String deptId) {
+        List<AssignListVo> list = new ArrayList<>();
+        List<String> followIds = new ArrayList<>();
+
+        List<String> deptIds = deptService.getSubDeptIds(deptId);
+
+        for (String id : deptIds) {
+            followIds.addAll(followUpMapper.findIdsByDeptId(id));
+        }
+
+        if (followIds.isEmpty()) return list;
+
+        if (searchVo.getAssignStatus() == null || searchVo.getAssignStatus() != 1) {//查未分配
+            list = followOrgMapper.findAssignsNoFollow(searchVo, dayiDataBaseStr);
+        } else {//查已分配
+            list = followOrgMapper.findAssignsFollow(searchVo, followIds, dayiDataBaseStr);
+        }
+
+        return list;
+    }
 }
 

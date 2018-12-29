@@ -36,4 +36,5 @@ public interface FollowOrgService {
 
     Page findAssignPage(Page page, SearchVo searchVo, String deptId);
 
+    List findAssignList(SearchVo searchVo, String deptId);
 }

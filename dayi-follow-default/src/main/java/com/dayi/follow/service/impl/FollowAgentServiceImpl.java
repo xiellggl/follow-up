@@ -225,6 +225,35 @@ public class FollowAgentServiceImpl implements FollowAgentService {
         return page;
     }
 
+    @Override
+    public List findAssignList(SearchVo searchVo, String deptId) {
+        List<AssignListVo> list = new ArrayList<>();
+        List<String> followIds = new ArrayList<>();
+
+        List<String> subDeptIds = deptService.getSubDeptIds(deptId);
+        for (String subDeptId : subDeptIds) {
+            followIds.addAll(followUpMapper.findIdsByDeptId(subDeptId));
+        }
+
+        if (followIds.isEmpty()) return list;
+
+        if (searchVo.getAssignStatus() == null || searchVo.getAssignStatus() != 1) {//查未分配
+            list = followAgentMapper.findAssignsNoFollow(searchVo, dayiDataBaseStr);
+        } else {//查已分配
+            list = followAgentMapper.findAssignsFollow( searchVo, followIds, dayiDataBaseStr);
+        }
+
+        for (AssignListVo vo : list) {
+            //遍历取实际开户银行
+            Account account = agentMapper.getAccount(vo.getId());
+            if (account == null) continue;
+            String bankRealName = account.getBankRealName();
+            vo.setRealBank(bankRealName);
+        }
+
+        return list;
+    }
+
 
     @Override
     @Log(target = OperateLog.class, action = BaseLog.LogAction.ADD, what = "代理商分配管理", note = "分配跟进人")

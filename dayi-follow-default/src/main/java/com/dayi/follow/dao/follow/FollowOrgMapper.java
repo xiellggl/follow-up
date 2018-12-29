@@ -49,6 +49,12 @@ public interface FollowOrgMapper extends BaseMapper<FollowOrg> {
     //查找未分配跟进人的创客
     Page<AssignListVo> findAssignsNoFollow(Page page, @Param("searchVo") SearchVo searchVo, @Param("assistDataBase") String assistDataBase);
 
+    //查找已分配跟进人的创客
+    List<AssignListVo> findAssignsFollow(@Param("searchVo") SearchVo searchVo, @Param("followIds") List<String> followIds, @Param("assistDataBase") String assistDataBase);
+
+    //查找未分配跟进人的创客
+    List<AssignListVo> findAssignsNoFollow(@Param("searchVo") SearchVo searchVo, @Param("assistDataBase") String assistDataBase);
+
     //获取跟进用户数量
     long getCusNum(String followId);
 

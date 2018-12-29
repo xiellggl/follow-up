@@ -348,6 +348,9 @@
         <if test="''!=searchVo.inviteCode and null!=searchVo.inviteCode">
             and b.record_invite_code like CONCAT('%','${searchVo.inviteCode}','%')
         </if>
+        <if test="null!=searchVo.agentId">
+            and b.id =#{searchVo.agentId}
+        </if>
     </sql>
 
     <sql id="assignsNoFollowCondition">
@@ -362,6 +365,9 @@
         </if>
         <if test="''!=searchVo.inviteCode and null!=searchVo.inviteCode">
             and a.record_invite_code  like CONCAT('%','${searchVo.inviteCode}','%')
+        </if>
+        <if test="null!=searchVo.agentId">
+            and a.id =#{searchVo.agentId}
         </if>
     </sql>
 

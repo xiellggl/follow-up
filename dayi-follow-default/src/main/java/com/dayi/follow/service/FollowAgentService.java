@@ -31,6 +31,8 @@ public interface FollowAgentService {
 
     Page findAssignPage(Page<AssignListVo> page, SearchVo searchVo, String deptId);
 
+    List findAssignList(SearchVo searchVo, String deptId);
+
     BizResult add(FollowAgent followAgent);
 
     BizResult addBatch(List<FollowAgent> followAgents);
@@ -38,10 +40,6 @@ public interface FollowAgentService {
     BizResult clear(FollowAgent followAgent);
 
     BizResult clearBatch(List<FollowAgent> followAgents);
-
-
-
-
 
 
 }

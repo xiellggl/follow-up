@@ -50,11 +50,21 @@ public class SearchVo {
     private String assignDateStart;//分配时间开始
     private String assignDateEnd;//分配时间结束
 
+    private Integer agentId;//代理商id
+
     //加于跟进人管理的查看明细
     private String followUpBefore;//之前跟进人
     private String changeDate;//变更日期
     private String changeDateStart;//分配时间开始
     private String changeDateEnd;//分配时间结束
+
+    public Integer getAgentId() {
+        return agentId;
+    }
+
+    public void setAgentId(Integer agentId) {
+        this.agentId = agentId;
+    }
 
     //加于创客分配
     private Integer orgType;//机构类型

@@ -10,8 +10,11 @@ import com.dayi.follow.service.*;
 import com.dayi.follow.util.PageUtil;
 import com.dayi.follow.vo.LoginVo;
 import com.dayi.follow.vo.SearchVo;
+import com.dayi.follow.vo.export.AgentAssignExport;
+import com.dayi.follow.vo.export.OrgAssignExport;
 import com.dayi.mybatis.support.Page;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,7 +24,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -63,6 +68,19 @@ public class OrgAssignController extends BaseController {
         model.addAttribute("orgTypes", OrgTypeEnum.values());//机构商类型
         return "/maker/assign_list";
     }
+//
+//    @RequestMapping(value = "/export")
+//    @ResponseBody
+//    public void orgExport(HttpServletRequest request, HttpServletResponse response, SearchVo searchVo) throws IOException {
+//        LoginVo currVo = userComponent.getCurrUser(request);
+//
+//        List assignList = followOrgService.findAssignList(searchVo, currVo.getDeptId());
+//
+//        String title = "创客分配列表";
+//        String fileName = title + new DateTime().toString("yyyy-MM-dd HH:mm:ss");
+//        OrgAssignExport export = new OrgAssignExport(fileName, title, assignList);
+//        export.exportExcel(request, response);
+//    }
 
 
     /**
