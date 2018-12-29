@@ -99,7 +99,7 @@ public class UserController extends BaseController {
 
     @RequestMapping("loginout")
     public String loginOut(HttpServletRequest request, HttpServletResponse response) {
-        userService.loginOut(request, response);
+        AuthorizationManager.cleanAllAuthenticationInfo(request, response);
         return "redirect:/user/login";
     }
 
