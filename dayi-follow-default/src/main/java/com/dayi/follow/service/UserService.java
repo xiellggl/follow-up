@@ -79,7 +79,4 @@ public interface UserService extends Realm {
     //登录
     BizResult login(LoginVo loginVo);
 
-    //登出
-    void loginOut(HttpServletRequest request, HttpServletResponse response);
-
 }
