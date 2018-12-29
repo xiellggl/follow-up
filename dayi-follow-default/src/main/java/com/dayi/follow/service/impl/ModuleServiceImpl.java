@@ -372,14 +372,21 @@ public class ModuleServiceImpl implements ModuleService {
     @Override
     @Log(target = OperateLog.class, action = BaseLog.LogAction.DELETE, what = "模块管理", note = "解除绑定")
     @Transactional
-    public boolean untying(String moduleId) {
+    public BizResult untying(String moduleId) {
+        // 判断模块是否存在
+        if (null == moduleMapper.get(moduleId)) {
+            return BizResult.fail("模块不存在.");
+        }
+
         // 删除模块下的权限角色关联
-        rolePermissionMapper.deleteByModuleId(moduleId);
+        if (rolePermissionMapper.deleteByModuleId(moduleId) == 0) {
+            return BizResult.fail("解绑失败或该模块下无关联的功能权限");
+        }
 
         // 取消模块下的权限关联
         permissionMapper.updateModuleidByMId(moduleId);
 
-        return true;
+        return BizResult.SUCCESS;
     }
 
     @Override

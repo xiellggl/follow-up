@@ -189,11 +189,8 @@ public class ModuleController {
         if (Misc.isEmpty(moduleId)) {
             return BizResult.fail("请选择模块");
         }
-
-        if (moduleService.untying(moduleId)) {
-            return BizResult.SUCCESS;
-        }
-        return BizResult.FAIL;
+        
+        return moduleService.untying(moduleId);
     }
 
     /**

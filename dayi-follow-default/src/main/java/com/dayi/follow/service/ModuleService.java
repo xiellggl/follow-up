@@ -86,7 +86,7 @@ public interface ModuleService {
      * @param moduleId
      * @return
      */
-    boolean untying(String moduleId);
+    BizResult untying(String moduleId);
 
     /**
      * 删除角模块信息
