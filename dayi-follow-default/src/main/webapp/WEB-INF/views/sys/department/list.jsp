@@ -282,7 +282,7 @@
             var id=$(this).closest("tr").data("id");
             layer.confirm('<p class="tc">确定删除此部门及下属所有部门</p>',{title:"温馨提示"},function () {
                 common.ajax.handle({
-                    url:"/dept/delete?deptId="+ id,
+                    url:"/dept/delete?deptId="+ id
                 });
             });
         });
