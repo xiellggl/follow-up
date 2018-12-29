@@ -101,10 +101,10 @@
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-link"></i>
                                     </span>
-                                    <select name="isBinding" class="form-control admin_sea">
+                                    <select name="binding" class="form-control admin_sea">
                                         <option value="">绑定状态</option>
-                                        <option value="0"  ${!param.isBinding?"selected":''}>未绑定</option>
-                                        <option value="1"  ${param.isBinding?"selected":''}>已绑定</option>
+                                        <option value="false"  ${!param.binding?"selected":''}>未绑定</option>
+                                        <option value="true"  ${param.binding?"selected":''}>已绑定</option>
                                     </select>
                                 </div>
                             </div>
