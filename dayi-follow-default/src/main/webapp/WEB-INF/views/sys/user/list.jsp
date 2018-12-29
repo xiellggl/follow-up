@@ -298,8 +298,10 @@
         //新增，修改用户方法
         var editDeptFn = function (id) {
             var id = id || null;
+            var type = "add";
             var data = {};
             if (id) {
+                type = "update";
                 common.ajax.handle({
                     url: "/user/get?id=" + id,
                     async: false,
@@ -316,11 +318,6 @@
             var html = template("tplEditFlowUp", data);
             $modal.html(html).show(300);
             var $form = $modal.find("form");
-
-            var url ="/user/add/save.json";
-            if (id) {
-                var url ="/user/update/save.json";
-            }
 
             var $userName = $form.find('[name="userName"]');
             var $inviteCode = $form.find('[name="inviteCode"]');
@@ -409,7 +406,7 @@
                 },
                 submitHandler: function (form) {
                     common.ajax.handle({
-                        url: url,
+                        url: "/user/"+type+"/save.json",
                         data: $form.serialize()
                     });
                     return false;

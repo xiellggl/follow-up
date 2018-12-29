@@ -122,7 +122,7 @@
                     <button type="button" class="close" data-dismiss="modal"
                             aria-hidden="true">×
                     </button>
-                    <h4 class="modal-title" id="myModalLabel">{{id>0?'修改':'添加'}}模块</h4>
+                    <h4 class="modal-title" id="myModalLabel">{{id?'修改':'添加'}}模块</h4>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -211,7 +211,6 @@
         //添加、编辑模块方法
         var editModuleFn = function (id,pid) {
             var id = id || null;
-            var pid = pid || null;
             var type = "add";
             var data = {};
 
@@ -242,9 +241,6 @@
                 if(data.parentid!=""){
                     $form.find('[name="parentid"]').val(data.parentid);
                 }
-            }
-            if(pid){
-                $form.find('[name="parentid"]').val(pid);
             }
 
             $form.validate({
