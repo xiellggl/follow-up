@@ -55,9 +55,9 @@ public class PermissionServiceImpl implements PermissionService {
         }
         if (null != isBinding) {
             if (isBinding) {
-                conditions.add(Restrictions.isNotNull("moduleid"));
+                conditions.add(Restrictions.ne("moduleid", ""));
             } else {
-                conditions.add(Restrictions.isNull("moduleid"));
+                conditions.add(Restrictions.eq("moduleid", ""));
             }
         }
         if (!Misc.isEmpty(parentId)) {
