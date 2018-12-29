@@ -71,20 +71,7 @@ public class UserServiceImpl implements UserService {
     /**
      * 黑名单列表
      */
-    private List<String> blackList;
-    private List<Permission> permissions;
-
-    @Autowired
-    public UserServiceImpl(PermissionService permissionService) {
-        this.blackList = new ArrayList<>();
-        this.permissions = permissionService.getPermissions();
-        for (Permission permission : this.permissions) {
-            if (permission != null) {
-                String url = permission.getKey();
-                this.blackList.add(url);
-            }
-        }
-    }
+    private List<String> blackList=new ArrayList<>();
 
     @Override
     @Log(target = OperateLog.class, action = BaseLog.LogAction.ADD, what = "用户管理", note = "添加用户")
@@ -324,6 +311,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<String> getBlacklistUrls() {
+        this.blackList.add("/**");
         return this.blackList;
     }
 
