@@ -17,11 +17,11 @@
     </select>
 
     <select id="findByOrgId" parameterType="java.lang.Integer" resultType="com.dayi.follow.model.follow.Agent">
-        SELECT * from agent where org_id =${orgId} and del_status != -1
+        SELECT * from agent where org_id =#{orgId} and del_status != -1
     </select>
 
     <select id="getAgentFund" parameterType="java.lang.Integer" resultType="java.math.BigDecimal">
-        SELECT IFNULL(SUM(amount), 0) FROM protocol where status in (1,2) and agent = ${agentId}
+        SELECT IFNULL(SUM(amount), 0) FROM protocol where status in (1,2) and agent = #{agentId}
     </select>
 
 
@@ -34,7 +34,7 @@
     <select id="getDayLastInCashTime" parameterType="map" resultType="java.util.Date">
         SELECT create_date FROM finance_account_log
         WHERE create_date between #{todayStart} and #{todayEnd} and pay_type = 1
-        AND agent_org_id = ${agentId}
+        AND agent_org_id = #{agentId}
         ORDER BY create_date DESC
         LIMIT 0, 1
     </select>
@@ -42,25 +42,25 @@
     <select id="getDayOutCash" parameterType="map" resultType="java.math.BigDecimal">
              SELECT  IFNULL(SUM(accrual), 0) accrual FROM finance_account_log
              WHERE create_date between #{todayStart} and #{todayEnd} and pay_type =-9
-                AND agent_org_id =  ${agentId}
+                AND agent_org_id =  #{agentId}
     </select>
 
     <select id="getDayToCard" parameterType="map" resultType="java.math.BigDecimal">
         SELECT  IFNULL(SUM(accrual), 0) accrual FROM finance_account_log
         WHERE create_date between #{todayStart} and #{todayEnd} and pay_type = -112
-        AND agent_org_id = ${agentId}
+        AND agent_org_id = #{agentId}
     </select>
 
     <select id="getDayApplyOutCash" parameterType="map" resultType="java.math.BigDecimal">
         SELECT  IFNULL(SUM(accrual), 0) accrual FROM finance_account_log
         WHERE create_date between #{todayStart} and #{todayEnd} and pay_type = -114
-        AND agent_org_id = ${agentId}
+        AND agent_org_id = #{agentId}
     </select>
 
     <select id="getDayLastApplyOutCashTime" parameterType="map" resultType="java.util.Date">
         SELECT  create_date FROM finance_account_log
         WHERE create_date between #{todayStart} and #{todayEnd} and pay_type = -114
-        AND agent_org_id = ${agentId}
+        AND agent_org_id = #{agentId}
          ORDER BY create_date DESC
         LIMIT 0, 1
     </select>
@@ -69,7 +69,7 @@
         SELECT bank_ids from agent a left join (
             select agent_id,GROUP_CONCAT( bank_id ORDER BY bank_id ) bank_ids FROM finance_vitrual_account
              GROUP BY agent_id)
-           h ON a.id = h.agent_id where a.del_status != -1 and agent_id=${agentId};
+           h ON a.id = h.agent_id where a.del_status != -1 and agent_id=#{agentId};
     </select>
 
     <select id="getAccount" parameterType="java.lang.Integer" resultType="com.dayi.follow.model.follow.Account">
@@ -85,7 +85,7 @@
     </select>
 
     <select id="findLevel1ByOrgId" parameterType="java.lang.Integer" resultType="com.dayi.follow.model.follow.Agent">
-        SELECT * from agent where org_id =${orgId} and del_status != -1 and invite_level =1
+        SELECT * from agent where org_id =#{orgId} and del_status != -1 and invite_level =1
     </select>
 
     <select id="getByUcId" parameterType="java.lang.String" resultType="com.dayi.follow.model.follow.Agent">

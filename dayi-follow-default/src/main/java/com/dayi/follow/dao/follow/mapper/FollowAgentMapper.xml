@@ -314,7 +314,7 @@
     </select>
 
     <select id="getFollowIdByAgentId" parameterType="java.lang.Integer" resultType="java.lang.String">
-        SELECT follow_id from follow_agent where agent_id =${agentId}
+        SELECT follow_id from follow_agent where agent_id =#{agentId}
     </select>
 
     <select id="findContacts" resultType="com.dayi.follow.vo.agent.AgentContactVo" parameterType="java.lang.Integer" >
@@ -322,16 +322,16 @@
     </select>
 
     <select id="getAssignDate" parameterType="java.lang.Integer" resultType="java.util.Date">
-        SELECT assign_date from follow_agent where agent_id =${agentId}
+        SELECT assign_date from follow_agent where agent_id =#{agentId}
     </select>
 
     <select id="getFollowAgentByAgentId" parameterType="java.lang.Integer" resultType="com.dayi.follow.model.follow.FollowAgent">
-        SELECT * from follow_agent where agent_id =${agentId}
+        SELECT * from follow_agent where agent_id =#{agentId}
     </select>
 
     <sql id="assignsFollowCondition">
         <if test="null!=searchVo.createDateStart and ''!= searchVo.createDateStart and null!=searchVo.createDateEnd and ''!= searchVo.createDateEnd">
-            and b.create_date BETWEEN ${searchVo.createDateStart} and ${searchVo.createDateEnd}
+            and b.create_date BETWEEN #{searchVo.createDateStart} and #{searchVo.createDateEnd}
         </if>
         <if test="''!=searchVo.mobile and null!=searchVo.mobile">
             and b.mobile like CONCAT('%','${searchVo.mobile}','%')
@@ -340,7 +340,7 @@
             and b.link_person like CONCAT('%','${searchVo.cusName}','%')
         </if>
         <if test="null!=searchVo.assignDateStart and ''!= searchVo.assignDateStart and null!=searchVo.assignDateEnd and ''!= searchVo.assignDateEnd">
-            and a.assign_date BETWEEN ${searchVo.assignDateStart} and ${searchVo.assignDateEnd}
+            and a.assign_date BETWEEN #{searchVo.assignDateStart} and #{searchVo.assignDateEnd}
         </if>
         <if test="''!=searchVo.followUp and null!=searchVo.followUp">
             and c.name like CONCAT('%','${searchVo.followUp}','%')

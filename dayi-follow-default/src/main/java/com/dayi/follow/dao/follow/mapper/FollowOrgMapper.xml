@@ -122,7 +122,7 @@
 
     <sql id="assignsFollowCondition">
         <if test="null!=searchVo.createDateStart and ''!= searchVo.createDateStart and null!=searchVo.createDateEnd and ''!= searchVo.createDateEnd">
-            and b.create_date BETWEEN ${searchVo.createDateStart} and ${searchVo.createDateEnd}
+            and b.create_date BETWEEN #{searchVo.createDateStart} and #{searchVo.createDateEnd}
         </if>
         <if test="''!=searchVo.mobile and null!=searchVo.mobile">
             and b.mobile like CONCAT('%','${searchVo.mobile}','%')
@@ -131,7 +131,7 @@
             and b.link_person like CONCAT('%','${searchVo.cusName}','%')
         </if>
         <if test="null!=searchVo.assignDateStart and ''!= searchVo.assignDateStart and null!=searchVo.assignDateEnd and ''!= searchVo.assignDateEnd">
-            and a.assign_date BETWEEN ${searchVo.assignDateStart} and ${searchVo.assignDateEnd}
+            and a.assign_date BETWEEN #{searchVo.assignDateStart} and #{searchVo.assignDateEnd}
         </if>
         <if test="''!=searchVo.followUp and null!=searchVo.followUp">
             and c.name like CONCAT('%','${searchVo.followUp}','%')
