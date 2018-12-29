@@ -27,4 +27,4 @@ dayi:
         imageHost: http://localhost:9601
   dataBase: inet_dayi_spot
 follow:
-  dataBase: dayi_follow
+  dataBase: inet_dayi_follow
