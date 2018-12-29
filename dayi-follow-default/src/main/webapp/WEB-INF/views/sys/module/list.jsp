@@ -299,7 +299,7 @@
             var id=$(this).closest("tr").data("id");
             layer.confirm('<p class="tc">是否解绑该功能？</p>',{title:"温馨提示"},function () {
                 common.ajax.handle({
-                    url:"/module/untying.json",
+                    url:"/permission/untying/save.json",
                     data:{
                         id:id
                     }
