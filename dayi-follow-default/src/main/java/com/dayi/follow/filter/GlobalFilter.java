@@ -49,7 +49,7 @@ public class GlobalFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         String goTo = request.getParameter("goTo");
-        if (StringUtils.isBlank(goTo)) goTo = "/index";
+        if (StringUtils.isBlank(goTo)) goTo = "/";
         request.setAttribute("goTo", goTo);
 
         String requestURI = request.getRequestURI();
