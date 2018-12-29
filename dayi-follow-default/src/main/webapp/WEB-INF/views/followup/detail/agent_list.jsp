@@ -121,7 +121,7 @@
                 <div class="space-10"></div>
                 <div class="row">
                     <div class="col-xs-12">
-                        <a class="btn btn-white btn-info" href="../agent/list${not empty param.followId ? '?followId=' : ''}${param.followId}"">代理商</a>
+                        <a class="btn btn-white btn-info" href="../agent/list${not empty param.followId ? '?followId=' : ''}${param.followId}">代理商</a>
                         <a class="btn btn-white" href="../org/list${not empty param.followId ? '?followId=' : ''}${param.followId}">创客</a>
                     </div>
                 </div>
@@ -142,7 +142,7 @@
                                 <th class="hidden-xs">变更日期</th>
                                 <th>变更前总资产</th>
                                 <th>当前总资产</th>
-                                <th>新增代理商服务费</th>
+                                <th>代理商服务费</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -176,7 +176,7 @@
                                         <td><fmt:formatNumber value="${item.totalFundBefore}" pattern="0.00" type="number"/></td>
                                             <%--当前总资产--%>
                                         <td><fmt:formatNumber value="${item.totalFund}" pattern="0.00" type="number"/></td>
-                                            <%--新增代理商服务费--%>
+                                            <%--代理商服务费--%>
                                         <td><fmt:formatNumber value="${item.interest}" pattern="0.00" type="number"/></td>
                                     </tr>
                                 </c:forEach>

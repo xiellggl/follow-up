@@ -78,7 +78,7 @@ public class PermissionController {
         }
         permission.setCreateBy(accountInfo.getUserName());
 
-        return permissionService.addPermission(permission) ? BizResult.SUCCESS : BizResult.FAIL;
+        return permissionService.addPermission(permission);
     }
 
     /**

@@ -89,9 +89,9 @@
                                     </span>
                                     <select name="moduleId" class="form-control admin_sea">
                                         <option value="">所属模块</option>
-                                        <c:set var="selectedId" value="${param.moduleId}" scope="request" />
-                                        <c:set var="selectList" value="${menus}" />
-                                        <%@ include file="../module/option_item.jsp" %>
+                                        <c:forEach var="item" items="${menus}">
+                                            <option value="${item.id}"  ${param.moduleid eq item.id ? 'selected' : ''} >${item.name}</option>
+                                        </c:forEach>
                                     </select>
                                 </div>
                             </div>

@@ -167,14 +167,14 @@
                         aria-hidden="true">×
                 </button>
                 <h4 class="modal-title" id="myModalLabel">
-                    {{id>0?'修改':'添加'}}用户
+                    {{id?'修改':'添加'}}用户
                 </h4>
             </div>
 
             <div class="modal-body">
                 <div class="row" style="padding-left: 1%;">
                     <div class="col-xs-12">
-                        {{if id > 0}}
+                        {{if id}}
                         <input type="hidden" name="id" value="{{id}}">
                         {{/if}}
 
@@ -297,9 +297,11 @@
 
         //新增，修改用户方法
         var editDeptFn = function (id) {
-            var id = id || 0;
+            var id = id || null;
+            var type = "add";
             var data = {};
-            if (id > 0) {
+            if (id) {
+                type = "update";
                 common.ajax.handle({
                     url: "/user/get?id=" + id,
                     async: false,
@@ -317,14 +319,11 @@
             $modal.html(html).show(300);
             var $form = $modal.find("form");
 
-            var url ="/user/add/save.json";
-            if (id > 0) {
-                var url ="/user/update/save.json";
-            }
-
             var $userName = $form.find('[name="userName"]');
             var $inviteCode = $form.find('[name="inviteCode"]');
             $form.find('[name="deptId"]').val(data.deptId);
+            $form.find('[name="roleids"]').val(data.roleids);
+
             $form.validate({
                 rules: {
                     //用户姓名：
@@ -407,7 +406,7 @@
                 },
                 submitHandler: function (form) {
                     common.ajax.handle({
-                        url: url,
+                        url: "/user/"+type+"/save.json",
                         data: $form.serialize()
                     });
                     return false;

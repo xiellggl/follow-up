@@ -142,7 +142,10 @@
                     cityInviteCode:{
                         required:true,
                         number:true
-                    }
+                    },
+                    // pid:{
+                    //     required: true
+                    // }
                 },
                 messages: {
                     name:"部门名称不能为空",
@@ -152,7 +155,10 @@
                     cityInviteCode:{
                         required:'城市服务商不能为空',
                         number:"请输入数字"
-                    }
+                    },
+                    // pid: {
+                    //     required: "下拉菜单是必选"
+                    // }
                 },
                 errorPlacement: function (error, element) {
                     var $tipsBox = element.closest(".form-group").find(".tips_box");
@@ -206,7 +212,10 @@
                     cityInviteCode:{
                         required:true,
                         number:true
-                    }
+                    },
+                    // pid:{
+                    //     required: true
+                    // }
                 },
                 messages: {
                     name:"部门名称不能为空",
@@ -216,7 +225,10 @@
                     cityInviteCode:{
                         required:'城市服务商不能为空',
                         number:"请输入数字"
-                    }
+                    },
+                    // pid: {
+                    //     required: "请选择部门"
+                    // }
                 },
                 errorPlacement: function (error, element) {
                     var $tipsBox = element.closest(".form-group").find(".tips_box");
@@ -270,7 +282,7 @@
             var id=$(this).closest("tr").data("id");
             layer.confirm('<p class="tc">确定删除此部门及下属所有部门</p>',{title:"温馨提示"},function () {
                 common.ajax.handle({
-                    url:"/dept/delete?deptId="+ id + ".json",
+                    url:"/dept/delete?deptId="+ id
                 });
             });
         });

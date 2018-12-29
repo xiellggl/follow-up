@@ -41,7 +41,8 @@ public interface PermissionService {
      * @param permission
      * @return
      */
-    boolean addPermission(Permission permission);
+    BizResult addPermission(Permission permission);
+
     /**
      * 批量插入关系数据
      *
