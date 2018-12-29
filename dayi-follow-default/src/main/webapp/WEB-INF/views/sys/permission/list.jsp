@@ -67,8 +67,10 @@
 
                 <div class="row">
                     <form class="form-horizontal" style="max-width: 1000px;">
+                        <c:if test="${not empty param.bindModuleId and bindPermission}">
+                            <input type="hidden" name="bindModuleId" value="${param.bindModuleId}" />
+                        </c:if>
                         <div class="clearfix maintop">
-
                             <div class="col-xs-12 col-sm-3 btn-sespan maintop">
                                 <div class="input-group">
                                     <span class="input-group-addon">
@@ -103,7 +105,7 @@
                                     </span>
                                     <select name="binding" class="form-control admin_sea">
                                         <option value="">绑定状态</option>
-                                        <option value="false"  ${!param.binding?"selected":''}>未绑定</option>
+                                        <option value="false"  ${not empty param.binding and not param.binding?"selected":''}>未绑定</option>
                                         <option value="true"  ${param.binding?"selected":''}>已绑定</option>
                                     </select>
                                 </div>
