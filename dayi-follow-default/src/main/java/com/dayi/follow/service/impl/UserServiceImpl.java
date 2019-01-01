@@ -68,12 +68,14 @@ public class UserServiceImpl implements UserService {
     FollowAgentService followAgentService;
     @Resource
     UserComponent userComponent;
+    @Resource
+    PermissionMapper permissionMapper;
     @Value("${dayi.dataBase}")
     String dayiDataBaseStr;
     /**
      * 黑名单列表
      */
-    private List<String> blackList=new ArrayList<>();
+    private List<String> blackList = new ArrayList<>();
 
     @Override
     @Log(target = OperateLog.class, action = BaseLog.LogAction.ADD, what = "用户管理", note = "添加用户")
@@ -313,7 +315,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<String> getBlacklistUrls() {
-        this.blackList.add("/**");
+        List<Permission> list = permissionMapper.getList();
+        for (Permission permission : list) {
+            if (permission.getDelStatus() != 1) {
+                this.blackList.add(permission.getUrl());
+            }
+        }
         return this.blackList;
     }
 
