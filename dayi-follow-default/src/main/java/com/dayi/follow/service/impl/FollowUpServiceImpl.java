@@ -78,7 +78,10 @@ public class FollowUpServiceImpl implements FollowUpService {
             followIds.addAll(followUpMapper.findIdsByDeptId(subDeptId));
         }
 
-        page = followUpMapper.findFollowUps(page, mobile, followIds, inviteCode, dayiDataBaseStr);
+        if (followIds.isEmpty())
+            page = followUpMapper.findAllFollowUps(page, mobile, inviteCode, dayiDataBaseStr);
+        else
+            page = followUpMapper.findFollowUps(page, mobile, followIds, inviteCode, dayiDataBaseStr);
 
         for (FollowUpListVo vo : page.getResults()) {
             List<Organization> orgs = followOrgMapper.findOrgsByfollowId(vo.getId(), null, dayiDataBaseStr);
