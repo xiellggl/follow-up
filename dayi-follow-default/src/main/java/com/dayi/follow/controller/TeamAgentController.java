@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @author xiell
@@ -83,9 +84,21 @@ public class TeamAgentController {
      */
     @RequestMapping("/detail")
     public String agentDetail(HttpServletRequest request, Model model) {
+        LoginVo currVo = userComponent.getCurrUser(request);
+
         Integer agentId = Misc.toInt(request.getParameter("agentId"), 0);// 代理人ID
 
-        DetailVo detailVo = followAgentService.getDetail(agentId);//代理商明细
+        String followId = followAgentService.getFollowIdByAgentId(agentId);
+
+        List<String> followIds = followUpService.findIdsByDeptId(currVo.getDeptId());
+
+        DetailVo detailVo = new DetailVo();
+
+        if (followIds.contains(followId)) {//客户属于当前登陆者
+            detailVo = followAgentService.getDetail(agentId);//代理商明细
+        } else {
+            return "redirect:/";
+        }
 
         String returnUrl = request.getParameter("returnUrl");
         model.addAttribute("detailVo", detailVo);//明细
@@ -124,10 +137,24 @@ public class TeamAgentController {
      */
     @RequestMapping("/loginlog")
     public String loginlog(HttpServletRequest request, Model model, Page page) {
+        LoginVo currVo = userComponent.getCurrUser(request);
+
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
+
         Integer agentId = Misc.toInt(request.getParameter("agentId"), 0);// 代理人ID
+
+        String followId = followAgentService.getFollowIdByAgentId(agentId);
+
+        List<String> followIds = followUpService.findIdsByDeptId(currVo.getDeptId());
+
         page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
-        page = agentService.findLoginLog(page, agentId);
+
+        if (followIds.contains(followId)) {
+            page = agentService.findLoginLog(page, agentId);
+        } else {
+            return "redirect:/";
+        }
+
         model.addAttribute("page", page);//登录日志
         model.addAttribute("pageUrl", pageUrl);
         return "agent/login_list";
@@ -141,14 +168,23 @@ public class TeamAgentController {
      */
     @RequestMapping("/contact")
     public String contact(HttpServletRequest request, Model model, Page page) {//page不接受代理商的分页
+        LoginVo currVo = userComponent.getCurrUser(request);
+
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
 
         Integer agentId = Misc.toInt(request.getParameter("agentId"), 0);// 代理人ID
 
+        String followId = followAgentService.getFollowIdByAgentId(agentId);
+
+        List<String> followIds = followUpService.findIdsByDeptId(currVo.getDeptId());
+
         page.setPageSize(Constants.CONTACT_PAGE_SIZE);
 
-        page = followAgentService.findContacts(page, agentId);
-
+        if (followIds.contains(followId)) {
+            page = followAgentService.findContacts(page, agentId);
+        } else {
+            return "redirect:/";
+        }
 
         String returnUrl = request.getParameter("returnUrl");//返回代理商进来列表的路径
 
