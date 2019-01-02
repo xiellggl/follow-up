@@ -71,13 +71,21 @@ public class OrgController extends BaseController {
      */
     @RequestMapping("/contact")
     public String contact(HttpServletRequest request, Model model, Page page) {
+        LoginVo currVo = userComponent.getCurrUser(request);
+
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
 
         Integer orgId = Misc.toInt(request.getParameter("orgId"), 0);// 创客人ID
 
+        String followId = followOrgService.getFollowIdByOrgId(orgId);
+
         page.setPageSize(Constants.CONTACT_PAGE_SIZE);
 
-        page = followOrgService.findContacts(page, orgId);
+        if (currVo.getId().equals(followId)) {
+            page = followOrgService.findContacts(page, orgId);
+        } else {
+            return "redirect:/";
+        }
 
         String returnUrl = request.getParameter("returnUrl");//返回创客进来列表的路径
 

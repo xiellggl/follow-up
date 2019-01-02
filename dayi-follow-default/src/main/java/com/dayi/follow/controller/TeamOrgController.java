@@ -4,6 +4,7 @@ import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.conf.Constants;
 import com.dayi.follow.enums.OrgTypeEnum;
 import com.dayi.follow.service.FollowOrgService;
+import com.dayi.follow.service.FollowUpService;
 import com.dayi.follow.service.OrgService;
 import com.dayi.follow.util.PageUtil;
 import com.dayi.follow.util.StringUtil;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @author xiell
@@ -29,6 +31,8 @@ public class TeamOrgController {
     UserComponent userComponent;
     @Resource
     FollowOrgService followOrgService;
+    @Resource
+    FollowUpService followUpService;
     @Resource
     OrgService orgService;
 
@@ -65,12 +69,23 @@ public class TeamOrgController {
      */
     @RequestMapping("/contact")
     public String contact(HttpServletRequest request, Model model, Page page) {
+        LoginVo currVo = userComponent.getCurrUser(request);
+
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
 
         Integer orgId = Misc.toInt(request.getParameter("orgId"), 0);// 创客人ID
 
+        String followId = followOrgService.getFollowIdByOrgId(orgId);
+
+        List<String> followIds = followUpService.findIdsByDeptId(currVo.getDeptId());
+
         page.setPageSize(Constants.CONTACT_PAGE_SIZE);
-        page = followOrgService.findContacts(page, orgId);
+
+        if (followIds.contains(followId)) {
+            page = followOrgService.findContacts(page, orgId);
+        } else {
+            return "redirect:/";
+        }
 
         String returnUrl = request.getParameter("returnUrl");//返回创客进来列表的路径
 
