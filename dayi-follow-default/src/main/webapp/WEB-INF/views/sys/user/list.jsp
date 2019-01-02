@@ -66,7 +66,63 @@
                     </a>
                     </c:if>
                 </div>
-
+                <div class="row">
+                    <form class="form-horizontal" >
+                        <div class="clearfix maintop">
+                            <div class="col-xs-12 col-sm-3 btn-sespan maintop">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="ace-icon fa fa-user"></i>
+                                    </span>
+                                    <input type="text" name="name" class="form-control admin_sea"
+                                           value="${param.name}" placeholder="客户姓名"/>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-3 btn-sespan maintop">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="ace-icon fa fa-barcode"></i>
+                                    </span>
+                                    <input type="text" name="inviteCode" class="form-control admin_sea" value="${param.inviteCode}" placeholder="邀请码"/>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-3 btn-sespan maintop">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="ace-icon fa fa-cog"></i>
+                                    </span>
+                                    <select name="deptId" class="form-control admin_sea">
+                                        <option selected="selected" disabled="disabled"  style='display: none' value=''>请选择部门</option>
+                                        <c:forEach items="${deptList}" var="item" >
+                                            <option value="${item.id}" ${deptVo.pid eq item.id ? 'selected' : ''}>${item.treeName}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-3 btn-sespan maintop">
+                                <div class="btn-group dropup">
+                                    <button type="submit" class="btn btn-xs btn-purple">
+                                        <span class="ace-icon fa fa-search"></span>
+                                        搜索
+                                    </button>
+                                    <button data-toggle="dropdown" class="btn btn-xs btn-info dropdown-toggle hidden visible-xs" aria-expanded="false">
+                                        <span class="ace-icon fa fa-caret-down icon-only"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="./list">显示全部</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <a href="./list"
+                                   class="btn btn-xs btn-info hidden-xs">
+                                    <span class="ace-icon fa fa-globe"></span>
+                                    显示全部
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
                 <div class="col-xs-12">
                     <div class="row">
                         <div class="space-6"></div>
@@ -87,7 +143,7 @@
 
                             <c:if test="${empty page.results}">
                             <tr>
-                                <td colspan="6" class="no_data">
+                                <td colspan="8" class="no_data">
                                     暂无用户<c:if test="${addUserPermission}">，请
                                     <a href="#" data-toggle="modal"
                                        data-target="#myModalEditFollowuper">新增用户</a></c:if>

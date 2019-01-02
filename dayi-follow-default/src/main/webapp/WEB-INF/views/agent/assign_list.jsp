@@ -108,6 +108,15 @@
                                 </div>
                             </div>
                             <div class="col-xs-4 col-sm-2 btn-sespan">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="ace-icon fa fa-credit-card"></i>
+                                    </span>
+                                    <input type="text" name="agentId" class="form-control admin_sea"
+                                           value="${param.agentId}" placeholder="代理商ID"/>
+                                </div>
+                            </div>
+                            <div class="col-xs-4 col-sm-2 btn-sespan">
                                 <div class="btn-group dropup">
                                     <button type="submit" class="btn btn-xs btn-purple">
                                         <span class="ace-icon fa fa-search"></span>
@@ -159,6 +168,7 @@
                                     </label>
                                     <input type="hidden" id="checkIds" name="ids" value="">
                                 </th>
+                                <th>代理商ID</th>
                                 <th>姓名</th>
                                 <th class="hidden-xs">注册时间</th>
                                 <th>手机号</th>
@@ -172,7 +182,7 @@
                             <tbody>
                             <c:if test="${empty page.results}">
                                 <tr>
-                                    <td colspan="12" class="no_data">暂无数据记录</td>
+                                    <td colspan="13" class="no_data">暂无数据记录</td>
                                 </tr>
                             </c:if>
 
@@ -185,6 +195,8 @@
                                                 <span class="lbl"></span>
                                             </label>
                                         </td>
+                                        <!-- 代理商ID -->
+                                        <td>${item.id}</td>
                                         <!-- 名称 -->
                                         <td>${item.linkPersonFm}</td>
                                         <!-- 注册时间 -->

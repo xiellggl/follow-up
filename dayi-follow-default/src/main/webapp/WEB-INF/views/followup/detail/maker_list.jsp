@@ -54,7 +54,7 @@
                             </div>
                         </c:if>
 
-                        <div class="col-xs-12 col-sm-3 btn-sespan maintop">
+                        <div class="col-xs-12 col-sm-4 btn-sespan maintop">
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="ace-icon fa fa-user"></i>
@@ -64,7 +64,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xs-12 col-sm-3 btn-sespan maintop">
+                        <div class="col-xs-12 col-sm-4 btn-sespan maintop">
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="ace-icon fa fa-user"></i>
@@ -74,7 +74,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xs-12 col-sm-3 btn-sespan maintop">
+                        <div class="col-xs-12 col-sm-4 btn-sespan maintop">
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="ace-icon fa fa-mobile"></i>
@@ -84,7 +84,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xs-12 col-sm-3 btn-sespan maintop">
+                        <div class="col-xs-12 col-sm-4 btn-sespan maintop">
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="ace-icon fa fa-calendar"></i>
@@ -94,7 +94,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xs-12 col-sm-3 btn-sespan maintop">
+                        <div class="col-xs-12 col-sm-4 btn-sespan maintop">
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <i class="ace-icon fa fa-barcode"></i>
