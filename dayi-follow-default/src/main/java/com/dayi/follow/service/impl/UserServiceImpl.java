@@ -2,6 +2,7 @@ package com.dayi.follow.service.impl;
 
 
 import com.dayi.common.util.BizResult;
+import com.dayi.common.web.util.IPUtil;
 import com.dayi.component.annotation.Log;
 import com.dayi.component.model.BaseLog;
 import com.dayi.follow.dao.follow.*;
@@ -13,6 +14,7 @@ import com.dayi.follow.vo.LoginVo;
 import com.dayi.follow.vo.user.UserEditDto;
 import com.dayi.follow.vo.user.UserVo;
 import com.dayi.mybatis.support.Page;
+import com.dayi.user.authorization.AuthorizationManager;
 import com.dayi.user.authorization.authc.AccountInfo;
 import com.dayi.user.authorization.authc.AuthenticationInfo;
 import com.dayi.user.authorization.authc.AuthenticationToken;
@@ -28,6 +30,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -57,6 +60,8 @@ public class UserServiceImpl implements UserService {
     RoleMapper roleMapper;
     @Resource
     PermissionMapper permissionMapper;
+    @Resource
+    OperateLogMapper operateLogMapper;
     @Value("${dayi.dataBase}")
     String dayiDataBaseStr;
     /**
@@ -375,10 +380,48 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public BizResult login(LoginVo loginVo) {
+    public BizResult login(HttpServletRequest request, LoginVo loginVo) {
+        boolean b = AuthorizationManager.login(request, new UsernamePasswordToken(loginVo.getUsername(), loginVo.getPassword(), IPUtil.getIp(request)));
+
+        if (!b) return BizResult.fail("账号密码错误！");
+
         FollowUp user = userMapper.getByUserName(loginVo.getUsername());
         if (user == null) return BizResult.fail("用户不存在！");
         if (user.getDisable() != MemberStatusEnum.ENABLE.getValue()) return BizResult.fail("账号已被禁用！");
+
+        AccountInfo accountInfo = AuthorizationManager.getCurrentLoginUser(request);
+
+        if (accountInfo != null) {
+            //添加登录日志
+            OperateLog operateLog = new OperateLog();
+            operateLog.setId(operateLogMapper.getNewId());
+            operateLog.setAction(BaseLog.LogAction.SEARCH.id)
+                    .setAuthorId(user.getId())
+                    .setAuthorName(user.getUserName())
+                    .setWhat("登录管理")
+                    .setNote("用户登录")
+                    .setIp(accountInfo.getLoginIP());
+            operateLogMapper.add(operateLog);
+        }
+
+        List<String> roleNameList = new ArrayList<>();
+        List<Role> roles = roleService.queryRolesByIds(user.getRoleids());
+        List<Permission> permissions = new ArrayList<>();
+        for (Role role : roles) {
+            roleNameList.add(role.getName());
+            List<Permission> permissionList = permissionService.getPermissionsByRoleId(role.getId());
+            permissions.addAll(permissionList);
+        }
+
+        //用户名称
+        request.getSession().setAttribute("name", user.getName());
+
+        //用户权限名称
+        request.getSession().setAttribute("roleName", StringUtils.join(roleNameList, ","));
+
+        //获取权限列表
+        request.getSession().setAttribute("permissions", permissions);
+
         return BizResult.SUCCESS;
     }
 

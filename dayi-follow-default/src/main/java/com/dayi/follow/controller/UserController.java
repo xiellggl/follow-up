@@ -90,9 +90,7 @@ public class UserController extends BaseController {
         if (!bizResult.isSucc()) {
             return bizResult;//参数传入错误
         } else {
-            boolean b = AuthorizationManager.login(request, new UsernamePasswordToken(loginVo.getUsername(), loginVo.getPassword(), IPUtil.getIp(request)));
-            if (b) return userService.login(loginVo);
-            else return BizResult.fail("账号密码错误！");
+            return userService.login(request, loginVo);
         }
     }
 
