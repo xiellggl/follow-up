@@ -190,13 +190,15 @@ public class PermissionServiceImpl implements PermissionService {
             return BizResult.fail("功能模块不存在.");
         }
 
-        // 判断url是否重复
-        String url = permission.getUrl();
-        Conditions conditions = new Conditions();
-        conditions.add(Restrictions.eq("url", url));
-        conditions.add(Restrictions.eq("del_status", Permission.DEL_STATUS_NO.id));
-        if (null != permissionMapper.getByConditions(conditions)) {
-            return BizResult.fail("修改失败，路径不允许重复");
+        // url有改动则判断url是否重复
+        if (!findPermission.getUrl().equals(permission.getUrl())) {
+            String url = permission.getUrl();
+            Conditions conditions = new Conditions();
+            conditions.add(Restrictions.eq("url", url));
+            conditions.add(Restrictions.eq("del_status", Permission.DEL_STATUS_NO.id));
+            if (null != permissionMapper.getByConditions(conditions)) {
+                return BizResult.fail("修改失败，路径不允许重复");
+            }
         }
 
         // 所属模块若有变更则删除角色权限关联
