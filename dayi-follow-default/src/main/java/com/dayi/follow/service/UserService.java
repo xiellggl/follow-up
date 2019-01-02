@@ -10,8 +10,6 @@ import com.dayi.follow.vo.user.UserVo;
 import com.dayi.mybatis.support.Page;
 import com.dayi.user.authorization.realm.Realm;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 /**
  * @author xiell
  * @date 2018/11/12

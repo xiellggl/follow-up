@@ -2,10 +2,8 @@ package com.dayi.follow.service.impl;
 
 
 import com.dayi.common.util.BizResult;
-import com.dayi.common.web.util.IPUtil;
 import com.dayi.component.annotation.Log;
 import com.dayi.component.model.BaseLog;
-import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.dao.follow.*;
 import com.dayi.follow.enums.MemberStatusEnum;
 import com.dayi.follow.model.follow.*;
@@ -15,7 +13,6 @@ import com.dayi.follow.vo.LoginVo;
 import com.dayi.follow.vo.user.UserEditDto;
 import com.dayi.follow.vo.user.UserVo;
 import com.dayi.mybatis.support.Page;
-import com.dayi.user.authorization.AuthorizationManager;
 import com.dayi.user.authorization.authc.AccountInfo;
 import com.dayi.user.authorization.authc.AuthenticationInfo;
 import com.dayi.user.authorization.authc.AuthenticationToken;
@@ -26,17 +23,11 @@ import com.dayi.user.authorization.authz.RoleBase;
 import com.dayi.user.authorization.authz.RolePermissionResult;
 import com.dayi.user.authorization.authz.support.SimpleAuthorizationInfo;
 import com.dayi.user.authorization.realm.Realm;
-import com.dayi.user.model.Manager;
-import com.dayi.user.model.ManagerLoginLog;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.jdbc.Null;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -64,10 +55,6 @@ public class UserServiceImpl implements UserService {
     RoleService roleService;
     @Resource
     RoleMapper roleMapper;
-    @Resource
-    FollowAgentService followAgentService;
-    @Resource
-    UserComponent userComponent;
     @Resource
     PermissionMapper permissionMapper;
     @Value("${dayi.dataBase}")

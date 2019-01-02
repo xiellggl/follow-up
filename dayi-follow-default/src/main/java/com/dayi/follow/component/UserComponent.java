@@ -3,7 +3,6 @@ package com.dayi.follow.component;
 import com.dayi.follow.model.follow.Department;
 import com.dayi.follow.model.follow.FollowUp;
 import com.dayi.follow.service.DeptService;
-import com.dayi.follow.service.FollowUpService;
 import com.dayi.follow.service.UserService;
 import com.dayi.follow.vo.LoginVo;
 import com.dayi.user.authorization.AuthorizationManager;
