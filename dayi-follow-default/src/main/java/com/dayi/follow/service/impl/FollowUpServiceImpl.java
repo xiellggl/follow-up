@@ -71,15 +71,12 @@ public class FollowUpServiceImpl implements FollowUpService {
     @Log(target = OperateLog.class, action = BaseLog.LogAction.SEARCH, what = "跟进人管理", note = "查询跟进人列表")
     public Page<FollowUpListVo> findPage(Page<FollowUpListVo> page, String deptId, String mobile, String queryDeptId, String inviteCode) {
         List<String> followIds = new ArrayList<String>();
-        List<String> subDeptIds;
-        if (StringUtils.isBlank(queryDeptId)) subDeptIds = deptService.getSubDeptIds(deptId);
-        else subDeptIds = deptService.getSubDeptIds(queryDeptId);
+        List<String> subDeptIds = new ArrayList<>();
+        if (!StringUtils.isBlank(queryDeptId)) subDeptIds = deptService.getSubDeptIds(queryDeptId);
 
         for (String subDeptId : subDeptIds) {
             followIds.addAll(followUpMapper.findIdsByDeptId(subDeptId));
         }
-
-        if (followIds.isEmpty()) return page;
 
         page = followUpMapper.findFollowUps(page, mobile, followIds, inviteCode, dayiDataBaseStr);
 

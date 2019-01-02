@@ -58,11 +58,13 @@
         <if test="''!=mobile and null!=mobile">
             and a.mobile =#{mobile}
         </if>
-        and a.id in
-        <foreach item="item" index="index" collection="followIds"
-                 open="(" separator="," close=")">
-            #{item}
-        </foreach>
+        <if test="null!=followIds and 0!=followIds.size()">
+            and a.id in
+            <foreach item="item" index="index" collection="followIds"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
         <if test="''!=inviteCode and null!=inviteCode">
             and a.invite_code =#{inviteCode}
         </if>
