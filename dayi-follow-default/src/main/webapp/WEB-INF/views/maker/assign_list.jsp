@@ -19,7 +19,7 @@
                 <ul class="breadcrumb">
                     <li>
                         <i class="ace-icon fa fa-home home-icon"></i>
-                        <a href="/index">首页</a>
+                        <a href="/">首页</a>
                     </li>
                     <li>跟进人分配</li>
                     <li class="active">创客</li>

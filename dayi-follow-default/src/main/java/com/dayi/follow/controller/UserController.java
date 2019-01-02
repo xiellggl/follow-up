@@ -105,8 +105,6 @@ public class UserController extends BaseController {
 
     @RequestMapping(value = "/list")
     public String list(HttpServletRequest request, Model model, Page page) {
-        //LoginVo currVo = userComponent.getCurrUser(request);
-
         String name = request.getParameter("name");
         String queryDeptId = request.getParameter("deptId");
         String inviteCode = request.getParameter("inviteCode");

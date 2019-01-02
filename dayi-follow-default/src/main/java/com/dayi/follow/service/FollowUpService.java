@@ -1,15 +1,10 @@
 package com.dayi.follow.service;
 
-
-import com.dayi.common.util.BizResult;
-import com.dayi.follow.model.follow.Agent;
 import com.dayi.follow.model.follow.FollowUp;
-import com.dayi.follow.vo.LoginVo;
 import com.dayi.follow.vo.SearchVo;
 import com.dayi.follow.vo.followup.FMDetailListVo;
 import com.dayi.follow.vo.followup.FollowUpListVo;
 import com.dayi.mybatis.support.Page;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 /**

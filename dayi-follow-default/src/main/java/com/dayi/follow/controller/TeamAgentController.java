@@ -9,7 +9,6 @@ import com.dayi.follow.enums.ContactTypeEnum;
 import com.dayi.follow.model.follow.FollowUp;
 import com.dayi.follow.service.AgentService;
 import com.dayi.follow.service.FollowAgentService;
-import com.dayi.follow.service.FollowOrgService;
 import com.dayi.follow.service.FollowUpService;
 import com.dayi.follow.util.CollectionUtil;
 import com.dayi.follow.util.PageUtil;
@@ -26,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
  * @author xiell
@@ -43,8 +41,6 @@ public class TeamAgentController {
     AgentService agentService;
     @Resource
     FollowAgentService followAgentService;
-    @Resource
-    FollowOrgService followOrgService;
 
     /**
      * 团队代理商列表
@@ -87,21 +83,9 @@ public class TeamAgentController {
      */
     @RequestMapping("/detail")
     public String agentDetail(HttpServletRequest request, Model model) {
-        LoginVo currVo = userComponent.getCurrUser(request);
-
         Integer agentId = Misc.toInt(request.getParameter("agentId"), 0);// 代理人ID
 
-        String followId = followAgentService.getFollowIdByAgentId(agentId);
-
-        List<String> followIds = followUpService.findIdsByDeptId(currVo.getDeptId());
-
-        DetailVo detailVo = new DetailVo();
-
-        if (followIds.contains(followId)) {//客户属于当前登陆者
-            detailVo = followAgentService.getDetail(agentId);//代理商明细
-        } else {
-            return "redirect:/index";
-        }
+        DetailVo detailVo = followAgentService.getDetail(agentId);//代理商明细
 
         String returnUrl = request.getParameter("returnUrl");
         model.addAttribute("detailVo", detailVo);//明细
@@ -140,24 +124,10 @@ public class TeamAgentController {
      */
     @RequestMapping("/loginlog")
     public String loginlog(HttpServletRequest request, Model model, Page page) {
-        LoginVo currVo = userComponent.getCurrUser(request);
-
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
-
         Integer agentId = Misc.toInt(request.getParameter("agentId"), 0);// 代理人ID
-
-        String followId = followAgentService.getFollowIdByAgentId(agentId);
-
-        List<String> followIds = followUpService.findIdsByDeptId(currVo.getDeptId());
-
         page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
-
-        if (followIds.contains(followId)) {
-            page = agentService.findLoginLog(page, agentId);
-        } else {
-            return "redirect:/index";
-        }
-
+        page = agentService.findLoginLog(page, agentId);
         model.addAttribute("page", page);//登录日志
         model.addAttribute("pageUrl", pageUrl);
         return "agent/login_list";
@@ -171,23 +141,14 @@ public class TeamAgentController {
      */
     @RequestMapping("/contact")
     public String contact(HttpServletRequest request, Model model, Page page) {//page不接受代理商的分页
-        LoginVo currVo = userComponent.getCurrUser(request);
-
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
 
         Integer agentId = Misc.toInt(request.getParameter("agentId"), 0);// 代理人ID
 
-        String followId = followAgentService.getFollowIdByAgentId(agentId);
-
-        List<String> followIds = followUpService.findIdsByDeptId(currVo.getDeptId());
-
         page.setPageSize(Constants.CONTACT_PAGE_SIZE);
 
-        if (followIds.contains(followId)) {
-            page = followAgentService.findContacts(page, agentId);
-        } else {
-            return "redirect:/index";
-        }
+        page = followAgentService.findContacts(page, agentId);
+
 
         String returnUrl = request.getParameter("returnUrl");//返回代理商进来列表的路径
 
