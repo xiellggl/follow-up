@@ -48,7 +48,7 @@ public class AgentDetailExport extends AbstractExcel<FMDetailListVo> {
         column7.setValue(new DateTime(vo.getChangeDate()).toString("yyyy-MM-dd HH:mm:ss"));
         column8.setValue(vo.getTotalFundBefore());
         column9.setValue(vo.getTotalFund());
-        column10.setValue(vo.getGrowthFund());
+        column10.setValue(vo.getInterest());
     }
 }
 
