@@ -178,9 +178,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<UserVo> findPage(Page<UserVo> page, String mobile, String queryDeptId, String inviteCode) {
+    public Page<UserVo> findPage(Page<UserVo> page, String name, String queryDeptId, String inviteCode) {
 
-        page = userMapper.findPage(page, mobile, queryDeptId, inviteCode);
+        page = userMapper.findPage(page, name, queryDeptId, inviteCode);
 
         for (UserVo vo : page.getResults()) {
             //处理角色名称

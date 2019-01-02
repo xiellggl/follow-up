@@ -107,11 +107,11 @@ public class UserController extends BaseController {
     public String list(HttpServletRequest request, Model model, Page page) {
         //LoginVo currVo = userComponent.getCurrUser(request);
 
-        String mobile = request.getParameter("mobile");
+        String name = request.getParameter("name");
         String queryDeptId = request.getParameter("deptId");
         String inviteCode = request.getParameter("inviteCode");
 
-        page = userService.findPage(page, mobile, queryDeptId, inviteCode);
+        page = userService.findPage(page, name, queryDeptId, inviteCode);
 
         List<Department> deptList = deptService.getDeptTree(null);//前端要求-用于新增修改的部门列表
 
