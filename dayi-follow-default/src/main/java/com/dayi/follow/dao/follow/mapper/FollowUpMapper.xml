@@ -118,7 +118,7 @@
         left join (
             select * from follow_up where identity!=0 and disable!=0
         )c on c.id =a.follow_id
-        where c.disable!=0 and a.follow_id in
+        where b.id is not NULL and c.disable!=0 and a.follow_id in
         <foreach item="item" index="index" collection="followIds"
                  open="(" separator="," close=")">
             #{item}
@@ -140,7 +140,7 @@
         left join (
         select * from follow_up where identity!=0 and disable!=0
         )c on c.id =a.follow_id
-        where c.disable!=0 and a.follow_id in
+        where b.id is not NULL and c.disable!=0 and a.follow_id in
         <foreach item="item" index="index" collection="followIds"
                  open="(" separator="," close=")">
             #{item}
@@ -161,7 +161,7 @@
         left join (
         select * from follow_up where identity!=0 and disable!=0
         )c on c.id =a.follow_id
-        where c.disable!=0 and b.id is not null and a.follow_id in
+        where b.id is not NULL and c.disable!=0 and b.id is not null and a.follow_id in
         <foreach item="item" index="index" collection="followIds"
                  open="(" separator="," close=")">
             #{item}
