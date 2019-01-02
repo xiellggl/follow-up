@@ -54,7 +54,7 @@
         </if>
 
         <if test="''!=inviteCode and null!=inviteCode">
-            and inviteCode =#{inviteCode}
+            and invite_code =#{inviteCode}
         </if>
     </select>
 
