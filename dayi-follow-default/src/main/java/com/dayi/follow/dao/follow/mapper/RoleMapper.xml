@@ -18,7 +18,7 @@
     </select>
 
     <select id="getByIds" resultMap="roleResultMap">
-        Select * from role where status!=-1 and id in
+        Select * from role where status=1 and id in
         <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
             #{item}
         </foreach>
