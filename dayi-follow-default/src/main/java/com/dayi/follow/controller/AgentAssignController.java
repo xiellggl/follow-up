@@ -11,24 +11,16 @@ import com.dayi.follow.service.*;
 import com.dayi.follow.util.PageUtil;
 import com.dayi.follow.vo.LoginVo;
 import com.dayi.follow.vo.SearchVo;
-import com.dayi.follow.vo.export.AgentAssignExport;
-import com.dayi.follow.vo.export.MakerDetailExport;
-import com.dayi.follow.vo.followup.FMDetailListVo;
 import com.dayi.mybatis.support.Page;
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,10 +35,6 @@ public class AgentAssignController extends BaseController{
     FollowUpService followUpService;
     @Resource
     UserComponent userComponent;
-    @Resource
-    FollowOrgService followOrgService;
-    @Resource
-    OrgService orgService;
     @Resource
     FollowAgentService followAgentService;
     @Resource

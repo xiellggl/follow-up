@@ -44,7 +44,7 @@
                 <ul class="breadcrumb">
                     <li>
                         <i class="ace-icon fa fa-home home-icon"></i>
-                        <a href="/index">首页</a>
+                        <a href="/">首页</a>
                     </li>
                     <li>系统管理</li>
                     <li class="active">用户管理</li>
@@ -75,7 +75,7 @@
                                         <i class="ace-icon fa fa-user"></i>
                                     </span>
                                     <input type="text" name="name" class="form-control admin_sea"
-                                           value="${param.name}" placeholder="客户姓名"/>
+                                           value="${param.name}" placeholder="用户姓名"/>
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-3 btn-sespan maintop">

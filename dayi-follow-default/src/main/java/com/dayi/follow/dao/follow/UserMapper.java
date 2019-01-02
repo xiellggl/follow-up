@@ -22,7 +22,7 @@ public interface UserMapper extends BaseMapper<FollowUp> {
 
     List<String> findIdsByDeptId(@Param("deptId") String deptId);
 
-    Page<UserVo> findPage(Page page, @Param("mobile") String mobile,
+    Page<UserVo> findPage(Page page, @Param("name") String name,
                           @Param("deptId") String deptId, @Param("inviteCode") String inviteCode);
 
 

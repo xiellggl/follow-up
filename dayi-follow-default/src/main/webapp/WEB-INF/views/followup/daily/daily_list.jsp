@@ -18,7 +18,7 @@
                 <ul class="breadcrumb">
                     <li>
                         <i class="ace-icon fa fa-home home-icon"></i>
-                        <a href="/index">首页</a>
+                        <a href="/">首页</a>
                     </li>
                     <li>个人报表</li>
                     <li class="active">我的日报</li>

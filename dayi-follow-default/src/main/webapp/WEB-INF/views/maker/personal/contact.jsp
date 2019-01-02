@@ -33,7 +33,7 @@
                 <ul class="breadcrumb">
                     <li>
                         <i class="ace-icon fa fa-home home-icon"></i>
-                        <a href="/index">首页</a>
+                        <a href="/">首页</a>
                     </li>
                     <li>
                         <a href="./list">我的客户-创客</a>

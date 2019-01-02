@@ -4,7 +4,6 @@ import com.dayi.common.util.BizResult;
 import com.dayi.follow.base.BaseController;
 import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.conf.Constants;
-import com.dayi.follow.enums.AgentCusTypeEnum;
 import com.dayi.follow.enums.ContactTypeEnum;
 import com.dayi.follow.enums.OrgTypeEnum;
 import com.dayi.follow.model.follow.OrgContact;
@@ -15,7 +14,6 @@ import com.dayi.follow.vo.LoginVo;
 import com.dayi.follow.vo.SearchVo;
 import com.dayi.mybatis.common.util.Misc;
 import com.dayi.mybatis.support.Page;
-import com.fasterxml.jackson.databind.ser.Serializers;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,8 +31,6 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/org")
 public class OrgController extends BaseController {
-    @Resource
-    FollowUpService followUpService;
     @Resource
     UserComponent userComponent;
     @Resource
@@ -75,21 +71,13 @@ public class OrgController extends BaseController {
      */
     @RequestMapping("/contact")
     public String contact(HttpServletRequest request, Model model, Page page) {
-        LoginVo currVo = userComponent.getCurrUser(request);
-
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
 
         Integer orgId = Misc.toInt(request.getParameter("orgId"), 0);// 创客人ID
 
-        String followId = followOrgService.getFollowIdByOrgId(orgId);
-
         page.setPageSize(Constants.CONTACT_PAGE_SIZE);
 
-        if (currVo.getId().equals(followId)) {
-            page = followOrgService.findContacts(page, orgId);
-        } else {
-            return "redirect:/followup/uc/index";
-        }
+        page = followOrgService.findContacts(page, orgId);
 
         String returnUrl = request.getParameter("returnUrl");//返回创客进来列表的路径
 

@@ -45,8 +45,8 @@
 
     <select id="findPage" parameterType="map" resultMap="BaseResultMap">
         SELECT * from follow_up where  disable !=0
-        <if test="''!=mobile and null!=mobile">
-            and mobile =#{mobile}
+        <if test="''!=name and null!=name">
+            and name like "%"#{name}"%"
         </if>
 
         <if test="''!=deptId and null!=deptId">
@@ -54,7 +54,7 @@
         </if>
 
         <if test="''!=inviteCode and null!=inviteCode">
-            and invite_code =#{inviteCode}
+            and invite_code like "%"#{inviteCode}"%"
         </if>
     </select>
 
