@@ -6,6 +6,7 @@ import com.dayi.follow.model.follow.OperateLog;
 import com.dayi.follow.service.OperateLogService;
 import com.dayi.follow.vo.sys.OperateLogSearchVo;
 import com.dayi.mybatis.support.Conditions;
+import com.dayi.mybatis.support.Order;
 import com.dayi.mybatis.support.Page;
 import com.dayi.mybatis.support.ext.Restrictions;
 import org.springframework.stereotype.Service;
@@ -49,6 +50,7 @@ public class OperateLogServiceImpl implements OperateLogService {
             calendar.add(Calendar.DAY_OF_MONTH, 1);
             conditions.add(Restrictions.lt("create_time", calendar.getTime()));
         }
+        conditions.addOrder(Order.desc("create_time"));
 
         page = operateLogMapper.searchByConditions(page, conditions);
         return page;
