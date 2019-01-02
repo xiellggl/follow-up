@@ -75,7 +75,7 @@
                                         <i class="ace-icon fa fa-user"></i>
                                     </span>
                                     <input type="text" name="name" class="form-control admin_sea"
-                                           value="${param.name}" placeholder="客户姓名"/>
+                                           value="${param.name}" placeholder="用户姓名"/>
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-3 btn-sespan maintop">
