@@ -60,7 +60,7 @@
                                     <i class="ace-icon fa fa-user"></i>
                                 </span>
                                 <input type="text" class="form-control admin_sea" name="followUpBefore" value="${param.followUpBefore}"
-                                       placeholder="更变跟进人"/>
+                                       placeholder="变更跟进人"/>
                             </div>
                         </div>
 
@@ -120,7 +120,7 @@
                 <div class="space-10"></div>
                 <div class="row">
                     <div class="col-xs-12">
-                        <a class="btn btn-white" href="../agent/list${not empty param.followId ? '?followId=' : ''}${param.followId}"">代理商</a>
+                        <a class="btn btn-white" href="../agent/list${not empty param.followId ? '?followId=' : ''}${param.followId}">代理商</a>
                         <a class="btn btn-white btn-info" href="../org/list${not empty param.followId ? '?followId=' : ''}${param.followId}">创客</a>
                     </div>
                 </div>
