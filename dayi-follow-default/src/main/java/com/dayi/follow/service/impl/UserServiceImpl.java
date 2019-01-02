@@ -184,7 +184,7 @@ public class UserServiceImpl implements UserService {
 
         for (UserVo vo : page.getResults()) {
             //处理角色名称
-            if (StringUtils.isBlank(vo.getRoleids())) break;
+            if (StringUtils.isBlank(vo.getRoleids())) continue;
             String[] split = StringUtils.split(vo.getRoleids(), ",");
             for (String roleId : split) {
                 Role role = roleMapper.get(roleId);
