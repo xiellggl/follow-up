@@ -38,6 +38,13 @@
         </if>
     </select>
 
+    <select id="findAllAssignSelect" parameterType="map" resultType="com.dayi.follow.vo.followup.FollowUpListVo">
+        SELECT * from follow_up where identity =1 and disable !=0
+        <if test="''!=followUp and null!=followUp">
+            and name like CONCAT('%','${followUp}','%' )
+        </if>
+    </select>
+
     <select id="findFollowUps" resultType="com.dayi.follow.vo.followup.FollowUpListVo" parameterType="map">
         SELECT a.id,a.name,a.invite_code,e.name deptName,a.user_name,a.disable,count(DISTINCT c.id)agentNum,
               sum(0.8*d.cargo_interest+d.cargo_interest_puchas)agentFund,a.create_time

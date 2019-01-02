@@ -30,6 +30,8 @@ public interface FollowUpMapper extends BaseMapper<FollowUp> {
 
     Page<FollowUpListVo> findAssignSelect(Page page, @Param("followUp") String followUp, @Param("followIds") List<String> followIds);
 
+    Page<FollowUpListVo> findAllAssignSelect(Page page, @Param("followUp") String followUp);
+
     Page<FMDetailListVo> findAgents(Page page, @Param("searchVo") SearchVo searchVo, @Param("followIds") List<String> followIds,
                                     @Param("assistDataBase") String assistDataBase);
 

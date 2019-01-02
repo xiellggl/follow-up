@@ -29,7 +29,7 @@ public interface FollowUpService {
     Page<FollowUpListVo> findPage(Page<FollowUpListVo> page, String deptId, String mobile, String queryDeptId, String inviteCode);
 
     //查询全部跟进人
-    Page<FollowUpListVo> findAssignSelect(Page<FollowUpListVo> page, String followUp, String deptId);
+    Page<FollowUpListVo> findAssignSelect(Page<FollowUpListVo> page, String followUp);
 
     //查询全部跟进人
     Page<FollowUpListVo> findTeamAssignSelect(Page<FollowUpListVo> page, String followUp, String deptId);
