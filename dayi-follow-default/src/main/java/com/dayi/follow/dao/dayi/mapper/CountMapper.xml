@@ -103,7 +103,7 @@
         left join (
           SELECT * from agent WHERE del_status != -1
         )b on a.agent_id=b.id
-         where a.follow_id =${followId} and b.id is not NULL GROUP BY a.customer_type
+         where a.follow_id =#{followId} and b.id is not NULL GROUP BY a.customer_type
     </select>
     
     <select id="countCusFundRank" parameterType="java.lang.String" resultType="com.dayi.follow.vo.index.FundRankVo">
@@ -127,7 +127,7 @@
         left join (
             SELECT id from agent
             LEFT JOIN (
-              SELECT agent_id from ${assistDataBase}.follow_agent where follow_id = ${followId}
+              SELECT agent_id from ${assistDataBase}.follow_agent where follow_id = #{followId}
             )b on b.agent_id=agent.id
             where del_status != -1 and b.agent_id is not null
         )a ON a.id = fam.agent_org_id GROUP BY fam.type
