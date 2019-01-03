@@ -39,10 +39,10 @@
                     <span class="input-group-addon">
                         <i class="ace-icon fa fa-flag"></i>
                     </span>
-                    <select name="orgType">
+                    <select name="orgType" class="form-control admin_sea">
                         <option value="">机构类型</option>
                         <c:forEach items="${orgTypes}" var="item">
-                            <option value="${item.value}" <c:if test="${param.orgTypeStr eq item.value}">selected</c:if>>${item.name}</option>
+                            <option value="${item.value}" <c:if test="${param.orgType eq item.value}">selected</c:if>>${item.name}</option>
                         </c:forEach>
                     </select>
                 </div>

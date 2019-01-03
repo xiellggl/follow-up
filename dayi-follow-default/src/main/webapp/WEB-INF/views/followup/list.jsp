@@ -50,7 +50,7 @@
                     </h1>
                 </div>
                 <div class="row">
-                    <form class="form-horizontal" style="max-width: 1000px;">
+                    <form class="form-horizontal">
                         <div class="clearfix maintop">
                             <div class="col-xs-12 col-sm-3 btn-sespan maintop">
                                 <div class="input-group">
@@ -67,8 +67,9 @@
                                         <i class="ace-icon fa fa-cog"></i>
                                     </span>
                                     <select name="deptId" class="form-control admin_sea">
+                                        <option selected="selected" disabled="disabled"  style='display: none' value=''>请选择部门</option>
                                             <c:forEach items="${deptList}" var="item" >
-                                                <option value="${item.id}" ${deptVo.pid eq item.id ? 'selected' : ''}>${item.treeName}</option>
+                                                <option value="${item.id}" ${item.pid eq item.id ? 'selected' : ''}>${item.treeName}</option>
                                             </c:forEach>
                                     </select>
                                 </div>

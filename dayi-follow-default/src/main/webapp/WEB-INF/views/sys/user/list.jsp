@@ -94,7 +94,7 @@
                                     <select name="deptId" class="form-control admin_sea">
                                         <option selected="selected" disabled="disabled"  style='display: none' value=''>请选择部门</option>
                                         <c:forEach items="${deptList}" var="item" >
-                                            <option value="${item.id}" ${deptVo.pid eq item.id ? 'selected' : ''}>${item.treeName}</option>
+                                            <option value="${item.id}" ${item.pid eq item.id ? 'selected' : ''}>${item.treeName}</option>
                                         </c:forEach>
                                     </select>
                                 </div>

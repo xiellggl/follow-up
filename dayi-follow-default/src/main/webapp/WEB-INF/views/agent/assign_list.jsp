@@ -71,8 +71,8 @@
                                         <i class="ace-icon fa fa-check-square-o"></i>
                                     </span>
                                     <select name="assignStatus" class="form-control admin_sea">
-                                        <option value="0"  ${assignStat=='0'?"selected":''}>未分配</option>
-                                        <option value="1"  ${assignStat=='1'?"selected":''}>已分配</option>
+                                        <option value="0"  ${param.assignStatus=='0'?"selected":''}>未分配</option>
+                                        <option value="1"  ${param.assignStatus=='1'?"selected":''}>已分配</option>
                                     </select>
                                 </div>
                             </div>
