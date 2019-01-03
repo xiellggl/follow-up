@@ -50,7 +50,7 @@ public interface DeptService {
     BizResult delete(Department department);
 
     //检查城市服务商邀请码
-    boolean checkInviteCode(String inviteCode);
+    boolean checkInviteCode(String inviteCode,String deptId);
 
     //处理减少部门人数
     void doReducePerson(Department department);

@@ -61,14 +61,15 @@ public class DeptController extends BaseController {
         BizResult bizResult = checkErrors(result);
         if (!bizResult.isSucc()) return bizResult;//参数传入错误
 
-        if (department.getCityServer().equals(1) && department.getCityInviteCode().isEmpty()) {
-            return BizResult.fail("城市服务商邀请码不能为空！");
-        } else if (department.getCityServer().equals(1) && !department.getCityInviteCode().isEmpty()) {
-            //检查邀请码是否重复
-            boolean b = deptService.checkInviteCode(department.getCityInviteCode());
-            if (b) return BizResult.fail("邀请码已经存在！");
+        if (department.getCityServer() != null && department.getCityServer().equals(1)) {
+            if (department.getCityInviteCode().isEmpty()) {
+                return BizResult.fail("城市服务商邀请码不能为空！");
+            } else {
+                //检查邀请码是否重复
+                boolean b = deptService.checkInviteCode(department.getCityInviteCode(), null);
+                if (b) return BizResult.fail("邀请码已经存在！");
+            }
         }
-
         return deptService.add(department);
     }
 
@@ -109,12 +110,16 @@ public class DeptController extends BaseController {
         BizResult bizResult = checkErrors(result);
         if (!bizResult.isSucc()) return bizResult;//参数传入错误
 
-        if (department.getCityServer() != null && department.getCityServer().equals(1) && department.getCityInviteCode().isEmpty()) {
-            return BizResult.fail("城市服务商邀请码不能为空！");
-        } else if (department.getCityServer() != null && department.getCityServer().equals(1) && !department.getCityInviteCode().isEmpty()) {
-            //检查邀请码是否重复
-            boolean b = deptService.checkInviteCode(department.getCityInviteCode());
-            if (b) return BizResult.fail("邀请码已经存在！");
+        if (StringUtils.isBlank(department.getId())) BizResult.fail("请选择操作部门！");
+
+        if (department.getCityServer() != null && department.getCityServer().equals(1)) {
+            if (department.getCityInviteCode().isEmpty()) {
+                return BizResult.fail("城市服务商邀请码不能为空！");
+            } else {
+                //检查邀请码是否重复
+                boolean b = deptService.checkInviteCode(department.getCityInviteCode(), department.getId());
+                if (b) return BizResult.fail("邀请码已经存在！");
+            }
         }
 
         return deptService.updateDept(department);
@@ -125,7 +130,7 @@ public class DeptController extends BaseController {
      */
     @RequestMapping("/delete")
     @ResponseBody
-    public BizResult delete(HttpServletRequest request,String deptId) {
+    public BizResult delete(HttpServletRequest request, String deptId) {
         if (StringUtils.isBlank(deptId)) return BizResult.FAIL;
 
         Department department = deptService.getDept(deptId);

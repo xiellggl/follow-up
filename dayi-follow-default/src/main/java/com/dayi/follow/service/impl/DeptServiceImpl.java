@@ -150,9 +150,16 @@ public class DeptServiceImpl implements DeptService {
     }
 
     @Override
-    public boolean checkInviteCode(String inviteCode) {
+    public boolean checkInviteCode(String inviteCode, String deptId) {
         Department department = deptMapper.getByInviteCode(inviteCode);
-        if (department == null) return false;
+        if (StringUtils.isBlank(deptId)) {
+            if (department == null) return false;
+        } else {
+            Department doDept = deptMapper.get(deptId);//要操作的部门
+            if (department == null || (doDept.getCityInviteCode() != null && doDept.getCityInviteCode().equals(inviteCode))) {//不存在
+                return false;
+            }
+        }
         return true;
     }
 
