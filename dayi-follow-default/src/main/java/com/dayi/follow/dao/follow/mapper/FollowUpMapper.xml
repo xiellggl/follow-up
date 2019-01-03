@@ -65,37 +65,15 @@
         <if test="''!=mobile and null!=mobile">
             and a.mobile =#{mobile}
         </if>
-        and a.id in
-        <foreach item="item" index="index" collection="followIds"
+
+        <if test="null!=deptIds and 0!=deptIds.size()">
+        and e.id in
+        <foreach item="item" index="index" collection="deptIds"
                  open="(" separator="," close=")">
             #{item}
         </foreach>
-        <if test="''!=inviteCode and null!=inviteCode">
-            and a.invite_code =#{inviteCode}
         </if>
-        GROUP BY a.id
-    </select>
 
-    <select id="findAllFollowUps" resultType="com.dayi.follow.vo.followup.FollowUpListVo" parameterType="map">
-        SELECT a.id,a.name,a.invite_code,e.name deptName,a.user_name,a.disable,count(DISTINCT c.id)agentNum,
-        sum(0.8*d.cargo_interest+d.cargo_interest_puchas)agentFund,a.create_time
-        from follow_up a
-        left join (
-        select follow_id,agent_id from follow_agent
-        )b on b.follow_id =a.id
-        LEFT join (
-        select id from ${assistDataBase}.agent where del_status!=-1
-        )c on c.id =b.agent_id
-        LEFT join (
-        SELECT agent_org_id,cargo_interest,cargo_interest_puchas from ${assistDataBase}.finance_account
-        )d on d.agent_org_id = c.id
-        left join (
-        SELECT  id,name from department
-        )e on e.id =a.dept_id
-        where a.identity =1 and a.disable !=0
-        <if test="''!=mobile and null!=mobile">
-            and a.mobile =#{mobile}
-        </if>
         <if test="''!=inviteCode and null!=inviteCode">
             and a.invite_code =#{inviteCode}
         </if>

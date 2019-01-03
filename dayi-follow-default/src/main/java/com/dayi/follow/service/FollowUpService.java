@@ -26,7 +26,7 @@ public interface FollowUpService {
     List<String> findIdsByDeptId(String deptId);
 
     //查询全部跟进人
-    Page<FollowUpListVo> findPage(Page<FollowUpListVo> page, String deptId, String mobile, String queryDeptId, String inviteCode);
+    Page<FollowUpListVo> findPage(Page<FollowUpListVo> page, String mobile, String queryDeptId, String inviteCode);
 
     //查询全部跟进人
     Page<FollowUpListVo> findAssignSelect(Page<FollowUpListVo> page, String followUp);

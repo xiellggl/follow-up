@@ -44,15 +44,13 @@ public class FollowupController extends BaseController {
 
     @RequestMapping(value = "/list")
     public String list(HttpServletRequest request, Model model, Page page) {
-        LoginVo currVo = userComponent.getCurrUser(request);
-
         String mobile = request.getParameter("mobile");
         String queryDeptId = request.getParameter("deptId");
         String inviteCode = request.getParameter("inviteCode");
 
         page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
 
-        page = followUpService.findPage(page, currVo.getDeptId(), mobile, queryDeptId, inviteCode);
+        page = followUpService.findPage(page, mobile, queryDeptId, inviteCode);
 
         List<Department> deptList = deptService.getDeptTree(null);
 

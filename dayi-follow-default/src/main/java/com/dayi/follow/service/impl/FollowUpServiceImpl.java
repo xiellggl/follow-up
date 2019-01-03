@@ -69,19 +69,16 @@ public class FollowUpServiceImpl implements FollowUpService {
 
     @Override
     @Log(target = OperateLog.class, action = BaseLog.LogAction.SEARCH, what = "跟进人管理", note = "查询跟进人列表")
-    public Page<FollowUpListVo> findPage(Page<FollowUpListVo> page, String deptId, String mobile, String queryDeptId, String inviteCode) {
-        List<String> followIds = new ArrayList<String>();
-        List<String> subDeptIds = new ArrayList<>();
-        if (!StringUtils.isBlank(queryDeptId)) subDeptIds = deptService.getSubDeptIds(queryDeptId);
+    public Page<FollowUpListVo> findPage(Page<FollowUpListVo> page, String mobile, String queryDeptId, String inviteCode) {
+        List<String> subDeptIds;
 
-        for (String subDeptId : subDeptIds) {
-            followIds.addAll(followUpMapper.findIdsByDeptId(subDeptId));
+        if (!StringUtils.isBlank(queryDeptId)) {
+            subDeptIds = deptService.getSubDeptIds(queryDeptId);
+            subDeptIds.add(queryDeptId);
+            page = followUpMapper.findFollowUps(page, mobile, subDeptIds, inviteCode, dayiDataBaseStr);
+        } else {
+            page = followUpMapper.findFollowUps(page, mobile, null, inviteCode, dayiDataBaseStr);
         }
-
-        if (followIds.isEmpty())
-            page = followUpMapper.findAllFollowUps(page, mobile, inviteCode, dayiDataBaseStr);
-        else
-            page = followUpMapper.findFollowUps(page, mobile, followIds, inviteCode, dayiDataBaseStr);
 
         for (FollowUpListVo vo : page.getResults()) {
             List<Organization> orgs = followOrgMapper.findOrgsByfollowId(vo.getId(), null, dayiDataBaseStr);
