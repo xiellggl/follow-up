@@ -272,7 +272,7 @@ public class UserServiceImpl implements UserService {
             SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(flowUp, String.valueOf(flowUp.getId()),
                     flowUp.getUserName(), loginIp);
 
-            simpleAuthenticationInfo.addOptions(-AccountInfo.OPTIONS_SECOND_VALID);
+            //simpleAuthenticationInfo.addOptions(-AccountInfo.OPTIONS_SECOND_VALID);
             return simpleAuthenticationInfo;
         }
         return null;
