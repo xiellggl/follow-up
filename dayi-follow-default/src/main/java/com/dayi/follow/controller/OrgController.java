@@ -7,6 +7,7 @@ import com.dayi.follow.conf.Constants;
 import com.dayi.follow.enums.ContactTypeEnum;
 import com.dayi.follow.enums.OrgTypeEnum;
 import com.dayi.follow.model.follow.OrgContact;
+import com.dayi.follow.model.follow.Organization;
 import com.dayi.follow.service.*;
 import com.dayi.follow.util.PageUtil;
 import com.dayi.follow.util.StringUtil;
@@ -14,6 +15,7 @@ import com.dayi.follow.vo.LoginVo;
 import com.dayi.follow.vo.SearchVo;
 import com.dayi.mybatis.common.util.Misc;
 import com.dayi.mybatis.support.Page;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -77,6 +79,8 @@ public class OrgController extends BaseController {
 
         Integer orgId = Misc.toInt(request.getParameter("orgId"), 0);// 创客人ID
 
+        Organization org = orgService.get(orgId);
+
         String followId = followOrgService.getFollowIdByOrgId(orgId);
 
         page.setPageSize(Constants.CONTACT_PAGE_SIZE);
@@ -92,6 +96,7 @@ public class OrgController extends BaseController {
         model.addAttribute("page", page);//联系时间取createDate
         model.addAttribute("returnUrl", returnUrl);//返回创客进来列表的路径
         model.addAttribute("contactTypes", ContactTypeEnum.values());//联系方式
+        model.addAttribute("org", org);//
         request.setAttribute("pageUrl", pageUrl);
         return "/maker/personal/contact";
     }

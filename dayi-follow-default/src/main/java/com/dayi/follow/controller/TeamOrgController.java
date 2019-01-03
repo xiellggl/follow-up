@@ -3,6 +3,7 @@ package com.dayi.follow.controller;
 import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.conf.Constants;
 import com.dayi.follow.enums.OrgTypeEnum;
+import com.dayi.follow.model.follow.Organization;
 import com.dayi.follow.service.FollowOrgService;
 import com.dayi.follow.service.FollowUpService;
 import com.dayi.follow.service.OrgService;
@@ -75,6 +76,8 @@ public class TeamOrgController {
 
         Integer orgId = Misc.toInt(request.getParameter("orgId"), 0);// 创客人ID
 
+        Organization org = orgService.get(orgId);
+
         String followId = followOrgService.getFollowIdByOrgId(orgId);
 
         List<String> followIds = followUpService.findIdsByDeptId(currVo.getDeptId());
@@ -91,6 +94,7 @@ public class TeamOrgController {
 
         model.addAttribute("page", page);//联系时间取createDate
         model.addAttribute("returnUrl", returnUrl);//返回创客进来列表的路径
+        model.addAttribute("org", org);//
         request.setAttribute("pageUrl", pageUrl);
         return "maker/team/contact";
     }
