@@ -130,7 +130,7 @@
         where b.id is not NULL and c.disable!=0
 
         <if test="null!=followIds and 0!=followIds.size()">
-            and follow_id in
+            and a.follow_id in
             <foreach item="item" index="index" collection="followIds"
                      open="(" separator="," close=")">
                 #{item}
@@ -154,9 +154,9 @@
         left join (
         select * from follow_up where identity!=0 and disable!=0
         )c on c.id =a.follow_id
-        where b.id is not NULL and c.disable!=0 and a.follow_id in
+        where b.id is not NULL and c.disable!=0
         <if test="null!=followIds and 0!=followIds.size()">
-            and follow_id in
+            and a.follow_id in
             <foreach item="item" index="index" collection="followIds"
                      open="(" separator="," close=")">
                 #{item}
