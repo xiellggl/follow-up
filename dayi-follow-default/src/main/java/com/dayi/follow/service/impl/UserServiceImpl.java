@@ -13,7 +13,6 @@ import com.dayi.follow.vo.LoginVo;
 import com.dayi.follow.vo.user.UserEditDto;
 import com.dayi.follow.vo.user.UserVo;
 import com.dayi.mybatis.support.Page;
-import com.dayi.user.authorization.authc.AccountInfo;
 import com.dayi.user.authorization.authc.AuthenticationInfo;
 import com.dayi.user.authorization.authc.AuthenticationToken;
 import com.dayi.user.authorization.authc.support.SimpleAuthenticationInfo;
@@ -267,7 +266,7 @@ public class UserServiceImpl implements UserService {
             SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(flowUp, String.valueOf(flowUp.getId()),
                     flowUp.getUserName(), loginIp);
 
-            simpleAuthenticationInfo.addOptions(-AccountInfo.OPTIONS_SECOND_VALID);
+            //simpleAuthenticationInfo.addOptions(-AccountInfo.OPTIONS_SECOND_VALID);
             return simpleAuthenticationInfo;
         }
         return null;
