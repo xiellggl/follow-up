@@ -133,6 +133,20 @@
             $modal.html(html);
             $(".modal-title").html("修改部门");
             var $form = $("#form-id");
+
+            // 是否城市服务商勾选框
+            $form.on('change','[name="checkbox"]',function () {
+                var mi = this, ckType = mi.checked?1:0;
+                $(mi).siblings('[name="cityServer"]').val(ckType);
+                var $cityInviteCodeBox = $("#cityInviteCodeBox");
+                if(ckType){
+                    $cityInviteCodeBox.show().find('input').removeAttr('disabled');
+                }else{
+                    $cityInviteCodeBox.hide().find('input').attr('disabled',"disabled");
+                }
+            });
+            $form.find('[name="checkbox"]').change();
+
             $form.validate({
                 rules: {
                     name:"required",
@@ -143,9 +157,6 @@
                         required:true,
                         number:true
                     },
-                    // pid:{
-                    //     required: true
-                    // }
                 },
                 messages: {
                     name:"部门名称不能为空",
@@ -156,9 +167,6 @@
                         required:'城市服务商不能为空',
                         number:"请输入数字"
                     },
-                    // pid: {
-                    //     required: "下拉菜单是必选"
-                    // }
                 },
                 errorPlacement: function (error, element) {
                     var $tipsBox = element.closest(".form-group").find(".tips_box");
@@ -213,9 +221,6 @@
                         required:true,
                         number:true
                     },
-                    // pid:{
-                    //     required: true
-                    // }
                 },
                 messages: {
                     name:"部门名称不能为空",
@@ -226,9 +231,6 @@
                         required:'城市服务商不能为空',
                         number:"请输入数字"
                     },
-                    // pid: {
-                    //     required: "请选择部门"
-                    // }
                 },
                 errorPlacement: function (error, element) {
                     var $tipsBox = element.closest(".form-group").find(".tips_box");
@@ -265,17 +267,7 @@
             editDeptFn(id);
         });
 
-        // 是否城市服务商勾选框
-        $('body').on('change','[name="checkbox"]',function () {
-            var mi = this, ckType = mi.checked?1:0;
-            $(mi).siblings('[name="cityServer"]').val(ckType);
-            var $cityInviteCodeBox = $("#cityInviteCodeBox");
-            if(ckType){
-                $cityInviteCodeBox.show().find('input').removeAttr('disabled');
-            }else{
-                $cityInviteCodeBox.hide().find('input').attr('disabled',"disabled");
-            }
-        });
+
 
         //删除
         $('[data-act="del"]').on("click",function () {

@@ -1,5 +1,22 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@include file="/inc/followup/taglib.jsp"%>
+<%--权限判断--%>
+<%--<c:set var="agentList" value="false" />--%>
+<%--<c:set var="orgList" value="false" />--%>
+<%--<c:forEach items="${permissions}" var="item">--%>
+    <%--&lt;%&ndash;查看全部明细&ndash;%&gt;--%>
+    <%--<c:if test="${item.url eq '/followup/'}">--%>
+        <%--<c:set var="" value="true" />--%>
+    <%--</c:if>--%>
+    <%--&lt;%&ndash;查看全部代理商明细&ndash;%&gt;--%>
+    <%--<c:if test="${item.url eq '/followup/agent/list'}">--%>
+        <%--<c:set var="agentList" value="true" />--%>
+    <%--</c:if>--%>
+    <%--&lt;%&ndash;查看全部创客明细&ndash;%&gt;--%>
+    <%--<c:if test="${item.url eq '/followup/org/list'}">--%>
+        <%--<c:set var="orgList" value="true" />--%>
+    <%--</c:if>--%>
+<%--</c:forEach>--%>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -49,7 +66,7 @@
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-cog"></i>
                                     </span>
-                                    <select name="myDeptId" class="form-control admin_sea">
+                                    <select name="deptId" class="form-control admin_sea">
                                             <c:forEach items="${deptList}" var="item" >
                                                 <option value="${item.id}" ${deptVo.pid eq item.id ? 'selected' : ''}>${item.treeName}</option>
                                             </c:forEach>
@@ -121,9 +138,16 @@
                                             <fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/>
                                         </td>
                                         <td>
+                                            <%--<c:if test="${agentList}">--%>
                                             <a href="/followup/agent/list?followId=${item.id}">
                                                 <i class="ace-icon fa fa-external-link"></i> 明细
                                             </a>
+                                            <%--</c:if>--%>
+                                            <%--<c:if test="${orgList}">--%>
+                                            <a href="/followup/org/list?followId=${item.id}">
+                                                <i class="ace-icon fa fa-external-link"></i> 明细
+                                            </a>
+                                            <%--</c:if>--%>
                                         </td>
                                     </tr>
                                 </c:forEach>

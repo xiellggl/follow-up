@@ -112,7 +112,7 @@
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-flag"></i>
                                     </span>
-                                    <select name="orgType" class="form-control">
+                                    <select name="orgType" class="form-control admin_sea">
                                         <option value="">机构类型</option>
                                         <c:forEach items="${orgTypes}" var="item">
                                             <option value="${item.value}" <c:if test="${param.orgTypeStr eq item.value}">selected</c:if>>${item.name}</option>
@@ -176,6 +176,7 @@
                                 <th class="hidden-xs">注册时间</th>
                                 <th>手机号</th>
                                 <th class="hidden-sm hidden-xs">身份证号</th>
+                                <th>机构类型</th>
                                 <th>跟进人</th>
                                 <th class="hidden-xs">分配时间</th>
                                 <th>邀请码</th>
@@ -185,7 +186,7 @@
                             <tbody>
                             <c:if test="${empty page.results}">
                                 <tr>
-                                    <td colspan="12" class="no_data">暂无数据记录</td>
+                                    <td colspan="10" class="no_data">暂无数据记录</td>
                                 </tr>
                             </c:if>
 
@@ -208,6 +209,8 @@
                                         <!-- 身份证号 -->
                                         <td class="hidden-sm hidden-xs"><c:if
                                                 test="${not empty item.idCard}">${fn:substring(item.idCard, 0, fn:length(item.idCard) - 4)}****</c:if></td>
+                                        <!-- 机构类型 -->
+                                        <td>${item.orgTypeStr}</td>
                                         <!-- 跟进人 -->
                                         <td>${item.followUp}</td>
                                         <!-- 分配时间 -->
