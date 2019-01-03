@@ -1,16 +1,10 @@
 package com.dayi.follow.conf;
 
-import com.dayi.follow.filter.GlobalFilter;
-import com.dayi.follow.interceptor.GlobalInterceptor;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.web.servlet.config.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author xiell
@@ -19,20 +13,11 @@ import java.util.List;
 @Configuration
 public class MvcConfiguration extends WebMvcConfigurerAdapter {
 
-    @Resource
-    GlobalInterceptor loginInterceptor;
-
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("/index");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
         super.addViewControllers(registry);
-    }
-
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(loginInterceptor).addPathPatterns("/user/login/post");
-        super.addInterceptors(registry);
     }
 
 //    @Override

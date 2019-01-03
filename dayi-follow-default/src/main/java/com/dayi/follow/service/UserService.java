@@ -10,6 +10,8 @@ import com.dayi.follow.vo.user.UserVo;
 import com.dayi.mybatis.support.Page;
 import com.dayi.user.authorization.realm.Realm;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author xiell
  * @date 2018/11/12
@@ -75,6 +77,6 @@ public interface UserService extends Realm {
     void doUpdatePerson(Department oldDept, String newId);
 
     //登录
-    BizResult login(LoginVo loginVo);
+    BizResult login(HttpServletRequest request, LoginVo loginVo);
 
 }

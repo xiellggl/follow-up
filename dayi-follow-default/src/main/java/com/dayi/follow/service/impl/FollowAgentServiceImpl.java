@@ -240,7 +240,7 @@ public class FollowAgentServiceImpl implements FollowAgentService {
         if (searchVo.getAssignStatus() == null || searchVo.getAssignStatus() != 1) {//查未分配
             list = followAgentMapper.findAssignsNoFollow(searchVo, dayiDataBaseStr);
         } else {//查已分配
-            list = followAgentMapper.findAssignsFollow( searchVo, followIds, dayiDataBaseStr);
+            list = followAgentMapper.findAssignsFollow(searchVo, followIds, dayiDataBaseStr);
         }
 
         for (AssignListVo vo : list) {
@@ -264,6 +264,17 @@ public class FollowAgentServiceImpl implements FollowAgentService {
         Agent agent = agentService.get(followAgentVo.getAgentId());
         if (agent == null) return BizResult.FAIL;
 
+        Account account = agentMapper.getAccount(followAgentVo.getAgentId());
+        BigDecimal agentFund = BigDecimal.ZERO;
+        BigDecimal totalFund = BigDecimal.ZERO;
+        if (account != null) {
+            agentFund = account.getCargoInterest().multiply(BigDecimal.valueOf(0.8)).add(account.getCargoInterestPuchas());
+
+            totalFund = account.getCargoInterest().multiply(BigDecimal.valueOf(0.8)).
+                    add(account.getCargoInterestPuchas()).
+                    add(account.getFrozen()).add(account.getUseable()).add(account.getOutFrozen());
+        }
+
         FollowAgent followAgent = followAgentMapper.getFollowAgentByAgentId(followAgentVo.getAgentId());
         if (followAgent == null) {//创建
             followAgent = new FollowAgent();
@@ -274,16 +285,9 @@ public class FollowAgentServiceImpl implements FollowAgentService {
             followAgent.setCreateTime(new Date());
             followAgent.setUpdateTime(new Date());
 
-            Account account = agentMapper.getAccount(followAgentVo.getAgentId());
-            if (account != null) {
-                BigDecimal agentFund = account.getCargoInterest().multiply(BigDecimal.valueOf(0.8)).add(account.getCargoInterestPuchas());
-                followAgent.setAgentFundBefore(agentFund);
+            followAgent.setAgentFundBefore(agentFund);
+            followAgent.setTotalFundBefore(totalFund);
 
-                BigDecimal totalFund = account.getCargoInterest().multiply(BigDecimal.valueOf(0.8)).
-                        add(account.getCargoInterestPuchas()).
-                        add(account.getFrozen()).add(account.getUseable()).add(account.getOutFrozen());
-                followAgent.setTotalFundBefore(totalFund);
-            }
             followAgent.setCustomerType(AgentCusTypeEnum.NOT_LINK.getValue());
 
         } else {//更新
@@ -292,13 +296,7 @@ public class FollowAgentServiceImpl implements FollowAgentService {
                 followAgent.setFollowUpBefore(oldFollowUp.getName());
                 followAgent.setAssignDateBefore(followAgent.getAssignDate());
 
-                Account account = agentMapper.getAccount(followAgentVo.getAgentId());
-                BigDecimal agentFund = account.getCargoInterest().multiply(BigDecimal.valueOf(0.8)).add(account.getCargoInterestPuchas());
                 followAgent.setAgentFundBefore(agentFund);
-
-                BigDecimal totalFund = account.getCargoInterest().multiply(BigDecimal.valueOf(0.8)).
-                        add(account.getCargoInterestPuchas()).
-                        add(account.getFrozen()).add(account.getUseable()).add(account.getOutFrozen());
                 followAgent.setTotalFundBefore(totalFund);
 
             } else {

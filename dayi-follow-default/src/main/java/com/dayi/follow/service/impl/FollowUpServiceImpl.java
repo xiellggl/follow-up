@@ -78,7 +78,10 @@ public class FollowUpServiceImpl implements FollowUpService {
             followIds.addAll(followUpMapper.findIdsByDeptId(subDeptId));
         }
 
-        page = followUpMapper.findFollowUps(page, mobile, followIds, inviteCode, dayiDataBaseStr);
+        if (followIds.isEmpty())
+            page = followUpMapper.findAllFollowUps(page, mobile, inviteCode, dayiDataBaseStr);
+        else
+            page = followUpMapper.findFollowUps(page, mobile, followIds, inviteCode, dayiDataBaseStr);
 
         for (FollowUpListVo vo : page.getResults()) {
             List<Organization> orgs = followOrgMapper.findOrgsByfollowId(vo.getId(), null, dayiDataBaseStr);
@@ -92,19 +95,9 @@ public class FollowUpServiceImpl implements FollowUpService {
     }
 
     @Override
-    public Page<FollowUpListVo> findAssignSelect(Page<FollowUpListVo> page, String followUp, String deptId) {
-        List<String> followIds = new ArrayList<>();
+    public Page<FollowUpListVo> findAssignSelect(Page<FollowUpListVo> page, String followUp) {
 
-        List<String> subDeptIds = deptService.getSubDeptIds(deptId);
-        subDeptIds.add(deptId);
-
-        for (String subDeptId : subDeptIds) {
-            followIds.addAll(this.findIdsByDeptId(subDeptId));
-        }
-
-        if (followIds.isEmpty()) return page;
-
-        page = followUpMapper.findAssignSelect(page, followUp, followIds);
+        page = followUpMapper.findAllAssignSelect(page, followUp);
 
         for (FollowUpListVo vo : page.getResults()) {
             int agentNum = followAgentMapper.getAgentNum(vo.getId(), dayiDataBaseStr);
