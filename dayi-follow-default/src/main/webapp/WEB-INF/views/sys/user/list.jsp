@@ -17,7 +17,7 @@
     <c:if test="${item.url eq '/user/delete'}">
         <c:set var="deleteUserPermission" value="true" />
     </c:if>
-    <c:if test="${item.url eq '/user/displace'}">
+    <c:if test="${item.url eq '/user/disable'}">
         <c:set var="disableUserPermission" value="true" />
     </c:if>
     <c:if test="${item.url eq '/user/enable'}">
