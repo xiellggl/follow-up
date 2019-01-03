@@ -167,17 +167,9 @@ public class FollowUpServiceImpl implements FollowUpService {
 
     @Override
     @Log(target = OperateLog.class, action = BaseLog.LogAction.SEARCH, what = "跟进人管理", note = "查询全部代理商明细列表")
-    public Page<FMDetailListVo> findAllAgentPage(Page page, SearchVo searchVo, String deptId) {
-        List<String> followIds = new ArrayList<>();
+    public Page<FMDetailListVo> findAllAgentPage(Page page, SearchVo searchVo) {
 
-        List<String> subDeptIds = deptService.getSubDeptIds(deptId);
-        for (String subDeptId : subDeptIds) {
-            followIds.addAll(followUpMapper.findIdsByDeptId(subDeptId));
-        }
-
-        if (followIds.isEmpty()) return page;
-
-        page = followUpMapper.findAgents(page, searchVo, followIds, dayiDataBaseStr);
+        page = followUpMapper.findAgents(page, searchVo, null, dayiDataBaseStr);
 
         page.setResults(doAgentMore(page.getResults()));
 
@@ -219,20 +211,9 @@ public class FollowUpServiceImpl implements FollowUpService {
 
     @Override
     @Log(target = OperateLog.class, action = BaseLog.LogAction.SEARCH, what = "跟进人管理", note = "查询全部创客明细列表")
-    public Page<FMDetailListVo> findAllOrgPage(Page page, SearchVo searchVo, String deptId) {
-        List<String> subDeptIds;
-        List<String> followIds = new ArrayList<>();
+    public Page<FMDetailListVo> findAllOrgPage(Page page, SearchVo searchVo) {
 
-        if (StringUtils.isBlank(deptId)) return page;
-        else subDeptIds = deptService.getSubDeptIds(deptId);
-
-        for (String subDeptId : subDeptIds) {
-            followIds.addAll(followUpMapper.findIdsByDeptId(subDeptId));
-        }
-
-        if (followIds.isEmpty()) return page;
-
-        page = followUpMapper.findOrgs(page, searchVo, followIds, dayiDataBaseStr);
+        page = followUpMapper.findOrgs(page, searchVo, null, dayiDataBaseStr);
 
         page.setResults(doOrgMore(page.getResults()));
 

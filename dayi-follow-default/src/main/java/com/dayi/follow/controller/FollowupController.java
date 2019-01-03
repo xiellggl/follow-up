@@ -80,12 +80,10 @@ public class FollowupController extends BaseController {
 
     @RequestMapping(value = "/all/agent/list")
     public String teamAgentList(HttpServletRequest request, Model model, SearchVo searchVo, Page page) {
-        LoginVo currVo = userComponent.getCurrUser(request);
-
 
         page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
 
-        page = followUpService.findAllAgentPage(page, searchVo, currVo.getDeptId());
+        page = followUpService.findAllAgentPage(page, searchVo);
 
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
         model.addAttribute("page", page);
@@ -110,12 +108,10 @@ public class FollowupController extends BaseController {
 
     @RequestMapping(value = "/all/org/list")
     public String teamOrgList(HttpServletRequest request, Model model, SearchVo searchVo, Page page) {
-        LoginVo currVo = userComponent.getCurrUser(request);
-
 
         page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
 
-        page = followUpService.findAllOrgPage(page, searchVo, currVo.getDeptId());
+        page = followUpService.findAllOrgPage(page, searchVo);
 
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
         model.addAttribute("page", page);

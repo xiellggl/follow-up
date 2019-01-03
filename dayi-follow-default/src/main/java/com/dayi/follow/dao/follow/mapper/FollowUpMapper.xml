@@ -127,11 +127,16 @@
         left join (
             select * from follow_up where identity!=0 and disable!=0
         )c on c.id =a.follow_id
-        where b.id is not NULL and c.disable!=0 and a.follow_id in
-        <foreach item="item" index="index" collection="followIds"
-                 open="(" separator="," close=")">
-            #{item}
-        </foreach>
+        where b.id is not NULL and c.disable!=0
+
+        <if test="null!=followIds and 0!=followIds.size()">
+            and follow_id in
+            <foreach item="item" index="index" collection="followIds"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
         <include refid="conditions"/>
         <if test="''!=searchVo.inviteCode and null!=searchVo.inviteCode">
             and b.record_invite_code like CONCAT('%','${searchVo.inviteCode}','%' )
@@ -150,10 +155,13 @@
         select * from follow_up where identity!=0 and disable!=0
         )c on c.id =a.follow_id
         where b.id is not NULL and c.disable!=0 and a.follow_id in
-        <foreach item="item" index="index" collection="followIds"
-                 open="(" separator="," close=")">
-            #{item}
-        </foreach>
+        <if test="null!=followIds and 0!=followIds.size()">
+            and follow_id in
+            <foreach item="item" index="index" collection="followIds"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
         <include refid="conditions"/>
         <if test="''!=searchVo.inviteCode and null!=searchVo.inviteCode">
             and b.maker_num like CONCAT('%','${searchVo.inviteCode}','%' )
