@@ -211,6 +211,20 @@
                 $(".modal-title").html("新增部门");
             }
             var $form = $("#form-id");
+
+            // 是否城市服务商勾选框
+            $form.on('change','[name="checkbox"]',function () {
+                var mi = this, ckType = mi.checked?1:0;
+                $(mi).siblings('[name="cityServer"]').val(ckType);
+                var $cityInviteCodeBox = $("#cityInviteCodeBox");
+                if(ckType){
+                    $cityInviteCodeBox.show().find('input').removeAttr('disabled');
+                }else{
+                    $cityInviteCodeBox.hide().find('input').attr('disabled',"disabled");
+                }
+            });
+            $form.find('[name="checkbox"]').change();
+
             $form.validate({
                 rules: {
                     name:"required",

@@ -260,8 +260,8 @@
             },
             submitHandler: function (form) {
                 common.ajax.handle({
-                    url: "/agent/contact/add.json",
-                    data: $formEdit.serialize(),
+                    url: "/agent/contact/add/save.json",
+                    data: $formEdit.serialize()
                 });
                 return false;
             }

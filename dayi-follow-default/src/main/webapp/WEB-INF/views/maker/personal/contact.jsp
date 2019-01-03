@@ -184,7 +184,7 @@
             },
             submitHandler: function (form) {
                 common.ajax.handle({
-                    url: "/org/contact/add/.json",
+                    url: "/org/contact/add/save.json",
                     data: $formEdit.serialize(),
                     succback:function (data) {
                         $formEdit[0].reset();
