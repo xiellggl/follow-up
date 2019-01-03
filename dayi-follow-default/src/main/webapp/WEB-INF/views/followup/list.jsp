@@ -79,7 +79,7 @@
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-barcode"></i>
                                     </span>
-                                    <input type="text" name="inviteCode" class="form-control admin_sea" value="${inviteCode}" placeholder="邀请码"/>
+                                    <input type="text" name="inviteCode" class="form-control admin_sea" value="${param.inviteCode}" placeholder="邀请码"/>
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-3 btn-sespan maintop">
@@ -92,7 +92,7 @@
                                         <span class="ace-icon fa fa-globe"></span>
                                         显示全部
                                     </a>
-                                    <a class="btn btn-xs btn-success" href="/followup/all/agent/list" >
+                                    <a class="btn btn-xs btn-success" href="./all/agent/list" >
                                         <span class="ace-icon fa fa-external-link"></span>
                                         全部明细
                                     </a>
