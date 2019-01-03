@@ -99,13 +99,14 @@
 
         //搜索
         $myModal.on("click", '[data-act="search"]', function () {
-            var flowId = $(this).data("flowid");
-            var linkPerson = $myModal.find('[name="linkPerson"]').val();
-            select_data = {filter_LIKEANYWHERES_linkPerson: linkPerson};
-            select_data.flowId=flowId;
+            var flowId = $(this).data("followid");
+            var linkPerson = $myModal.find('[name="followUp"]').val();
+            select_data = {followUp: linkPerson};
+            select_data.followId=flowId;
             common.loadPageHTML(url_selectlist, select_data, $pageListPanel, true);
             return false;
         });
+
         //分配
         $myModal.on("click", '[data-act="check"]', function () {
             var id = $(this).data("id");

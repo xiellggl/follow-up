@@ -346,12 +346,10 @@
 
         //搜索
         $myModal.on("click", '[data-act="search"]', function () {
-            var flowId = $(this).data("flowid");
+            var flowId = $(this).data("followid");
             var linkPerson = $myModal.find('[name="followUp"]').val();
-            var from = $(this).data("from");
             select_data = {followUp: linkPerson};
-            select_data.from=from;
-            select_data.flowId=flowId;
+            select_data.followId=flowId;
             common.loadPageHTML(url_selectlist, select_data, $pageListPanel, true);
             return false;
         });
