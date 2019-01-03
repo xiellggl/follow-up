@@ -115,7 +115,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label no-padding-right">客户意向度： </label>
                                         <div class="col-xs-12 col-sm-6">
-                                            <select name="customerIntentionType" class="width-100">
+                                            <select name="cusIntentionType" class="width-100">
                                                 <c:forEach items="${customerIntentionTypes}" var="item">
                                                     <option value="${item.value}">${item.name}</option>
                                                 </c:forEach>
@@ -232,7 +232,7 @@
             rules: {
                 contactType: "required",
                 customerType: "required",
-                customerIntentionType: "required",
+                cusIntentionType: "required",
                 content:{
                     required:true,
                     maxlength:140

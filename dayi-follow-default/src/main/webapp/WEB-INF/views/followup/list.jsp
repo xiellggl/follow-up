@@ -50,7 +50,7 @@
                     </h1>
                 </div>
                 <div class="row">
-                    <form class="form-horizontal" style="max-width: 1000px;">
+                    <form class="form-horizontal">
                         <div class="clearfix maintop">
                             <div class="col-xs-12 col-sm-3 btn-sespan maintop">
                                 <div class="input-group">
@@ -67,8 +67,9 @@
                                         <i class="ace-icon fa fa-cog"></i>
                                     </span>
                                     <select name="deptId" class="form-control admin_sea">
+                                        <option selected="selected" disabled="disabled"  style='display: none' value=''>请选择部门</option>
                                             <c:forEach items="${deptList}" var="item" >
-                                                <option value="${item.id}" ${deptVo.pid eq item.id ? 'selected' : ''}>${item.treeName}</option>
+                                                <option value="${item.id}" ${item.pid eq item.id ? 'selected' : ''}>${item.treeName}</option>
                                             </c:forEach>
                                     </select>
                                 </div>
@@ -78,7 +79,7 @@
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-barcode"></i>
                                     </span>
-                                    <input type="text" name="inviteCode" class="form-control admin_sea" value="${inviteCode}" placeholder="邀请码"/>
+                                    <input type="text" name="inviteCode" class="form-control admin_sea" value="${param.inviteCode}" placeholder="邀请码"/>
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-3 btn-sespan maintop">
@@ -91,7 +92,7 @@
                                         <span class="ace-icon fa fa-globe"></span>
                                         显示全部
                                     </a>
-                                    <a class="btn btn-xs btn-success" href="/followup/all/agent/list" >
+                                    <a class="btn btn-xs btn-success" href="./all/agent/list" >
                                         <span class="ace-icon fa fa-external-link"></span>
                                         全部明细
                                     </a>

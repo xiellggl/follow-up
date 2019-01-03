@@ -71,8 +71,8 @@
                                         <i class="ace-icon fa fa-check-square-o"></i>
                                     </span>
                                     <select name="assignStatus" class="form-control admin_sea">
-                                        <option value="0"  ${assignStat=='0'?"selected":''}>未分配</option>
-                                        <option value="1"  ${assignStat=='1'?"selected":''}>已分配</option>
+                                        <option value="0"  ${param.assignStatus=='0'?"selected":''}>未分配</option>
+                                        <option value="1"  ${param.assignStatus=='1'?"selected":''}>已分配</option>
                                     </select>
                                 </div>
                             </div>
@@ -135,11 +135,6 @@
                                    class="btn btn-xs btn-info hidden-xs">
                                     <span class="ace-icon fa fa-globe"></span>
                                     显示全部
-                                </a>
-                                <a href=""
-                                   class="btn btn-xs btn-success">
-                                    <span class="ace-icon fa fa-folder-o"></span>
-                                    导出
                                 </a>
                             </div>
                         </div>
@@ -351,12 +346,10 @@
 
         //搜索
         $myModal.on("click", '[data-act="search"]', function () {
-            var flowId = $(this).data("flowid");
+            var flowId = $(this).data("followid");
             var linkPerson = $myModal.find('[name="followUp"]').val();
-            var from = $(this).data("from");
             select_data = {followUp: linkPerson};
-            select_data.from=from;
-            select_data.flowId=flowId;
+            select_data.followId=flowId;
             common.loadPageHTML(url_selectlist, select_data, $pageListPanel, true);
             return false;
         });

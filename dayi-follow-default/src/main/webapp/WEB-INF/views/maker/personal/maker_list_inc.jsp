@@ -39,10 +39,10 @@
                     <span class="input-group-addon">
                         <i class="ace-icon fa fa-flag"></i>
                     </span>
-                    <select name="orgType">
+                    <select name="orgType" class="form-control admin_sea">
                         <option value="">机构类型</option>
                         <c:forEach items="${orgTypes}" var="item">
-                            <option value="${item.value}" <c:if test="${param.orgTypeStr eq item.value}">selected</c:if>>${item.name}</option>
+                            <option value="${item.value}" <c:if test="${param.orgType eq item.value}">selected</c:if>>${item.name}</option>
                         </c:forEach>
                     </select>
                 </div>
@@ -78,6 +78,7 @@
             <thead>
             <tr>
                 <th>姓名</th>
+                <th>会员类型</th>
                 <c:if test="${pageType eq 'my'}"><th>手机号</th></c:if>
                 <th>年龄</th>
                 <th class="hidden-sm hidden-xs">注册时间</th>
@@ -93,7 +94,7 @@
             <tbody>
             <c:if test="${empty page.results}">
                 <tr>
-                    <td colspan="10" class="no_data">暂无数据</td>
+                    <td colspan="11" class="no_data">暂无数据</td>
                 </tr>
             </c:if>
 
@@ -102,6 +103,8 @@
                     <tr>
                             <%-- 名称 --%>
                         <td><c:if test="${not empty item.linkPersonFm}">${item.linkPersonFm}</c:if></td>
+                            <%-- 会员类型 --%>
+                        <td></td>
                             <%-- 手机号 --%>
                         <c:if test="${pageType eq 'my'}"><td>${item.mobile}</td></c:if>
                             <%-- 年龄 --%>

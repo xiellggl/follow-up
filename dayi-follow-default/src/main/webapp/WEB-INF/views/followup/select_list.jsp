@@ -15,7 +15,7 @@
                                 </span>
             <input type="text" name="followUp" placeholder="跟进人"/>
             <span class="input-group-btn">
-                                    <button type="button" class="btn btn-sm btn-info" data-flowid="${item.followId} data-from="from=assign_list" data-act="search">
+                                    <button type="button" class="btn btn-sm btn-info" data-followid="${followUp.id}" data-act="search">
                                         <span class="ace-icon fa fa-search"></span>
                                         查询
                                     </button>
