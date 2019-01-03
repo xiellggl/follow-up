@@ -5,12 +5,10 @@ import com.dayi.common.util.DateUtil;
 import com.dayi.common.web.util.IPUtil;
 import com.dayi.follow.base.BaseController;
 import com.dayi.follow.component.UserComponent;
-import com.dayi.follow.conf.Constants;
 import com.dayi.follow.dao.follow.FollowAgentMapper;
 import com.dayi.follow.dao.follow.FollowOrgMapper;
 import com.dayi.follow.dao.follow.FollowUpLogMapper;
 import com.dayi.follow.dao.follow.FollowUpMapper;
-import com.dayi.follow.enums.MemberStatusEnum;
 import com.dayi.follow.model.follow.*;
 import com.dayi.follow.service.CountService;
 import com.dayi.follow.service.DeptService;
@@ -18,11 +16,12 @@ import com.dayi.follow.service.RoleService;
 import com.dayi.follow.service.UserService;
 import com.dayi.follow.util.Md5Util;
 import com.dayi.follow.util.PageUtil;
+import com.dayi.follow.vo.LoginVo;
 import com.dayi.follow.vo.user.UserEditDto;
 import com.dayi.follow.vo.user.UserVo;
-import com.dayi.follow.vo.LoginVo;
 import com.dayi.mybatis.support.Page;
 import com.dayi.user.authorization.AuthorizationManager;
+import com.dayi.user.authorization.SubjectContext;
 import com.dayi.user.authorization.authc.support.UsernamePasswordToken;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -32,7 +31,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -85,14 +87,27 @@ public class UserController extends BaseController {
      */
     @RequestMapping("/login/post")
     @ResponseBody
-    public BizResult login(HttpServletRequest request, @Valid @ModelAttribute("loginVo") LoginVo loginVo, BindingResult result) {
+    public BizResult login(HttpServletRequest request, HttpServletResponse response, @Valid @ModelAttribute("loginVo") LoginVo loginVo, BindingResult result) {
         BizResult bizResult = checkErrors(result);
         if (!bizResult.isSucc()) {
             return bizResult;//参数传入错误
         } else {
-            boolean b = AuthorizationManager.login(request, new UsernamePasswordToken(loginVo.getUsername(), loginVo.getPassword(), IPUtil.getIp(request)));
-            if (b) return userService.login(loginVo);
-            else return BizResult.fail("账号密码错误！");
+            loginBefore(loginVo);
+            return userService.login(request, loginVo);
+        }
+    }
+
+    /**
+     * 登录前处理
+     *
+     * @param loginVo
+     */
+    private void loginBefore(LoginVo loginVo) {
+        String username = loginVo.getUsername();
+        String password = loginVo.getPassword();
+        FollowUp flowUp = userService.getByUserName(StringUtils.trim(username));
+        if (flowUp != null && flowUp.getPassword().equals(Md5Util.md5(username, password))) {
+            AuthorizationManager.logout(SubjectContext.createSubjectKeyInner(flowUp.getId(), null));
         }
     }
 
