@@ -15,6 +15,7 @@ import com.dayi.follow.vo.user.UserEditDto;
 import com.dayi.follow.vo.user.UserVo;
 import com.dayi.mybatis.support.Page;
 import com.dayi.user.authorization.AuthorizationManager;
+import com.dayi.user.authorization.SubjectContext;
 import com.dayi.user.authorization.authc.AccountInfo;
 import com.dayi.user.authorization.authc.AuthenticationInfo;
 import com.dayi.user.authorization.authc.AuthenticationToken;
@@ -381,13 +382,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public BizResult login(HttpServletRequest request, LoginVo loginVo) {
-        boolean b = AuthorizationManager.login(request, new UsernamePasswordToken(loginVo.getUsername(), loginVo.getPassword(), IPUtil.getIp(request)));
-
-        if (!b) return BizResult.fail("账号密码错误！");
-
         FollowUp user = userMapper.getByUserName(loginVo.getUsername());
         if (user == null) return BizResult.fail("用户不存在！");
         if (user.getDisable() != MemberStatusEnum.ENABLE.getValue()) return BizResult.fail("账号已被禁用！");
+
+        if (!user.getPassword().equals(Md5Util.md5(loginVo.getUsername(), loginVo.getPassword())))
+            return BizResult.fail("账号密码错误！");
+
+        AuthorizationManager.logout(SubjectContext.createSubjectKeyInner(user.getId(), null));
+        //借助这个来登录,不再用其返回值来判断是否登录成功
+        AuthorizationManager.login(request, new UsernamePasswordToken(loginVo.getUsername(), loginVo.getPassword(), IPUtil.getIp(request)));
 
         AccountInfo accountInfo = AuthorizationManager.getCurrentLoginUser(request);
 

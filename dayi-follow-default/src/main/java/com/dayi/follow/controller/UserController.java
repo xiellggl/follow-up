@@ -92,25 +92,9 @@ public class UserController extends BaseController {
         if (!bizResult.isSucc()) {
             return bizResult;//参数传入错误
         } else {
-            loginBefore(loginVo);
             return userService.login(request, loginVo);
         }
     }
-
-    /**
-     * 登录前处理
-     *
-     * @param loginVo
-     */
-    private void loginBefore(LoginVo loginVo) {
-        String username = loginVo.getUsername();
-        String password = loginVo.getPassword();
-        FollowUp flowUp = userService.getByUserName(StringUtils.trim(username));
-        if (flowUp != null && flowUp.getPassword().equals(Md5Util.md5(username, password))) {
-            AuthorizationManager.logout(SubjectContext.createSubjectKeyInner(flowUp.getId(), null));
-        }
-    }
-
 
     @RequestMapping("loginout")
     public String loginOut(HttpServletRequest request, HttpServletResponse response) {
