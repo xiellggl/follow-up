@@ -215,7 +215,7 @@
                 <th>入金</th>
                 <th>当日累计入金</th>
                 <th>当日申请出金</th>
-                <th class="hidden-sm hidden-xs">总资产</th>
+                <th class="hidden-sm hidden-xs">总货款</th>
                 <th class="hidden-sm hidden-xs">最近代理<i class="glyphicon glyphicon-question-sign" data-toggle="tooltip"
                                                        title="最近一天累计代理金额" style="color:#aaa;"></i></th>
                 <th class="hidden-sm hidden-xs">客户类型</th>
