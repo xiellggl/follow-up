@@ -157,12 +157,12 @@
                                         <td>
                                             <c:choose>
                                                 <c:when test="${agentList==false and orgList==true}">
-                                                    <a href="/followup/agent/list?followId=${item.id}">
+                                                    <a href="/followup/org/list?followId=${item.id}">
                                                         <i class="ace-icon fa fa-external-link"></i> 明细
                                                     </a>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <a href="/followup/org/list?followId=${item.id}">
+                                                    <a href="/followup/agent/list?followId=${item.id}">
                                                         <i class="ace-icon fa fa-external-link"></i> 明细
                                                     </a>
                                                 </c:otherwise>
