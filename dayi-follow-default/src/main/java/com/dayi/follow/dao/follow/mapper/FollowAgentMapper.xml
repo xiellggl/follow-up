@@ -318,7 +318,12 @@
     </select>
 
     <select id="findContacts" resultType="com.dayi.follow.vo.agent.AgentContactVo" parameterType="java.lang.Integer" >
-        SELECT * FROM `agent_contact` WHERE agent_id = #{agentId} order by create_time desc
+        SELECT create_time,b.name followUp,contact_type,cus_intention_type,next_contact_time,customer_type,content
+        FROM `agent_contact` a
+            left join (
+              SELECT id,name from follow_up
+            )b on b.id =a.follow_id
+        WHERE agent_id = #{agentId} order by create_time desc
     </select>
 
     <select id="getAssignDate" parameterType="java.lang.Integer" resultType="java.util.Date">
