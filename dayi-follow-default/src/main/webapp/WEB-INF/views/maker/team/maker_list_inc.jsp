@@ -78,6 +78,7 @@
             <thead>
             <tr>
                 <th>姓名</th>
+                <th>会员类型</th>
                 <c:if test="${pageType eq 'my'}"><th>手机号</th></c:if>
                 <th>年龄</th>
                 <th class="hidden-sm hidden-xs">注册时间</th>
@@ -102,6 +103,8 @@
                     <tr>
                             <%-- 名称 --%>
                         <td><c:if test="${not empty item.linkPersonFm}">${item.linkPersonFm}</c:if></td>
+                            <%-- 会员类型 --%>
+                        <td>${item.orgTypeStr}</td>
                             <%-- 手机号 --%>
                         <c:if test="${pageType eq 'my'}"><td>${item.mobile}</td></c:if>
                             <%-- 年龄 --%>
