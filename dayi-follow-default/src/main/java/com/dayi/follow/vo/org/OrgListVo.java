@@ -58,25 +58,10 @@ public class OrgListVo {
     }
 
     public String getOrgTypeStr() {
-        if (orgType != null) {
-            switch (orgType) {
-                case (1):
-                    orgTypeStr = OrgTypeEnum.Manager.getName();
-                    break;
-                case (2):
-                    orgTypeStr = OrgTypeEnum.Colligate.getName();
-                    break;
-                case (4):
-                    if (experienceMaker == 1) {
-                        orgTypeStr = "体验创客";
-                    } else {
-                        orgTypeStr = OrgTypeEnum.Maker.getName();
-                    }
-                    break;
-                case (5):
-                    orgTypeStr = OrgTypeEnum.CityServer.getName();
-                    break;
-            }
+        if (orgType.equals(OrgTypeEnum.Maker.getValue()) && experienceMaker == 1) {
+            orgTypeStr = "体验创客";
+        } else {
+            orgTypeStr = OrgTypeEnum.getNameByValue(orgType);
         }
         return orgTypeStr;
     }
@@ -103,8 +88,8 @@ public class OrgListVo {
 
     public String getLinkPersonFm() {
         if (!StringUtils.isBlank(idCard)) {
-            String substring = linkPerson.substring(0, 1);//截取姓氏
-            linkPersonFm = substring + CheckIdCardUtils.getCnGenderByIdCard(idCard);
+            String surname = linkPerson.substring(0, 1);//截取姓氏
+            linkPersonFm = surname + CheckIdCardUtils.getCnGenderByIdCard(idCard);
         }
         return linkPersonFm;
     }
@@ -172,6 +157,18 @@ public class OrgListVo {
 
     public void setManageFundFm(String manageFundFm) {
         this.manageFundFm = manageFundFm;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void setAgentNum(int agentNum) {
+        this.agentNum = agentNum;
+    }
+
+    public void setValidAgentNum(int validAgentNum) {
+        this.validAgentNum = validAgentNum;
     }
 
     public String getInviteCode() {

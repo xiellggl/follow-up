@@ -95,7 +95,8 @@
 
     <select id="findTeamOrgs" parameterType="map" resultType="com.dayi.follow.vo.org.OrgListVo">
         select a.id, a.link_person ,a.create_date ,a.mobile , c.name followUp,
-        a.expiration_date ,a.maker_num,a.org_type,a.experience_maker
+        a.expiration_date ,a.maker_num inviteCode,a.org_type,a.experience_maker,
+        a.id_card
         from ${assistDataBase}.organization a
         left join (
             select org_id,follow_id,create_time from follow_org  where follow_id in

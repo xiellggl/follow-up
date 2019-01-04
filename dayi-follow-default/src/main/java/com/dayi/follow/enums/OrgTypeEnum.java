@@ -36,4 +36,13 @@ public enum OrgTypeEnum {
         }
         return null;
     }
+
+    public static String getNameByValue(Integer value) {
+        for (OrgTypeEnum item : OrgTypeEnum.values()) {
+            if (item.value == value) {
+                return item.getName();
+            }
+        }
+        return "";
+    }
 }
