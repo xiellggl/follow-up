@@ -1,22 +1,28 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@include file="/inc/followup/taglib.jsp"%>
 <%--权限判断--%>
-<%--<c:set var="agentList" value="false" />--%>
-<%--<c:set var="orgList" value="false" />--%>
-<%--<c:forEach items="${permissions}" var="item">--%>
-    <%--&lt;%&ndash;查看全部明细&ndash;%&gt;--%>
-    <%--<c:if test="${item.url eq '/followup/'}">--%>
-        <%--<c:set var="" value="true" />--%>
-    <%--</c:if>--%>
-    <%--&lt;%&ndash;查看全部代理商明细&ndash;%&gt;--%>
-    <%--<c:if test="${item.url eq '/followup/agent/list'}">--%>
-        <%--<c:set var="agentList" value="true" />--%>
-    <%--</c:if>--%>
-    <%--&lt;%&ndash;查看全部创客明细&ndash;%&gt;--%>
-    <%--<c:if test="${item.url eq '/followup/org/list'}">--%>
-        <%--<c:set var="orgList" value="true" />--%>
-    <%--</c:if>--%>
-<%--</c:forEach>--%>
+<c:set var="allAgentList" value="false" />
+<c:set var="allOrgList" value="false" />
+<c:set var="agentList" value="false" />
+<c:set var="orgList" value="false" />
+<c:forEach items="${permissions}" var="item">
+    <%--查看全部代理商明细--%>
+    <c:if test="${item.url eq '/followup/all/agent/list'}">
+        <c:set var="allAgentList" value="true" />
+    </c:if>
+    <%--查看全部创客明细--%>
+    <c:if test="${item.url eq '/followup/all/org/list'}">
+        <c:set var="allOrgList" value="true" />
+    </c:if>
+    <%--查看代理商明细--%>
+    <c:if test="${item.url eq '/followup/org/list'}">
+        <c:set var="agentList" value="true" />
+    </c:if>
+    <%--查看创客明细--%>
+    <c:if test="${item.url eq '/followup/org/list'}">
+        <c:set var="orgList" value="true" />
+    </c:if>
+</c:forEach>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -92,10 +98,20 @@
                                         <span class="ace-icon fa fa-globe"></span>
                                         显示全部
                                     </a>
-                                    <a class="btn btn-xs btn-success" href="./all/agent/list" >
-                                        <span class="ace-icon fa fa-external-link"></span>
-                                        全部明细
-                                    </a>
+                                    <c:choose>
+                                        <c:when test="${allAgentList==false and allOrgList==true}">
+                                            <a class="btn btn-xs btn-success" href="./all/org/list" >
+                                                <span class="ace-icon fa fa-external-link"></span>
+                                                全部明细
+                                            </a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <a class="btn btn-xs btn-success" href="./all/agent/list" >
+                                                <span class="ace-icon fa fa-external-link"></span>
+                                                全部明细
+                                            </a>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </div>
                             </div>
                         </div>
@@ -139,16 +155,18 @@
                                             <fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/>
                                         </td>
                                         <td>
-                                            <%--<c:if test="${agentList}">--%>
-                                            <a href="/followup/agent/list?followId=${item.id}">
-                                                <i class="ace-icon fa fa-external-link"></i> 明细
-                                            </a>
-                                            <%--</c:if>--%>
-                                            <%--<c:if test="${orgList}">--%>
-                                            <a href="/followup/org/list?followId=${item.id}">
-                                                <i class="ace-icon fa fa-external-link"></i> 明细
-                                            </a>
-                                            <%--</c:if>--%>
+                                            <c:choose>
+                                                <c:when test="${agentList==false and orgList==true}">
+                                                    <a href="/followup/agent/list?followId=${item.id}">
+                                                        <i class="ace-icon fa fa-external-link"></i> 明细
+                                                    </a>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <a href="/followup/org/list?followId=${item.id}">
+                                                        <i class="ace-icon fa fa-external-link"></i> 明细
+                                                    </a>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </td>
                                     </tr>
                                 </c:forEach>
