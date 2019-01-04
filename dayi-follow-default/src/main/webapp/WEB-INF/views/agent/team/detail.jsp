@@ -75,7 +75,7 @@
                             </c:if>
                                 <%--查看团队代理商登录日志--%>
                             <c:if test="${teamLoginlogAgent}">
-                                <li class="">
+                                <li ${!teamContactAgent ? 'class="active"' : ''}>
                                     <a data-toggle="tab" href="#home4" aria-expanded="true">登录日志</a>
                                 </li>
                             </c:if>
@@ -91,7 +91,7 @@
                             </c:if>
                                 <%--查看团队代理商登录日志--%>
                             <c:if test="${teamLoginlogAgent}">
-                                <div id="home4" class="tab-pane">
+                                <div id="home4" class="tab-pane ${!teamContactAgent ? 'active' : ''}">
                                     <div id="logList"></div>
                                 </div>
                             </c:if>

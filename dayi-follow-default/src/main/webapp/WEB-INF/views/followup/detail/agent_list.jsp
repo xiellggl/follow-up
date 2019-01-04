@@ -60,7 +60,7 @@
                                     <i class="ace-icon fa fa-user"></i>
                                 </span>
                                 <input type="text" class="form-control admin_sea" name="followUpBefore" value="${param.followUpBefore}"
-                                       placeholder="更变跟进人"/>
+                                       placeholder="变更前跟进人"/>
                             </div>
                         </div>
 
@@ -77,7 +77,7 @@
                         <div class="col-xs-12 col-sm-4 btn-sespan maintop">
                             <div class="input-group">
                                 <span class="input-group-addon">
-                                    <i class="ace-icon fa fa-mobile"></i>
+                                    <i class="ace-icon fa fa-book"></i>
                                 </span>
                                 <input type="text" class="form-control admin_sea" name="mobile" value="${param.mobile}"
                                        placeholder="手机号"/>

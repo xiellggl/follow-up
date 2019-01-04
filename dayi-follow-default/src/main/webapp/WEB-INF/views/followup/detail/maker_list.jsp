@@ -60,7 +60,7 @@
                                     <i class="ace-icon fa fa-user"></i>
                                 </span>
                                 <input type="text" class="form-control admin_sea" name="followUpBefore" value="${param.followUpBefore}"
-                                       placeholder="变更跟进人"/>
+                                       placeholder="变更前跟进人"/>
                             </div>
                         </div>
 
