@@ -79,17 +79,19 @@
                 <th>余额</th>
                 <td>${detailVo.useableFundFm}</td>
                 <th>最近代理</th>
-                <td>
-                    ${detailVo.recentAgentFundFm}&nbsp;&nbsp;${detailVo.recentAgentDate}
+                <td>${detailVo.recentAgentFundFm}&nbsp;&nbsp;
+                <fmt:formatDate value="${detailVo.recentAgentDate}" pattern="yyyy-MM-dd"/>
                 </td>
                 <th>已开通结算银行</th>
                 <td>${detailVo.bankOpen}</td>
             </tr>
             <tr>
                 <th>当日累计入金</th>
-                <td>${detailVo.dayInCashFm}&nbsp;&nbsp;${detailVo.dayLastInCashTime}</td>
+                <td>${detailVo.dayInCashFm}&nbsp;&nbsp;
+                    <fmt:formatDate value="${detailVo.dayLastInCashTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                 <th>当日申请出金</th>
-                <td>${detailVo.dayApplyOutCashFm}&nbsp;&nbsp;${detailVo.dayLastApplyOutCashTime}</td>
+                <td>${detailVo.dayApplyOutCashFm}&nbsp;&nbsp;
+                    <fmt:formatDate value="${detailVo.dayLastApplyOutCashTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                 <th>实际出金</th>
                 <td>${detailVo.dayOutCashFm}</td>
             </tr>

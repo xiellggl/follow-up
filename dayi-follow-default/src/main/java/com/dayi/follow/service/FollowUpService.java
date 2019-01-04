@@ -44,7 +44,7 @@ public interface FollowUpService {
     Page<FMDetailListVo> findAllAgentPage(Page page, SearchVo searchVo);
 
     //查询跟进人管理的全部代理商明细列表-不分页
-    List<FMDetailListVo> findAllAgentList(SearchVo searchVo, String deptId);
+    List<FMDetailListVo> findAllAgentList(SearchVo searchVo);
 
 
     //查询跟进人管理的创客明细列表
@@ -57,7 +57,7 @@ public interface FollowUpService {
     Page<FMDetailListVo> findAllOrgPage(Page page, SearchVo searchVo);
 
     //查询跟进人管理的全部代理商明细列表-不分页
-    List<FMDetailListVo> findAllOrgList(SearchVo searchVo, String deptId);
+    List<FMDetailListVo> findAllOrgList(SearchVo searchVo);
 
     //查询所有跟进人
     List<FollowUp> findAll();

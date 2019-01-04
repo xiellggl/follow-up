@@ -144,6 +144,7 @@
     </select>
 
 
+
     <select id="findOrgs" parameterType="map" resultType="com.dayi.follow.vo.followup.FMDetailListVo">
         SELECT a.follow_id,a.follow_up_before,a.assign_date changeDate,a.manage_fund_before agentCargoBefore,
         b.id,b.link_person,b.mobile,b.create_date,b.maker_num inviteCode,c.name followUp
@@ -154,7 +155,8 @@
         left join (
         select * from follow_up where identity!=0 and disable!=0
         )c on c.id =a.follow_id
-        where b.id is not NULL and c.disable!=0
+        where b.id is not null
+
         <if test="null!=followIds and 0!=followIds.size()">
             and a.follow_id in
             <foreach item="item" index="index" collection="followIds"
@@ -178,11 +180,16 @@
         left join (
         select * from follow_up where identity!=0 and disable!=0
         )c on c.id =a.follow_id
-        where b.id is not NULL and c.disable!=0 and b.id is not null and a.follow_id in
-        <foreach item="item" index="index" collection="followIds"
-                 open="(" separator="," close=")">
-            #{item}
-        </foreach>
+        where b.id is not NULL and c.disable!=0 and b.id is not null
+
+        <if test="null!=followIds and 0!=followIds.size()">
+            and a.follow_id in
+            <foreach item="item" index="index" collection="followIds"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
         <include refid="conditions"/>
         <if test="''!=searchVo.inviteCode and null!=searchVo.inviteCode">
             and b.record_invite_code like CONCAT('%','${searchVo.inviteCode}','%' )
@@ -199,11 +206,16 @@
         left join (
         select * from follow_up where identity!=0 and disable!=0
         )c on c.id =a.follow_id
-        where b.id is not null  and a.follow_id in
-        <foreach item="item" index="index" collection="followIds"
-                 open="(" separator="," close=")">
-            #{item}
-        </foreach>
+        where b.id is not null
+
+        <if test="null!=followIds and 0!=followIds.size()">
+            and a.follow_id in
+            <foreach item="item" index="index" collection="followIds"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
         <include refid="conditions"/>
         <if test="''!=searchVo.inviteCode and null!=searchVo.inviteCode">
             and b.maker_num like CONCAT('%','${searchVo.inviteCode}','%' )

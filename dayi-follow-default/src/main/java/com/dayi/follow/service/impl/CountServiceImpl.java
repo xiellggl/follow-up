@@ -17,6 +17,7 @@ import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.OrgService;
 import com.dayi.follow.vo.index.*;
 import com.dayi.follow.vo.org.OrgDataVo;
+import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;

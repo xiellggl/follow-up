@@ -135,9 +135,8 @@ public class FollowupController extends BaseController {
     @RequestMapping(value = "/all/org/list/export")
     @ResponseBody
     public void allOrgExport(HttpServletRequest request, HttpServletResponse response, SearchVo searchVo) throws IOException {
-        LoginVo currVo = userComponent.getCurrUser(request);
 
-        List<FMDetailListVo> allOrgList = followUpService.findAllOrgList(searchVo, currVo.getDeptId());
+        List<FMDetailListVo> allOrgList = followUpService.findAllOrgList(searchVo);
 
         String title = "跟进创客明细";
         String fileName = title + new DateTime().toString("yyyy-MM-dd HH:mm:ss");
@@ -163,7 +162,7 @@ public class FollowupController extends BaseController {
     public void allAgentExport(HttpServletRequest request, HttpServletResponse response, SearchVo searchVo) throws IOException {
         LoginVo currVo = userComponent.getCurrUser(request);
 
-        List<FMDetailListVo> allAgentList = followUpService.findAllAgentList(searchVo, currVo.getDeptId());
+        List<FMDetailListVo> allAgentList = followUpService.findAllAgentList(searchVo);
 
         String title = "跟进代理商明细";
         String fileName = title + new DateTime().toString("yyyy-MM-dd HH:mm:ss");
