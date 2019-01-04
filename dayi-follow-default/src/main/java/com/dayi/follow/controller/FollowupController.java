@@ -135,7 +135,6 @@ public class FollowupController extends BaseController {
     @RequestMapping(value = "/all/org/list/export")
     @ResponseBody
     public void allOrgExport(HttpServletRequest request, HttpServletResponse response, SearchVo searchVo) throws IOException {
-        LoginVo currVo = userComponent.getCurrUser(request);
 
         List<FMDetailListVo> allOrgList = followUpService.findAllOrgList(searchVo);
 
