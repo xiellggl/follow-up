@@ -97,11 +97,7 @@ public class AgentServiceImpl implements AgentService {
 
     @Override
     public Page<LoginLogVo> findLoginLog(Page page, Integer agentId) {
-        List<LoginLogVo> loginLog = agentMapper.findLoginLog(agentId, page.getStartRow(), page.getEndRow());
-        long loginLogNum = agentMapper.getLoginLogNum(agentId);
-        page.setResults(loginLog);
-        page.setTotalRecord(loginLogNum);
-        return page;
+        return agentMapper.findLoginLog(page, agentId);
     }
 
     @Override
