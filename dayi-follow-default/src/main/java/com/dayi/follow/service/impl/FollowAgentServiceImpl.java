@@ -89,22 +89,12 @@ public class FollowAgentServiceImpl implements FollowAgentService {
         detailVo.setIdCard(agent.getIdCard());
         // 所在地
         detailVo.setIdCardAddr(agent.getIdCardAddr());
-        // 可用余额
-        Account account = agentMapper.getAccount(agentId);
-        detailVo.setUseableFund(account.getUseable());
 
         // 实名认证
         detailVo.setIdCard(idCard);
         detailVo.setCardValidDate(agent.getCardValidDate());
-        // 总资产
+
         BigDecimal agentFund = agentMapper.getAgentFund(agentId);  // 代理资金
-
-        BigDecimal partFund = agentFund.add(account.getFrozen())
-                .add(account.getOutFrozen());
-
-        BigDecimal totalFund = account.getUseable().add(partFund).setScale(2);
-
-        detailVo.setTotalFund(totalFund);
 
         // 是否绑卡
         detailVo.setBankSign(agent.isBankSign());
@@ -115,10 +105,6 @@ public class FollowAgentServiceImpl implements FollowAgentService {
             detailVo.setRecentAgentFund(agentListVo.getRecentAgentFund());
             detailVo.setRecentAgentDate(agentListVo.getRecentAgentDate());
         }
-
-        // 是否入金
-        detailVo.setInCash(account.getTotalInCash());
-
 
         DateTime time = new DateTime();
         String todayStrat = time.millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
@@ -178,6 +164,22 @@ public class FollowAgentServiceImpl implements FollowAgentService {
 
         //协议资金（代理中的资金）
         detailVo.setAgentFund(agentFund);
+
+        // 可用余额
+        Account account = agentMapper.getAccount(agentId);
+        if (account == null) return detailVo;
+
+        detailVo.setUseableFund(account.getUseable());
+
+        // 总资产
+        BigDecimal partFund = agentFund.add(account.getFrozen())
+                .add(account.getOutFrozen());
+
+        BigDecimal totalFund = account.getUseable().add(partFund).setScale(2);
+        detailVo.setTotalFund(totalFund);
+
+        // 是否入金
+        detailVo.setInCash(account.getTotalInCash());
 
         //冻结货款
         BigDecimal frozenFund = account.getFrozen().add(account.getOutFrozen());
