@@ -104,7 +104,7 @@
                             <%-- 名称 --%>
                         <td><c:if test="${not empty item.linkPersonFm}">${item.linkPersonFm}</c:if></td>
                             <%-- 会员类型 --%>
-                        <td></td>
+                        <td>${item.orgTypeStr}</td>
                             <%-- 手机号 --%>
                         <c:if test="${pageType eq 'my'}"><td>${item.mobile}</td></c:if>
                             <%-- 年龄 --%>
