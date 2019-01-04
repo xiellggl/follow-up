@@ -15,8 +15,7 @@
         <!--follow_agent-->
         <result property="customerType" column="customer_type" />
         <result property="cusIntentionType" column="cus_intention_type" />
-        <result property="flowId" column="flow_id" />
-        <result property="followUp" column="follow_up" />
+        <result property="followId" column="follow_id" />
         <!--agent-->
         <result property="linkPerson" column="link_person" />
         <result property="bankName" column="bank_name" />
