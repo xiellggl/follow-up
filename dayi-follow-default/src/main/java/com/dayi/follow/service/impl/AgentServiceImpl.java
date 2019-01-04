@@ -11,6 +11,7 @@ import com.dayi.follow.dao.follow.FollowAgentMapper;
 import com.dayi.follow.dao.follow.FollowUpMapper;
 import com.dayi.follow.model.follow.Agent;
 import com.dayi.follow.model.follow.AgentContact;
+import com.dayi.follow.model.follow.FollowAgent;
 import com.dayi.follow.model.follow.OperateLog;
 import com.dayi.follow.service.AgentService;
 import com.dayi.follow.service.DeptService;
@@ -108,7 +109,17 @@ public class AgentServiceImpl implements AgentService {
         agentContact.setCreateTime(new Date());
         agentContact.setUpdateTime(new Date());
         agentContact.setId(agentMapper.getNewId());
-        return 1 == agentContactMapper.add(agentContact) ? BizResult.SUCCESS : BizResult.FAIL;
+
+        if (agentContactMapper.add(agentContact) != 1) return BizResult.FAIL;
+        //更新follow_agent
+        FollowAgent followAgent = followAgentMapper.getFollowAgentByAgentId(agentContact.getAgentId());
+        if (followAgent != null) {
+            followAgent.setCustomerType(agentContact.getCustomerType());
+            followAgent.setCusIntentionType(agentContact.getCusIntentionType());
+            followAgentMapper.updateAll(followAgent);
+        }
+
+        return BizResult.SUCCESS;
     }
 
     private List<AgentListVo> queryByList(List<AgentListVo> agents) {
