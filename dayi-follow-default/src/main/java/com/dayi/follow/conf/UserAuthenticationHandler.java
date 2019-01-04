@@ -7,6 +7,7 @@ import com.dayi.follow.service.impl.UserServiceImpl;
 import com.dayi.user.authorization.AuthenticationHandler;
 import com.dayi.user.authorization.AuthorizationManager;
 import com.dayi.user.authorization.realm.Realm;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -83,7 +84,12 @@ public class UserAuthenticationHandler implements AuthenticationHandler {
             }
         } else {
             try {
-                response.sendRedirect(unAuthenticatedUrl + "?errmsg=" + java.net.URLEncoder.encode(message, "UTF-8"));
+
+                String str = "";
+                if (!StringUtils.isBlank(request.getQueryString())) str = request.getQueryString();
+                str = request.getRequestURI() + '?' + str;
+
+                response.sendRedirect(unAuthenticatedUrl + "?errmsg=" + java.net.URLEncoder.encode(message, "UTF-8") + "&goTo=#" + str);
             } catch (IOException e) {
                 e.printStackTrace();
             }
