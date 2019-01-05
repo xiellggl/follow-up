@@ -21,7 +21,7 @@ public interface ReportMapper extends BaseMapper<BaseVo> {
 
     Page<ReportDailyVo> findTeamDailyDetail(Page page, @Param("deptId") String deptId, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
-    List<ReportDailyVo> findTeamDailyDetailList(@Param("deptId") String deptId, @Param("startDate") String startDate, @Param("endDate") String endDate);
+    List<ReportDailyVo> findTeamDailyDetail(@Param("deptId") String deptId, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
     MyWeekVo getWeek(@Param("followId") String followId, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
@@ -38,13 +38,13 @@ public interface ReportMapper extends BaseMapper<BaseVo> {
     Page<ReportDailyVo> findAdminDailyDetail(Page page, @Param("deptId") String deptId, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
     //查找管理员日报详情列表
-    List<ReportDailyVo> findAdminDailyDetailList(@Param("deptId") String deptId, @Param("startDate") String startDate, @Param("endDate") String endDate);
+    List<ReportDailyVo> findAdminDailyDetail(@Param("deptId") String deptId, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
     //管理员周报
     Page<WeekVo> findAdminWeekSum(Page page, @Param("followIds") List<String> followIds, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
     //管理员周报
-    List<WeekVo> findAdminWeekSumList(@Param("followIds") List<String> followIds, @Param("startDate") String startDate, @Param("endDate") String endDate);
+    List<WeekVo> findAdminWeekSum(@Param("followIds") List<String> followIds, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
     //管理员周报
     Page<WeekVo> findAdminWeekPer(Page page, @Param("followIds") List<String> followIds, @Param("startDate") String startDate, @Param("endDate") String endDate);
@@ -53,7 +53,7 @@ public interface ReportMapper extends BaseMapper<BaseVo> {
     Page<MonthVo> findAdminMonth(Page page, @Param("followIds") List<String> followIds, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
     //管理员月报
-    List<MonthVo> findAdminMonthList(@Param("followIds") List<String> followIds, @Param("startDate") String startDate, @Param("endDate") String endDate);
+    List<MonthVo> findAdminMonth(@Param("followIds") List<String> followIds, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
     //得到月最后一天的管理资金
     BigDecimal getLastManageFund(@Param("followId") String followId, @Param("startDate") String startDate, @Param("endDate") String endDate);

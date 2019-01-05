@@ -146,7 +146,7 @@ public class FollowUpServiceImpl implements FollowUpService {
         List<String> followIds = new ArrayList<String>();
         followIds.add(followId);
 
-        agentList = followUpMapper.findAgentList(searchVo, followIds, dayiDataBaseStr);
+        agentList = followUpMapper.findAgents(searchVo, followIds, dayiDataBaseStr);
 
         return doAgentMore(agentList);
     }
@@ -160,7 +160,7 @@ public class FollowUpServiceImpl implements FollowUpService {
         List<String> followIds = new ArrayList<String>();
         followIds.add(followId);
 
-        orgList = followUpMapper.findOrgList(searchVo, followIds, dayiDataBaseStr);
+        orgList = followUpMapper.findOrgs(searchVo, followIds, dayiDataBaseStr);
 
         return doOrgMore(orgList);
     }
@@ -179,7 +179,7 @@ public class FollowUpServiceImpl implements FollowUpService {
     @Override
     @Log(target = OperateLog.class, action = BaseLog.LogAction.SEARCH, what = "跟进人管理", note = "导出全部代理商明细列表")
     public List<FMDetailListVo> findAllAgentList(SearchVo searchVo) {
-        List<FMDetailListVo> agentList = followUpMapper.findAgentList(searchVo, null, dayiDataBaseStr);
+        List<FMDetailListVo> agentList = followUpMapper.findAgents(searchVo, null, dayiDataBaseStr);
 
         return doAgentMore(agentList);
     }
@@ -213,7 +213,7 @@ public class FollowUpServiceImpl implements FollowUpService {
     @Override
     @Log(target = OperateLog.class, action = BaseLog.LogAction.SEARCH, what = "跟进人管理", note = "导出全部创客明细列表")
     public List<FMDetailListVo> findAllOrgList(SearchVo searchVo) {
-        List<FMDetailListVo> orgList = followUpMapper.findOrgList(searchVo, null, dayiDataBaseStr);
+        List<FMDetailListVo> orgList = followUpMapper.findOrgs(searchVo, null, dayiDataBaseStr);
 
         return doOrgMore(orgList);
     }
