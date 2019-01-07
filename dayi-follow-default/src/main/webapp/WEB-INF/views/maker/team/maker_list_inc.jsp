@@ -94,7 +94,7 @@
             <tbody>
             <c:if test="${empty page.results}">
                 <tr>
-                    <td colspan="10" class="no_data">暂无数据</td>
+                    <td colspan="11" class="no_data">暂无数据</td>
                 </tr>
             </c:if>
 
