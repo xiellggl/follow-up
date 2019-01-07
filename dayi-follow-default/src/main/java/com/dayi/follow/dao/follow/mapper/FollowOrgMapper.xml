@@ -116,7 +116,7 @@
             and c.id is not null and c.name like CONCAT('%','${searchVo.followUp}','%')
         </if>
         <if test="''!=searchVo.orgType and null!=searchVo.orgType">
-            and c.org_type=#{searchVo.orgType}
+            and a.org_type=#{searchVo.orgType}
         </if>
         ORDER BY b.create_time DESC
     </select>
