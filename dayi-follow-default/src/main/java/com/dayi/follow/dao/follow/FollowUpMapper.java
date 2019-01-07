@@ -27,6 +27,7 @@ public interface FollowUpMapper extends BaseMapper<FollowUp> {
 
     Page<FollowUpListVo> findFollowUps(Page page, @Param("mobile") String mobile, @Param("deptIds") List<String> deptIds,
                                        @Param("inviteCode") String inviteCode, @Param("assistDataBase") String assistDataBase);
+
     Page<FollowUpListVo> findAssignSelect(Page page, @Param("followUp") String followUp, @Param("followIds") List<String> followIds);
 
     Page<FollowUpListVo> findAllAssignSelect(Page page, @Param("followUp") String followUp);
@@ -34,14 +35,14 @@ public interface FollowUpMapper extends BaseMapper<FollowUp> {
     Page<FMDetailListVo> findAgents(Page page, @Param("searchVo") SearchVo searchVo, @Param("followIds") List<String> followIds,
                                     @Param("assistDataBase") String assistDataBase);
 
-    List<FMDetailListVo> findAgentList(@Param("searchVo") SearchVo searchVo, @Param("followIds") List<String> followIds,
-                                       @Param("assistDataBase") String assistDataBase);
+    List<FMDetailListVo> findAgents(@Param("searchVo") SearchVo searchVo, @Param("followIds") List<String> followIds,
+                                    @Param("assistDataBase") String assistDataBase);
 
     Page<FMDetailListVo> findOrgs(Page page, @Param("searchVo") SearchVo searchVo, @Param("followIds") List<String> followIds,
                                   @Param("assistDataBase") String assistDataBase);
 
-    List<FMDetailListVo> findOrgList(@Param("searchVo") SearchVo searchVo, @Param("followIds") List<String> followIds,
-                                     @Param("assistDataBase") String assistDataBase);
+    List<FMDetailListVo> findOrgs(@Param("searchVo") SearchVo searchVo, @Param("followIds") List<String> followIds,
+                                  @Param("assistDataBase") String assistDataBase);
 
     List<FollowUp> findAll();
 

@@ -65,9 +65,6 @@ public interface CountMapper {
 
     int getFollowOrgNum(@Param("followUpIds") List<String> followUpIds, @Param("assistDataBase") String assistDataBase);
 
-    //统计KA的创客数据
-    OrgDataVo countOrgData(@Param("followIds") List<String> followIds);
-
     int getOrgValidAgentNum(@Param("orgId") Integer orgId, @Param("inviteLevel") Integer inviteLevel);
 
     //统计团队日报
@@ -78,8 +75,5 @@ public interface CountMapper {
      */
 
     DailyVo countDaily(@Param("followId") String followId, @Param("assistDataBase") String assistDataBase);
-
-    DailyVo countFollowUpLog(String followId, String dateStart, String dateEnd);
-
 
 }

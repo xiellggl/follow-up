@@ -88,7 +88,7 @@ public class ReportServiceImpl implements ReportService {
         String startDate = DateTime.parse(date).millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
         String endDate = DateTime.parse(date).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
 
-        list = reportMapper.findTeamDailyDetailList(deptId, startDate, endDate);
+        list = reportMapper.findTeamDailyDetail(deptId, startDate, endDate);
         return list;
 
     }
@@ -252,7 +252,7 @@ public class ReportServiceImpl implements ReportService {
 
         String startDate = DateTime.parse(date).millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
         String endDate = DateTime.parse(date).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
-        return reportMapper.findAdminDailyDetailList(deptId, startDate, endDate);
+        return reportMapper.findAdminDailyDetail(deptId, startDate, endDate);
     }
 
     @Override
@@ -315,7 +315,7 @@ public class ReportServiceImpl implements ReportService {
 
         if (followIds.isEmpty()) return list;
 
-        List<WeekVo> sum = reportMapper.findAdminWeekSumList(followIds, startDate, endDate);
+        List<WeekVo> sum = reportMapper.findAdminWeekSum(followIds, startDate, endDate);
 
         Page page = new Page();
         page.setPageSize(sum.size() * 5);
@@ -364,7 +364,7 @@ public class ReportServiceImpl implements ReportService {
 
         if (followIds.isEmpty()) return list;
 
-        List<MonthVo> monthList = reportMapper.findAdminMonthList(followIds, startDate, endDate);//本月
+        List<MonthVo> monthList = reportMapper.findAdminMonth(followIds, startDate, endDate);//本月
         return countGrowthRatio(monthList, month);
     }
 

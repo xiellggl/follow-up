@@ -11,8 +11,10 @@ import com.dayi.follow.service.*;
 import com.dayi.follow.util.PageUtil;
 import com.dayi.follow.vo.LoginVo;
 import com.dayi.follow.vo.SearchVo;
+import com.dayi.follow.vo.export.AgentAssignExport;
 import com.dayi.mybatis.support.Page;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +23,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,16 +63,16 @@ public class AgentAssignController extends BaseController{
 
 //    @RequestMapping(value = "/export")
 //    @ResponseBody
-//    public void orgExport(HttpServletRequest request, HttpServletResponse response, SearchVo searchVo) throws IOException {
-//        LoginVo currVo = userComponent.getCurrUser(request);
-//
-//        List assignList = followAgentService.findAssignList(searchVo, currVo.getDeptId());
-//
-//        String title = "代理商分配列表";
-//        String fileName = title + new DateTime().toString("yyyy-MM-dd HH:mm:ss");
-//        AgentAssignExport export = new AgentAssignExport(fileName, title, assignList);
-//        export.exportExcel(request, response);
-//    }
+    public void orgExport(HttpServletRequest request, HttpServletResponse response, SearchVo searchVo) throws IOException {
+        LoginVo currVo = userComponent.getCurrUser(request);
+
+        List assignList = followAgentService.findAssignList(searchVo, currVo.getDeptId());
+
+        String title = "代理商分配列表";
+        String fileName = title + new DateTime().toString("yyyy-MM-dd HH:mm:ss");
+        AgentAssignExport export = new AgentAssignExport(fileName, title, assignList);
+        export.exportExcel(request, response);
+    }
 
     /**
      * 跟进人分配 -- 选择弹窗列表
