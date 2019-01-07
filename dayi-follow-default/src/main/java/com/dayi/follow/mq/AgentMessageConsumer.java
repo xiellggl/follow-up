@@ -49,10 +49,13 @@ public class AgentMessageConsumer extends AbstractConsumer {
         Topic topic = new Topic(UserMessageConts.TOPIC_USER);
         topic.addTags(UserMessageConts.TAGS_USER_ADD);
         super.addAttentionTopic(topic);
+
+        log.info("构造   AgentMessageConsumer ");
     }
 
     @Override
     public boolean consumeMessage(MessageExt messageExt) {
+        log.info("consumeMessage ： {}",messageExt);
         if (null == messageExt) return false;
 
         if (!UserMessageConts.TAGS_USER_ADD.equals(messageExt.getTags())) return true;
