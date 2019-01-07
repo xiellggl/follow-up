@@ -68,7 +68,7 @@
                                         <i class="ace-icon glyphicon glyphicon-yen"></i>
                                     </span>
                     <select name="totalFound">
-                        <option value="">客户总资产</option>
+                        <option value="">客户总货款</option>
                         <option value="1" ${param.totalFound eq 1 ? 'selected' : ''}>资产为零</option>
                         <option value="2" ${param.totalFound eq 2 ? 'selected' : ''}>2W以下</option>
                         <option value="3" ${param.totalFound eq 3 ? 'selected' : ''}>2W~10W</option>
@@ -306,7 +306,7 @@
                         <td>${item.dayOutCashFm}
                             <c:if test="${item.dayLastOutCashTimeFm ne null}">/${item.dayLastOutCashTimeFm}</c:if>
                         </td>
-                            <%-- 总资产 --%>
+                            <%-- 总货款 --%>
                         <td class="hidden-sm hidden-xs">${item.totalFundFm}</td>
                             <%-- 最近代理 --%>
                         <td class="hidden-sm hidden-xs">${item.recentAgentFundFm}<br><fmt:formatDate value="${item.recentAgentDate}" pattern="yyyy-MM-dd"/></td>
