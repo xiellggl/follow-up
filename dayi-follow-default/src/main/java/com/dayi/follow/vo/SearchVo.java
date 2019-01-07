@@ -1,6 +1,8 @@
 package com.dayi.follow.vo;
 
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 
 import java.util.Date;
 import java.util.List;
@@ -109,6 +111,8 @@ public class SearchVo {
         if (!StringUtils.isBlank(changeDate)) {
             String[] split = changeDate.split(" - ");
             changeDateEnd = split[1];
+            DateTime parse = DateTime.parse(changeDateEnd, DateTimeFormat.forPattern("yyyy-MM-dd"));
+            changeDateEnd = parse.millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
         }
         return changeDateEnd;
     }
