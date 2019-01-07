@@ -113,7 +113,7 @@
                                         <i class="ace-icon fa fa-credit-card"></i>
                                     </span>
                                     <input type="text" name="agentId" class="form-control admin_sea"
-                                           value="${param.agentId}" placeholder="代理商ID"/>
+                                           value="${param.agentId}" placeholder="代理商ID" onkeyup="value=value.replace(/[^\d]/g,'')"/>
                                 </div>
                             </div>
                             <div class="col-xs-4 col-sm-2 btn-sespan">
