@@ -94,7 +94,6 @@ public class FollowAgentServiceImpl implements FollowAgentService {
         detailVo.setIdCard(idCard);
         detailVo.setCardValidDate(agent.getCardValidDate());
 
-        BigDecimal agentFund = agentMapper.getAgentFund(agentId);  // 代理资金
 
         // 是否绑卡
         detailVo.setBankSign(agent.isBankSign());
@@ -162,14 +161,17 @@ public class FollowAgentServiceImpl implements FollowAgentService {
         Integer status = agent.getStatus();
         detailVo.setStatus(status);//取statusStr
 
-        //协议资金（代理中的资金）
-        detailVo.setAgentFund(agentFund);
-
         // 可用余额
         Account account = agentMapper.getAccount(agentId);
         if (account == null) return detailVo;
 
         detailVo.setUseableFund(account.getUseable());
+
+        //BigDecimal agentFund = agentMapper.getAgentFund(agentId);  // 代理资金
+        BigDecimal agentFund = account.getCargoInterest().multiply(BigDecimal.valueOf(0.8)).add(account.getCargoInterestPuchas());  // 代理资金
+
+        //协议资金（代理中的资金）
+        detailVo.setAgentFund(agentFund);
 
         // 总资产
         BigDecimal partFund = agentFund.add(account.getFrozen())
