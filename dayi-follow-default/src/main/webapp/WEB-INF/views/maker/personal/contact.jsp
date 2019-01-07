@@ -44,7 +44,7 @@
             <div class="page-content">
                 <div class=" clearfix">
                     <h2 class="pull-left blue">
-                        客户：${orgVo.linkPersonStr}
+                        客户：${org.linkPersonFm}
                         &nbsp;&nbsp;&nbsp;
                     </h2>
                     <a href="/org/list?${returnUrl}" style="float: right;margin: 20px 10px 0 0;" class="btn btn-sm btn-info" type="reset">返回</a>
@@ -58,7 +58,7 @@
                                 添加联系记录
                             </h4>
                             <form class="form-horizontal row" id="formEdit" style="max-width: 950px;">
-                                <input type="hidden" name="orgId" value="${orgId}">
+                                <input type="hidden" name="orgId" value="${org.id}">
                                 <div class="col-xs-12 col-sm-7">
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label no-padding-right">联系方式： </label>
@@ -140,8 +140,8 @@
 <%@include file="/inc/followup/script.jsp"%>
 <script type="text/html" id="tplContactItem">
     <tr>
-        <td>{{createDate | dateFormat:'yyyy-MM-dd hh:mm:ss'}}</td>
-        <td>{{followUpName}}</td>
+        <td>{{createTime | dateFormat:'yyyy-MM-dd hh:mm:ss'}}</td>
+        <td>{{followUp}}</td>
         <td>{{contactTypeStr}}</td>
         <td>{{content}}</td>
     </tr>

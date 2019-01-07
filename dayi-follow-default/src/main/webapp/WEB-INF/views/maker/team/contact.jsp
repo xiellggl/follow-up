@@ -45,7 +45,7 @@
                         <%--<div class=" clearfix">--%>
                         <h4 class="header smaller lighter blue">
                             <i class="ace-icon fa fa-book"></i>
-                            联系记录（客户：${orgVo.linkPersonStr}）
+                            联系记录（客户：${org.linkPersonFm}）
                             <a href="/team/org/list?${returnUrl}" style="float: right;margin: -10px 10px 0 0;" class="btn btn-sm btn-info" type="reset">返回</a>
                         </h4>
                         <%--</div>--%>
@@ -92,14 +92,6 @@
     </div>
 </div>
 <%@include file="/inc/followup/script.jsp"%>
-<script type="text/html" id="tplContactItem">
-    <tr>
-        <td>{{createDate | dateFormat:'yyyy-MM-dd hh:mm:ss'}}</td>
-        <td>{{followUpName}}</td>
-        <td>{{contactTypeStr}}</td>
-        <td>{{content}}</td>
-    </tr>
-</script>
 <script>
     seajs.use(["common", "template", "validate", "addMethod"], function (common, template) {
         //菜单高亮
