@@ -118,7 +118,7 @@ public class OrgServiceImpl implements OrgService {
 
             item.setAge(CheckIdCardUtils.getAgeByIdCard(item.getIdCard()));//年龄
 
-            if (!item.getOrgType().equals(OrgTypeEnum.Maker)) continue;//目前只算创客
+            if (!item.getOrgType().equals(OrgTypeEnum.Maker.getValue())) continue;//目前只算创客
 
             Organization org = orgMapper.get(item.getId());
             Integer switchStatus = org.getSwitchStatus();
