@@ -172,11 +172,11 @@
                                             <%--变更日期--%>
                                         <td class="hidden-xs"><fmt:formatDate value="${item.changeDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                             <%--变更前代理货值--%>
-                                        <td>${item.agentCargoBefore}</td>
+                                        <td><fmt:formatNumber value="${item.agentCargoBefore}" pattern="0.00" type="number"/></td>
                                             <%--当前代理货值--%>
-                                        <td>${item.agentCargo}</td>
+                                        <td><fmt:formatNumber value="${item.agentCargo}" pattern="0.00" type="number"/></td>
                                             <%--净增代理货值--%>
-                                        <td>${item.growthCargo}</td>
+                                        <td><fmt:formatNumber value="${item.growthCargo}" pattern="0.00" type="number"/></td>
                                     </tr>
                                 </c:forEach>
                             </c:if>
