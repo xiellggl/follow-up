@@ -108,16 +108,11 @@ public class CountServiceImpl implements CountService {
         return statusVo;
     }
 
-    public AdminCusStatusVo countSerCusStatus(String deptId) {
+    public AdminCusStatusVo countSerCusStatus() {
         AdminCusStatusVo serCusStatusVo = new AdminCusStatusVo();
 
-        //获取下级部门
-        List<String> deptIds = deptService.getSubDeptIds(deptId);
-
-        if (deptIds.isEmpty()) return serCusStatusVo;
-
         //跟进人数量
-        List<FollowUp> followUps = followUpMapper.findByDeptIds(deptIds);
+        List<FollowUp> followUps = followUpMapper.findAll();
         serCusStatusVo.setFollowUpNum(followUps.size());
 
         //待分配客户数量
@@ -131,9 +126,10 @@ public class CountServiceImpl implements CountService {
         serCusStatusVo.setWaitAssignNum(waitAgentNum + waitMakerNum);
 
         //跟进用户总数
-        List<String> followIds = followUpMapper.findIdsByDeptIds(deptIds);
-
-        if (followIds.isEmpty()) return serCusStatusVo;
+        List<String> followIds = new ArrayList<>();
+        for (FollowUp followUp : followUps) {
+            followIds.add(followUp.getId());
+        }
 
         agentNum = countMapper.getFollowAgentNum(followIds, followDataBaseStr);
         orgNum = countMapper.getFollowOrgNum(followIds, followDataBaseStr);

@@ -146,7 +146,7 @@ public class IndexController {
             return BizResult.FAIL;
         }
 
-        AdminCusStatusVo serCusStatus = countService.countSerCusStatus(currVo.getDeptId());
+        AdminCusStatusVo serCusStatus = countService.countSerCusStatus();
         return BizResult.succ(serCusStatus);
     }
 
