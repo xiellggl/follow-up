@@ -117,7 +117,7 @@
                                         <div class="col-xs-12 col-sm-6">
                                             <select name="cusIntentionType" class="width-100">
                                                 <c:forEach items="${customerIntentionTypes}" var="item">
-                                                    <option value="${item.value}">${item.name}</option>
+                                                    <option value="${item.value}" <c:if test="${agent.customerIntentionTypes eq item.value}">selected</c:if>>${item.name}</option>
                                                 </c:forEach>
                                             </select>
                                         </div>
