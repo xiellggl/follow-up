@@ -69,7 +69,7 @@
                                     </span>
                     <select name="totalFound">
                         <option value="">客户总货款</option>
-                        <option value="1" ${param.totalFound eq 1 ? 'selected' : ''}>资产为零</option>
+                        <option value="1" ${param.totalFound eq 1 ? 'selected' : ''}>货款为零</option>
                         <option value="2" ${param.totalFound eq 2 ? 'selected' : ''}>2W以下</option>
                         <option value="3" ${param.totalFound eq 3 ? 'selected' : ''}>2W~10W</option>
                         <option value="4" ${param.totalFound eq 4 ? 'selected' : ''}>10W~50W</option>
