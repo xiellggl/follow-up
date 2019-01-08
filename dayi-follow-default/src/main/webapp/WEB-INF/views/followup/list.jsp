@@ -15,7 +15,7 @@
         <c:set var="allOrgList" value="true" />
     </c:if>
     <%--查看代理商明细--%>
-    <c:if test="${item.url eq '/followup/org/list'}">
+    <c:if test="${item.url eq '/followup/agent/list'}">
         <c:set var="agentList" value="true" />
     </c:if>
     <%--查看创客明细--%>
