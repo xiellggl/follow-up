@@ -80,7 +80,7 @@
                             </div>
                         </div>
                         <div class="clearfix maintop">
-                            <div class="col-sm-2 hidden-xs btn-sespan">
+                            <div class="col-sm-2 hidden-xs btn-sespan assignDateDiv" style="display: none">
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-calendar"></i>
@@ -89,7 +89,7 @@
                                            placeholder="分配时间"/>
                                 </div>
                             </div>
-                            <div class="col-xs-4 col-sm-2 btn-sespan">
+                            <div class="col-xs-4 col-sm-2 btn-sespan followUpDiv" style="display: none">
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-check"></i>
@@ -279,22 +279,30 @@
 
         $(document).ready(function(){
             var checkValue=$('[name="assignStatus"]').val();
-            var checkInput=$('[name="followUp"]');
+            var checkInput=$(".followUpDiv");
+            var checkDate=$(".assignDateDiv");
             if(checkValue<1) {
-                checkInput.attr("readonly","readonly");
-                checkInput.val("");
+                checkInput.hide();
+                checkDate.hide();
+                $('[name="followUp"]').val("");
+                $('[name="assignDate"]').val("");
             }if (checkValue>0){
-                checkInput.removeAttr("readonly");
+                checkInput.show();
+                checkDate.show();
             }
         });
         $('[name="assignStatus"]').change(function(){
             var checkValue=$('[name="assignStatus"]').val();
-            var checkInput=$('[name="followUp"]');
+            var checkInput=$(".followUpDiv");
+            var checkDate=$(".assignDateDiv");
             if(checkValue<1) {
-                checkInput.attr("readonly","readonly");
-                checkInput.val("");
+                checkInput.hide();
+                checkDate.hide();
+                $('[name="followUp"]').val("");
+                $('[name="assignDate"]').val("");
             }if (checkValue>0){
-                checkInput.removeAttr("readonly");
+                checkInput.show();
+                checkDate.show();
             }
         });
 

@@ -189,7 +189,7 @@
                     succback:function (data) {
                         $formEdit[0].reset();
                         common.successMsg("添加成功");
-                        var html = template("tplContactItem", data.item);
+                        var html = template("tplContactItem", data.result);
                         if($list.find(".no_data").length){
                             $list.find("tbody").html(html);
                         }else {
