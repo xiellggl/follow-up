@@ -174,20 +174,22 @@
           group by a.click_date
     </select>
 
-    <select id="getAssignedAgentNum" resultType="java.lang.Long">
-            SELECT count(0) from ${assistDataBase}.follow_agent where follow_id is not null
+    <select id="getNoAssignedAgentNum" resultType="java.lang.Long">
+        SELECT count(0)
+        from agent a
+        left join (
+            SELECT agent_id,follow_id  from ${assistDataBase}.follow_agent
+        )b on b.agent_id =a.id
+        where del_status !=-1 and b.follow_id is null
     </select>
 
-    <select id="getAllAgentNum" resultType="java.lang.Long">
-        SELECT count(0) from agent  where del_status != -1
-    </select>
-
-    <select id="getAssignedOrgNum" resultType="java.lang.Integer">
-        SELECT count(0) from ${assistDataBase}.follow_org where follow_id is not null
-    </select>
-
-    <select id="getAllOrgNum" resultType="java.lang.Integer">
-        SELECT count(0) from organization  where del_status != -1
+    <select id="getNoAssignedOrgNum" resultType="java.lang.Integer">
+        SELECT count(0)
+        from organization a
+        left join(
+            SELECT org_id,follow_id from ${assistDataBase}.follow_org
+        )b on b.org_id =a.id
+        where b.follow_id is null and  del_status !=-1
     </select>
 
     <select id="getFollowAgentNum" resultType="java.lang.Long" parameterType="map">

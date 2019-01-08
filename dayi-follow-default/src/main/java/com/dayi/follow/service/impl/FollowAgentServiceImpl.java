@@ -202,12 +202,12 @@ public class FollowAgentServiceImpl implements FollowAgentService {
     }
 
     @Override
-    public Page findAssignPage(Page<AssignListVo> page, SearchVo searchVo, String deptId) {
+    public Page findAssignPage(Page<AssignListVo> page, SearchVo searchVo) {
         List<String> followIds = new ArrayList<>();
 
-        List<String> subDeptIds = deptService.getSubDeptIds(deptId);
-        for (String subDeptId : subDeptIds) {
-            followIds.addAll(followUpMapper.findIdsByDeptId(subDeptId));
+        List<FollowUp> all = followUpMapper.findAll();
+        for (FollowUp followUp : all) {
+            followIds.add(followUp.getId());
         }
 
         if (followIds.isEmpty()) return page;

@@ -49,17 +49,11 @@ public interface CountMapper {
 
     List<SevenInCashVo> countSevenInCash(@Param("followId") String followId, @Param("assistDataBase") String assistDataBase);
 
-    //获取已分配代理商数量
-    long getAssignedAgentNum(@Param("assistDataBase") String assistDataBase);
-
-    //获取全部代理商数量
-    long getAllAgentNum();
+    //获取未分配代理商数量
+    long getNoAssignedAgentNum(@Param("assistDataBase") String assistDataBase);
 
     //获取已分配创客数量
-    int getAssignedOrgNum(@Param("assistDataBase") String assistDataBase);
-
-    //获取全部机构商数量
-    int getAllOrgNum();
+    int getNoAssignedOrgNum(@Param("assistDataBase") String assistDataBase);
 
     long getFollowAgentNum(@Param("followUpIds") List<String> followUpIds, @Param("assistDataBase") String assistDataBase);
 

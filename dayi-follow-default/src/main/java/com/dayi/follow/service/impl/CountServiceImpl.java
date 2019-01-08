@@ -116,14 +116,11 @@ public class CountServiceImpl implements CountService {
         serCusStatusVo.setFollowUpNum(followUps.size());
 
         //待分配客户数量
-        long agentNum = countMapper.getAssignedAgentNum(followDataBaseStr);//以分配代理商数量
-        long allAgentNum = countMapper.getAllAgentNum();//全部代理商数量
-        long waitAgentNum = allAgentNum - agentNum;
+        long agentNum = countMapper.getNoAssignedAgentNum(followDataBaseStr);
 
-        int allOrgNum = countMapper.getAllOrgNum();//全部创客数量
-        int orgNum = countMapper.getAssignedOrgNum(followDataBaseStr);//已分配创客数量
-        int waitMakerNum = allOrgNum - orgNum;
-        serCusStatusVo.setWaitAssignNum(waitAgentNum + waitMakerNum);
+        int orgNum = countMapper.getNoAssignedOrgNum(followDataBaseStr);
+
+        serCusStatusVo.setWaitAssignNum(agentNum + orgNum);
 
         //跟进用户总数
         List<String> followIds = new ArrayList<>();
@@ -226,7 +223,7 @@ public class CountServiceImpl implements CountService {
         BigDecimal orgManageFund;//单个机构商的管理资产
         for (Organization orgVo : orgs) {
 
-            if (!orgVo.getOrgType().equals(OrgTypeEnum.Maker)) continue;//目前只算创客
+            if (!orgVo.getOrgType().equals(OrgTypeEnum.Maker.getValue())) continue;//目前只算创客
 
             BigDecimal oneLevel = orgMapper.getManageFundLevel1(orgVo.getId());//一级代理商资产
 

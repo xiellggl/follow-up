@@ -175,13 +175,12 @@ public class FollowOrgServiceImpl implements FollowOrgService {
     }
 
     @Override
-    public Page findAssignPage(Page page, SearchVo searchVo, String deptId) {
+    public Page findAssignPage(Page page, SearchVo searchVo) {
         List<String> followIds = new ArrayList<>();
 
-        List<String> deptIds = deptService.getSubDeptIds(deptId);
-
-        for (String id : deptIds) {
-            followIds.addAll(followUpMapper.findIdsByDeptId(id));
+        List<FollowUp> all = followUpMapper.findAll();
+        for (FollowUp followUp : all) {
+            followIds.add(followUp.getId());
         }
 
         if (followIds.isEmpty()) return page;

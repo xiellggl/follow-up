@@ -49,12 +49,10 @@ public class AgentAssignController extends BaseController{
      */
     @RequestMapping("/list")
     public String assignList(HttpServletRequest request, Model model, Page page, SearchVo searchVo) {
-        LoginVo currVo = userComponent.getCurrUser(request);
-
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
 
         page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
-        page = followAgentService.findAssignPage(page, searchVo, currVo.getDeptId());
+        page = followAgentService.findAssignPage(page, searchVo);
 
         request.setAttribute("pageUrl", pageUrl);
         model.addAttribute("page", page);

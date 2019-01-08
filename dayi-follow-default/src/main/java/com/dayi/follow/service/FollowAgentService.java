@@ -29,7 +29,7 @@ public interface FollowAgentService {
 
     FollowAgent getFollowAgentByAgentId(Integer agentId);
 
-    Page findAssignPage(Page<AssignListVo> page, SearchVo searchVo, String deptId);
+    Page findAssignPage(Page<AssignListVo> page, SearchVo searchVo);
 
     List findAssignList(SearchVo searchVo, String deptId);
 
