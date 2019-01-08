@@ -272,6 +272,28 @@
     seajs.use(["common", "daterangepicker"], function (common) {
         //菜单高亮
         common.head();
+
+        $(document).ready(function(){
+            var checkValue=$('[name="assignStatus"]').val();
+            var checkInput=$('[name="followUp"]');
+            if(checkValue<1) {
+                checkInput.attr("readonly","readonly");
+                checkInput.val("");
+            }if (checkValue>0){
+                checkInput.removeAttr("readonly");
+            }
+        });
+            $('[name="assignStatus"]').change(function(){
+            var checkValue=$('[name="assignStatus"]').val();
+            var checkInput=$('[name="followUp"]');
+            if(checkValue<1) {
+                checkInput.attr("readonly","readonly");
+                checkInput.val("");
+            }if (checkValue>0){
+                checkInput.removeAttr("readonly");
+            }
+        });
+
         var date_o = {
             autoUpdateInput: false,
             locale: locale_cn,
