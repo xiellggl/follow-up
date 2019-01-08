@@ -69,7 +69,7 @@
                                 <c:if test="${not empty page.results}">
                                     <c:forEach items="${page.results}" var="item" >
                                         <tr>
-                                            <td><fmt:formatDate value="${item.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                            <td><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                             <td>${item.followUp}</td>
                                             <td>${item.contactTypeStr}</td>
                                             <td>${item.content}</td>
