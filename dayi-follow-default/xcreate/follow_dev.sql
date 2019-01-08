@@ -47,7 +47,7 @@ DROP TABLE IF EXISTS follow_agent;
 CREATE TABLE `dayi_follow_all`.`follow_agent`  (
   `id` varchar(18) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `follow_id` varchar(18) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '跟进人id',
-  `agent_id` varchar(18) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '代理商ID',
+  `agent_id` int(12) NOT NULL COMMENT '代理商ID',
   `follow_up_before` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '之前跟进人',
   `assign_date_before` timestamp(0) NULL DEFAULT NULL COMMENT '上次分配跟进人时间',
   `customer_type` tinyint(2) NULL DEFAULT 1 COMMENT '客户类型(1：未联系,2：已开户,3：可被跟进,4：无意向,5：流失,6：无效)',
@@ -67,7 +67,7 @@ DROP TABLE IF EXISTS follow_org;
 CREATE TABLE `dayi_follow_all`.`follow_org`  (
   `id` varchar(18) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键',
   `follow_id` varchar(18) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '跟进人id',
-  `org_id` varchar(18) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '机构商id',
+  `org_id` int(12) NOT NULL COMMENT '创客ID',
   `follow_up_before` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '之前跟进人',
   `assign_date` datetime(0) NULL DEFAULT NULL COMMENT '分配跟进人日期',
   `assign_date_before` datetime(0) NULL DEFAULT NULL COMMENT '跟进人变更时间',
