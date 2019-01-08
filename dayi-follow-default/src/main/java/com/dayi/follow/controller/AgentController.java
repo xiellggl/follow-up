@@ -93,14 +93,17 @@ public class AgentController extends BaseController {
         String followId = followAgentService.getFollowIdByAgentId(agentId);
 
         DetailVo detailVo;
+        FollowAgent followAgent;
 
         if (currVo.getId().equals(followId)) {//客户属于当前登陆者
             detailVo = followAgentService.getDetail(agentId);//代理商明细
+            followAgent = followAgentService.getFollowAgentByAgentId(agentId);
         } else {
             return "redirect:/";
         }
 
         String returnUrl = request.getParameter("returnUrl");
+        model.addAttribute("agent", followAgent);
         model.addAttribute("detailVo", detailVo);//明细
         model.addAttribute("customerTypes", AgentCusTypeEnum.values());//客户类型
         model.addAttribute("contactTypes", ContactTypeEnum.values());//联系方式
@@ -167,33 +170,6 @@ public class AgentController extends BaseController {
         model.addAttribute("page", page);//联系时间取createDate
         model.addAttribute("returnUrl", returnUrl);//返回代理商进来列表的路径
         request.setAttribute("pageUrl", pageUrl);
-        return "agent/contact_list";
-    }
-
-    /**
-     * 返回添加代理商联系记录所需数据
-     *
-     * @param request
-     * @return
-     */
-    @RequestMapping("/contact/add")
-    public String contactAdd(HttpServletRequest request, Model model) {
-        LoginVo currVo = userComponent.getCurrUser(request);
-
-        Integer agentId = Misc.toInt(request.getParameter("agentId"), 0);// 代理人ID
-
-        String followId = followAgentService.getFollowIdByAgentId(agentId);
-
-        FollowAgent followAgent = new FollowAgent();
-        if (currVo.getId() == followId) {
-            followAgent = followAgentService.getFollowAgentByAgentId(agentId);
-        } else {
-            return "redirect:/";
-        }
-        model.addAttribute("customerTypes", AgentCusTypeEnum.values());//客户类型
-        model.addAttribute("cusIntentionTypes", AgentIntenTypeEnum.values());//客户意向度
-        model.addAttribute("contactTypes", ContactTypeEnum.values());//联系类型
-        model.addAttribute("agent", followAgent);
         return "agent/contact_list";
     }
 
