@@ -202,7 +202,7 @@ public class CountServiceImpl implements CountService {
         int agentNum = 0;
         for (Organization orgVo : orgs) {
 
-            if (!orgVo.getOrgType().equals(OrgTypeEnum.Maker)) continue;//目前只算创客
+            if (!orgVo.getOrgType().equals(OrgTypeEnum.Maker.getValue())) continue;//目前只算创客
 
             Integer switchStatus = orgVo.getSwitchStatus();
             if (switchStatus != null && switchStatus.equals(SwitchStatusEnum.OPEN.getKey())) {//二级资管开启
