@@ -394,7 +394,7 @@
     <select id="findAssignsNoFollow" parameterType="map" resultType="com.dayi.follow.vo.agent.AssignListVo">
         SELECT a.id,link_person,create_date,mobile,bank_name bank,id_card,bank_account,record_invite_code inviteCode,audit_date
             from ${assistDataBase}.agent a
-        CROSS join (
+        left join (
             SELECT agent_id,follow_id  from follow_agent
         )b on b.agent_id =a.id
         where del_status !=-1 and b.follow_id is null

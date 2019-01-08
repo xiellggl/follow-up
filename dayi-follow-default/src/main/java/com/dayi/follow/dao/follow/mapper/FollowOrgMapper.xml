@@ -183,7 +183,7 @@
         SELECT id,link_person,create_date,mobile,id_card,maker_num inviteCode,
             audit_date,org_type,experience_maker
         from ${assistDataBase}.organization a
-        CROSS join(
+        left join(
             SELECT org_id,follow_id from follow_org
         )b on b.org_id =a.id
         where b.follow_id is null and  del_status !=-1
