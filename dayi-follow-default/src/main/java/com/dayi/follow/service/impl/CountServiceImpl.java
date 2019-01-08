@@ -228,7 +228,7 @@ public class CountServiceImpl implements CountService {
             BigDecimal oneLevel = orgMapper.getManageFundLevel1(orgVo.getId());//一级代理商资产
 
             BigDecimal twoLevel = BigDecimal.ZERO;//二级代理商资产
-            Integer switchStatus = orgVo.getSwitchStatus();
+            Integer switchStatus = orgVo.getSecondIncomeSwitch();
             if (switchStatus != null && switchStatus.equals(SwitchStatusEnum.OPEN.getKey().intValue())) {//开了二级收益开关
                 twoLevel = orgMapper.getManageFundLevel2(orgVo.getId());
             }

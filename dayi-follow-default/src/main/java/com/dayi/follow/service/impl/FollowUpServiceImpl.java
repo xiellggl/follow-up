@@ -255,7 +255,7 @@ public class FollowUpServiceImpl implements FollowUpService {
             BigDecimal oneLevel = orgMapper.getManageFundLevel1(org.getId());//一级代理商资产
 
             BigDecimal twoLevel = BigDecimal.ZERO;//二级代理商资产
-            Integer switchStatus = organization.getSwitchStatus();
+            Integer switchStatus = organization.getSecondIncomeSwitch();
             if (switchStatus != null && switchStatus.equals(SwitchStatusEnum.OPEN.getKey().intValue())) {//开了二级收益开关
                 twoLevel = orgMapper.getManageFundLevel2(org.getId());
             }
