@@ -44,7 +44,7 @@
     </select>
 
     <select id="findPage" parameterType="map" resultMap="BaseResultMap">
-        SELECT * from follow_up where  disable !=0
+        SELECT * from follow_up where 1=1
         <if test="''!=name and null!=name">
             and name like "%"#{name}"%"
         </if>
