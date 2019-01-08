@@ -6,6 +6,7 @@ import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.conf.Constants;
 import com.dayi.follow.enums.ContactTypeEnum;
 import com.dayi.follow.enums.OrgTypeEnum;
+import com.dayi.follow.model.follow.FollowUp;
 import com.dayi.follow.model.follow.OrgContact;
 import com.dayi.follow.model.follow.Organization;
 import com.dayi.follow.service.*;
@@ -119,6 +120,7 @@ public class OrgController extends BaseController {
 
         if (currVo.getId().equals(followId)) {
             orgContact.setFollowId(currVo.getId());
+            orgContact.setFollowUp(currVo.getName());
             return orgService.addContact(orgContact);
         } else {
             return BizResult.fail("无法操作此创客！");

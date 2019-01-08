@@ -21,10 +21,8 @@
         </foreach>
     </select>
 
-
-
     <select id="findOrgsByfollowId" parameterType="map" resultType="com.dayi.follow.model.follow.Organization">
-        SELECT * from follow_org a
+        SELECT b.id,b.second_income_switch,b.switch_status,b.org_type,b.id_card,b.link_person from follow_org a
         left join (
           SELECT * from ${assistDataBase}.organization where del_status !=-1
           <if test="''!=deadline and null!=deadline">
@@ -32,11 +30,10 @@
           </if>
         )b on b.id = a.org_id
         where follow_id = #{followId} and b.id is not null
-
     </select>
 
     <select id="findOrgsByfollowIds" parameterType="map" resultType="com.dayi.follow.model.follow.Organization">
-        SELECT * from follow_org a
+        SELECT b.id,b.second_income_switch,b.switch_status,b.org_type,b.id_card,b.link_person from follow_org a
         left join (
         SELECT * from ${assistDataBase}.organization where del_status !=-1
         <if test="''!=deadline and null!=deadline">
