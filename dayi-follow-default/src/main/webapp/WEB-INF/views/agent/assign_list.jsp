@@ -136,6 +136,11 @@
                                     <span class="ace-icon fa fa-globe"></span>
                                     显示全部
                                 </a>
+                                <a href=""
+                                   class="btn btn-xs btn-success lehidden-xs">
+                                    <span class="ace-icon fa fa-external-link"></span>
+                                    导出
+                                </a>
                             </div>
                         </div>
                     </form>
@@ -173,6 +178,7 @@
                                 <th class="hidden-xs">注册时间</th>
                                 <th>手机号</th>
                                 <th class="hidden-sm hidden-xs">身份证号</th>
+                                <th class="hidden-sm hidden-xs">银行卡号</th>
                                 <th>跟进人</th>
                                 <th class="hidden-xs">分配时间</th>
                                 <th>邀请码</th>
@@ -182,7 +188,7 @@
                             <tbody>
                             <c:if test="${empty page.results}">
                                 <tr>
-                                    <td colspan="13" class="no_data">暂无数据记录</td>
+                                    <td colspan="11" class="no_data">暂无数据记录</td>
                                 </tr>
                             </c:if>
 
@@ -207,6 +213,8 @@
                                         <!-- 身份证号 -->
                                         <td class="hidden-sm hidden-xs"><c:if
                                                 test="${not empty item.idCard}">${fn:substring(item.idCard, 0, fn:length(item.idCard) - 4)}****</c:if></td>
+                                        <!-- 银行卡号 -->
+                                        <td>${item.bankAccount}</td>
                                         <!-- 跟进人 -->
                                         <td>${item.followUp}</td>
                                         <!-- 分配时间 -->
