@@ -384,9 +384,9 @@
             from ${assistDataBase}.agent where del_status !=-1
         )b on b.id = a.agent_id
         LEFT JOIN (
-            SELECT id,name  from follow_up
+            SELECT id,name  from follow_up where disable!=0
         )c on c.id = a.follow_id
-        where b.id is not null and c.id is not null
+        where a.follow_id is not NULL and b.id is not null and c.id is not null
         <include refid="assignsFollowCondition"/>
         order by b.audit_date desc
     </select>

@@ -128,8 +128,8 @@ public class CountServiceImpl implements CountService {
             followIds.add(followUp.getId());
         }
 
-        agentNum = countMapper.getFollowAgentNum(followIds, followDataBaseStr);
-        orgNum = countMapper.getFollowOrgNum(followIds, followDataBaseStr);
+        agentNum = countMapper.getFollowAgentNum(followDataBaseStr);
+        orgNum = countMapper.getFollowOrgNum(followDataBaseStr);
         serCusStatusVo.setFollowCusNum(agentNum + orgNum);
 
         //已认证客户数量

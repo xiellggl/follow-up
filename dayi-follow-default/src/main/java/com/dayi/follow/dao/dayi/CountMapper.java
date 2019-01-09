@@ -55,9 +55,9 @@ public interface CountMapper {
     //获取已分配创客数量
     int getNoAssignedOrgNum(@Param("assistDataBase") String assistDataBase);
 
-    long getFollowAgentNum(@Param("followUpIds") List<String> followUpIds, @Param("assistDataBase") String assistDataBase);
+    long getFollowAgentNum(@Param("assistDataBase") String assistDataBase);
 
-    int getFollowOrgNum(@Param("followUpIds") List<String> followUpIds, @Param("assistDataBase") String assistDataBase);
+    int getFollowOrgNum(@Param("assistDataBase") String assistDataBase);
 
     int getOrgValidAgentNum(@Param("orgId") Integer orgId, @Param("inviteLevel") Integer inviteLevel);
 
