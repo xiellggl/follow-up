@@ -104,7 +104,7 @@
                                         <div class="col-xs-12 col-sm-6">
                                             <select name="customerType" class="width-100">
                                                 <c:forEach items="${customerTypes}" var="item">
-                                                    <option value="${item.value > 1 ? item.value : ''}" ${item.value eq 1 ? 'disabled' : ''} >${item.name}</option>
+                                                    <option value="${item.value}" <c:if test="${agent.customerType eq item.value}">selected</c:if>>${item.name}</option>
                                                 </c:forEach>
                                             </select>
                                         </div>
@@ -117,7 +117,7 @@
                                         <div class="col-xs-12 col-sm-6">
                                             <select name="cusIntentionType" class="width-100">
                                                 <c:forEach items="${customerIntentionTypes}" var="item">
-                                                    <option value="${item.value}" <c:if test="${agent.customerIntentionTypes eq item.value}">selected</c:if>>${item.name}</option>
+                                                    <option value="${item.value}" <c:if test="${agent.cusIntentionType eq item.value}">selected</c:if>>${item.name}</option>
                                                 </c:forEach>
                                             </select>
                                         </div>
