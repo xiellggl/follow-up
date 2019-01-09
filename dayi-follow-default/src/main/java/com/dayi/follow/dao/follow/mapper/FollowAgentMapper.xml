@@ -377,7 +377,8 @@
 
     <sql id="findAssignsFollowSql">
         SELECT b.id,link_person,create_date,mobile,bank_name bank,id_card,bank_account,
-        follow_id, assign_date,c.name followUp,record_invite_code inviteCode
+        follow_id, assign_date,c.name followUp,record_invite_code inviteCode,
+        d.bank_real_name realBank
         from follow_agent a
         left join (
         SELECT id,link_person,create_date,mobile,bank_name ,id_card,bank_account,record_invite_code,audit_date
@@ -386,18 +387,27 @@
         LEFT JOIN (
         SELECT id,name  from follow_up where disable!=0
         )c on c.id = a.follow_id
+        left join (
+            SELECT agent_org_id,bank_real_name from ${assistDataBase}.finance_account
+        )d on d.agent_org_id=b.id
         where a.follow_id is not NULL and b.id is not null and c.id is not null
+        and d.agent_org_id is not null
         <include refid="assignsFollowCondition"/>
         order by b.audit_date desc
     </sql>
 
     <sql id="findAssignsNoFollowSql">
-        SELECT a.id,link_person,create_date,mobile,bank_name bank,id_card,bank_account,record_invite_code inviteCode,audit_date
+        SELECT a.id,link_person,create_date,mobile,bank_name bank,id_card,bank_account,
+        record_invite_code inviteCode,audit_date,c.bank_real_name realBank
         from ${assistDataBase}.agent a
         left join (
         SELECT agent_id,follow_id  from follow_agent
         )b on b.agent_id =a.id
+        left join (
+            SELECT agent_org_id,bank_real_name from ${assistDataBase}.finance_account
+        )c on c.agent_org_id=b.agent_id
         where del_status !=-1 and b.follow_id is null
+        and c.agent_org_id is not null
         <include refid="assignsNoFollowCondition"/>
         order by a.audit_date desc
     </sql>
