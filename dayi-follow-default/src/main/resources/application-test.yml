@@ -1,7 +1,7 @@
 spring:
   datasource:
     follow:
-      jdbc-url: jdbc:mysql://127.0.0.1:3306/dayi_follow?useUnicode=true&characterEncoding=utf8&useAffectedRows=true
+      jdbc-url: jdbc:mysql://127.0.0.1:3306/test_dayi_follow?useUnicode=true&characterEncoding=utf8&useAffectedRows=true
       username: root
       password: monda43%-346ujNyu7deJ
       driver-class-name: com.mysql.jdbc.Driver
@@ -27,4 +27,4 @@ dayi:
         imageHost: http://localhost:9601
   dataBase: test_storage_spot
 follow:
-  dataBase: dayi_follow
+  dataBase: test_dayi_follow
