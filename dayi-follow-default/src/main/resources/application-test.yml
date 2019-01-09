@@ -2,13 +2,13 @@ spring:
   datasource:
     follow:
       jdbc-url: jdbc:mysql://192.168.1.148:3306/test_dayi_follow?useUnicode=true&characterEncoding=utf8&useAffectedRows=true
-      username: root
-      password: monda43%-346ujNyu7deJ
+      username: dayi
+      password: dayiSpot@)!%0905
       driver-class-name: com.mysql.jdbc.Driver
     dayi:
       jdbc-url: jdbc:mysql://192.168.1.148:3306/test_storage_spot?useUnicode=true&characterEncoding=utf8&useAffectedRows=true
-      username: root
-      password: monda43%-346ujNyu7deJ
+      username: dayi
+      password: dayiSpot@)!%0905
       driver-class-name: com.mysql.jdbc.Driver
     hikari:
       minimum-idle: 5
