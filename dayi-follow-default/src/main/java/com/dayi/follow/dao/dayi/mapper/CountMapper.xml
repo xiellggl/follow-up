@@ -193,19 +193,25 @@
     </select>
 
     <select id="getFollowAgentNum" resultType="java.lang.Long" parameterType="map">
-        SELECT count(0) from ${assistDataBase}.follow_agent where follow_id in
-        <foreach item="item" index="index" collection="followUpIds"
-                 open="(" separator="," close=")">
-            #{item}
-        </foreach>
+        SELECT  count(0) from ${assistDataBase}.follow_agent a
+        left join (
+        SELECT id from agent where del_status !=-1
+        )b on b.id = a.agent_id
+        LEFT JOIN (
+            SELECT id  from ${assistDataBase}.follow_up where disable!=0
+        )c on c.id = a.follow_id
+        where a.follow_id is not NULL and b.id is not null and c.id is not null
     </select>
 
     <select id="getFollowOrgNum" resultType="java.lang.Integer" parameterType="map">
-        SELECT count(0) from ${assistDataBase}.follow_org where follow_id in
-        <foreach item="item" index="index" collection="followUpIds"
-                 open="(" separator="," close=")">
-            #{item}
-        </foreach>
+        SELECT  count(0) from ${assistDataBase}.follow_org a
+        left join (
+        SELECT id from organization where del_status !=-1
+        )b on b.id = a.org_id
+        LEFT JOIN (
+        SELECT id from ${assistDataBase}.follow_up where disable!=0
+        )c on c.id = a.follow_id
+        where a.follow_id is not NULL and b.id is not null and c.id is not null
     </select>
     
     <select id="getOrgValidAgentNum" parameterType="map" resultType="java.lang.Integer">
