@@ -220,11 +220,6 @@
         <if test="''!=deptName and null!=deptName">
             and b.name like CONCAT('%','${deptName}','%' )
         </if>
-        and a.follow_id in
-        <foreach item="item" index="index" collection="followIds"
-                 open="(" separator="," close=")">
-            #{item}
-        </foreach>
         GROUP BY  dept_id,date(create_time) ORDER BY create_time desc, dept_id asc
     </select>
 

@@ -218,7 +218,7 @@ public class ReportController extends BaseController {
 
         page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
 
-        page = reportService.findAdminDaily(page, currVo.getDeptId(), deptName, date);
+        page = reportService.findAdminDaily(page, deptName, date);
 
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
         model.addAttribute("page", page);

@@ -213,7 +213,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public Page<ReportVo> findAdminDaily(Page page, String deptId, String deptName, String betweenDate) {
+    public Page<ReportVo> findAdminDaily(Page page, String deptName, String betweenDate) {
         String startDate = "";
         String endDate = "";
         if (!StringUtils.isBlank(betweenDate)) {
@@ -222,15 +222,7 @@ public class ReportServiceImpl implements ReportService {
             endDate = DateTime.parse(split[1]).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
         }
 
-        List<String> followIds = new ArrayList<>();
-        List<String> subDeptIds = deptService.getSubDeptIds(deptId);
-        for (String subDeptId : subDeptIds) {
-            followIds.addAll(followUpMapper.findIdsByDeptId(subDeptId));
-        }
-
-        if (followIds.isEmpty()) return page;
-
-        page = reportMapper.findAdminDaily(page, followIds, deptName, startDate, endDate);
+        page = reportMapper.findAdminDaily(page, deptName, startDate, endDate);
 
         return page;
     }
