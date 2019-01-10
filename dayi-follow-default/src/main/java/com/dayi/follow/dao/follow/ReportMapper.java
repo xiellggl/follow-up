@@ -57,4 +57,6 @@ public interface ReportMapper extends BaseMapper<BaseVo> {
 
     //得到月最后一天的管理资金
     BigDecimal getLastManageFund(@Param("followId") String followId, @Param("startDate") String startDate, @Param("endDate") String endDate);
+
+    int getNewSignOrgNum(@Param("followId") String followId, @Param("startDate") String startDate, @Param("endDate") String endDate);
 }

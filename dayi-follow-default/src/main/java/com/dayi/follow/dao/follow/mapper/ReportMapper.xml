@@ -162,7 +162,7 @@
     </select>
 
     <select id="findAdminMonth" parameterType="map" resultType="com.dayi.follow.vo.report.MonthVo">
-        SELECT a.follow_id,c.name deptName,b.name,b.invite_code,count(d.org_id)orgNum,sum(open_account_num)openNum,sum(in_cash)inCash
+        SELECT a.follow_id,c.name deptName,b.name,b.invite_code,sum(open_account_num)openNum,sum(in_cash)inCash
         from follow_up_log a
         LEFT join (
             SELECT id,name,invite_code from follow_up
@@ -170,9 +170,6 @@
         left join (
             SELECT id,name from department
         )c on c.id =a.dept_id
-        left join (
-            SELECT org_id,follow_id from follow_org
-        )d on d.follow_id =a.follow_id
         where 1=1
         <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
             and create_time BETWEEN #{startDate} and #{endDate}
@@ -219,6 +216,13 @@
         and a.create_time BETWEEN #{startDate} and #{endDate}
         and a.dept_id=#{deptId}
         ORDER BY create_time desc
+    </select>
+
+    <select id="getNewSignOrgNum" resultType="java.lang.Integer" parameterType="map">
+        SELECT count(0) from follow_org where follow_id=#{followId}
+        <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
+        and assign_date BETWEEN #{startDate} and #{endDate}
+        </if>
     </select>
 
 </mapper>
