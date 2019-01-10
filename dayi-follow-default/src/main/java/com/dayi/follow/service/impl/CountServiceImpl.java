@@ -146,8 +146,6 @@ public class CountServiceImpl implements CountService {
 
         List<Organization> orgs = followOrgMapper.findOrgsByfollowIds(followIds, null, dayiDataBaseStr);
 
-        if (orgs.isEmpty()) return serCusStatusVo;
-
         List<Integer> incomeOpen = new ArrayList<>();
 
         List<Integer> incomeClose = new ArrayList<>();
@@ -214,8 +212,6 @@ public class CountServiceImpl implements CountService {
 
         List<Organization> orgVos = followOrgMapper.findOrgsByfollowIds(followIds, deadline, dayiDataBaseStr);
         orgDataVo.setOrgNum(orgVos.size());
-
-        if (orgVos.isEmpty()) return orgDataVo;
 
         List<Integer> inviteOpen = new ArrayList<>();
 
