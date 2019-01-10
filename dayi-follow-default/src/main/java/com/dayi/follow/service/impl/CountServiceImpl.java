@@ -151,6 +151,9 @@ public class CountServiceImpl implements CountService {
         List<Integer> incomeClose = new ArrayList<>();
 
         for (Organization orgVo : orgs) {
+
+            if (!orgVo.getOrgType().equals(OrgTypeEnum.Maker.getValue())) continue;//排除非创客
+
             if (orgVo.getSecondIncomeSwitch() != null && orgVo.getSecondIncomeSwitch().equals(SwitchStatusEnum.OPEN.getKey())) {
                 incomeOpen.add(orgVo.getId());
             } else {
@@ -222,6 +225,8 @@ public class CountServiceImpl implements CountService {
         List<Integer> incomeClose = new ArrayList<>();
 
         for (Organization orgVo : orgVos) {
+            if (!orgVo.getOrgType().equals(OrgTypeEnum.Maker.getValue())) continue;//排除非创客
+            
             if (orgVo.getSwitchStatus() != null && orgVo.getSwitchStatus().equals(SwitchStatusEnum.OPEN.getKey())) {
                 inviteOpen.add(orgVo.getId());
             } else {

@@ -391,7 +391,6 @@
             SELECT agent_org_id,bank_real_name from ${assistDataBase}.finance_account
         )d on d.agent_org_id=b.id
         where a.follow_id is not NULL and b.id is not null and c.id is not null
-        and d.agent_org_id is not null
         <include refid="assignsFollowCondition"/>
         order by b.audit_date desc
     </sql>
@@ -407,7 +406,6 @@
             SELECT agent_org_id,bank_real_name from ${assistDataBase}.finance_account
         )c on c.agent_org_id=b.agent_id
         where del_status !=-1 and b.follow_id is null
-        and c.agent_org_id is not null
         <include refid="assignsNoFollowCondition"/>
         order by a.audit_date desc
     </sql>
