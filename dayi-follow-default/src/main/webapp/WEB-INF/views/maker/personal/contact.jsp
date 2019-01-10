@@ -9,7 +9,7 @@
         <c:set var="detailMaker" value="true" />
     </c:if>
     <%--添加创客联系记录--%>
-    <c:if test="${item.url eq '/contact/add/save'}">
+    <c:if test="${item.url eq '/org/contact/add/save'}">
         <c:set var="addContactMaker" value="true" />
     </c:if>
 </c:forEach>
