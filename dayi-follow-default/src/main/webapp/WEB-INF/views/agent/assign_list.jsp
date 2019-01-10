@@ -136,7 +136,7 @@
                                     <span class="ace-icon fa fa-globe"></span>
                                     显示全部
                                 </a>
-                                <a href=""
+                                <a href="${requestURI}/export?${queryString}"
                                    class="btn btn-xs btn-success lehidden-xs">
                                     <span class="ace-icon fa fa-external-link"></span>
                                     导出
