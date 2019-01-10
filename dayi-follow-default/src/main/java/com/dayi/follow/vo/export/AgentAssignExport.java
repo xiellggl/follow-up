@@ -54,7 +54,7 @@ public class AgentAssignExport extends AbstractExcel<AssignListVo> {
         if (vo.getAssignDate() == null) {
             column9.setValue("");
         } else {
-            column9.setValue(vo.getAssignDate());
+            column9.setFullTimeValue(vo.getAssignDate());
         }
         //邀请码
         column10.setValue(vo.getInviteCode());

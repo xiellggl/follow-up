@@ -17,9 +17,10 @@ public class OrgAssignExport extends AbstractExcel<AssignListVo> {
     private Column column2 = addColumn("注册时间", 5000);
     private Column column3 = addColumn("手机号", 4000);
     private Column column4 = addColumn("身份证号", 4000);
-    private Column column5 = addColumn("跟进人", 4000);
-    private Column column6 = addColumn("分配时间", 4000);
-    private Column column7 = addColumn("邀请码", 4000);
+    private Column column5 = addColumn("机构类型", 4000);
+    private Column column6 = addColumn("跟进人", 4000);
+    private Column column7 = addColumn("分配时间", 4000);
+    private Column column8 = addColumn("邀请码", 4000);
 
     public OrgAssignExport(String fileName, String fileTitle, List<AssignListVo> datas) {
         super(fileName, fileTitle, datas);
@@ -29,19 +30,25 @@ public class OrgAssignExport extends AbstractExcel<AssignListVo> {
         // 会员id
         column0.setValue(vo.getId());
         // 名称
-        column1.setValue(vo.getLinkPerson());
+        column1.setValue(vo.getLinkPersonFm());
         // 注册时间
         column2.setFullTimeValue(vo.getCreateDate());
         // 手机号
-        column3.setValue(vo.getMobile());
+        column3.setValue(vo.getMobileFm());
         // 身份证号
-        column4.setValue(vo.getIdCard());
+        column4.setValue(vo.getIdCardFm());
+        // 机构类型
+        column5.setValue(vo.getOrgTypeStr());
         // 跟进人
-        column5.setValue(vo.getFollowUp());
+        column6.setValue(vo.getFollowUp());
         //分配时间
-        column6.setFullTimeValue(vo.getAssignDate());
+        if (vo.getAssignDate() == null) {
+            column7.setValue("");
+        } else {
+            column7.setFullTimeValue(vo.getAssignDate());
+        }
         //邀请码
-        column7.setValue(vo.getInviteCode());
+        column8.setValue(vo.getInviteCode());
     }
 }
 
