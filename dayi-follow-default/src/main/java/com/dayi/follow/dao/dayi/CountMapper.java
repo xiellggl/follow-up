@@ -4,6 +4,7 @@ import com.dayi.follow.vo.index.*;
 import com.dayi.follow.vo.org.OrgDataVo;
 import org.apache.ibatis.annotations.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -59,8 +60,6 @@ public interface CountMapper {
 
     int getFollowOrgNum(@Param("assistDataBase") String assistDataBase);
 
-    int getOrgValidAgentNum(@Param("orgId") Integer orgId, @Param("inviteLevel") Integer inviteLevel);
-
     //统计团队日报
     DailyVo countTeamDaily(@Param("deptIds") List<String> deptIds, @Param("assistDataBase") String assistDataBase);
 
@@ -69,5 +68,11 @@ public interface CountMapper {
      */
 
     DailyVo countDaily(@Param("followId") String followId, @Param("assistDataBase") String assistDataBase);
+
+    int getOrgValidAgentNum(@Param("orgId") Integer orgId, @Param("inviteLevel") Integer inviteLevel);
+
+    int getValidAgentNumAll(@Param("orgIds") List<Integer> orgIds);
+
+    int getValidAgentNumLevel1(@Param("orgIds") List<Integer> orgIds);
 
 }

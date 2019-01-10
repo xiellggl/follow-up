@@ -143,8 +143,28 @@ public class CountServiceImpl implements CountService {
         serCusStatusVo.setAgentNum(agentCusNum);
         //资产总规模
         BigDecimal agentTotalFund = followAgentMapper.getTotalFund(followIds, dayiDataBaseStr);
-        BigDecimal orgTotalFund = followOrgMapper.getTotalFund(followIds, dayiDataBaseStr);
-        serCusStatusVo.setTotalFund(agentTotalFund.add(orgTotalFund));
+
+        List<Organization> orgs = followOrgMapper.findOrgsByfollowIds(followIds, null, dayiDataBaseStr);
+
+        List<Integer> incomeOpen = new ArrayList<>();
+
+        List<Integer> incomeClose = new ArrayList<>();
+
+        for (Organization orgVo : orgs) {
+            if (orgVo.getSecondIncomeSwitch() != null && orgVo.getSecondIncomeSwitch().equals(SwitchStatusEnum.OPEN.getKey())) {
+                incomeOpen.add(orgVo.getId());
+            } else {
+                incomeClose.add(orgVo.getId());
+            }
+        }
+
+        BigDecimal manageFund;
+        BigDecimal openFund = orgMapper.getOrgManageFundAll(incomeOpen);
+        BigDecimal closeFund = orgMapper.getOrgManageFundLevel1(incomeClose);
+
+        manageFund = openFund.add(closeFund);
+
+        serCusStatusVo.setTotalFund(agentTotalFund.add(manageFund));
 
         return serCusStatusVo;
     }
@@ -180,17 +200,42 @@ public class CountServiceImpl implements CountService {
 
         List<String> followIds = followUpMapper.findIdsByDeptIds(deptIds);
 
-        List<Organization> orgVos = followOrgMapper.findOrgsByfollowIds(followIds, null, dayiDataBaseStr);
+        String deadline = DateTime.now().millisOfDay().withMinimumValue().plusMinutes(-30).toString("yyyy-MM-dd HH:mm:ss");
+
+        List<Organization> orgVos = followOrgMapper.findOrgsByfollowIds(followIds, deadline, dayiDataBaseStr);
         orgDataVo.setOrgNum(orgVos.size());
 
-        int agentNum = this.getValidAgentNum(orgVos);
-        orgDataVo.setAgentNum(agentNum);
+        List<Integer> inviteOpen = new ArrayList<>();
 
-        DateTime dateTime = DateTime.now();
-        String deadline = dateTime.millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
-        List<Organization> yesOrgVos = followOrgMapper.findOrgsByfollowIds(followIds, deadline, dayiDataBaseStr);//截至昨天的创客
+        List<Integer> inviteClose = new ArrayList<>();
 
-        BigDecimal manageFund = this.getOrgManageFund(yesOrgVos);
+        List<Integer> incomeOpen = new ArrayList<>();
+
+        List<Integer> incomeClose = new ArrayList<>();
+
+        for (Organization orgVo : orgVos) {
+            if (orgVo.getSwitchStatus() != null && orgVo.getSwitchStatus().equals(SwitchStatusEnum.OPEN.getKey())) {
+                inviteOpen.add(orgVo.getId());
+            } else {
+                inviteClose.add(orgVo.getId());
+            }
+            if (orgVo.getSecondIncomeSwitch() != null && orgVo.getSecondIncomeSwitch().equals(SwitchStatusEnum.OPEN.getKey())) {
+                incomeOpen.add(orgVo.getId());
+            } else {
+                incomeClose.add(orgVo.getId());
+            }
+        }
+
+        int openNum = countMapper.getValidAgentNumAll(inviteOpen);
+        int closeNum = countMapper.getValidAgentNumLevel1(inviteClose);
+
+        orgDataVo.setAgentNum(openNum + closeNum);
+
+        BigDecimal manageFund;
+        BigDecimal openFund = orgMapper.getOrgManageFundAll(incomeOpen);
+        BigDecimal closeFund = orgMapper.getOrgManageFundLevel1(incomeClose);
+
+        manageFund = openFund.add(closeFund);
 
         orgDataVo.setManageFund(manageFund.setScale(2, BigDecimal.ROUND_HALF_UP));
         return orgDataVo;

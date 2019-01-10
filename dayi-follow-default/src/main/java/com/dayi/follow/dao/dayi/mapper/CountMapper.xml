@@ -253,4 +253,32 @@
         (select date(max(create_time)) from ${assistDataBase}.follow_up_log)
     </select>
 
+    <select id="getValidAgentNumAll" parameterType="map" resultType="java.lang.Integer">
+        SELECT count(p.id)num  from organization o
+        left join (
+        SELECT id,org_id from agent where del_status != -1
+        )a on o.id = a.org_id
+        left join (SELECT agent,id from protocol WHERE protocol.`status`=1 GROUP BY agent)p on p.agent = a.id
+        WHERE o.id in
+        <foreach item="item" index="index" collection="orgIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and o.org_type =4 and o.del_status != -1
+    </select>
+
+    <select id="getValidAgentNumLevel1" parameterType="map" resultType="java.lang.Integer">
+        SELECT count(p.id)num  from organization o
+        left join (
+        SELECT id,org_id from agent where del_status != -1  and invite_level = 1
+        )a on o.id = a.org_id
+        left join (SELECT agent,id from protocol WHERE protocol.`status`=1 GROUP BY agent)p on p.agent = a.id
+        WHERE o.id in
+        <foreach item="item" index="index" collection="orgIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and o.org_type =4 and o.del_status != -1
+    </select>
+
 </mapper>
