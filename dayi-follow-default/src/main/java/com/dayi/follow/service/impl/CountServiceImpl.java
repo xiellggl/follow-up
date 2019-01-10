@@ -226,7 +226,7 @@ public class CountServiceImpl implements CountService {
 
         for (Organization orgVo : orgVos) {
             if (!orgVo.getOrgType().equals(OrgTypeEnum.Maker.getValue())) continue;//排除非创客
-            
+
             if (orgVo.getSwitchStatus() != null && orgVo.getSwitchStatus().equals(SwitchStatusEnum.OPEN.getKey())) {
                 inviteOpen.add(orgVo.getId());
             } else {

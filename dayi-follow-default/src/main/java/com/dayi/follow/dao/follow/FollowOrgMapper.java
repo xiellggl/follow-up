@@ -55,4 +55,5 @@ public interface FollowOrgMapper extends BaseMapper<FollowOrg> {
     //查找未分配跟进人的创客
     List<AssignListVo> findAssignsNoFollowLimit(@Param("searchVo") SearchVo searchVo, @Param("assistDataBase") String assistDataBase);
 
+    int getNewSignOrgNum(@Param("followId") String followId, @Param("startDate") String startDate, @Param("endDate") String endDate, @Param("assistDataBase") String assistDataBase);
 }

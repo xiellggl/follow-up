@@ -1,6 +1,7 @@
 package com.dayi.follow.service.impl;
 
 import com.dayi.common.util.BigDecimals;
+import com.dayi.follow.dao.follow.FollowOrgMapper;
 import com.dayi.follow.dao.follow.FollowUpMapper;
 import com.dayi.follow.dao.follow.ReportMapper;
 import com.dayi.follow.service.CountService;
@@ -13,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -32,7 +34,11 @@ public class ReportServiceImpl implements ReportService {
     @Resource
     DeptService deptService;
     @Resource
+    FollowOrgMapper followOrgMapper;
+    @Resource
     CountService countService;
+    @Value("${dayi.dataBase}")
+    String dayiDataBaseStr;
 
 
     @Override
@@ -311,7 +317,7 @@ public class ReportServiceImpl implements ReportService {
         BeanUtils.copyProperties(dateVo, adminMonthVo);
 
         page = reportMapper.findAdminMonth(page, startDate, endDate);//本月
-        adminMonthVo.setMonthVos(countGrowthRatio(page.getResults(), month));
+        adminMonthVo.setMonthVos(doAdminMonth(page.getResults(), dateVo.getMonth()));
         return adminMonthVo;
     }
 
@@ -324,10 +330,10 @@ public class ReportServiceImpl implements ReportService {
         String endDate = DateTime.parse(month).dayOfMonth().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");//本月结束
 
         List<MonthVo> monthList = reportMapper.findAdminMonth(startDate, endDate);//本月
-        return countGrowthRatio(monthList, month);
+        return doAdminMonth(monthList, month);
     }
 
-    private List<MonthVo> countGrowthRatio(List<MonthVo> list, String month) {
+    private List<MonthVo> doAdminMonth(List<MonthVo> list, String month) {
         String date1 = "";
         String date2 = "";
         String date3 = "";
@@ -338,9 +344,15 @@ public class ReportServiceImpl implements ReportService {
 
             date3 = DateTime.parse(month).plusMonths(-1).dayOfMonth().withMaximumValue().millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");//上月最后一天开始
             date4 = DateTime.parse(month).plusMonths(-1).dayOfMonth().withMaximumValue().millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");//上月结束
+        } else {
+            return list;
         }
         for (MonthVo vo : list) {
             if (vo == null) continue;
+            //获取新签创客
+            int orgNum = followOrgMapper.getNewSignOrgNum(vo.getFollowId(), month, date2, dayiDataBaseStr);
+            vo.setOrgNum(orgNum);
+
             BigDecimal manageFund1 = reportMapper.getLastManageFund(vo.getFollowId(), date1, date2);//当月最后一天管理资产
             vo.setManageFund(manageFund1.setScale(2));
             if (BigDecimal.ZERO.compareTo(manageFund1) == 0) {
