@@ -177,6 +177,8 @@
                                 <th>姓名</th>
                                 <th class="hidden-xs">注册时间</th>
                                 <th>手机号</th>
+                                <th>开户银行</th>
+                                <th>实际开户银行</th>
                                 <th class="hidden-sm hidden-xs">身份证号</th>
                                 <th class="hidden-sm hidden-xs">银行卡号</th>
                                 <th>跟进人</th>
@@ -210,6 +212,10 @@
                                                                               pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                         <!-- 手机号 -->
                                         <td> ${fn:substring(item.mobile, 0, 3)}****${fn:substring(item.mobile, 7, 11)}</td>
+                                        <!-- 开户银行 -->
+                                        <td>${item.bank}</td>
+                                        <!-- 实际开户银行 -->
+                                        <td>${item.realBank}</td>
                                         <!-- 身份证号 -->
                                         <td class="hidden-sm hidden-xs"><c:if
                                                 test="${not empty item.idCard}">${fn:substring(item.idCard, 0, fn:length(item.idCard) - 4)}****</c:if></td>
