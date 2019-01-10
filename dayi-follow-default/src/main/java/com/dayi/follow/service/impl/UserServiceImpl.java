@@ -142,7 +142,7 @@ public class UserServiceImpl implements UserService {
         }
 
         UserEditDto.dtoToEntity(userEditDto, followUp);
-        userMapper.updateAll(followUp);
+        userMapper.update(followUp);
 
         return BizResult.SUCCESS;
     }
