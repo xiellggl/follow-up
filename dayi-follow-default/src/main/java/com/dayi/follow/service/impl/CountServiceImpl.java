@@ -161,8 +161,16 @@ public class CountServiceImpl implements CountService {
         }
 
         BigDecimal manageFund;
-        BigDecimal openFund = orgMapper.getOrgManageFundAll(incomeOpen);
-        BigDecimal closeFund = orgMapper.getOrgManageFundLevel1(incomeClose);
+        BigDecimal openFund = BigDecimal.ZERO;
+        BigDecimal closeFund = BigDecimal.ZERO;
+
+        if (!incomeOpen.isEmpty()) {
+            openFund = orgMapper.getOrgManageFundAll(incomeOpen);
+        }
+
+        if (!incomeClose.isEmpty()) {
+            closeFund = orgMapper.getOrgManageFundLevel1(incomeClose);
+        }
 
         manageFund = openFund.add(closeFund);
 
@@ -230,14 +238,25 @@ public class CountServiceImpl implements CountService {
             }
         }
 
-        int openNum = countMapper.getValidAgentNumAll(inviteOpen);
-        int closeNum = countMapper.getValidAgentNumLevel1(inviteClose);
+        int openNum = 0;
+        int closeNum = 0;
+        if (!inviteOpen.isEmpty()) openNum = countMapper.getValidAgentNumAll(inviteOpen);
+
+        if (!inviteClose.isEmpty()) closeNum = countMapper.getValidAgentNumLevel1(inviteClose);
 
         orgDataVo.setAgentNum(openNum + closeNum);
 
         BigDecimal manageFund;
-        BigDecimal openFund = orgMapper.getOrgManageFundAll(incomeOpen);
-        BigDecimal closeFund = orgMapper.getOrgManageFundLevel1(incomeClose);
+        BigDecimal openFund = BigDecimal.ZERO;
+        BigDecimal closeFund = BigDecimal.ZERO;
+
+        if (!incomeOpen.isEmpty()) {
+            openFund = orgMapper.getOrgManageFundAll(incomeOpen);
+        }
+
+        if (!incomeClose.isEmpty()) {
+            closeFund = orgMapper.getOrgManageFundLevel1(incomeClose);
+        }
 
         manageFund = openFund.add(closeFund);
 
