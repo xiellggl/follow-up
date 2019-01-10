@@ -57,7 +57,7 @@ public class OrgAssignController extends BaseController {
         return "/maker/assign_list";
     }
 
-    @RequestMapping(value = "/export")
+    @RequestMapping(value = "/list/export")
     @ResponseBody
     public void orgExport(HttpServletRequest request, HttpServletResponse response, SearchVo searchVo) throws IOException {
         List assignList = followOrgService.findAssignList(searchVo);

@@ -59,7 +59,7 @@ public class AgentAssignController extends BaseController{
         return "/agent/assign_list";
     }
 
-    @RequestMapping(value = "/export")
+    @RequestMapping(value = "/list/export")
     @ResponseBody
     public void orgExport(HttpServletRequest request, HttpServletResponse response, SearchVo searchVo) throws IOException {
         List assignList = followAgentService.findAssignList(searchVo);
