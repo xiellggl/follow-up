@@ -196,10 +196,7 @@ public class FollowOrgServiceImpl implements FollowOrgService {
 
     @Override
     public List findAssignList(SearchVo searchVo) {
-        List<AssignListVo> list = new ArrayList<>();
-        List<String> followIds = new ArrayList<>();
-
-        if (followIds.isEmpty()) return list;
+        List<AssignListVo> list;
 
         if (searchVo.getAssignStatus() == null || searchVo.getAssignStatus() != 1) {//查未分配
             list = followOrgMapper.findAssignsNoFollowLimit(searchVo, dayiDataBaseStr);
