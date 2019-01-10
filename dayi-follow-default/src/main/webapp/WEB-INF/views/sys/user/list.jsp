@@ -154,11 +154,17 @@
                             <c:if test="${not empty page.results}">
                             <c:forEach items="${page.results}" var="item">
                             <tr data-id="${item.id}">
+                                    <%--姓名--%>
                                 <td>${item.name}</td>
+                                    <%--账号--%>
                                 <td>${item.userName}</td>
+                                    <%--邀请码--%>
                                 <td>${item.inviteCode}</td>
+                                    <%--角色--%>
                                 <td>${item.rolesName}</td>
+                                    <%--部门--%>
                                 <td>${item.department.name}</td>
+                                    <%--状态--%>
                                 <td>
                                     <a class="state-btn" data-state="${item.disable}" href="#"
                                        data-id="${item.id}" title="已${item.status}">
@@ -167,7 +173,9 @@
                                         </span>
                                     </a>
                                 </td>
+                                     <%--创建时间--%>
                                 <td class="hidden-xs"><fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/> </td>
+                                     <%--操作--%>
                                 <td>
                                     <c:if test="${updateUserPermission}">
                                     <a class="green" href="#" data-toggle="modal"
