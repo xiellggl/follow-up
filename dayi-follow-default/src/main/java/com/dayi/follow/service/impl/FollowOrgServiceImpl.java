@@ -176,19 +176,10 @@ public class FollowOrgServiceImpl implements FollowOrgService {
 
     @Override
     public Page findAssignPage(Page page, SearchVo searchVo) {
-        List<String> followIds = new ArrayList<>();
-
-        List<FollowUp> all = followUpMapper.findAll();
-        for (FollowUp followUp : all) {
-            followIds.add(followUp.getId());
-        }
-
-        if (followIds.isEmpty()) return page;
-
         if (searchVo.getAssignStatus() == null || searchVo.getAssignStatus() != 1) {//查未分配
             page = followOrgMapper.findAssignsNoFollow(page, searchVo, dayiDataBaseStr);
         } else {//查已分配
-            page = followOrgMapper.findAssignsFollow(page, searchVo, followIds, dayiDataBaseStr);
+            page = followOrgMapper.findAssignsFollow(page, searchVo, dayiDataBaseStr);
         }
 
         return page;
