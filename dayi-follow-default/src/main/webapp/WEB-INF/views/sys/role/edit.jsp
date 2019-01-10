@@ -73,7 +73,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label no-padding-right">角色备注：</label>
                             <div class="col-xs-12 col-sm-6">
-                                <textarea name="descript" class="${role.descript}" style="height:60px;"></textarea>
+                                <textarea name="descript" class="${role.descript}" style="height:60px;">${role.descript}</textarea>
                             </div>
                             <div class="help-block col-xs-12 col-sm-reset inline tips_box"></div>
                         </div>
