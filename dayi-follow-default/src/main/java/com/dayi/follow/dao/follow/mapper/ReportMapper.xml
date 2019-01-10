@@ -218,11 +218,6 @@
         ORDER BY create_time desc
     </select>
 
-    <select id="getNewSignOrgNum" resultType="java.lang.Integer" parameterType="map">
-        SELECT count(0) from follow_org where follow_id=#{followId}
-        <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
-        and assign_date BETWEEN #{startDate} and #{endDate}
-        </if>
-    </select>
+
 
 </mapper>

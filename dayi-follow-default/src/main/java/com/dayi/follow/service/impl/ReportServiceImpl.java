@@ -1,6 +1,7 @@
 package com.dayi.follow.service.impl;
 
 import com.dayi.common.util.BigDecimals;
+import com.dayi.follow.dao.follow.FollowOrgMapper;
 import com.dayi.follow.dao.follow.FollowUpMapper;
 import com.dayi.follow.dao.follow.ReportMapper;
 import com.dayi.follow.service.CountService;
@@ -13,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -32,7 +34,11 @@ public class ReportServiceImpl implements ReportService {
     @Resource
     DeptService deptService;
     @Resource
+    FollowOrgMapper followOrgMapper;
+    @Resource
     CountService countService;
+    @Value("${dayi.dataBase}")
+    String dayiDataBaseStr;
 
 
     @Override
@@ -344,7 +350,7 @@ public class ReportServiceImpl implements ReportService {
         for (MonthVo vo : list) {
             if (vo == null) continue;
             //获取新签创客
-            int orgNum = reportMapper.getNewSignOrgNum(vo.getFollowId(), month, date2);
+            int orgNum = followOrgMapper.getNewSignOrgNum(vo.getFollowId(), month, date2, dayiDataBaseStr);
             vo.setOrgNum(orgNum);
 
             BigDecimal manageFund1 = reportMapper.getLastManageFund(vo.getFollowId(), date1, date2);//当月最后一天管理资产

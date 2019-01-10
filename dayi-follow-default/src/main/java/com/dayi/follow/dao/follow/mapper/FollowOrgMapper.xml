@@ -206,6 +206,14 @@
         limit 0,10000
     </select>
 
-
-
+    <select id="getNewSignOrgNum" resultType="java.lang.Integer" parameterType="map">
+        SELECT count(b.id) from follow_org  a
+        left JOIN (
+            SELECT id from ${assistDataBase}.organization where 1=1
+            <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
+                and create_date BETWEEN #{startDate} and #{endDate}
+            </if>
+        )b on b.id=a.org_id
+        where follow_id=#{followId}
+    </select>
 </mapper>
