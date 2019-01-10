@@ -92,7 +92,7 @@
                                     <select name="moduleId" class="form-control admin_sea">
                                         <option value="">所属模块</option>
                                         <c:forEach var="item" items="${menus}">
-                                            <option value="${item.id}"  ${param.moduleid eq item.id ? 'selected' : ''} >${item.name}</option>
+                                            <option value="${item.id}"  ${param.moduleId eq item.id ? 'selected' : ''} >${item.name}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
