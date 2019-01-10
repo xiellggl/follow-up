@@ -22,9 +22,9 @@ public class MakerDetailExport extends AbstractExcel<FMDetailListVo> {
     private Column column6 = addColumn("变更前跟进人", 4000);
     private Column column7 = addColumn("变更日期", 4000);
 
-    private Column column8 = addColumn("变更前代理资金", 4000);
-    private Column column9 = addColumn("当前代理资金", 6000);
-    private Column column10 = addColumn("净增代理资金", 6000);
+    private Column column8 = addColumn("变更前代理货值", 4000);
+    private Column column9 = addColumn("当前代理货值", 6000);
+    private Column column10 = addColumn("净增代理货值", 6000);
 
     public MakerDetailExport(String fileName, String fileTitle, List<FMDetailListVo> datas) {
         super(fileName, fileTitle, datas);
