@@ -50,13 +50,13 @@ public interface ReportService {
     List<ReportDailyVo> findAdminDailyDetailList(String deptId, String date);
 
     //管理员周报
-    AdminWeekVo countAdminWeek(Page page, String deptId, String betweenDate);
+    AdminWeekVo countAdminWeek(Page page, String betweenDate);
 
     //管理员周报导出
-    List<WeekVo> findAdminWeekList(String deptId, String betweenDate);
+    List<WeekVo> findAdminWeekList(String betweenDate);
 
     //管理员月报
-    AdminMonthVo countAdminMonth(Page page, String deptId, String month);
+    AdminMonthVo countAdminMonth(Page page, String month);
 
     //管理员月报导出
     List<MonthVo> findAdminMonthList(String deptId, String month);

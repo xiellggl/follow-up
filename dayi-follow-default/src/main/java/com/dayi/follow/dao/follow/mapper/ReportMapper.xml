@@ -140,13 +140,6 @@
                         <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
                             and date(create_time) BETWEEN #{startDate} and #{endDate}
                         </if>
-                        <if test="null!=followIds and 0!=followIds.size()">
-                            and follow_id in
-                            <foreach item="item" index="index" collection="followIds"
-                                     open="(" separator="," close=")">
-                                #{item}
-                            </foreach>
-                        </if>
                         GROUP BY  follow_id,date(create_time)
                  )d
          )e GROUP BY follow_id,date ORDER BY deptId asc, follow_id asc,date asc
@@ -164,13 +157,6 @@
         )c on c.id =a.follow_id where 1=1
         <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
          and date(create_time) BETWEEN #{startDate} and #{endDate}
-        </if>
-        <if test="null!=followIds and 0!=followIds.size()">
-            and follow_id in
-            <foreach item="item" index="index" collection="followIds"
-                     open="(" separator="," close=")">
-                #{item}
-            </foreach>
         </if>
         group by follow_id  ORDER BY dept_id asc, follow_id asc
     </select>
@@ -191,11 +177,6 @@
         <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
             and create_time BETWEEN #{startDate} and #{endDate}
         </if>
-        and a.follow_id in
-        <foreach item="item" index="index" collection="followIds"
-                 open="(" separator="," close=")">
-            #{item}
-        </foreach>
         group by a.follow_id
         ORDER BY c.id asc , a.follow_id asc
     </select>

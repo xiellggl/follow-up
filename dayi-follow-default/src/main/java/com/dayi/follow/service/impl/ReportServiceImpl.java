@@ -248,7 +248,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public AdminWeekVo countAdminWeek(Page page, String deptId, String betweenDate) {
+    public AdminWeekVo countAdminWeek(Page page, String betweenDate) {
         AdminWeekVo adminWeekVo = new AdminWeekVo();
         String startDate;
         String endDate;
@@ -267,21 +267,13 @@ public class ReportServiceImpl implements ReportService {
         dateVo.setEndDate(DateTime.parse(dateVo.getEndDate(), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toString("yyyy-MM-dd"));
         BeanUtils.copyProperties(dateVo, adminWeekVo);
 
-        List<String> followIds = new ArrayList<>();
-        List<String> subDeptIds = deptService.getSubDeptIds(deptId);
-        for (String subDeptId : subDeptIds) {
-            followIds.addAll(followUpMapper.findIdsByDeptId(subDeptId));
-        }
-
-        if (followIds.isEmpty()) return adminWeekVo;
-
-        page = reportMapper.findAdminWeekSum(page, followIds, startDate, endDate);
+        page = reportMapper.findAdminWeekSum(page, startDate, endDate);
 
         Page per = new Page();
         per.setPageNo(page.getPageNo());
         per.setPageSize(page.getPageSize() * 5);
 
-        per = reportMapper.findAdminWeekPer(per, followIds, startDate, endDate);
+        per = reportMapper.findAdminWeekPer(per, startDate, endDate);
 
         adminWeekVo.setWeekVos(mergeData(page.getResults(), per.getResults()));
 
@@ -289,7 +281,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public List<WeekVo> findAdminWeekList(String deptId, String betweenDate) {
+    public List<WeekVo> findAdminWeekList(String betweenDate) {
         List<WeekVo> list = new ArrayList<>();
 
         if (StringUtils.isBlank(betweenDate)) return list;
@@ -298,26 +290,17 @@ public class ReportServiceImpl implements ReportService {
         String startDate = split[0];
         String endDate = DateTime.parse(split[1]).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
 
-        List<String> followIds = new ArrayList<>();
-
-        List<String> subDeptIds = deptService.getSubDeptIds(deptId);
-        for (String subDeptId : subDeptIds) {
-            followIds.addAll(followUpMapper.findIdsByDeptId(subDeptId));
-        }
-
-        if (followIds.isEmpty()) return list;
-
-        List<WeekVo> sum = reportMapper.findAdminWeekSum(followIds, startDate, endDate);
+        List<WeekVo> sum = reportMapper.findAdminWeekSum(startDate, endDate);
 
         Page page = new Page();
         page.setPageSize(sum.size() * 5);
-        Page<WeekVo> per = reportMapper.findAdminWeekPer(page, followIds, startDate, endDate);
+        Page<WeekVo> per = reportMapper.findAdminWeekPer(page, startDate, endDate);
 
         return mergeData(sum, per.getResults());
     }
 
     @Override
-    public AdminMonthVo countAdminMonth(Page page, String deptId, String month) {
+    public AdminMonthVo countAdminMonth(Page page, String month) {
         AdminMonthVo adminMonthVo = new AdminMonthVo();
 
         DateVo dateVo = doMonthDate(month);
@@ -325,17 +308,9 @@ public class ReportServiceImpl implements ReportService {
         String startDate = DateTime.parse(dateVo.getMonth()).toString("yyyy-MM-dd HH:mm:ss");//本月开始
         String endDate = DateTime.parse(dateVo.getMonth()).dayOfMonth().withMaximumValue().millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");//本月结束
 
-        List<String> followIds = new ArrayList<>();
-        List<String> subDeptIds = deptService.getSubDeptIds(deptId);
-        for (String subDeptId : subDeptIds) {
-            followIds.addAll(followUpMapper.findIdsByDeptId(subDeptId));
-        }
-
         BeanUtils.copyProperties(dateVo, adminMonthVo);
 
-        if (followIds.isEmpty()) return adminMonthVo;
-
-        page = reportMapper.findAdminMonth(page, followIds, startDate, endDate);//本月
+        page = reportMapper.findAdminMonth(page, startDate, endDate);//本月
         adminMonthVo.setMonthVos(countGrowthRatio(page.getResults(), month));
         return adminMonthVo;
     }
@@ -348,15 +323,7 @@ public class ReportServiceImpl implements ReportService {
         String startDate = DateTime.parse(month).toString("yyyy-MM-dd HH:mm:ss");//本月开始
         String endDate = DateTime.parse(month).dayOfMonth().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");//本月结束
 
-        List<String> followIds = new ArrayList<>();
-        List<String> subDeptIds = deptService.getSubDeptIds(deptId);
-        for (String subDeptId : subDeptIds) {
-            followIds.addAll(followUpMapper.findIdsByDeptId(subDeptId));
-        }
-
-        if (followIds.isEmpty()) return list;
-
-        List<MonthVo> monthList = reportMapper.findAdminMonth(followIds, startDate, endDate);//本月
+        List<MonthVo> monthList = reportMapper.findAdminMonth(startDate, endDate);//本月
         return countGrowthRatio(monthList, month);
     }
 
