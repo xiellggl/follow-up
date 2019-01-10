@@ -2,16 +2,16 @@
 <%@include file="/inc/followup/taglib.jsp"%>
 <%--权限判断--%>
 <c:set var="detailMaker" value="false" />
-<%--<c:set var="addContactMaker" value="false" />--%>
+<c:set var="addContactMaker" value="false" />
 <c:forEach items="${permissions}" var="item">
     <%--查看创客联系记录--%>
     <c:if test="${item.url eq '/org/contact'}">
         <c:set var="detailMaker" value="true" />
     </c:if>
-    <%--&lt;%&ndash;添加创客联系记录&ndash;%&gt;--%>
-    <%--<c:if test="${item.url eq '/contact/add/save'}">--%>
-        <%--<c:set var="addContactMaker" value="true" />--%>
-    <%--</c:if>--%>
+    <%--添加创客联系记录--%>
+    <c:if test="${item.url eq '/contact/add/save'}">
+        <c:set var="addContactMaker" value="true" />
+    </c:if>
 </c:forEach>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -50,7 +50,7 @@
                     <a href="/org/list?${returnUrl}" style="float: right;margin: 20px 10px 0 0;" class="btn btn-sm btn-info" type="reset">返回</a>
                 </div>
                 <%--添加创客联系记录--%>
-                <%--<c:if test="${addContactMaker}">--%>
+                <c:if test="${addContactMaker}">
                     <div class="row">
                         <div class="col-xs-12">
                             <h4 class="header smaller lighter blue ">
@@ -86,7 +86,7 @@
                             </form>
                         </div>
                     </div>
-                <%--</c:if>--%>
+                </c:if>
 
                 <%--查看创客联系记录--%>
                 <c:if test="${detailMaker}">
