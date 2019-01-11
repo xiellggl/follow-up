@@ -461,5 +461,6 @@ INSERT INTO `dayi_follow`.`role_permission`(`id`, `roleId`, `permissionId`, `cre
 INSERT INTO `dayi_follow`.`role_permission`(`id`, `roleId`, `permissionId`, `create_time`, `update_time`) VALUES ('23b67d2900005da1', '238b3efb000001a1', '23b3790d000001a1', '2018-12-26 17:55:54', '2018-12-26 17:55:54');
 
 #修补超管用户的角色
-update dayi_follow.follow_up set roleids = '238b3efb000001a1' WHERE user_name='admin'
+update dayi_follow.follow_up set roleids = '238b3efb000001a1' WHERE user_name='admin';
+update dayi_follow.follow_up set roleids = '238b3efb000001a1' WHERE user_name='chenyh1';
 
