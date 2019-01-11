@@ -136,7 +136,7 @@
                                     <span class="ace-icon fa fa-globe"></span>
                                     显示全部
                                 </a>
-                                <a href=""
+                                <a href="${requestURI}/export?${queryString}"
                                    class="btn btn-xs btn-success lehidden-xs">
                                     <span class="ace-icon fa fa-external-link"></span>
                                     导出
@@ -177,6 +177,7 @@
                                 <th>姓名</th>
                                 <th class="hidden-xs">注册时间</th>
                                 <th>手机号</th>
+                                <th>开户银行</th>
                                 <th class="hidden-sm hidden-xs">身份证号</th>
                                 <th class="hidden-sm hidden-xs">银行卡号</th>
                                 <th>跟进人</th>
@@ -188,7 +189,7 @@
                             <tbody>
                             <c:if test="${empty page.results}">
                                 <tr>
-                                    <td colspan="11" class="no_data">暂无数据记录</td>
+                                    <td colspan="12" class="no_data">暂无数据记录</td>
                                 </tr>
                             </c:if>
 
@@ -210,11 +211,18 @@
                                                                               pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                         <!-- 手机号 -->
                                         <td> ${fn:substring(item.mobile, 0, 3)}****${fn:substring(item.mobile, 7, 11)}</td>
+                                        <!-- 开户银行和实际开户银行 -->
+                                        <td>${item.bank}
+                                            <c:if test="${not empty item.realBank}">
+                                                <br/><c:out value="(${item.realBank})" escapeXml="false"/>
+                                            </c:if>
+                                        </td>
                                         <!-- 身份证号 -->
                                         <td class="hidden-sm hidden-xs"><c:if
                                                 test="${not empty item.idCard}">${fn:substring(item.idCard, 0, fn:length(item.idCard) - 4)}****</c:if></td>
                                         <!-- 银行卡号 -->
-                                        <td>${item.bankAccount}</td>
+                                        <td class="hidden-xs"><c:if
+                                                test="${not empty item.bankAccount}">${fn:substring(item.bankAccount, 0, 3)}**********${fn:substring(item.bankAccount, 13,16)}</c:if></td>
                                         <!-- 跟进人 -->
                                         <td>${item.followUp}</td>
                                         <!-- 分配时间 -->

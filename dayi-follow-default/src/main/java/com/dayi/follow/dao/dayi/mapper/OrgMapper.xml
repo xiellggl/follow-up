@@ -19,6 +19,33 @@
         and a.org_id =#{orgId} and a.invite_level=2
     </select>
 
+    <select id="getOrgManageFundAll" parameterType="map" resultType="java.math.BigDecimal">
+        select ifnull(sum(0.8*b.cargo_interest+b.cargo_interest_puchas),0)  from agent a
+        LEFT  join (
+        SELECT agent_org_id,cargo_interest,cargo_interest_puchas from finance_account
+        )b on b.agent_org_id=a.id
+        where  b.agent_org_id is not null
+        and a.org_id in
+        <foreach item="item" index="index" collection="orgIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="getOrgManageFundLevel1" parameterType="map" resultType="java.math.BigDecimal">
+        select ifnull(sum(0.8*b.cargo_interest+b.cargo_interest_puchas),0)  from agent a
+        LEFT  join (
+        SELECT agent_org_id,cargo_interest,cargo_interest_puchas from finance_account
+        )b on b.agent_org_id=a.id
+        where  b.agent_org_id is not null
+        and a.org_id in
+        <foreach item="item" index="index" collection="orgIds"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and a.invite_level=1
+    </select>
+
     <select id="getByMarkerNum" parameterType="java.lang.String" resultType="com.dayi.follow.model.follow.Organization">
         SELECT * from organization where maker_num =#{makerNum} and del_status!=-1
     </select>

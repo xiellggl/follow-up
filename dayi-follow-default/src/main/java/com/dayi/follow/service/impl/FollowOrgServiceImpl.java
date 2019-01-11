@@ -176,41 +176,23 @@ public class FollowOrgServiceImpl implements FollowOrgService {
 
     @Override
     public Page findAssignPage(Page page, SearchVo searchVo) {
-        List<String> followIds = new ArrayList<>();
-
-        List<FollowUp> all = followUpMapper.findAll();
-        for (FollowUp followUp : all) {
-            followIds.add(followUp.getId());
-        }
-
-        if (followIds.isEmpty()) return page;
-
         if (searchVo.getAssignStatus() == null || searchVo.getAssignStatus() != 1) {//查未分配
             page = followOrgMapper.findAssignsNoFollow(page, searchVo, dayiDataBaseStr);
         } else {//查已分配
-            page = followOrgMapper.findAssignsFollow(page, searchVo, followIds, dayiDataBaseStr);
+            page = followOrgMapper.findAssignsFollow(page, searchVo, dayiDataBaseStr);
         }
 
         return page;
     }
 
     @Override
-    public List findAssignList(SearchVo searchVo, String deptId) {
-        List<AssignListVo> list = new ArrayList<>();
-        List<String> followIds = new ArrayList<>();
-
-        List<String> deptIds = deptService.getSubDeptIds(deptId);
-
-        for (String id : deptIds) {
-            followIds.addAll(followUpMapper.findIdsByDeptId(id));
-        }
-
-        if (followIds.isEmpty()) return list;
+    public List findAssignList(SearchVo searchVo) {
+        List<AssignListVo> list;
 
         if (searchVo.getAssignStatus() == null || searchVo.getAssignStatus() != 1) {//查未分配
-            list = followOrgMapper.findAssignsNoFollow(searchVo, dayiDataBaseStr);
+            list = followOrgMapper.findAssignsNoFollowLimit(searchVo, dayiDataBaseStr);
         } else {//查已分配
-            list = followOrgMapper.findAssignsFollow(searchVo, followIds, dayiDataBaseStr);
+            list = followOrgMapper.findAssignsFollowLimit(searchVo, dayiDataBaseStr);
         }
 
         return list;

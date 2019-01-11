@@ -5,6 +5,7 @@ import com.dayi.common.web.excel.Column;
 import com.dayi.follow.vo.agent.AssignListVo;
 import com.dayi.follow.vo.followup.FMDetailListVo;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 
 import java.util.List;
 
@@ -21,9 +22,10 @@ public class AgentAssignExport extends AbstractExcel<AssignListVo> {
     private Column column4 = addColumn("开户银行", 4000);
     private Column column5 = addColumn("实际开户银行", 4000);
     private Column column6 = addColumn("身份证号", 4000);
-    private Column column7 = addColumn("跟进人", 4000);
-    private Column column8 = addColumn("分配时间", 4000);
-    private Column column9 = addColumn("邀请码", 6000);
+    private Column column7 = addColumn("银行卡号", 4000);
+    private Column column8 = addColumn("跟进人", 4000);
+    private Column column9 = addColumn("分配时间", 4000);
+    private Column column10 = addColumn("邀请码", 6000);
 
     public AgentAssignExport(String fileName, String fileTitle, List<AssignListVo> datas) {
         super(fileName, fileTitle, datas);
@@ -33,23 +35,29 @@ public class AgentAssignExport extends AbstractExcel<AssignListVo> {
         // 会员id
         column0.setValue(vo.getId());
         // 名称
-        column1.setValue(vo.getLinkPerson());
+        column1.setValue(vo.getLinkPersonFm());
         // 注册时间
         column2.setFullTimeValue(vo.getCreateDate());
         // 手机号
-        column3.setValue(vo.getMobile());
+        column3.setValue(vo.getMobileFm());
         // 开户银行
         column4.setValue(vo.getBank());
         // 实际开户银行
         column5.setValue(vo.getRealBank());
         //身份证号
-        column6.setValue(vo.getIdCard());
+        column6.setValue(vo.getIdCardFm());
+        //银行卡号
+        column7.setValue(vo.getBankAccountFm());
         //跟进人
-        column7.setValue(vo.getFollowUp());
+        column8.setValue(vo.getFollowUp());
         // 分配时间
-        column8.setFullTimeValue(vo.getAssignDate());
+        if (vo.getAssignDate() == null) {
+            column9.setValue("");
+        } else {
+            column9.setFullTimeValue(vo.getAssignDate());
+        }
         //邀请码
-        column9.setValue(vo.getInviteCode());
+        column10.setValue(vo.getInviteCode());
     }
 }
 

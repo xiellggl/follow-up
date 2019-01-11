@@ -21,14 +21,17 @@ public class AssignListVo {
     private Date createDate;//注册时间，创建时间
 
     private String mobile;//手机号
+    private String mobileFm;
 
     private String bank;//开户银行
     private String realBank;//实际银行
 
 
     private String idCard;//身份证
+    private String idCardFm;
 
     private String bankAccount;//银行账户
+    private String bankAccountFm;
 
     private String followUp;//跟进人
 
@@ -68,6 +71,39 @@ public class AssignListVo {
             linkPersonFm = substring + CheckIdCardUtils.getCnGenderByIdCard(idCard);
         }
         return linkPersonFm;
+    }
+
+    public String getMobileFm() {
+        if (!StringUtils.isBlank(mobile)) {
+            mobileFm = mobile.substring(0, 3) + "****" + mobile.substring(7, 11);
+        }
+        return mobileFm;
+    }
+
+    public void setMobileFm(String mobileFm) {
+        this.mobileFm = mobileFm;
+    }
+
+    public String getIdCardFm() {
+        if (!StringUtils.isBlank(idCard)) {
+            idCardFm = idCard.substring(0, idCard.length() - 4) + "****";
+        }
+        return idCardFm;
+    }
+
+    public void setIdCardFm(String idCardFm) {
+        this.idCardFm = idCardFm;
+    }
+
+    public String getBankAccountFm() {
+        if (!StringUtils.isBlank(bankAccount)) {
+            bankAccountFm = bankAccount.substring(0, 3) + "**********" + bankAccount.substring(bankAccount.length() - 3, bankAccount.length());
+        }
+        return bankAccountFm;
+    }
+
+    public void setBankAccountFm(String bankAccountFm) {
+        this.bankAccountFm = bankAccountFm;
     }
 
     public void setLinkPersonFm(String linkPersonFm) {

@@ -56,13 +56,11 @@ public class OrgAssignController extends BaseController {
         model.addAttribute("orgTypes", OrgTypeEnum.values());//机构商类型
         return "/maker/assign_list";
     }
-//
-//    @RequestMapping(value = "/export")
-//    @ResponseBody
-    public void orgExport(HttpServletRequest request, HttpServletResponse response, SearchVo searchVo) throws IOException {
-        LoginVo currVo = userComponent.getCurrUser(request);
 
-        List assignList = followOrgService.findAssignList(searchVo, currVo.getDeptId());
+    @RequestMapping(value = "/list/export")
+    @ResponseBody
+    public void orgExport(HttpServletRequest request, HttpServletResponse response, SearchVo searchVo) throws IOException {
+        List assignList = followOrgService.findAssignList(searchVo);
 
         String title = "创客分配列表";
         String fileName = title + new DateTime().toString("yyyy-MM-dd HH:mm:ss");

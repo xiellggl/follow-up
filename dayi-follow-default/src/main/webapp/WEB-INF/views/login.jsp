@@ -49,7 +49,7 @@
                                             </label>
                                             <div class="clearfix">
                                                 <label class="inline">
-                                                    <input name="rememberme" type="checkbox" class="ace"/>
+                                                    <input name="rememberme" type="checkbox" checked="checked" class="ace"/>
                                                     <span class="lbl"> 记住账号</span>
                                                 </label>
 

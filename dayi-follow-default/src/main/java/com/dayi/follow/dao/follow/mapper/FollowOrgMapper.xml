@@ -160,32 +160,60 @@
         </if>
     </sql>
 
-    <select id="findAssignsFollow" parameterType="map" resultType="com.dayi.follow.vo.agent.AssignListVo">
+    <sql id="findAssignsFollowSql">
         SELECT b.id,link_person,create_date,mobile,id_card,org_id,follow_id, assign_date,c.name followUp,
-              maker_num inviteCode,b.org_type,b.experience_maker from follow_org a
+        maker_num inviteCode,b.org_type,b.experience_maker from follow_org a
         left join (
-            SELECT id,link_person,create_date,mobile,id_card,maker_num ,
-                   audit_date,org_type,experience_maker
-                   from ${assistDataBase}.organization where del_status !=-1
+        SELECT id,link_person,create_date,mobile,id_card,maker_num ,
+        audit_date,org_type,experience_maker
+        from ${assistDataBase}.organization where del_status !=-1
         )b on b.id = a.org_id
         LEFT JOIN (
-            SELECT id,name  from follow_up where disable!=0
+        SELECT id,name  from follow_up where disable!=0
         )c on c.id = a.follow_id
         where a.follow_id is not NULL and b.id is not null and c.id is not null
         <include refid="assignsFollowCondition"/>
         order by b.audit_date desc
-    </select>
+    </sql>
 
-    <select id="findAssignsNoFollow" parameterType="map" resultType="com.dayi.follow.vo.agent.AssignListVo">
+    <sql id="findAssignsNoFollowSql">
         SELECT id,link_person,create_date,mobile,id_card,maker_num inviteCode,
-            audit_date,org_type,experience_maker
+        audit_date,org_type,experience_maker
         from ${assistDataBase}.organization a
         left join(
-            SELECT org_id,follow_id from follow_org
+        SELECT org_id,follow_id from follow_org
         )b on b.org_id =a.id
         where b.follow_id is null and  del_status !=-1
         <include refid="assignsNoFollowCondition"/>
         order by a.audit_date desc
+    </sql>
+
+    <select id="findAssignsFollow" parameterType="map" resultType="com.dayi.follow.vo.agent.AssignListVo">
+        <include refid="findAssignsFollowSql"/>
     </select>
 
+    <select id="findAssignsNoFollow" parameterType="map" resultType="com.dayi.follow.vo.agent.AssignListVo">
+        <include refid="findAssignsNoFollowSql"/>
+    </select>
+
+    <select id="findAssignsFollowLimit" parameterType="map" resultType="com.dayi.follow.vo.agent.AssignListVo">
+        <include refid="findAssignsFollowSql"/>
+        limit 0,10000
+    </select>
+
+    <select id="findAssignsNoFollowLimit" parameterType="map" resultType="com.dayi.follow.vo.agent.AssignListVo">
+        <include refid="findAssignsNoFollowSql"/>
+        limit 0,10000
+    </select>
+
+    <select id="getNewSignOrgNum" resultType="java.lang.Integer" parameterType="map">
+        SELECT count(b.id) from follow_org  a
+        left JOIN (
+            SELECT id from ${assistDataBase}.organization where 1=1
+            <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
+                and create_date BETWEEN #{startDate} and #{endDate}
+            </if>
+        )b on b.id=a.org_id
+        where follow_id=#{followId}
+    </select>
 </mapper>

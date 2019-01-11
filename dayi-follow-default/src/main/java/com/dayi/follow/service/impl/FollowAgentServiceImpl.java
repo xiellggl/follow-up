@@ -177,7 +177,7 @@ public class FollowAgentServiceImpl implements FollowAgentService {
         BigDecimal partFund = agentFund.add(account.getFrozen())
                 .add(account.getOutFrozen());
 
-        BigDecimal totalFund = account.getUseable().add(partFund).setScale(2);
+        BigDecimal totalFund = account.getUseable().add(partFund).setScale(2,BigDecimal.ROUND_HALF_UP);
         detailVo.setTotalFund(totalFund);
 
         // 是否入金
@@ -203,56 +203,23 @@ public class FollowAgentServiceImpl implements FollowAgentService {
 
     @Override
     public Page findAssignPage(Page<AssignListVo> page, SearchVo searchVo) {
-        List<String> followIds = new ArrayList<>();
-
-        List<FollowUp> all = followUpMapper.findAll();
-        for (FollowUp followUp : all) {
-            followIds.add(followUp.getId());
-        }
-
-        if (followIds.isEmpty()) return page;
 
         if (searchVo.getAssignStatus() == null || searchVo.getAssignStatus() != 1) {//查未分配
             page = followAgentMapper.findAssignsNoFollow(page, searchVo, dayiDataBaseStr);
         } else {//查已分配
-            page = followAgentMapper.findAssignsFollow(page, searchVo, followIds, dayiDataBaseStr);
+            page = followAgentMapper.findAssignsFollow(page, searchVo, dayiDataBaseStr);
         }
-
-        for (AssignListVo vo : page.getResults()) {
-            //遍历取实际开户银行
-            Account account = agentMapper.getAccount(vo.getId());
-            if (account == null) continue;
-            String bankRealName = account.getBankRealName();
-            vo.setRealBank(bankRealName);
-        }
-
         return page;
     }
 
     @Override
-    public List findAssignList(SearchVo searchVo, String deptId) {
-        List<AssignListVo> list = new ArrayList<>();
-        List<String> followIds = new ArrayList<>();
-
-        List<String> subDeptIds = deptService.getSubDeptIds(deptId);
-        for (String subDeptId : subDeptIds) {
-            followIds.addAll(followUpMapper.findIdsByDeptId(subDeptId));
-        }
-
-        if (followIds.isEmpty()) return list;
+    public List findAssignList(SearchVo searchVo) {
+        List<AssignListVo> list;
 
         if (searchVo.getAssignStatus() == null || searchVo.getAssignStatus() != 1) {//查未分配
-            list = followAgentMapper.findAssignsNoFollow(searchVo, dayiDataBaseStr);
+            list = followAgentMapper.findAssignsNoFollowLimit(searchVo, dayiDataBaseStr);
         } else {//查已分配
-            list = followAgentMapper.findAssignsFollow(searchVo, followIds, dayiDataBaseStr);
-        }
-
-        for (AssignListVo vo : list) {
-            //遍历取实际开户银行
-            Account account = agentMapper.getAccount(vo.getId());
-            if (account == null) continue;
-            String bankRealName = account.getBankRealName();
-            vo.setRealBank(bankRealName);
+            list = followAgentMapper.findAssignsFollowLimit(searchVo, dayiDataBaseStr);
         }
 
         return list;

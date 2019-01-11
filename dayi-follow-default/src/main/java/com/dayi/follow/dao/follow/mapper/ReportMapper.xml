@@ -140,13 +140,6 @@
                         <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
                             and date(create_time) BETWEEN #{startDate} and #{endDate}
                         </if>
-                        <if test="null!=followIds and 0!=followIds.size()">
-                            and follow_id in
-                            <foreach item="item" index="index" collection="followIds"
-                                     open="(" separator="," close=")">
-                                #{item}
-                            </foreach>
-                        </if>
                         GROUP BY  follow_id,date(create_time)
                  )d
          )e GROUP BY follow_id,date ORDER BY deptId asc, follow_id asc,date asc
@@ -165,18 +158,11 @@
         <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
          and date(create_time) BETWEEN #{startDate} and #{endDate}
         </if>
-        <if test="null!=followIds and 0!=followIds.size()">
-            and follow_id in
-            <foreach item="item" index="index" collection="followIds"
-                     open="(" separator="," close=")">
-                #{item}
-            </foreach>
-        </if>
         group by follow_id  ORDER BY dept_id asc, follow_id asc
     </select>
 
     <select id="findAdminMonth" parameterType="map" resultType="com.dayi.follow.vo.report.MonthVo">
-        SELECT a.follow_id,c.name deptName,b.name,b.invite_code,count(d.org_id)orgNum,sum(open_account_num)openNum,sum(in_cash)inCash
+        SELECT a.follow_id,c.name deptName,b.name,b.invite_code,sum(open_account_num)openNum,sum(in_cash)inCash
         from follow_up_log a
         LEFT join (
             SELECT id,name,invite_code from follow_up
@@ -184,18 +170,10 @@
         left join (
             SELECT id,name from department
         )c on c.id =a.dept_id
-        left join (
-            SELECT org_id,follow_id from follow_org
-        )d on d.follow_id =a.follow_id
         where 1=1
         <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
             and create_time BETWEEN #{startDate} and #{endDate}
         </if>
-        and a.follow_id in
-        <foreach item="item" index="index" collection="followIds"
-                 open="(" separator="," close=")">
-            #{item}
-        </foreach>
         group by a.follow_id
         ORDER BY c.id asc , a.follow_id asc
     </select>
@@ -220,11 +198,6 @@
         <if test="''!=deptName and null!=deptName">
             and b.name like CONCAT('%','${deptName}','%' )
         </if>
-        and a.follow_id in
-        <foreach item="item" index="index" collection="followIds"
-                 open="(" separator="," close=")">
-            #{item}
-        </foreach>
         GROUP BY  dept_id,date(create_time) ORDER BY create_time desc, dept_id asc
     </select>
 
@@ -244,5 +217,7 @@
         and a.dept_id=#{deptId}
         ORDER BY create_time desc
     </select>
+
+
 
 </mapper>

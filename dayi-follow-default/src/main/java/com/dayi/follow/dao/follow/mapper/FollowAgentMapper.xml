@@ -375,31 +375,57 @@
         </if>
     </sql>
 
-    <select id="findAssignsFollow" parameterType="map" resultType="com.dayi.follow.vo.agent.AssignListVo">
+    <sql id="findAssignsFollowSql">
         SELECT b.id,link_person,create_date,mobile,bank_name bank,id_card,bank_account,
-              follow_id, assign_date,c.name followUp,record_invite_code inviteCode
-              from follow_agent a
+        follow_id, assign_date,c.name followUp,record_invite_code inviteCode,
+        d.bank_real_name realBank
+        from follow_agent a
         left join (
-            SELECT id,link_person,create_date,mobile,bank_name ,id_card,bank_account,record_invite_code,audit_date
-            from ${assistDataBase}.agent where del_status !=-1
+        SELECT id,link_person,create_date,mobile,bank_name ,id_card,bank_account,record_invite_code,audit_date
+        from ${assistDataBase}.agent where del_status !=-1
         )b on b.id = a.agent_id
         LEFT JOIN (
-            SELECT id,name  from follow_up where disable!=0
+        SELECT id,name  from follow_up where disable!=0
         )c on c.id = a.follow_id
+        left join (
+            SELECT agent_org_id,bank_real_name from ${assistDataBase}.finance_account
+        )d on d.agent_org_id=b.id
         where a.follow_id is not NULL and b.id is not null and c.id is not null
         <include refid="assignsFollowCondition"/>
         order by b.audit_date desc
-    </select>
+    </sql>
 
-    <select id="findAssignsNoFollow" parameterType="map" resultType="com.dayi.follow.vo.agent.AssignListVo">
-        SELECT a.id,link_person,create_date,mobile,bank_name bank,id_card,bank_account,record_invite_code inviteCode,audit_date
-            from ${assistDataBase}.agent a
+    <sql id="findAssignsNoFollowSql">
+        SELECT a.id,link_person,create_date,mobile,bank_name bank,id_card,bank_account,
+        record_invite_code inviteCode,audit_date,c.bank_real_name realBank
+        from ${assistDataBase}.agent a
         left join (
-            SELECT agent_id,follow_id  from follow_agent
+        SELECT agent_id,follow_id  from follow_agent
         )b on b.agent_id =a.id
+        left join (
+            SELECT agent_org_id,bank_real_name from ${assistDataBase}.finance_account
+        )c on c.agent_org_id=b.agent_id
         where del_status !=-1 and b.follow_id is null
         <include refid="assignsNoFollowCondition"/>
         order by a.audit_date desc
+    </sql>
+
+    <select id="findAssignsFollow" parameterType="map" resultType="com.dayi.follow.vo.agent.AssignListVo">
+        <include refid="findAssignsFollowSql"/>
+    </select>
+
+    <select id="findAssignsNoFollow" parameterType="map" resultType="com.dayi.follow.vo.agent.AssignListVo">
+        <include refid="findAssignsNoFollowSql"/>
+    </select>
+
+    <select id="findAssignsFollowLimit" parameterType="map" resultType="com.dayi.follow.vo.agent.AssignListVo">
+        <include refid="findAssignsFollowSql"/>
+        limit 0,10000
+    </select>
+
+    <select id="findAssignsNoFollowLimit" parameterType="map" resultType="com.dayi.follow.vo.agent.AssignListVo">
+        <include refid="findAssignsNoFollowSql"/>
+        limit 0,10000
     </select>
 
     <select id="findAgentsByFollowId" parameterType="map" resultType="com.dayi.follow.model.follow.Agent">
@@ -474,6 +500,15 @@
             GROUP BY agent_org_id
         )b on b.agent_org_id=a.agent_id
         WHERE a.follow_id =#{followId}
+    </select>
+
+    <select id="getAgentFund" parameterType="java.lang.String" resultType="java.math.BigDecimal">
+        SELECT ifnull(sum(0.8*b.cargo_interest+b.cargo_interest_puchas),0) from follow_agent a
+        left join (
+            SELECT agent_org_id,cargo_interest,cargo_interest_puchas from ${assistDataBase}.finance_account
+        )b on b.agent_org_id = a.agent_id
+        where b.agent_org_id is not NULL
+        and a.follow_id =#{followId}
     </select>
 
 </mapper>

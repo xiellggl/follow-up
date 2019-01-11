@@ -143,8 +143,39 @@ public class CountServiceImpl implements CountService {
         serCusStatusVo.setAgentNum(agentCusNum);
         //资产总规模
         BigDecimal agentTotalFund = followAgentMapper.getTotalFund(followIds, dayiDataBaseStr);
-        BigDecimal orgTotalFund = followOrgMapper.getTotalFund(followIds, dayiDataBaseStr);
-        serCusStatusVo.setTotalFund(agentTotalFund.add(orgTotalFund));
+
+        List<Organization> orgs = followOrgMapper.findOrgsByfollowIds(followIds, null, dayiDataBaseStr);
+
+        List<Integer> incomeOpen = new ArrayList<>();
+
+        List<Integer> incomeClose = new ArrayList<>();
+
+        for (Organization orgVo : orgs) {
+
+            if (!orgVo.getOrgType().equals(OrgTypeEnum.Maker.getValue())) continue;//排除非创客
+
+            if (orgVo.getSecondIncomeSwitch() != null && orgVo.getSecondIncomeSwitch().equals(SwitchStatusEnum.OPEN.getKey())) {
+                incomeOpen.add(orgVo.getId());
+            } else {
+                incomeClose.add(orgVo.getId());
+            }
+        }
+
+        BigDecimal manageFund;
+        BigDecimal openFund = BigDecimal.ZERO;
+        BigDecimal closeFund = BigDecimal.ZERO;
+
+        if (!incomeOpen.isEmpty()) {
+            openFund = orgMapper.getOrgManageFundAll(incomeOpen);
+        }
+
+        if (!incomeClose.isEmpty()) {
+            closeFund = orgMapper.getOrgManageFundLevel1(incomeClose);
+        }
+
+        manageFund = openFund.add(closeFund);
+
+        serCusStatusVo.setTotalFund(agentTotalFund.add(manageFund));
 
         return serCusStatusVo;
     }
@@ -175,22 +206,57 @@ public class CountServiceImpl implements CountService {
         OrgDataVo orgDataVo = new OrgDataVo();
         if (StringUtils.isBlank(deptId)) return orgDataVo;
 
-        List<String> deptIds = deptService.getSubDeptIds(deptId);//下级部门id
-        deptIds.add(deptId);//加上自己
+        List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
 
-        List<String> followIds = followUpMapper.findIdsByDeptIds(deptIds);
+        //String deadline = DateTime.now().millisOfDay().withMinimumValue().plusMinutes(-30).toString("yyyy-MM-dd HH:mm:ss");
 
         List<Organization> orgVos = followOrgMapper.findOrgsByfollowIds(followIds, null, dayiDataBaseStr);
         orgDataVo.setOrgNum(orgVos.size());
 
-        int agentNum = this.getValidAgentNum(orgVos);
-        orgDataVo.setAgentNum(agentNum);
+        List<Integer> inviteOpen = new ArrayList<>();
 
-        DateTime dateTime = DateTime.now();
-        String deadline = dateTime.millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
-        List<Organization> yesOrgVos = followOrgMapper.findOrgsByfollowIds(followIds, deadline, dayiDataBaseStr);//截至昨天的创客
+        List<Integer> inviteClose = new ArrayList<>();
 
-        BigDecimal manageFund = this.getOrgManageFund(yesOrgVos);
+        List<Integer> incomeOpen = new ArrayList<>();
+
+        List<Integer> incomeClose = new ArrayList<>();
+
+        for (Organization orgVo : orgVos) {
+            if (!orgVo.getOrgType().equals(OrgTypeEnum.Maker.getValue())) continue;//排除非创客
+
+            if (orgVo.getSwitchStatus() != null && orgVo.getSwitchStatus().equals(SwitchStatusEnum.OPEN.getKey())) {
+                inviteOpen.add(orgVo.getId());
+            } else {
+                inviteClose.add(orgVo.getId());
+            }
+            if (orgVo.getSecondIncomeSwitch() != null && orgVo.getSecondIncomeSwitch().equals(SwitchStatusEnum.OPEN.getKey())) {
+                incomeOpen.add(orgVo.getId());
+            } else {
+                incomeClose.add(orgVo.getId());
+            }
+        }
+
+        int openNum = 0;
+        int closeNum = 0;
+        if (!inviteOpen.isEmpty()) openNum = countMapper.getValidAgentNumAll(inviteOpen);
+
+        if (!inviteClose.isEmpty()) closeNum = countMapper.getValidAgentNumLevel1(inviteClose);
+
+        orgDataVo.setAgentNum(openNum + closeNum);
+
+        BigDecimal manageFund;
+        BigDecimal openFund = BigDecimal.ZERO;
+        BigDecimal closeFund = BigDecimal.ZERO;
+
+        if (!incomeOpen.isEmpty()) {
+            openFund = orgMapper.getOrgManageFundAll(incomeOpen);
+        }
+
+        if (!incomeClose.isEmpty()) {
+            closeFund = orgMapper.getOrgManageFundLevel1(incomeClose);
+        }
+
+        manageFund = openFund.add(closeFund);
 
         orgDataVo.setManageFund(manageFund.setScale(2, BigDecimal.ROUND_HALF_UP));
         return orgDataVo;
@@ -241,8 +307,7 @@ public class CountServiceImpl implements CountService {
 
     @Override
     public DailyVo countTeamDaily(String deptId) {
-
-        List<String> deptIds = deptService.getSubDeptIds(deptId);//下级部门id
+        List<String> deptIds = new ArrayList<>();
         deptIds.add(deptId);//加上自己
         //获取管辖部门（团队）的所有日报，包括KA
         return countMapper.countTeamDaily(deptIds, followDataBaseStr);

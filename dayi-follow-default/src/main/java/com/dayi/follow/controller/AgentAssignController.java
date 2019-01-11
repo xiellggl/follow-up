@@ -59,12 +59,10 @@ public class AgentAssignController extends BaseController{
         return "/agent/assign_list";
     }
 
-//    @RequestMapping(value = "/export")
-//    @ResponseBody
+    @RequestMapping(value = "/list/export")
+    @ResponseBody
     public void orgExport(HttpServletRequest request, HttpServletResponse response, SearchVo searchVo) throws IOException {
-        LoginVo currVo = userComponent.getCurrUser(request);
-
-        List assignList = followAgentService.findAssignList(searchVo, currVo.getDeptId());
+        List assignList = followAgentService.findAssignList(searchVo);
 
         String title = "代理商分配列表";
         String fileName = title + new DateTime().toString("yyyy-MM-dd HH:mm:ss");

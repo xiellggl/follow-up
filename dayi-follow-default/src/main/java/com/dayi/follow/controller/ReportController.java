@@ -218,7 +218,7 @@ public class ReportController extends BaseController {
 
         page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
 
-        page = reportService.findAdminDaily(page, currVo.getDeptId(), deptName, date);
+        page = reportService.findAdminDaily(page, deptName, date);
 
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
         model.addAttribute("page", page);
@@ -281,13 +281,12 @@ public class ReportController extends BaseController {
      */
     @RequestMapping("/admin/week")
     public String adminWeek(HttpServletRequest request, Page page, Model model) {
-        LoginVo currVo = userComponent.getCurrUser(request);
-
         String date = request.getParameter("date");
 
         page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
 
-        AdminWeekVo adminWeekVo = reportService.countAdminWeek(page, currVo.getDeptId(), date);
+        AdminWeekVo adminWeekVo = reportService.countAdminWeek(page, date);
+
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
         request.setAttribute("pageUrl", pageUrl);
         model.addAttribute("adminWeekVo", adminWeekVo);
@@ -302,8 +301,6 @@ public class ReportController extends BaseController {
      */
     @RequestMapping("/admin/week/export")
     public void adminWeekExport(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        LoginVo currVo = userComponent.getCurrUser(request);
-
         String date = request.getParameter("date");
 
         if (StringUtils.isBlank(date)) {
@@ -315,7 +312,7 @@ public class ReportController extends BaseController {
         String[] split = date.split(" - ");
         String fileTitle = "资产管理部" + split[0] + "至" + split[1] + "周报";
 
-        List<WeekVo> adminWeekList = reportService.findAdminWeekList(currVo.getDeptId(), date);
+        List<WeekVo> adminWeekList = reportService.findAdminWeekList(date);
 
         String fileName = fileTitle;
         AdminWeekExport export = new AdminWeekExport(fileName, fileTitle, adminWeekList);
@@ -330,13 +327,11 @@ public class ReportController extends BaseController {
      */
     @RequestMapping("/admin/month")
     public String adminMonth(HttpServletRequest request, Page page, Model model) {
-        LoginVo currVo = userComponent.getCurrUser(request);
-
         String date = request.getParameter("date");
 
         page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
 
-        AdminMonthVo adminMonthVo = reportService.countAdminMonth(page, currVo.getDeptId(), date);
+        AdminMonthVo adminMonthVo = reportService.countAdminMonth(page, date);
 
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
         model.addAttribute("adminMonthVo", adminMonthVo);

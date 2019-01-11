@@ -68,7 +68,6 @@ public class FollowUpServiceImpl implements FollowUpService {
     }
 
     @Override
-    @Log(target = OperateLog.class, action = BaseLog.LogAction.SEARCH, what = "跟进人管理", note = "查询跟进人列表")
     public Page<FollowUpListVo> findPage(Page<FollowUpListVo> page, String mobile, String queryDeptId, String inviteCode) {
         List<String> subDeptIds;
 
@@ -108,7 +107,11 @@ public class FollowUpServiceImpl implements FollowUpService {
     public Page<FollowUpListVo> findTeamAssignSelect(Page<FollowUpListVo> page, String followUp, String deptId) {
         List<String> followIds = new ArrayList<>();
 
-        followIds = followUpMapper.findIdsByDeptId(deptId);
+        List<String> subDeptIds = deptService.getSubDeptIds(deptId);
+        subDeptIds.add(deptId);
+        for (String subDeptId : subDeptIds) {
+            followIds.addAll(followUpMapper.findIdsByDeptId(subDeptId));
+        }
 
         if (followIds.isEmpty()) return page;
 
@@ -123,7 +126,6 @@ public class FollowUpServiceImpl implements FollowUpService {
     }
 
     @Override
-    @Log(target = OperateLog.class, action = BaseLog.LogAction.SEARCH, what = "跟进人管理", note = "查询代理商明细列表")
     public Page<FMDetailListVo> findAgentPage(Page page, SearchVo searchVo, String followId) {
         if (StringUtils.isBlank(followId)) return page;
 

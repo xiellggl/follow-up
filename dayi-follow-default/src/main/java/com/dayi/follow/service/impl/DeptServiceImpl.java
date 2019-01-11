@@ -201,7 +201,6 @@ public class DeptServiceImpl implements DeptService {
     }
 
     @Override
-    @Log(target = OperateLog.class, action = BaseLog.LogAction.SEARCH, what = "部门管理", note = "查询部门列表")
     public List<Department> getDeptTree(Department department) {
         List<Department> departments = new ArrayList<Department>();
 

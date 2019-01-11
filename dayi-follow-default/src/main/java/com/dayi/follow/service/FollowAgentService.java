@@ -31,7 +31,7 @@ public interface FollowAgentService {
 
     Page findAssignPage(Page<AssignListVo> page, SearchVo searchVo);
 
-    List findAssignList(SearchVo searchVo, String deptId);
+    List findAssignList(SearchVo searchVo);
 
     BizResult add(FollowAgent followAgent);
 

@@ -23,10 +23,10 @@ public interface ReportService {
     Page findTeamDaily(Page page, String deptId, String betweenDate);
 
     //团队日报详情
-    Page findTeamDailyDetail(Page page, String deptId,String date);
+    Page findTeamDailyDetail(Page page, String deptId, String date);
 
     //导出团队日报详情
-    List<ReportDailyVo> exportTeamDailyDetail(String deptId,String date);
+    List<ReportDailyVo> exportTeamDailyDetail(String deptId, String date);
 
     //个人周报
     MyWeekVo getWeek(String followId, String betweenDate);
@@ -41,22 +41,22 @@ public interface ReportService {
     TeamMonthVo countTeamMonth(String deptId, String month);
 
     //管理员日报
-    Page<ReportVo> findAdminDaily(Page page, String deptId, String deptName, String betweenDate);
+    Page<ReportVo> findAdminDaily(Page page, String deptName, String betweenDate);
 
     //管理员日报详情
     Page findAdminDailyDetail(Page page, String deptId, String date);
 
     //管理员日报详情列表
-    List<ReportDailyVo>findAdminDailyDetailList(String deptId, String date);
+    List<ReportDailyVo> findAdminDailyDetailList(String deptId, String date);
 
     //管理员周报
-    AdminWeekVo countAdminWeek(Page page, String deptId, String betweenDate);
+    AdminWeekVo countAdminWeek(Page page, String betweenDate);
 
     //管理员周报导出
-    List<WeekVo> findAdminWeekList(String deptId,  String betweenDate);
+    List<WeekVo> findAdminWeekList(String betweenDate);
 
     //管理员月报
-    AdminMonthVo countAdminMonth(Page page, String deptId, String month);
+    AdminMonthVo countAdminMonth(Page page, String month);
 
     //管理员月报导出
     List<MonthVo> findAdminMonthList(String deptId, String month);
