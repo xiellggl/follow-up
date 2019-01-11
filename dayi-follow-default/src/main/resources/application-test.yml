@@ -1,14 +1,14 @@
 spring:
   datasource:
     follow:
-      jdbc-url: jdbc:mysql://192.168.1.148:3306/test_dayi_follow?useUnicode=true&characterEncoding=utf8&useAffectedRows=true
-      username: root
-      password: monda43%-346ujNyu7deJ
+      jdbc-url: jdbc:mysql://192.168.1.58:3306/dayi_follow?useUnicode=true&characterEncoding=utf8&useAffectedRows=true
+      username: dayi
+      password: dayiSpot@)!%0905
       driver-class-name: com.mysql.jdbc.Driver
     dayi:
-      jdbc-url: jdbc:mysql://192.168.1.148:3306/test_storage_spot?useUnicode=true&characterEncoding=utf8&useAffectedRows=true
-      username: root
-      password: monda43%-346ujNyu7deJ
+      jdbc-url: jdbc:mysql://192.168.1.58:3306/dayi_spot?useUnicode=true&characterEncoding=utf8&useAffectedRows=true
+      username: dayi
+      password: dayiSpot@)!%0905
       driver-class-name: com.mysql.jdbc.Driver
     hikari:
       minimum-idle: 5
@@ -19,12 +19,12 @@ spring:
 
 dayi:
   mq:
-    nameservAddr: 192.168.1.148:9876
+    nameservAddr: 192.168.1.133:9876
     consumerGroup: dayi-follow-consumer
   component:
     constant: #常量参数
       properties:
         imageHost: http://localhost:9601
-  dataBase: test_storage_spot
+  dataBase: dayi_spot
 follow:
-  dataBase: test_dayi_follow
+  dataBase: dayi_follow
