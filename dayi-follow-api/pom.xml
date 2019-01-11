@@ -4,7 +4,7 @@
     <parent>
         <artifactId>dayi-follow</artifactId>
         <groupId>com.dayi</groupId>
-        <version>1.0.1</version>
+        <version>1.0.2-SNAPSHOT</version>
     </parent>
     <artifactId>dayi-follow-api</artifactId>
     <packaging>jar</packaging>
