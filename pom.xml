@@ -10,7 +10,7 @@
     <name>${project.artifactId}</name>
     <description>dayi 跟进人服务 </description>
     <packaging>pom</packaging>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
 
     <modules>
         <module>dayi-follow-api</module>
@@ -62,7 +62,7 @@
         <connection>scm:git:http://172.28.1.6/dayi35/dayi-all.git</connection>
         <url>http://172.28.1.6/dayi35/dayi-all</url>
         <developerConnection>scm:git:http://172.28.1.6/dayi35/dayi-all.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>1.0.1</tag>
     </scm>
 
     <build>
