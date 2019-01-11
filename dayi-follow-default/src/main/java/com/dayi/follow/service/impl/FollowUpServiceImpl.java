@@ -107,7 +107,11 @@ public class FollowUpServiceImpl implements FollowUpService {
     public Page<FollowUpListVo> findTeamAssignSelect(Page<FollowUpListVo> page, String followUp, String deptId) {
         List<String> followIds = new ArrayList<>();
 
-        followIds = followUpMapper.findIdsByDeptId(deptId);
+        List<String> subDeptIds = deptService.getSubDeptIds(deptId);
+        subDeptIds.add(deptId);
+        for (String subDeptId : subDeptIds) {
+            followIds.addAll(followUpMapper.findIdsByDeptId(subDeptId));
+        }
 
         if (followIds.isEmpty()) return page;
 
