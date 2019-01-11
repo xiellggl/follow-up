@@ -1,10 +1,8 @@
 package com.dayi.follow.service.impl;
 
 import com.dayi.common.util.BigDecimals;
-import com.dayi.follow.dao.follow.FollowAgentMapper;
-import com.dayi.follow.dao.follow.FollowOrgMapper;
-import com.dayi.follow.dao.follow.FollowUpMapper;
-import com.dayi.follow.dao.follow.ReportMapper;
+import com.dayi.follow.dao.follow.*;
+import com.dayi.follow.model.follow.FollowUpLog;
 import com.dayi.follow.service.CountService;
 import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.ReportService;
@@ -38,6 +36,8 @@ public class ReportServiceImpl implements ReportService {
     FollowOrgMapper followOrgMapper;
     @Resource
     FollowAgentMapper followAgentMapper;
+    @Resource
+    FollowUpLogMapper followUpLogMapper;
     @Resource
     CountService countService;
     @Value("${dayi.dataBase}")
@@ -356,31 +356,36 @@ public class ReportServiceImpl implements ReportService {
             int orgNum = followOrgMapper.getNewSignOrgNum(vo.getFollowId(), month, date2, dayiDataBaseStr);
             vo.setOrgNum(orgNum);
 
-            BigDecimal manageFund1 = reportMapper.getLastManageFund(vo.getFollowId(), date1, date2);//当月最后一天管理资产
+            FollowUpLog log1 = followUpLogMapper.getLog(vo.getFollowId(), date1, date2);
 
-            //加上代理商
-            BigDecimal agentFund1 = followAgentMapper.getAgentFund(vo.getFollowId(), date2, dayiDataBaseStr);
-            manageFund1 = manageFund1.add(agentFund1);
+            if (log1 != null) {//这月最后一天日报已经生成
+                BigDecimal agentFund1 = followAgentMapper.getAgentFund(vo.getFollowId(), date2, dayiDataBaseStr);//加上代理商
+                BigDecimal fund1 = log1.getManageFund().add(agentFund1);
+                vo.setManageFund(fund1.setScale(2, BigDecimal.ROUND_HALF_UP));
 
-            vo.setManageFund(manageFund1.setScale(2,BigDecimal.ROUND_HALF_UP));
-            if (BigDecimal.ZERO.compareTo(manageFund1) == 0) {
-                vo.setRingGrowthRatio("暂无数据");
+                FollowUpLog log2 = followUpLogMapper.getLog(vo.getFollowId(), date3, date4);
+                if (log2 == null) {
+                    vo.setRingGrowthRatio("上月无数据");
+                    continue;
+                }
+
+                BigDecimal agentFund2 = followAgentMapper.getAgentFund(vo.getFollowId(), date4, dayiDataBaseStr);
+                BigDecimal fund2 = log2.getManageFund().add(agentFund2);
+
+                if (BigDecimal.ZERO.compareTo(fund2) == 0) {
+                    vo.setRingGrowthRatio("上月无数据");
+                } else {
+                    BigDecimal subtract = fund1.subtract(fund2);//获取净增
+                    BigDecimal divide = subtract.divide(fund2, 2, BigDecimal.ROUND_HALF_UP);
+                    BigDecimal value = divide.multiply(BigDecimal.valueOf(100)).setScale(2, BigDecimal.ROUND_HALF_UP);
+                    vo.setRingGrowthRatio(value + "%");
+                }
+
+            } else {//还没有生成-未知，所以跳过
                 vo.setManageFund(null);
+                vo.setRingGrowthRatio("暂无数据");
                 continue;
             }
-            BigDecimal manageFund2 = reportMapper.getLastManageFund(vo.getFollowId(), date3, date4);//上月最后一天管理资产
-
-            BigDecimal agentFund2 = followAgentMapper.getAgentFund(vo.getFollowId(), date4, dayiDataBaseStr);
-            manageFund2 = manageFund2.add(agentFund2);
-
-            if (BigDecimal.ZERO.compareTo(manageFund2) == 0) {
-                vo.setRingGrowthRatio("上月无数据");
-                continue;
-            }
-            BigDecimal subtract = manageFund1.subtract(manageFund2);//获取净增
-            BigDecimal divide = subtract.divide(manageFund2, 2, BigDecimal.ROUND_HALF_UP);
-            BigDecimal value = divide.multiply(BigDecimal.valueOf(100)).setScale(2, BigDecimal.ROUND_HALF_UP);
-            vo.setRingGrowthRatio(value + "%");
         }
         return list;
     }
