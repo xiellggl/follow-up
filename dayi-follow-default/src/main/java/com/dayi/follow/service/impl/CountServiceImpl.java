@@ -307,8 +307,7 @@ public class CountServiceImpl implements CountService {
 
     @Override
     public DailyVo countTeamDaily(String deptId) {
-
-        List<String> deptIds = deptService.getSubDeptIds(deptId);//下级部门id
+        List<String> deptIds = new ArrayList<>();
         deptIds.add(deptId);//加上自己
         //获取管辖部门（团队）的所有日报，包括KA
         return countMapper.countTeamDaily(deptIds, followDataBaseStr);
