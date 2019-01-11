@@ -206,10 +206,7 @@ public class CountServiceImpl implements CountService {
         OrgDataVo orgDataVo = new OrgDataVo();
         if (StringUtils.isBlank(deptId)) return orgDataVo;
 
-        List<String> deptIds = deptService.getSubDeptIds(deptId);//下级部门id
-        deptIds.add(deptId);//加上自己
-
-        List<String> followIds = followUpMapper.findIdsByDeptIds(deptIds);
+        List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
 
         //String deadline = DateTime.now().millisOfDay().withMinimumValue().plusMinutes(-30).toString("yyyy-MM-dd HH:mm:ss");
 
