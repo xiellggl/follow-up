@@ -59,9 +59,9 @@
         </snapshotRepository>
     </distributionManagement>
     <scm>
-        <connection>scm:git:http://172.28.1.6/dayi35/dayi-follow-all.git</connection>
-        <url>http://172.28.1.6/dayi35/dayi-follow-all</url>
-        <developerConnection>scm:git:http://172.28.1.6/dayi35/dayi-follow-all.git</developerConnection>
+        <connection>scm:git:http://172.28.1.6/dayi35/dayi-all.git</connection>
+        <url>http://172.28.1.6/dayi35/dayi-all</url>
+        <developerConnection>scm:git:http://172.28.1.6/dayi35/dayi-all.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
