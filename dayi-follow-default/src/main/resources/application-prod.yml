@@ -1,12 +1,12 @@
 spring:
   datasource:
     follow:
-      jdbc-url: jdbc:mysql://192.168.1.58:3306/dayi_follow?useUnicode=true&characterEncoding=utf8&useAffectedRows=true
+      jdbc-url: jdbc:mysql://192.168.1.58:3386/dayi_follow?useUnicode=true&characterEncoding=utf8&useAffectedRows=true
       username: dayi
       password: dayiSpot@)!%0905
       driver-class-name: com.mysql.jdbc.Driver
     dayi:
-      jdbc-url: jdbc:mysql://192.168.1.58:3306/dayi_spot?useUnicode=true&characterEncoding=utf8&useAffectedRows=true
+      jdbc-url: jdbc:mysql://192.168.1.58:3386/dayi_spot?useUnicode=true&characterEncoding=utf8&useAffectedRows=true
       username: dayi
       password: dayiSpot@)!%0905
       driver-class-name: com.mysql.jdbc.Driver
