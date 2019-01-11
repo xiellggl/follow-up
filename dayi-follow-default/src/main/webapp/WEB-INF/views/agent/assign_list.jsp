@@ -222,7 +222,7 @@
                                                 test="${not empty item.idCard}">${fn:substring(item.idCard, 0, fn:length(item.idCard) - 4)}****</c:if></td>
                                         <!-- 银行卡号 -->
                                         <td class="hidden-xs"><c:if
-                                                test="${not empty item.bankAccount}">${fn:substring(item.bankAccount, 0, fn:length(item.bankAccount) - 4)}****</c:if></td>
+                                                test="${not empty item.bankAccount}">${fn:substring(item.bankAccount, 0, 3)}**********${fn:substring(item.bankAccount, 13,16)}</c:if></td>
                                         <!-- 跟进人 -->
                                         <td>${item.followUp}</td>
                                         <!-- 分配时间 -->
