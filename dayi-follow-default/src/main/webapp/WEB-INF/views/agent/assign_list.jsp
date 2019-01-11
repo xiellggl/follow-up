@@ -210,7 +210,7 @@
                                         <td class="hidden-xs"><fmt:formatDate value="${item.createDate}"
                                                                               pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                         <!-- 手机号 -->
-                                        <td> ${item.mobile}</td>
+                                        <td> ${fn:substring(item.mobile, 0, 3)}****${fn:substring(item.mobile, 7, 11)}</td>
                                         <!-- 开户银行和实际开户银行 -->
                                         <td>${item.bank}
                                             <c:if test="${not empty item.realBank}">
