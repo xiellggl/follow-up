@@ -1,6 +1,7 @@
 package com.dayi.follow.service.impl;
 
 import com.dayi.common.util.BigDecimals;
+import com.dayi.follow.dao.follow.FollowAgentMapper;
 import com.dayi.follow.dao.follow.FollowOrgMapper;
 import com.dayi.follow.dao.follow.FollowUpMapper;
 import com.dayi.follow.dao.follow.ReportMapper;
@@ -35,6 +36,8 @@ public class ReportServiceImpl implements ReportService {
     DeptService deptService;
     @Resource
     FollowOrgMapper followOrgMapper;
+    @Resource
+    FollowAgentMapper followAgentMapper;
     @Resource
     CountService countService;
     @Value("${dayi.dataBase}")
@@ -354,13 +357,22 @@ public class ReportServiceImpl implements ReportService {
             vo.setOrgNum(orgNum);
 
             BigDecimal manageFund1 = reportMapper.getLastManageFund(vo.getFollowId(), date1, date2);//当月最后一天管理资产
-            vo.setManageFund(manageFund1.setScale(2));
+
+            //加上代理商
+            BigDecimal agentFund1 = followAgentMapper.getAgentFund(vo.getFollowId(), date2, dayiDataBaseStr);
+            manageFund1 = manageFund1.add(agentFund1);
+
+            vo.setManageFund(manageFund1.setScale(2,BigDecimal.ROUND_HALF_UP));
             if (BigDecimal.ZERO.compareTo(manageFund1) == 0) {
                 vo.setRingGrowthRatio("暂无数据");
                 vo.setManageFund(null);
                 continue;
             }
             BigDecimal manageFund2 = reportMapper.getLastManageFund(vo.getFollowId(), date3, date4);//上月最后一天管理资产
+
+            BigDecimal agentFund2 = followAgentMapper.getAgentFund(vo.getFollowId(), date4, dayiDataBaseStr);
+            manageFund2 = manageFund2.add(agentFund2);
+
             if (BigDecimal.ZERO.compareTo(manageFund2) == 0) {
                 vo.setRingGrowthRatio("上月无数据");
                 continue;

@@ -87,4 +87,6 @@ public interface FollowAgentMapper extends BaseMapper<FollowAgent> {
 
     //获取开户数
     int getOpenAccountNum(@Param("followId") String followId, @Param("startDate") String startDate, @Param("endDate") String endDate, @Param("assistDataBase") String assistDataBase);
+
+    BigDecimal getAgentFund(@Param("followId") String followId, @Param("deadline") String deadline, @Param("assistDataBase") String assistDataBase);
 }

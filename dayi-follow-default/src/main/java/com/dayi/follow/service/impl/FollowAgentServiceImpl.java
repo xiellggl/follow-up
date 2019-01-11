@@ -177,7 +177,7 @@ public class FollowAgentServiceImpl implements FollowAgentService {
         BigDecimal partFund = agentFund.add(account.getFrozen())
                 .add(account.getOutFrozen());
 
-        BigDecimal totalFund = account.getUseable().add(partFund).setScale(2);
+        BigDecimal totalFund = account.getUseable().add(partFund).setScale(2,BigDecimal.ROUND_HALF_UP);
         detailVo.setTotalFund(totalFund);
 
         // 是否入金
