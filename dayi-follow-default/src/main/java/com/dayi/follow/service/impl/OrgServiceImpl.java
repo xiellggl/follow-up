@@ -18,6 +18,7 @@ import com.dayi.follow.enums.SwitchStatusEnum;
 import com.dayi.follow.model.follow.OperateLog;
 import com.dayi.follow.model.follow.OrgContact;
 import com.dayi.follow.service.CountService;
+import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.OrgService;
 import com.dayi.follow.util.CheckIdCardUtils;
 import com.dayi.follow.util.StringUtil;
@@ -62,6 +63,8 @@ public class OrgServiceImpl implements OrgService {
     private CountMapper countMapper;
     @Resource
     private FollowUpMapper followUpMapper;
+    @Resource
+    private DeptService deptService;
     @Value("${dayi.dataBase}")
     String dayiDataBaseStr;
 
@@ -150,8 +153,14 @@ public class OrgServiceImpl implements OrgService {
 
     @Override
     public Page<OrgListVo> findTeamOrgPage(Page<OrgListVo> page, SearchVo vo, String followId, String deptId) {
+        List<String> followIds = new ArrayList<>();
 
-        List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
+        List<String> subDeptIds = deptService.getSubDeptIds(deptId);
+        subDeptIds.add(deptId);
+        for (String subDeptId : subDeptIds) {
+            followIds.addAll(followUpMapper.findIdsByDeptId(subDeptId));
+        }
+
         followIds.remove(followId);
 
         if (followIds.isEmpty()) return page;

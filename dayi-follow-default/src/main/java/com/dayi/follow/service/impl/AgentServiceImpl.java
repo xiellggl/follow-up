@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -74,8 +75,14 @@ public class AgentServiceImpl implements AgentService {
 
     @Override
     public Page<AgentListVo> findTeamAgentPage(Page<AgentListVo> page, SearchVo searchVo, String followId, String deptId) {
+        List<String> followIds = new ArrayList<>();
 
-        List<String> followIds = followUpMapper.findIdsByDeptId(deptId);
+        List<String> subDeptIds = deptService.getSubDeptIds(deptId);
+        subDeptIds.add(deptId);
+        for (String subDeptId : subDeptIds) {
+            followIds.addAll(followUpMapper.findIdsByDeptId(subDeptId));
+        }
+
         followIds.remove(followId);//过滤自己
 
         if (followIds.isEmpty()) return page;
