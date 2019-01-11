@@ -210,7 +210,7 @@
                                         <td class="hidden-xs"><fmt:formatDate value="${item.createDate}"
                                                                               pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                         <!-- 手机号 -->
-                                        <td> ${fn:substring(item.mobile, 0, 3)}****${fn:substring(item.mobile, 7, 11)}</td>
+                                        <td> ${item.mobile}</td>
                                         <!-- 开户银行和实际开户银行 -->
                                         <td>${item.bank}
                                             <c:if test="${not empty item.realBank}">
@@ -221,7 +221,8 @@
                                         <td class="hidden-sm hidden-xs"><c:if
                                                 test="${not empty item.idCard}">${fn:substring(item.idCard, 0, fn:length(item.idCard) - 4)}****</c:if></td>
                                         <!-- 银行卡号 -->
-                                        <td><c:if test="${not empty item.bankAccount}">${fn:substring(item.bankAccount, 0, fn:length(item.bankAccount) - 4)}****</c:if></td>
+                                        <td class="hidden-xs"><c:if
+                                                test="${not empty item.bankAccount}">${fn:substring(item.bankAccount, 0, fn:length(item.bankAccount) - 4)}****</c:if></td>
                                         <!-- 跟进人 -->
                                         <td>${item.followUp}</td>
                                         <!-- 分配时间 -->
