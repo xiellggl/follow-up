@@ -211,9 +211,9 @@ public class CountServiceImpl implements CountService {
 
         List<String> followIds = followUpMapper.findIdsByDeptIds(deptIds);
 
-        String deadline = DateTime.now().millisOfDay().withMinimumValue().plusMinutes(-30).toString("yyyy-MM-dd HH:mm:ss");
+        //String deadline = DateTime.now().millisOfDay().withMinimumValue().plusMinutes(-30).toString("yyyy-MM-dd HH:mm:ss");
 
-        List<Organization> orgVos = followOrgMapper.findOrgsByfollowIds(followIds, deadline, dayiDataBaseStr);
+        List<Organization> orgVos = followOrgMapper.findOrgsByfollowIds(followIds, null, dayiDataBaseStr);
         orgDataVo.setOrgNum(orgVos.size());
 
         List<Integer> inviteOpen = new ArrayList<>();
