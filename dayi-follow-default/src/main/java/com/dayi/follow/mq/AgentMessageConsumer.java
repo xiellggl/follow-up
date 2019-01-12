@@ -64,7 +64,7 @@ public class AgentMessageConsumer extends AbstractConsumer {
 
         Agent agent = agentMapper.getByUcId(registration.getUserId());
         if (agent == null) {
-            log.info("agent不存在，不作处理");
+            log.info("agent不存在，不作处理！");
             return false;
         }
 
@@ -78,7 +78,7 @@ public class AgentMessageConsumer extends AbstractConsumer {
         String followCode = extraData.get("followCode");//当通过城市服务商注册时，这个就会有值，是跟进人的邀请码
 
         if (StringUtils.isBlank(inviteCode)) {
-            log.info("无邀请码，不作处理");
+            log.info("无邀请码，不作处理！");
             return true;
         } else {
             //传的是跟进人的邀请码
@@ -100,7 +100,7 @@ public class AgentMessageConsumer extends AbstractConsumer {
                         log.error("分配跟进人失败！", e);
                         return false;
                     }
-                    log.info("代理商分配跟进人完毕");
+                    log.info("代理商分配跟进人完毕！");
                     return true;
                 }
             }
@@ -117,12 +117,12 @@ public class AgentMessageConsumer extends AbstractConsumer {
                     if (followUp1 != null && followUp1.getSwitchStatus() == 1) {
 
                         try {
-                            doAssign(inviteAgent, followUp1, registration);
+                            doAssign(agent, followUp1, registration);
                         } catch (Exception e) {
                             log.error("分配跟进人失败！", e);
                             return false;
                         }
-                        log.info("代理商分配跟进人完毕");
+                        log.info("代理商分配跟进人完毕！");
                         return true;
 
                     }
@@ -130,7 +130,7 @@ public class AgentMessageConsumer extends AbstractConsumer {
 
             }
         }
-        log.info("非相关邀请码，不作处理");
+        log.info("非跟进人业务，不作处理！");
         return true;
     }
 
