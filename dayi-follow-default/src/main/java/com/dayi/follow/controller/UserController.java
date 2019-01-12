@@ -362,19 +362,18 @@ public class UserController extends BaseController {
             followUpLog.setId(followUpLogMapper.getNewId());
             followUpLog.setFollowId(followUp.getId());
             followUpLog.setDeptId(followUp.getDeptId());
-            followUpLog.setCreateTime(date);
-            followUpLog.setUpdateTime(date);
+            followUpLog.setCreateTime(DateUtil.getTime(endTime));
+            followUpLog.setUpdateTime(DateUtil.getTime(endTime));
 
             List<Organization> orgs = followOrgMapper.findOrgsByfollowId(followUp.getId(), endTime, dayiDataBaseStr);
 
             BigDecimal manageFund = countService.getOrgManageFund(orgs);
             followUpLog.setManageFund(manageFund);
 
-            stratTime = new DateTime(date).plusDays(-2).millisOfDay().withMaximumValue()
-                    .plusMinutes(-30).plusSeconds(2).toString("yyyy-MM-dd HH:mm:ss");
-
-            endTime = new DateTime(date).millisOfDay().withMinimumValue().plusMinutes(-30)
+            stratTime = new DateTime(date).plusDays(-1).millisOfDay().withMaximumValue().plusMinutes(-60)
                     .toString("yyyy-MM-dd HH:mm:ss");
+
+            endTime = new DateTime(date).millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
 
             FollowUpLog log = followUpLogMapper.getLog(followUp.getId(), stratTime, endTime);
 

@@ -352,11 +352,10 @@ public class CountServiceImpl implements CountService {
             BigDecimal manageFund = this.getOrgManageFund(orgs);
             followUpLog.setManageFund(manageFund);
 
-            stratTime = DateTime.now().plusDays(-2).millisOfDay().withMaximumValue()
-                    .plusMinutes(-30).plusSeconds(2).toString("yyyy-MM-dd HH:mm:ss");
-
-            endTime = DateTime.now().millisOfDay().withMinimumValue().plusMinutes(-30)
+            stratTime = DateTime.now().plusDays(-1).millisOfDay().withMaximumValue().plusMinutes(-60)
                     .toString("yyyy-MM-dd HH:mm:ss");
+
+            endTime = DateTime.now().millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
 
             FollowUpLog log = followUpLogMapper.getLog(followUp.getId(), stratTime, endTime);
 
