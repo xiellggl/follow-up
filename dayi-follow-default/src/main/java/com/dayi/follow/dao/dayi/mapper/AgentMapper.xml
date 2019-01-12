@@ -88,4 +88,7 @@
         SELECT * from agent where uc_id =#{ucId}
     </select>
 
+    <select id="getByInviteCode" parameterType="java.lang.String" resultType="com.dayi.follow.model.follow.Agent">
+        SELECT * from agent where invite_code =#{inviteCode}
+    </select>
 </mapper>

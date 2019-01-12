@@ -3,14 +3,13 @@ package com.dayi.follow.mq;
 import com.dayi.common.constant.DayiConstant;
 import com.dayi.common.util.BizResult;
 import com.dayi.follow.dao.dayi.AgentMapper;
+import com.dayi.follow.dao.dayi.OrgMapper;
 import com.dayi.follow.dao.follow.FollowAgentMapper;
 import com.dayi.follow.dao.follow.FollowUpMapper;
 import com.dayi.follow.enums.AgentCusTypeEnum;
-import com.dayi.follow.model.follow.Account;
-import com.dayi.follow.model.follow.Agent;
-import com.dayi.follow.model.follow.FollowAgent;
-import com.dayi.follow.model.follow.FollowUp;
+import com.dayi.follow.model.follow.*;
 import com.dayi.follow.service.FollowAgentService;
+import com.dayi.follow.service.OrgService;
 import com.dayi.mq.Topic;
 import com.dayi.mq.support.AbstractConsumer;
 import com.dayi.mq.support.MessageExt;
@@ -43,6 +42,8 @@ public class AgentMessageConsumer extends AbstractConsumer {
     FollowAgentMapper followAgentMapper;
     @Resource
     FollowAgentService followAgentService;
+    @Resource
+    OrgService orgService;
 
     public AgentMessageConsumer() {
         // 设置关注的topic
@@ -76,24 +77,64 @@ public class AgentMessageConsumer extends AbstractConsumer {
 
         String followCode = extraData.get("followCode");//当通过城市服务商注册时，这个就会有值，是跟进人的邀请码
 
-        FollowUp followUp;
-
         if (StringUtils.isBlank(inviteCode)) {
             log.info("无邀请码，不作处理");
             return true;
         } else {
-            if (!StringUtils.isBlank(followCode)) {//不为空则表明是城市服务商过来的
-                followUp = followUpMapper.getByInviteCode(followCode);
-            } else {
-                followUp = followUpMapper.getByInviteCode(inviteCode);
+            //传的是跟进人的邀请码
+            FollowUp followUp = new FollowUp();
+            Organization org = orgService.getByInviteCode(inviteCode);
+            if (org == null) {
+                org = orgService.getByMarkerNum(inviteCode);
+                if (org != null) {
+                    if (StringUtils.isNotBlank(followCode)) {
+                        followUp = followUpMapper.getByInviteCode(followCode);
+                    }
+                } else {
+                    followUp = followUpMapper.getByInviteCode(inviteCode);
+                }
+                if (followUp != null) {
+                    try {
+                        doAssign(agent, followUp, registration);
+                    } catch (Exception e) {
+                        log.error("分配跟进人失败！", e);
+                        return false;
+                    }
+                    log.info("代理商分配跟进人完毕");
+                    return true;
+                }
+            }
+
+            //传的是代理商的邀请码
+            Agent inviteAgent = agentMapper.getByInviteCode(inviteCode);
+
+            if (inviteAgent != null && inviteAgent.getInviteLevel() < 2) {
+
+                FollowAgent followAgent = followAgentMapper.getFollowAgentByAgentId(inviteAgent.getId());
+
+                if (!StringUtils.isBlank(followAgent.getFollowId())) {
+                    FollowUp followUp1 = followUpMapper.get(followAgent.getFollowId());
+                    if (followUp1 != null && followUp1.getSwitchStatus() == 1) {
+
+                        try {
+                            doAssign(inviteAgent, followUp1, registration);
+                        } catch (Exception e) {
+                            log.error("分配跟进人失败！", e);
+                            return false;
+                        }
+                        log.info("代理商分配跟进人完毕");
+                        return true;
+
+                    }
+                }
+
             }
         }
+        log.info("非相关邀请码，不作处理");
+        return true;
+    }
 
-        if (followUp == null) {
-            log.info("非跟进人邀请码，不作处理");
-            return true;
-        }
-
+    private void doAssign(Agent agent, FollowUp followUp, UserRegistration registration) {
         FollowAgent followAgent = new FollowAgent();
         followAgent.setId(followAgentMapper.getNewId());
         followAgent.setAgentId(agent.getId());
@@ -114,14 +155,6 @@ public class AgentMessageConsumer extends AbstractConsumer {
 
         followAgent.setCreateTime(registration.getRegisterTime());
         followAgent.setUpdateTime(registration.getRegisterTime());
-
-        try {
-            followAgentMapper.add(followAgent);
-        } catch (Exception e) {
-            log.error("分配跟进人失败！", e);
-            return false;
-        }
-        log.info("代理商分配跟进人完毕");
-        return true;
+        followAgentMapper.add(followAgent);
     }
 }

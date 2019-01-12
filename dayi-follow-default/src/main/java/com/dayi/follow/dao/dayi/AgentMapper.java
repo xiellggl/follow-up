@@ -58,4 +58,6 @@ public interface AgentMapper extends BaseMapper<Agent> {
     Page<LoginLogVo> findLoginLog(Page page, @Param("agentId") Integer agentId);
 
     Agent getByUcId(String ucId);
+
+    Agent getByInviteCode(String inviteCode);
 }
