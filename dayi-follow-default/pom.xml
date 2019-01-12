@@ -9,9 +9,9 @@
     <packaging>war</packaging>
     <artifactId>dayi-follow-default</artifactId>
 
-    <properties>
-        <skip_maven_deploy>true</skip_maven_deploy>
-    </properties>
+    <!--<properties>-->
+        <!--<skip_maven_deploy>true</skip_maven_deploy>-->
+    <!--</properties>-->
 
     <profiles>
         <profile>
