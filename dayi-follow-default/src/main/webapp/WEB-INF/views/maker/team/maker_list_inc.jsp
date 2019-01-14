@@ -118,7 +118,7 @@
                             <%-- 有效代理商 --%>
                         <td>${item.validAgentNum}</td>
                             <%-- 管理资产规模 --%>
-                        <td><fmt:formatNumber value="${item.manageFund}" pattern="0.00" type="number"/></td>
+                        <td>${item.manageFundFm}</td>
                             <%-- 邀请码 --%>
                         <td class="hidden-sm hidden-xs">${item.inviteCode}</td>
 
