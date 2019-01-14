@@ -209,6 +209,15 @@ public class FollowAgentServiceImpl implements FollowAgentService {
         } else {//查已分配
             page = followAgentMapper.findAssignsFollow(page, searchVo, dayiDataBaseStr);
         }
+
+        for (AssignListVo vo : page.getResults()) {
+            //遍历取实际开户银行
+            Account account = agentMapper.getAccount(vo.getId());
+            if (account == null) continue;
+            String bankRealName = account.getBankRealName();
+            vo.setRealBank(bankRealName);
+        }
+
         return page;
     }
 
