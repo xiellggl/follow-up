@@ -5,15 +5,17 @@ spring:
       username: dayi
       password: dayiSpot@)!%0905
       driver-class-name: com.mysql.jdbc.Driver
+      minimum-idle: 5
+      maximum-pool-size: 200
+      pool-name: FollowHikariPool
     dayi:
       jdbc-url: jdbc:mysql://192.168.1.148:3306/test_storage_spot?useUnicode=true&characterEncoding=utf8&useAffectedRows=true
       username: dayi
       password: dayiSpot@)!%0905
       driver-class-name: com.mysql.jdbc.Driver
-    hikari:
       minimum-idle: 5
       maximum-pool-size: 200
-      pool-name: HikariPool
+      pool-name: DayiHikariPool
   session:
     store-type: hash_map
 

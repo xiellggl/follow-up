@@ -5,11 +5,17 @@ spring:
       username: finance
       password: monda123
       driver-class-name: com.mysql.jdbc.Driver
+      minimum-idle: 5
+      maximum-pool-size: 200
+      pool-name: FollowHikariPool
     dayi:
       jdbc-url: jdbc:mysql://127.0.0.1:3306/dayi_spot?useUnicode=true&characterEncoding=utf8&useAffectedRows=true
       username: finance
       password: monda123
       driver-class-name: com.mysql.jdbc.Driver
+      minimum-idle: 5
+      maximum-pool-size: 200
+      pool-name: DayiHikariPool
     hikari:
       minimum-idle: 5
       maximum-pool-size: 200
