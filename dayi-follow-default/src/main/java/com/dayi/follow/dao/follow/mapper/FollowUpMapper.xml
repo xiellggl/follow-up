@@ -53,11 +53,11 @@
             select follow_id,agent_id from follow_agent
         )b on b.follow_id =a.id
         LEFT join (
-            select id from ${assistDataBase}.agent where del_status!=-1
+            select id,account_id from ${assistDataBase}.agent where del_status!=-1
         )c on c.id =b.agent_id
         LEFT join (
-            SELECT agent_org_id,cargo_interest,cargo_interest_puchas from ${assistDataBase}.finance_account
-        )d on d.agent_org_id = c.id
+            SELECT id,cargo_interest,cargo_interest_puchas from ${assistDataBase}.finance_account
+        )d on d.id = c.account_id
         left join (
             SELECT  id,name from department
         )e on e.id =a.dept_id
