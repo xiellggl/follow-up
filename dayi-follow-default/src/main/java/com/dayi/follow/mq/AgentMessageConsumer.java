@@ -68,6 +68,13 @@ public class AgentMessageConsumer extends AbstractConsumer {
             return false;
         }
 
+        //判断是否已经存在于跟进人系统中
+        FollowAgent fAgent = followAgentMapper.getFollowAgentByAgentId(agent.getId());
+        if (fAgent != null) {
+            log.info("agent已经存在于跟进人系统中！");
+            return true;
+        }
+
         Map<String, String> extraData = registration.getExtraPara();
         if (null == extraData) {
             extraData = new HashMap<>();
