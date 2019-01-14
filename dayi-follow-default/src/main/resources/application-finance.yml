@@ -16,10 +16,6 @@ spring:
       minimum-idle: 5
       maximum-pool-size: 200
       pool-name: DayiHikariPool
-    hikari:
-      minimum-idle: 5
-      maximum-pool-size: 200
-      pool-name: HikariPool
   session:
     store-type: hash_map
 
