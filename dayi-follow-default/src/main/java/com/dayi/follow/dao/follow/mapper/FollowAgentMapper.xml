@@ -382,7 +382,7 @@
         from follow_agent a
         left join (
         SELECT id,account_id,link_person,create_date,mobile,bank_name ,id_card,bank_account,record_invite_code,audit_date
-        from ${assistDataBase}.agent where del_status !=-1
+        from ${assistDataBase}.agent where del_status !=-1 and audit_status =1
         )b on b.id = a.agent_id
         LEFT JOIN (
         SELECT id,name  from follow_up where disable!=0
@@ -397,7 +397,8 @@
 
     <sql id="findAssignsNoFollowSql">
         SELECT a.id,link_person,create_date,mobile,bank_name bank,id_card,bank_account,
-        record_invite_code inviteCode,audit_date,c.bank_real_name realBank
+        record_invite_code inviteCode,audit_date,c.bank_real_name realBank,
+        a.audit_status
         from ${assistDataBase}.agent a
         left join (
         SELECT agent_id,follow_id  from follow_agent
@@ -406,6 +407,7 @@
         SELECT id, bank_real_name FROM ${assistDataBase}.finance_account
         ) c ON c.id = a.account_id
         where del_status !=-1 and b.follow_id is null
+        and a.audit_status =1
         <include refid="assignsNoFollowCondition"/>
         order by a.audit_date desc
     </sql>
@@ -420,12 +422,12 @@
 
     <select id="findAssignsFollowLimit" parameterType="map" resultType="com.dayi.follow.vo.agent.AssignListVo">
         <include refid="findAssignsFollowSql"/>
-        limit 0,10000
+
     </select>
 
     <select id="findAssignsNoFollowLimit" parameterType="map" resultType="com.dayi.follow.vo.agent.AssignListVo">
         <include refid="findAssignsNoFollowSql"/>
-        limit 0,10000
+
     </select>
 
     <select id="findAgentsByFollowId" parameterType="map" resultType="com.dayi.follow.model.follow.Agent">
