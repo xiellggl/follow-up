@@ -30,13 +30,13 @@ public class OrgAssignExport extends AbstractExcel<AssignListVo> {
         // 会员id
         column0.setValue(vo.getId());
         // 名称
-        column1.setValue(vo.getLinkPersonFm());
+        column1.setValue(vo.getLinkPerson());
         // 注册时间
         column2.setFullTimeValue(vo.getCreateDate());
         // 手机号
-        column3.setValue(vo.getMobileFm());
+        column3.setValue(vo.getMobile());
         // 身份证号
-        column4.setValue(vo.getIdCardFm());
+        column4.setValue(vo.getIdCard());
         // 机构类型
         column5.setValue(vo.getOrgTypeStr());
         // 跟进人
