@@ -35,19 +35,19 @@ public class AgentAssignExport extends AbstractExcel<AssignListVo> {
         // 会员id
         column0.setValue(vo.getId());
         // 名称
-        column1.setValue(vo.getLinkPersonFm());
+        column1.setValue(vo.getLinkPerson());
         // 注册时间
         column2.setFullTimeValue(vo.getCreateDate());
         // 手机号
-        column3.setValue(vo.getMobileFm());
+        column3.setValue(vo.getMobile());
         // 开户银行
         column4.setValue(vo.getBank());
         // 实际开户银行
         column5.setValue(vo.getRealBank());
         //身份证号
-        column6.setValue(vo.getIdCardFm());
+        column6.setValue(vo.getIdCard());
         //银行卡号
-        column7.setValue(vo.getBankAccountFm());
+        column7.setValue(vo.getBankAccount());
         //跟进人
         column8.setValue(vo.getFollowUp());
         // 分配时间
