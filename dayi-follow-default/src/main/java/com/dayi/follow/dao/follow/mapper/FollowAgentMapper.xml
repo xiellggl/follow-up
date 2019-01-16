@@ -356,7 +356,7 @@
             and b.id =#{searchVo.agentId}
         </if>
         <if test="1==searchVo.assignStatus">
-            and a.follow_id is not NULL
+            and a.follow_id is not NULL and c.id is not null
         </if>
         <if test="0==searchVo.assignStatus">
             and a.follow_id is  NULL
