@@ -385,7 +385,7 @@
         from ${assistDataBase}.agent where del_status !=-1
         )b on b.id = a.agent_id
         LEFT JOIN (
-        SELECT id,name  from follow_up where disable!=0
+        SELECT id,name  from follow_up
         )c on c.id = a.follow_id
         LEFT JOIN (
           SELECT id, bank_real_name FROM ${assistDataBase}.finance_account
