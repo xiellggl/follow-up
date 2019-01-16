@@ -140,6 +140,8 @@ public class FollowOrgServiceImpl implements FollowOrgService {
         followOrg.setFollowUpBefore(followUp.getName());//记录当前分配信息到变更前
         followOrg.setAssignDateBefore(followOrg.getAssignDate());
 
+        followOrg.setManageFundBefore(null);//为空不是没有是不统计，统计来没有意义
+
         followOrg.setFollowId(null);
         followOrg.setAssignDate(null);
         followOrg.setUpdateTime(new Date());

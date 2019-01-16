@@ -288,6 +288,9 @@ public class FollowAgentServiceImpl implements FollowAgentService {
         followAgent.setFollowUpBefore(followUp.getName());//记录当前分配信息到变更前
         followAgent.setAssignDateBefore(followAgent.getAssignDate());
 
+        followAgent.setAgentFundBefore(null);//为空不是没有是不统计，统计来没有意义
+        followAgent.setTotalFundBefore(null);
+
         followAgent.setFollowId(null);
         followAgent.setAssignDate(null);
         followAgent.setUpdateTime(new Date());
