@@ -101,20 +101,15 @@ public class FollowOrgServiceImpl implements FollowOrgService {
             if (oldFollowUp != null) {//当前有跟进人
                 followOrg.setFollowUpBefore(oldFollowUp.getName());
                 followOrg.setAssignDateBefore(followOrg.getAssignDate());
-
-                BigDecimal level1 = orgMapper.getManageFundLevel1(org.getId());
-                BigDecimal level2 = BigDecimal.ZERO;
-                if (org.getSwitchStatus() != null && org.getSwitchStatus().equals(1)) {//计算2级
-                    level2 = orgMapper.getManageFundLevel2(org.getId());
-                }
-                followOrg.setManageFundBefore(level1.add(level2));
-
-            } else {
-                //如何当前没有跟进人，而followOrg又不为空，说明原来有跟进人，被清除分配过，而清除分配时又会更新以下信息
-                followOrg.setFollowUpBefore(followOrg.getFollowUpBefore());
-                followOrg.setAssignDateBefore(followOrg.getAssignDateBefore());
-                followOrg.setManageFundBefore(followOrg.getManageFundBefore());
             }
+
+            BigDecimal level1 = orgMapper.getManageFundLevel1(org.getId());
+            BigDecimal level2 = BigDecimal.ZERO;
+            if (org.getSwitchStatus() != null && org.getSwitchStatus().equals(1)) {//计算2级
+                level2 = orgMapper.getManageFundLevel2(org.getId());
+            }
+            followOrg.setManageFundBefore(level1.add(level2));
+
             followOrg.setFollowId(followOrgVo.getFollowId());
             followOrg.setAssignDate(new Date());
             followOrg.setUpdateTime(new Date());
@@ -140,19 +135,10 @@ public class FollowOrgServiceImpl implements FollowOrgService {
         if (org == null) return BizResult.FAIL;
 
         FollowUp followUp = followUpMapper.get(followOrg.getFollowId());
-        if (followUp != null) {
-            followOrg.setFollowUpBefore(followUp.getName());
-        }
-        followOrg.setFollowId(null);
-        followOrg.setAssignDateBefore(followOrg.getAssignDate());
-        followOrg.setAssignDate(null);
+        if (followUp == null) return BizResult.fail("清除失败，无此跟进人！");
 
-        BigDecimal level1 = orgMapper.getManageFundLevel1(org.getId());
-        BigDecimal level2 = BigDecimal.ZERO;
-        if (org.getSwitchStatus() != null && org.getSwitchStatus().equals(1)) {//计算2级
-            level2 = orgMapper.getManageFundLevel2(org.getId());
-        }
-        followOrg.setManageFundBefore(level1.add(level2));
+        followOrg.setFollowId(null);
+        followOrg.setAssignDate(null);
         followOrg.setUpdateTime(new Date());
 
         return 1 == followOrgMapper.updateAll(followOrg) ? BizResult.SUCCESS : BizResult.FAIL;

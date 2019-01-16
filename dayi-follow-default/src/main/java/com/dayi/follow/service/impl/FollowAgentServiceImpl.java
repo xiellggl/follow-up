@@ -177,7 +177,7 @@ public class FollowAgentServiceImpl implements FollowAgentService {
         BigDecimal partFund = agentFund.add(account.getFrozen())
                 .add(account.getOutFrozen());
 
-        BigDecimal totalFund = account.getUseable().add(partFund).setScale(2,BigDecimal.ROUND_HALF_UP);
+        BigDecimal totalFund = account.getUseable().add(partFund).setScale(2, BigDecimal.ROUND_HALF_UP);
         detailVo.setTotalFund(totalFund);
 
         // 是否入金
@@ -262,22 +262,17 @@ public class FollowAgentServiceImpl implements FollowAgentService {
 
             followAgent.setCustomerType(AgentCusTypeEnum.NOT_LINK.getValue());
 
-        } else {//更新
+        }else {
+            //当前有跟进人
             FollowUp oldFollowUp = followUpMapper.get(followAgent.getFollowId());
-            if (oldFollowUp != null) {
+            if (oldFollowUp != null) {//变更跟进人
                 followAgent.setFollowUpBefore(oldFollowUp.getName());
                 followAgent.setAssignDateBefore(followAgent.getAssignDate());
-
-                followAgent.setAgentFundBefore(agentFund);
-                followAgent.setTotalFundBefore(totalFund);
-
-            } else {
-                //如何当前没有跟进人，而followAgent又不为空，说明原来有跟进人，被清除分配过，而清除分配时又会更新以下信息
-                followAgent.setFollowUpBefore(followAgent.getFollowUpBefore());
-                followAgent.setAssignDateBefore(followAgent.getAssignDateBefore());
-                followAgent.setAgentFundBefore(followAgent.getAgentFundBefore());
-                followAgent.setTotalFundBefore(followAgent.getTotalFundBefore());
             }
+
+            followAgent.setAgentFundBefore(agentFund);
+            followAgent.setTotalFundBefore(totalFund);
+
             followAgent.setFollowId(followAgentVo.getFollowId());
             followAgent.setAssignDate(new Date());
             followAgent.setUpdateTime(new Date());
@@ -303,24 +298,10 @@ public class FollowAgentServiceImpl implements FollowAgentService {
         if (agent == null) return BizResult.FAIL;
 
         FollowUp followUp = followUpMapper.get(followAgent.getFollowId());
-        if (followUp != null) {
-            followAgent.setFollowUpBefore(followUp.getName());
-        }
+        if (followUp == null) return BizResult.fail("清除失败，无此跟进人！");
+
         followAgent.setFollowId(null);
-        followAgent.setAssignDateBefore(followAgent.getAssignDate());
         followAgent.setAssignDate(null);
-
-        Account account = agentMapper.getAccount(followAgent.getAgentId());
-        if (account != null) {
-            BigDecimal agentFund = account.getCargoInterest().multiply(BigDecimal.valueOf(0.8)).add(account.getCargoInterestPuchas());
-            followAgent.setAgentFundBefore(agentFund);
-
-            BigDecimal totalFund = account.getCargoInterest().multiply(BigDecimal.valueOf(0.8)).
-                    add(account.getCargoInterestPuchas()).
-                    add(account.getFrozen()).add(account.getUseable()).add(account.getOutFrozen());
-            followAgent.setTotalFundBefore(totalFund);
-        }
-
         followAgent.setUpdateTime(new Date());
 
         return 1 == followAgentMapper.updateAll(followAgent) ? BizResult.SUCCESS : BizResult.FAIL;
