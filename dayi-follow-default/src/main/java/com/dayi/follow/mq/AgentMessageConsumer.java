@@ -162,8 +162,6 @@ public class AgentMessageConsumer extends AbstractConsumer {
         followAgent.setId(followAgentMapper.getNewId());
         followAgent.setAgentId(agent.getId());
         followAgent.setCustomerType(AgentCusTypeEnum.NOT_LINK.getValue());
-        followAgent.setAgentFundBefore(BigDecimal.ZERO);
-        followAgent.setTotalFundBefore(BigDecimal.ZERO);
         followAgent.setCreateTime(registration.getRegisterTime());
         followAgent.setUpdateTime(registration.getRegisterTime());
         followAgentMapper.add(followAgent);
