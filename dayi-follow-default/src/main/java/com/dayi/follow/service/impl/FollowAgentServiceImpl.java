@@ -203,27 +203,12 @@ public class FollowAgentServiceImpl implements FollowAgentService {
 
     @Override
     public Page findAssignPage(Page<AssignListVo> page, SearchVo searchVo) {
-
-        if (searchVo.getAssignStatus() == null || searchVo.getAssignStatus() != 1) {//查未分配
-            page = followAgentMapper.findAssignsNoFollow(page, searchVo, dayiDataBaseStr);
-        } else {//查已分配
-            page = followAgentMapper.findAssignsFollow(page, searchVo, dayiDataBaseStr);
-        }
-
-        return page;
+        return followAgentMapper.findAgentsAssign(page, searchVo, dayiDataBaseStr);
     }
 
     @Override
     public List findAssignList(SearchVo searchVo) {
-        List<AssignListVo> list;
-
-        if (searchVo.getAssignStatus() == null || searchVo.getAssignStatus() != 1) {//查未分配
-            list = followAgentMapper.findAssignsNoFollowLimit(searchVo, dayiDataBaseStr);
-        } else {//查已分配
-            list = followAgentMapper.findAssignsFollowLimit(searchVo, dayiDataBaseStr);
-        }
-
-        return list;
+        return followAgentMapper.findAgentsAssign(searchVo, dayiDataBaseStr);
     }
 
 
@@ -262,7 +247,7 @@ public class FollowAgentServiceImpl implements FollowAgentService {
 
             followAgent.setCustomerType(AgentCusTypeEnum.NOT_LINK.getValue());
 
-        }else {
+        } else {
             //当前有跟进人
             FollowUp oldFollowUp = followUpMapper.get(followAgent.getFollowId());
             if (oldFollowUp != null) {//变更跟进人
