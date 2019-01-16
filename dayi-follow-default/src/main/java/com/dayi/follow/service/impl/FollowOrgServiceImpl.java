@@ -137,6 +137,9 @@ public class FollowOrgServiceImpl implements FollowOrgService {
         FollowUp followUp = followUpMapper.get(followOrg.getFollowId());
         if (followUp == null) return BizResult.fail("清除失败，无此跟进人！");
 
+        followOrg.setFollowUpBefore(followUp.getName());//记录当前分配信息到变更前
+        followOrg.setAssignDateBefore(followOrg.getAssignDate());
+
         followOrg.setFollowId(null);
         followOrg.setAssignDate(null);
         followOrg.setUpdateTime(new Date());

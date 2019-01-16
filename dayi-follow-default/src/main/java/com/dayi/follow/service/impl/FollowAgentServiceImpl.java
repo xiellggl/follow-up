@@ -285,6 +285,9 @@ public class FollowAgentServiceImpl implements FollowAgentService {
         FollowUp followUp = followUpMapper.get(followAgent.getFollowId());
         if (followUp == null) return BizResult.fail("清除失败，无此跟进人！");
 
+        followAgent.setFollowUpBefore(followUp.getName());//记录当前分配信息到变更前
+        followAgent.setAssignDateBefore(followAgent.getAssignDate());
+
         followAgent.setFollowId(null);
         followAgent.setAssignDate(null);
         followAgent.setUpdateTime(new Date());
