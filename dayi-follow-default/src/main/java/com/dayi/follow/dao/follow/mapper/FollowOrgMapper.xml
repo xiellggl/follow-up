@@ -169,7 +169,7 @@
         from ${assistDataBase}.organization where del_status !=-1
         )b on b.id = a.org_id
         LEFT JOIN (
-        SELECT id,name  from follow_up where disable!=0
+        SELECT id,name  from follow_up
         )c on c.id = a.follow_id
         where a.follow_id is not NULL and b.id is not null and c.id is not null
         <include refid="assignsFollowCondition"/>
@@ -194,16 +194,6 @@
 
     <select id="findAssignsNoFollow" parameterType="map" resultType="com.dayi.follow.vo.agent.AssignListVo">
         <include refid="findAssignsNoFollowSql"/>
-    </select>
-
-    <select id="findAssignsFollowLimit" parameterType="map" resultType="com.dayi.follow.vo.agent.AssignListVo">
-        <include refid="findAssignsFollowSql"/>
-        limit 0,10000
-    </select>
-
-    <select id="findAssignsNoFollowLimit" parameterType="map" resultType="com.dayi.follow.vo.agent.AssignListVo">
-        <include refid="findAssignsNoFollowSql"/>
-        limit 0,10000
     </select>
 
     <select id="getNewSignOrgNum" resultType="java.lang.Integer" parameterType="map">

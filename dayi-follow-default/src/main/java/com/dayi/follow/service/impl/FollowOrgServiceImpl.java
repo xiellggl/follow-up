@@ -176,9 +176,9 @@ public class FollowOrgServiceImpl implements FollowOrgService {
         List<AssignListVo> list;
 
         if (searchVo.getAssignStatus() == null || searchVo.getAssignStatus() != 1) {//查未分配
-            list = followOrgMapper.findAssignsNoFollowLimit(searchVo, dayiDataBaseStr);
+            list = followOrgMapper.findAssignsNoFollow(searchVo, dayiDataBaseStr);
         } else {//查已分配
-            list = followOrgMapper.findAssignsFollowLimit(searchVo, dayiDataBaseStr);
+            list = followOrgMapper.findAssignsFollow(searchVo, dayiDataBaseStr);
         }
 
         return list;
