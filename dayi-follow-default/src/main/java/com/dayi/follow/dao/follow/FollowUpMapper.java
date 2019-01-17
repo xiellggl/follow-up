@@ -25,7 +25,7 @@ public interface FollowUpMapper extends BaseMapper<FollowUp> {
 
     List<String> findIdsByDeptId(@Param("deptId") String deptId);
 
-    Page<FollowUpListVo> findFollowUps(Page page, @Param("mobile") String mobile, @Param("deptIds") List<String> deptIds,
+    Page<FollowUpListVo> findFollowUps(Page page, @Param("name") String name, @Param("deptIds") List<String> deptIds,
                                        @Param("inviteCode") String inviteCode, @Param("assistDataBase") String assistDataBase);
 
     Page<FollowUpListVo> findAssignSelect(Page page, @Param("followUp") String followUp, @Param("followIds") List<String> followIds);

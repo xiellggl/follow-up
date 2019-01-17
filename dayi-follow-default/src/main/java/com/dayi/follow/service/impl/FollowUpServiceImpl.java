@@ -68,15 +68,15 @@ public class FollowUpServiceImpl implements FollowUpService {
     }
 
     @Override
-    public Page<FollowUpListVo> findPage(Page<FollowUpListVo> page, String mobile, String queryDeptId, String inviteCode) {
+    public Page<FollowUpListVo> findPage(Page<FollowUpListVo> page, String name, String queryDeptId, String inviteCode) {
         List<String> subDeptIds;
 
         if (!StringUtils.isBlank(queryDeptId)) {
             subDeptIds = deptService.getSubDeptIds(queryDeptId);
             subDeptIds.add(queryDeptId);
-            page = followUpMapper.findFollowUps(page, mobile, subDeptIds, inviteCode, dayiDataBaseStr);
+            page = followUpMapper.findFollowUps(page, name, subDeptIds, inviteCode, dayiDataBaseStr);
         } else {
-            page = followUpMapper.findFollowUps(page, mobile, null, inviteCode, dayiDataBaseStr);
+            page = followUpMapper.findFollowUps(page, name, null, inviteCode, dayiDataBaseStr);
         }
 
         for (FollowUpListVo vo : page.getResults()) {

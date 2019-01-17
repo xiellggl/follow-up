@@ -62,8 +62,8 @@
             SELECT  id,name from department
         )e on e.id =a.dept_id
         where a.identity =1 and a.disable !=0
-        <if test="''!=mobile and null!=mobile">
-            and a.mobile =#{mobile}
+        <if test="''!=name and null!=name">
+            and a.name =#{name}
         </if>
 
         <if test="null!=deptIds and 0!=deptIds.size()">
