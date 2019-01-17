@@ -63,8 +63,8 @@
                                     <span class="input-group-addon">
                                         <i class="ace-icon glyphicon glyphicon-phone"></i>
                                     </span>
-                                    <input type="text" name="mobile" class="form-control admin_sea"
-                                           value="${param.mobile}" placeholder="手机号"/>
+                                    <input type="text" name="name" class="form-control admin_sea"
+                                           value="${param.name}" placeholder="姓名"/>
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-3 btn-sespan maintop">
