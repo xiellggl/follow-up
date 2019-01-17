@@ -90,7 +90,7 @@
                                            placeholder="分配时间"/>
                                 </div>
                             </div>
-                            <div class="col-xs-4 col-sm-2 btn-sespan followUpDiv" style="display: none">
+                            <div class="col-xs-4 col-sm-2 btn-sespan followUpDiv">
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-check"></i>
