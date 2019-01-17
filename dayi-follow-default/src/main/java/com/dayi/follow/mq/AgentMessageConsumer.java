@@ -94,15 +94,9 @@ public class AgentMessageConsumer extends AbstractConsumer {
 
         String followCode = extraData.get("followCode");//当通过城市服务商注册时，这个就会有值，是跟进人的邀请码
 
-        if (StringUtils.isBlank(inviteCode)) {//保持这边代理商数量与塑如意那边一致，利于某些统计
-            try {
-                doCreate(agent, registration);
-                log.info("创建代理商完毕！");
-                return true;
-            } catch (Exception e) {
-                log.error("创建代理商失败！", e);
-                return false;
-            }
+        if (StringUtils.isBlank(inviteCode)) {
+            log.info("无邀请码，不作处理！");
+            return true;
         } else {
             //传的是跟进人的邀请码
             FollowUp followUp = new FollowUp();
@@ -155,16 +149,6 @@ public class AgentMessageConsumer extends AbstractConsumer {
         }
         log.info("非跟进人业务，不作处理！");
         return true;
-    }
-
-    private void doCreate(Agent agent, UserRegistration registration) {
-        FollowAgent followAgent = new FollowAgent();
-        followAgent.setId(followAgentMapper.getNewId());
-        followAgent.setAgentId(agent.getId());
-        followAgent.setCustomerType(AgentCusTypeEnum.NOT_LINK.getValue());
-        followAgent.setCreateTime(registration.getRegisterTime());
-        followAgent.setUpdateTime(registration.getRegisterTime());
-        followAgentMapper.add(followAgent);
     }
 
     private void doAssign(Agent agent, FollowUp followUp, UserRegistration registration) {
