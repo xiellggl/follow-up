@@ -356,7 +356,7 @@
             and b.id =#{searchVo.agentId}
         </if>
         <if test="1==searchVo.assignStatus">
-            and a.follow_id is not NULL and c.id is not null
+            and a.follow_id is not NULL
         </if>
         <if test="0==searchVo.assignStatus">
             and a.follow_id is  NULL
@@ -368,7 +368,7 @@
         follow_id, assign_date,c.name followUp,record_invite_code inviteCode,
         d.bank_real_name realBank
         from follow_agent a
-        left join (
+        right join (
         SELECT id,account_id,link_person,create_date,mobile,bank_name ,id_card,bank_account,record_invite_code,audit_date
         from ${assistDataBase}.agent where del_status !=-1
         )b on b.id = a.agent_id
@@ -378,7 +378,7 @@
         LEFT JOIN (
         SELECT id, bank_real_name FROM ${assistDataBase}.finance_account
         ) d ON d.id = b.account_id
-        where b.id is not null
+        where 1=1
         <include refid="agentsAssignCondition"/>
         order by b.audit_date desc
     </select>
