@@ -26,6 +26,11 @@ public class IndexController {
     @Resource
     UserComponent userComponent;
 
+    @RequestMapping("")
+    public String index() {
+        return "index";
+    }
+
     @RequestMapping("sale/personal/daily")
     @ResponseBody
     public BizResult salePersonalDaily(HttpServletRequest request) {//销售个人日报
@@ -171,9 +176,6 @@ public class IndexController {
         OrgDataVo orgDataVo = countService.countTeamOrgData(currVo.getDeptId());
         return BizResult.succ(orgDataVo);
     }
-
-
-
 
 
 }

@@ -92,7 +92,7 @@
         var url = document.URL;
         var start = url.indexOf("#");
         if (start == -1) {
-            url = "/"
+            url = "/index"
         } else {
             url = url.substring(start + 1, url.length);
         }
