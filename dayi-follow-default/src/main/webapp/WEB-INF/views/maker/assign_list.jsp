@@ -81,7 +81,7 @@
                             </div>
                         </div>
                         <div class="clearfix maintop">
-                            <div class="col-sm-2 hidden-xs btn-sespan assignDateDiv" style="display: none">
+                            <div class="col-sm-2 hidden-xs btn-sespan assignDateDiv">
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-calendar"></i>
