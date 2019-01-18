@@ -99,7 +99,7 @@ public class AgentMessageConsumer extends AbstractConsumer {
             return true;
         } else {
             //传的是跟进人的邀请码
-            FollowUp followUp = new FollowUp();
+            FollowUp followUp = null;
             Organization org = orgService.getByInviteCode(inviteCode);
             if (org == null) {
                 org = orgService.getByMarkerNum(inviteCode);
