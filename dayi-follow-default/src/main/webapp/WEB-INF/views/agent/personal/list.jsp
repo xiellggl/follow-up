@@ -10,7 +10,6 @@
     <style>
         .multiselect-native-select .btn-group>.btn>.caret{ border-top-color: #666; margin-top:0;}
         .bank-item label{margin: 0 5px;}
-        .green-assign {display: none }
     </style>
 </head>
 <body class="no-skin">
