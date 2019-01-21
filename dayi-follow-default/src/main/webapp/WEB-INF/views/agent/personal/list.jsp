@@ -1,5 +1,13 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@include file="/inc/followup/taglib.jsp"%>
+<%--权限判断--%>
+<c:set var="assignSave" value="false" />
+<c:forEach items="${permissions}" var="item">
+    <%--团队代理商分配--%>
+    <c:if test="${item.url eq '/agent/assign/save/batch'}">
+        <c:set var="assignSave" value="true" />
+    </c:if>
+</c:forEach>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
