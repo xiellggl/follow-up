@@ -2,6 +2,7 @@ package com.dayi.follow.mq;
 
 import com.dayi.common.constant.DayiConstant;
 import com.dayi.common.util.BizResult;
+import com.dayi.common.util.Misc;
 import com.dayi.follow.dao.dayi.AgentMapper;
 import com.dayi.follow.dao.dayi.OrgMapper;
 import com.dayi.follow.dao.follow.FollowAgentMapper;
@@ -10,6 +11,7 @@ import com.dayi.follow.enums.AgentCusTypeEnum;
 import com.dayi.follow.model.follow.*;
 import com.dayi.follow.service.FollowAgentService;
 import com.dayi.follow.service.OrgService;
+import com.dayi.follow.util.StringUtil;
 import com.dayi.mq.Topic;
 import com.dayi.mq.support.AbstractConsumer;
 import com.dayi.mq.support.MessageExt;
@@ -93,6 +95,13 @@ public class AgentMessageConsumer extends AbstractConsumer {
         String inviteCode = registration.getInviteCode();//这个有可能是跟进人的邀请码，也可能是城市服务商部门的邀请码,这个必有值
 
         String followCode = extraData.get("followCode");//当通过城市服务商注册时，这个就会有值，是跟进人的邀请码
+
+        if (StringUtils.isBlank(inviteCode)) {
+            String uId = Misc.toString(extraData.get("uId"));
+            if (!StringUtil.isInteger(uId)) {
+                inviteCode = uId;
+            }
+        }
 
         if (StringUtils.isBlank(inviteCode)) {
             log.info("无邀请码，不作处理！");
