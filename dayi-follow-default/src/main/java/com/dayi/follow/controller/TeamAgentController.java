@@ -120,7 +120,7 @@ public class TeamAgentController {
         String followId = request.getParameter("followId");
         FollowUp followUp = followUpService.get(followId);
 
-        page = followUpService.findTeamAssignSelect(page, followUpStr, currVo.getDeptId());
+        page = followUpService.findTeamAssignSelect(page, followUpStr, currVo.getDeptId(),null);
 
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
         model.addAttribute("followUp", followUp);

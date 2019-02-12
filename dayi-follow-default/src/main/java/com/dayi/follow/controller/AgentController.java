@@ -10,8 +10,10 @@ import com.dayi.follow.enums.BankTypeEnum;
 import com.dayi.follow.enums.ContactTypeEnum;
 import com.dayi.follow.model.follow.AgentContact;
 import com.dayi.follow.model.follow.FollowAgent;
+import com.dayi.follow.model.follow.FollowUp;
 import com.dayi.follow.service.AgentService;
 import com.dayi.follow.service.FollowAgentService;
+import com.dayi.follow.service.FollowUpService;
 import com.dayi.follow.util.CollectionUtil;
 import com.dayi.follow.util.PageUtil;
 import com.dayi.follow.util.StringUtil;
@@ -43,6 +45,8 @@ public class AgentController extends BaseController {
     AgentService agentService;
     @Resource
     FollowAgentService followAgentService;
+    @Resource
+    FollowUpService followUpService;
 
     /**
      * 我的客户-代理商列表
@@ -139,6 +143,23 @@ public class AgentController extends BaseController {
         model.addAttribute("page", page);//登录日志
         model.addAttribute("pageUrl", pageUrl);
         return "agent/login_list";
+    }
+
+    /**
+     * 跟进人分配 -- 选择弹窗列表
+     */
+    @RequestMapping(value = "/followup/select")
+    public String assignSelect(HttpServletRequest request, Model model, Page page) {
+        LoginVo currVo = userComponent.getCurrUser(request);
+
+        String followUpStr = request.getParameter("followUp");
+
+        page = followUpService.findTeamAssignSelect(page, followUpStr, currVo.getDeptId(), currVo.getId());
+
+        String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
+        model.addAttribute("page", page);
+        model.addAttribute("pageUrl", pageUrl);
+        return "followup/select_list";
     }
 
     /**
