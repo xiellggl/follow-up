@@ -79,13 +79,13 @@
         var $pageListPanel = $myModal.find(".selectlistbox");
         var ids = null;
         var select_data = null;
-        var url_selectlist = "/agent/followup/select";
+        var url_selectlist = "/team/agent/followup/select";
 
         //分配跟进人
         $('[data-act="assign"]').on("click", function () {
             var $this = $(this);
             var flowId = $(this).data("flowid");
-            var url_from = "/agent/followup/select"+"?followId="+flowId;;
+            var url_from = "/team/agent/followup/select"+"?followId="+flowId;;
 
             if ($this.hasClass("all")) {
                 //批量操作

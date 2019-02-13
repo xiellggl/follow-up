@@ -146,23 +146,6 @@ public class AgentController extends BaseController {
     }
 
     /**
-     * 跟进人分配 -- 选择弹窗列表
-     */
-    @RequestMapping(value = "/followup/select")
-    public String assignSelect(HttpServletRequest request, Model model, Page page) {
-        LoginVo currVo = userComponent.getCurrUser(request);
-
-        String followUpStr = request.getParameter("followUp");
-
-        page = followUpService.findTeamAssignSelect(page, followUpStr, currVo.getDeptId(), currVo.getId());
-
-        String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
-        model.addAttribute("page", page);
-        model.addAttribute("pageUrl", pageUrl);
-        return "followup/select_list";
-    }
-
-    /**
      * 代理商联系记录
      *
      * @param request

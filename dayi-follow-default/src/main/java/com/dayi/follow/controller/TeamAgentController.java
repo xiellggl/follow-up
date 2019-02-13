@@ -118,7 +118,11 @@ public class TeamAgentController {
 
         String followUpStr = request.getParameter("followUp");
         String followId = request.getParameter("followId");
-        FollowUp followUp = followUpService.get(followId);
+
+        FollowUp followUp = null;
+        if (!followId.equals(currVo.getId())) {//如果是我的客户，就不显示当前跟进人
+            followUp = followUpService.get(followId);
+        }
 
         page = followUpService.findTeamAssignSelect(page, followUpStr, currVo.getDeptId(),followId);
 
