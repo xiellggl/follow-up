@@ -21,11 +21,11 @@
                         <%--上级机构是城市服务商的--%>
                         <c:when test="${user.department.cityServer==1}">
                             <input type="text" id="inviteCode"
-                                   value="${financeHost}/finance/reg?inviteCode=${user.department.cityInviteCode}&followCode=${user.inviteCode}">
+                                   value="${financeHost}/reg?inviteCode=${user.department.cityInviteCode}&followCode=${user.inviteCode}">
                         </c:when>
                         <c:otherwise>
                             <input type="text" id="inviteCode"
-                                   value="${financeHost}/finance/reg?inviteCode=${user.inviteCode}">
+                                   value="${financeHost}/reg?inviteCode=${user.inviteCode}">
                         </c:otherwise>
                     </c:choose>
                     <a href="javascript:;" id="copyLink" data-clipboard-target="#inviteCode">复制</a>

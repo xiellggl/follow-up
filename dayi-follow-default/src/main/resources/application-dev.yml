@@ -35,6 +35,7 @@ dayi:
     constant: #常量参数
       properties:
         imageHost: http://localhost:9601
+        financeHost: http://localhost:8080/finance
   dataBase: dev_dayi_spot
 follow:
   dataBase: dayi_follow_all

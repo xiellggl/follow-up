@@ -27,6 +27,7 @@ dayi:
     constant: #常量参数
       properties:
         imageHost: http://localhost:9601
+        financeHost: https://teststorage.dayi35.com/finance
   dataBase: test_storage_spot
 follow:
   dataBase: test_dayi_follow
