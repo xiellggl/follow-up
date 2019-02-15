@@ -95,6 +95,14 @@
                 <th>实际出金</th>
                 <td>${detailVo.dayOutCashFm}</td>
             </tr>
+            <tr>
+                <th>分配金额</th>
+                <td>${detailVo.assignFundFm}</td>
+                <th>历史最高货款</th>
+                <td>${detailVo.hisMaxFundFm}</td>
+                <td></td>
+                <td></td>
+            </tr>
         </table>
     </div>
 </div>
