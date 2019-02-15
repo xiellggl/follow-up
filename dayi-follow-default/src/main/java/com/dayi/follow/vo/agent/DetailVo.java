@@ -61,15 +61,61 @@ public class DetailVo {
     private BigDecimal dayInCash;//当日累计入金
     private String dayInCashFm;//当日累计入金(格式化：显示前两位和小数点位，其余用*标识），用于是否入金判断
     private Date dayLastInCashTime;   // 当日最后一笔入金时间
-    private String dayLastInCashTimeFm;  // 当日最后一笔入金时间（格式化）
 
     private BigDecimal dayApplyOutCash; // 当日申请出金
     private String dayApplyOutCashFm; // 当日申请出金（格式化：显示前两位和小数点位，其余用*标识）
     private Date dayLastApplyOutCashTime;//当日最后一笔申请出金时间
-    private String dayLastApplyOutCashTimeFm;  //当日最后一笔申请出金时间（格式化）
 
     private BigDecimal dayOutCash;  // 当日实际出金
     private String dayOutCashFm;      // 当日实际出金（格式化）
+
+    private BigDecimal assignFund;//分配货款
+    private String assignFundFm;
+
+    private BigDecimal hisMaxFund;//历史最高货款
+    private String hisMaxFundFm;
+
+    public BigDecimal getAssignFund() {
+        return assignFund;
+    }
+
+    public String getAssignFundFm() {
+        if (this.assignFund != BigDecimal.ZERO && assignFund != null) {
+            assignFundFm = Misc.parseMoney(assignFund.doubleValue(), 2) + " 元";
+        } else {
+            assignFundFm = "0.00 元";
+        }
+        return assignFundFm;
+    }
+
+    public BigDecimal getHisMaxFund() {
+        return hisMaxFund;
+    }
+
+    public String getHisMaxFundFm() {
+        if (this.hisMaxFund != BigDecimal.ZERO && hisMaxFund != null) {
+            hisMaxFundFm = Misc.parseMoney(hisMaxFund.doubleValue(), 2) + " 元";
+        } else {
+            hisMaxFundFm = "0.00 元";
+        }
+        return hisMaxFundFm;
+    }
+
+    public void setAssignFund(BigDecimal assignFund) {
+        this.assignFund = assignFund;
+    }
+
+    public void setAssignFundFm(String assignFundFm) {
+        this.assignFundFm = assignFundFm;
+    }
+
+    public void setHisMaxFund(BigDecimal hisMaxFund) {
+        this.hisMaxFund = hisMaxFund;
+    }
+
+    public void setHisMaxFundFm(String hisMaxFundFm) {
+        this.hisMaxFundFm = hisMaxFundFm;
+    }
 
     public String getLinkPerson() {
         return linkPerson;
@@ -355,14 +401,6 @@ public class DetailVo {
         this.dayLastInCashTime = dayLastInCashTime;
     }
 
-    public String getDayLastInCashTimeFm() {
-        return dayLastInCashTimeFm;
-    }
-
-    public void setDayLastInCashTimeFm(String dayLastInCashTimeFm) {
-        this.dayLastInCashTimeFm = dayLastInCashTimeFm;
-    }
-
     public BigDecimal getDayOutCash() {
         return dayOutCash;
     }
@@ -411,14 +449,6 @@ public class DetailVo {
 
     public void setDayLastApplyOutCashTime(Date dayLastApplyOutCashTime) {
         this.dayLastApplyOutCashTime = dayLastApplyOutCashTime;
-    }
-
-    public String getDayLastApplyOutCashTimeFm() {
-        return dayLastApplyOutCashTimeFm;
-    }
-
-    public void setDayLastApplyOutCashTimeFm(String dayLastApplyOutCashTimeFm) {
-        this.dayLastApplyOutCashTimeFm = dayLastApplyOutCashTimeFm;
     }
 
     public BigDecimal getInCash() {

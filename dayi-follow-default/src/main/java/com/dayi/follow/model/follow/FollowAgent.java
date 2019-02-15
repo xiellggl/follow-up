@@ -33,8 +33,17 @@ public class FollowAgent extends BaseModel {
 
     private BigDecimal agentFundBefore;//变更跟进人前代理资金
     private BigDecimal totalFundBefore;//变更跟进人前总资产
+    private BigDecimal hisMaxFund;//历史最高货款
 
     private Date assignDate;//分配跟进人时间
+
+    public BigDecimal getHisMaxFund() {
+        return hisMaxFund;
+    }
+
+    public void setHisMaxFund(BigDecimal hisMaxFund) {
+        this.hisMaxFund = hisMaxFund;
+    }
 
     public BigDecimal getAgentFundBefore() {
         return agentFundBefore;

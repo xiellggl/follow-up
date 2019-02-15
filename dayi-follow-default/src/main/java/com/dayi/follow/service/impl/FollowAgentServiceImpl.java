@@ -120,11 +120,7 @@ public class FollowAgentServiceImpl implements FollowAgentService {
 
         // 申请出金日期
         Date dayLastApplyOutCashTime = agentMapper.getDayLastApplyOutCashTime(agentId, todayStrat, todayEnd);
-        if (dayLastApplyOutCashTime != null) {
-            String s = dayLastApplyOutCashTime.toString();
-            String dayLastApplyOutCashTimeStr = s.substring(0, s.length() - 2);
-            detailVo.setDayLastApplyOutCashTimeFm(dayLastApplyOutCashTimeStr);
-        }
+        detailVo.setDayLastApplyOutCashTime(dayLastApplyOutCashTime);
 
         // 当日实际出金
         BigDecimal dayOutCash = agentMapper.getDayOutCash(agentId, todayStrat, todayEnd);
@@ -187,6 +183,20 @@ public class FollowAgentServiceImpl implements FollowAgentService {
         BigDecimal frozenFund = account.getFrozen().add(account.getOutFrozen());
         detailVo.setFrozenFund(frozenFund);
 
+        //分配货款
+        FollowAgent followAgent = followAgentMapper.getFollowAgentByAgentId(agentId);
+        detailVo.setAssignFund(followAgent.getTotalFundBefore());
+
+        //历史最高货款
+        BigDecimal hisMaxFund = followAgent.getHisMaxFund();
+        if (hisMaxFund == null || totalFund.compareTo(hisMaxFund) == 1) {
+            detailVo.setHisMaxFund(totalFund);
+            //更新历史最高货款
+            followAgent.setHisMaxFund(totalFund);
+            followAgentMapper.updateAll(followAgent);
+        } else {
+            detailVo.setHisMaxFund(followAgent.getHisMaxFund());
+        }
         return detailVo;
     }
 
