@@ -143,7 +143,7 @@ public class UserController extends BaseController {
             return BizResult.fail("用户名已存在！");
         }
 
-        if (!userService.checkCodeRepeat(followUp.getInviteCode())) {
+        if (!StringUtils.isBlank(followUp.getInviteCode()) && !userService.checkCodeRepeat(followUp.getInviteCode())) {
             return BizResult.fail("邀请码已存在！");
         }
 
