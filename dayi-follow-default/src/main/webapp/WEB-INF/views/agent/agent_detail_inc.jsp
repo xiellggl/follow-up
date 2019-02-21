@@ -56,14 +56,12 @@
                 <td><fmt:formatDate value="${detailVo.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                 <th>分配时间</th>
                 <td><fmt:formatDate value="${detailVo.assignDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-            </tr>
-            <tr>
                 <th>账号登录状态</th>
                 <td>${detailVo.loginStatusStr}</td>
+            </tr>
+            <tr>
                 <th>账号交易状态</th>
                 <td>${detailVo.tradeStatusStr}</td>
-                <th></th>
-                <th></th>
             </tr>
         </table>
 
@@ -106,8 +104,6 @@
                 <td>${detailVo.assignFundFm}</td>
                 <th>历史最高货款</th>
                 <td>${detailVo.hisMaxFundFm}</td>
-                <td></td>
-                <td></td>
             </tr>
         </table>
     </div>
