@@ -262,10 +262,10 @@
                         </div>
 
                         <div class="space-4"></div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label no-padding-right">*邀请码 ：</label>
+                        <div class="form-group inviteCode" >
+                            <label class="col-sm-2 control-label no-padding-right">邀请码 ：</label>
                             <div class="col-xs-12 col-sm-6">
-                                <input type="text" name="inviteCode" class="form-control" required/>
+                                <input type="text" name="inviteCode" class="form-control"/>
                             </div>
                             <div class="help-block col-xs-12 col-sm-reset inline tips_box"></div>
                         </div>
@@ -387,6 +387,16 @@
             var $inviteCode = $form.find('[name="inviteCode"]');
             $form.find('[name="deptId"]').val(data.deptId);
             $form.find('[name="roleids"]').val(data.roleids);
+
+            $(".inviteCode").hide();
+            $('[name="identity"]').click(function() {
+                var num = $(this).val();
+                if(num>1){
+                    $(".inviteCode").hide();    // 先隐藏所有文本框
+                }if(num<2){
+                    $(".inviteCode").show(); // 然后显示对应的文本框
+                }
+            });
 
             $form.validate({
                 rules: {
