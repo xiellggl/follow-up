@@ -1,8 +1,10 @@
 package com.dayi.follow.vo.agent;
 
+import com.dayi.common.util.NameItem;
 import com.dayi.follow.enums.MemberStatusEnum;
 import com.dayi.follow.model.follow.Agent;
 import com.dayi.follow.util.Misc;
+import com.dayi.user.model.User;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -449,7 +451,8 @@ public class DetailVo {
     }
 
     public String getLoginStatusStr() {
-        return MemberStatusEnum.getNameByValue(loginStatus);
+        if (loginStatus == null) return null;
+        return User.STATUS_ALL.getItem(loginStatus).getName();
     }
 
     public void setLoginStatusStr(String loginStatusStr) {

@@ -36,9 +36,6 @@ dubbo:
     name: dayi-follow
     owner: dayi
     organization: dayi
-  protocol:
-    dubbo:
-      port: 21510
   threads: 100
   timeout: 10000
 
