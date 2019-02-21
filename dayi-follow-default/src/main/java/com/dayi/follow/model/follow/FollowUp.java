@@ -1,5 +1,6 @@
 package com.dayi.follow.model.follow;
 
+import com.dayi.common.util.NameItem;
 import com.dayi.mybatis.support.BaseModel;
 import com.dayi.user.authorization.authc.Principal;
 import com.dayi.user.model.*;
@@ -24,7 +25,6 @@ public class FollowUp extends BaseModel implements Principal {
     private String mobile;      // 手机号
     @NotBlank(message = "所属部门不能为空！")
     private String deptId;     // 所属部门ID
-    @NotBlank(message = "邀请码不能为空！")
     private String inviteCode;  // 邀请码
     private Integer disable;    // 是否启用：1--启用；0--禁用
     @NotNull(message = "请选择二级资产开关状态！")
@@ -37,7 +37,8 @@ public class FollowUp extends BaseModel implements Principal {
     @NotNull(message = "请选择身份！")
     private Integer identity;//1-跟进人，2-非跟进人
 
-
+    public final static NameItem IS_FOLLOWUP=NameItem.valueOf("跟进人",1);
+    public final static NameItem NOT_FOLLOWUP=NameItem.valueOf("非跟进人",2);
 
 
     public Integer getIdentity() {

@@ -135,6 +135,9 @@ public class UserController extends BaseController {
         if (!bizResult.isSucc()) return bizResult;//参数传入错误
 
         LoginVo currVo = userComponent.getCurrUser(request);
+        if ((FollowUp.IS_FOLLOWUP.getId()) == followUp.getIdentity() && StringUtils.isBlank(followUp.getInviteCode())) {
+            return BizResult.fail("请填写邀请码！");
+        }
 
         if (userService.getByUserName(followUp.getUserName()) != null) {
             return BizResult.fail("用户名已存在！");
