@@ -21,6 +21,7 @@ public class Agent {
     private Date bankSignDate;      //绑卡时间
     private Integer status;         //会员状态（-2=禁用,-1=锁定,0=待审核,1=正常）
     private String idCardAddr;      //身份证所在地
+    private String ucId;//用户中心id
 
 
 
@@ -129,5 +130,13 @@ public class Agent {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getUcId() {
+        return ucId;
+    }
+
+    public void setUcId(String ucId) {
+        this.ucId = ucId;
     }
 }

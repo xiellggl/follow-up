@@ -1,5 +1,6 @@
 package com.dayi.follow.vo.agent;
 
+import com.dayi.follow.enums.MemberStatusEnum;
 import com.dayi.follow.model.follow.Agent;
 import com.dayi.follow.util.Misc;
 
@@ -36,8 +37,10 @@ public class DetailVo {
 
     private Date assignDate;//分配跟进人时间
 
-    private Integer status;//状态
-    private String statusStr;//状态
+    private Integer loginStatus;//账户登录状态
+    private String loginStatusStr;//账户登录状态
+    private Integer tradeStatus;//账户交易状态
+    private String tradeStatusStr;//账户交易状态
 
     private BigDecimal totalFund;//总资产
     private String totalFundFm; // 总资产（格式化：显示前两位和小数点位，其余用*标识）
@@ -219,28 +222,6 @@ public class DetailVo {
 
     public void setAssignDate(Date assignDate) {
         this.assignDate = assignDate;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public String getStatusStr() {
-        this.statusStr = "禁用";
-        if (this.status == Agent.Status_Locked.id) {
-            this.statusStr = "锁定";
-        } else if (this.status == Agent.Status_Normal.id) {
-            this.statusStr = "启用";
-        }
-        return statusStr;
-    }
-
-    public void setStatusStr(String statusStr) {
-        this.statusStr = statusStr;
     }
 
     public BigDecimal getTotalFund() {
@@ -457,5 +438,37 @@ public class DetailVo {
 
     public void setInCash(BigDecimal inCash) {
         this.inCash = inCash;
+    }
+
+    public Integer getLoginStatus() {
+        return loginStatus;
+    }
+
+    public void setLoginStatus(Integer loginStatus) {
+        this.loginStatus = loginStatus;
+    }
+
+    public String getLoginStatusStr() {
+        return MemberStatusEnum.getNameByValue(loginStatus);
+    }
+
+    public void setLoginStatusStr(String loginStatusStr) {
+        this.loginStatusStr = loginStatusStr;
+    }
+
+    public Integer getTradeStatus() {
+        return tradeStatus;
+    }
+
+    public void setTradeStatus(Integer tradeStatus) {
+        this.tradeStatus = tradeStatus;
+    }
+
+    public String getTradeStatusStr() {
+        return MemberStatusEnum.getNameByValue(tradeStatus);
+    }
+
+    public void setTradeStatusStr(String tradeStatusStr) {
+        this.tradeStatusStr = tradeStatusStr;
     }
 }

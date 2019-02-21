@@ -23,8 +23,11 @@ import com.dayi.follow.vo.agent.AgentListVo;
 import com.dayi.follow.vo.agent.AssignListVo;
 import com.dayi.follow.vo.agent.DetailVo;
 import com.dayi.mybatis.support.Page;
+import com.dayi.user.model.User;
+import com.dayi.user.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -53,6 +56,8 @@ public class FollowAgentServiceImpl implements FollowAgentService {
     private AgentService agentService;
     @Resource
     private UserComponent userComponent;
+    @Resource
+    private UserService ucUserService;
     @Value("${dayi.dataBase}")
     String dayiDataBaseStr;
 
@@ -153,9 +158,14 @@ public class FollowAgentServiceImpl implements FollowAgentService {
             String day = idCard.substring(12, 14);//日
             detailVo.setDateStr(month + "月" + day + "日");
         }
-        //状态
-        Integer status = agent.getStatus();
-        detailVo.setStatus(status);//取statusStr
+        //登录状态
+        User user = ucUserService.getUser(agent.getUcId());
+        if (user != null && user.getStatusItem() != null) {
+            detailVo.setLoginStatus(user.getStatusItem().getId());//取statusStr
+        }
+
+        //交易状态
+        detailVo.setTradeStatus(agent.getStatus());//取statusStr
 
         // 可用余额
         Account account = agentMapper.getAccount(agentId);

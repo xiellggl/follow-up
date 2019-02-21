@@ -37,5 +37,14 @@ public enum MemberStatusEnum {
         }
         return MemberStatusEnum.ENABLE;
     }
+
+    public static String getNameByValue(Integer value) {
+        for (MemberStatusEnum item : MemberStatusEnum.values()) {
+            if (item.value == value) {
+                return item.getName();
+            }
+        }
+        return "";
+    }
 }
 
