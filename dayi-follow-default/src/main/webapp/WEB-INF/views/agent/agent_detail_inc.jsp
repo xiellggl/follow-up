@@ -56,8 +56,6 @@
                 <td><fmt:formatDate value="${detailVo.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                 <th>分配时间</th>
                 <td><fmt:formatDate value="${detailVo.assignDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                <th></th>
-                <th></th>
             </tr>
             <tr>
                 <th>账号登录状态</th>
