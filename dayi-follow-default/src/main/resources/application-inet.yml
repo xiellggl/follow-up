@@ -19,6 +19,21 @@ spring:
   session:
     store-type: hash_map
 
+dubbo:
+  registry:
+    address: zookeeper://172.28.1.63:2181
+    username:
+    password:
+  application:
+    name: dayi-follow
+    owner: dayi
+    organization: dayi
+  protocol:
+    dubbo:
+      port: 21510
+  threads: 100
+  timeout: 10000
+
 dayi:
   mq:
     nameservAddr: 172.28.1.63:9876
