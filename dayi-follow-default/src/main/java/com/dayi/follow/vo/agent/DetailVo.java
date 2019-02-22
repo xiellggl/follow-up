@@ -39,10 +39,9 @@ public class DetailVo {
 
     private Date assignDate;//分配跟进人时间
 
-    private Integer loginStatus;//账户登录状态
-    private String loginStatusStr;//账户登录状态
-    private Integer tradeStatus;//账户交易状态
-    private String tradeStatusStr;//账户交易状态
+    private String loginStatus;//账户登录状态
+
+    private String tradeStatus;//账户交易状态
 
     private BigDecimal totalFund;//总资产
     private String totalFundFm; // 总资产（格式化：显示前两位和小数点位，其余用*标识）
@@ -442,36 +441,20 @@ public class DetailVo {
         this.inCash = inCash;
     }
 
-    public Integer getLoginStatus() {
+    public String getLoginStatus() {
         return loginStatus;
     }
 
-    public void setLoginStatus(Integer loginStatus) {
+    public void setLoginStatus(String loginStatus) {
         this.loginStatus = loginStatus;
     }
 
-    public String getLoginStatusStr() {
-        if (loginStatus == null) return null;
-        return User.STATUS_ALL.getItem(loginStatus).getName();
-    }
-
-    public void setLoginStatusStr(String loginStatusStr) {
-        this.loginStatusStr = loginStatusStr;
-    }
-
-    public Integer getTradeStatus() {
+    public String getTradeStatus() {
         return tradeStatus;
     }
 
-    public void setTradeStatus(Integer tradeStatus) {
+    public void setTradeStatus(String tradeStatus) {
         this.tradeStatus = tradeStatus;
     }
-
-    public String getTradeStatusStr() {
-        return MemberStatusEnum.getNameByValue(tradeStatus);
-    }
-
-    public void setTradeStatusStr(String tradeStatusStr) {
-        this.tradeStatusStr = tradeStatusStr;
-    }
 }
+

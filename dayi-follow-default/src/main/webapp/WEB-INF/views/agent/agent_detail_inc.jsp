@@ -57,11 +57,11 @@
                 <th>分配时间</th>
                 <td><fmt:formatDate value="${detailVo.assignDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                 <th>账号登录状态</th>
-                <td>${detailVo.loginStatusStr}</td>
+                <td>${detailVo.loginStatus}</td>
             </tr>
             <tr>
                 <th>账号交易状态</th>
-                <td>${detailVo.tradeStatusStr}</td>
+                <td>${detailVo.tradeStatus}</td>
             </tr>
         </table>
 

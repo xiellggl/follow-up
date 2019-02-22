@@ -11,6 +11,8 @@ import com.dayi.follow.dao.follow.FollowAgentMapper;
 import com.dayi.follow.dao.follow.FollowUpMapper;
 import com.dayi.follow.enums.AgentCusTypeEnum;
 import com.dayi.follow.enums.BankTypeEnum;
+import com.dayi.follow.enums.CommonEnums;
+import com.dayi.follow.enums.MemberStatusEnum;
 import com.dayi.follow.model.follow.*;
 import com.dayi.follow.service.AgentService;
 import com.dayi.follow.service.DeptService;
@@ -161,11 +163,20 @@ public class FollowAgentServiceImpl implements FollowAgentService {
         //登录状态
         User user = ucUserService.getUser(agent.getUcId());
         if (user != null && user.getStatusItem() != null) {
-            detailVo.setLoginStatus(user.getStatusItem().getId());//取statusStr
+            int id = user.getStatusItem().getId();
+            String name = User.STATUS_ALL.getItem(id).getName();
+            detailVo.setLoginStatus(name);
         }
 
         //交易状态
-        detailVo.setTradeStatus(agent.getStatus());//取statusStr
+        Integer status = agent.getStatus();
+        Integer lockType = agent.getLockType();
+
+        if (MemberStatusEnum.LOCK.getValue().equals(status) && CommonEnums.UserLockType.PAY.getValue() == lockType) {
+            detailVo.setTradeStatus(MemberStatusEnum.LOCK.getName());
+        } else {
+            detailVo.setTradeStatus(MemberStatusEnum.ENABLE.getName());
+        }
 
         // 可用余额
         Account account = agentMapper.getAccount(agentId);

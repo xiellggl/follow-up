@@ -22,6 +22,7 @@ public class Agent {
     private Integer status;         //会员状态（-2=禁用,-1=锁定,0=待审核,1=正常）
     private String idCardAddr;      //身份证所在地
     private String ucId;//用户中心id
+    private Integer lockType;//锁定类型
 
 
 
@@ -138,5 +139,13 @@ public class Agent {
 
     public void setUcId(String ucId) {
         this.ucId = ucId;
+    }
+
+    public Integer getLockType() {
+        return lockType;
+    }
+
+    public void setLockType(Integer lockType) {
+        this.lockType = lockType;
     }
 }
