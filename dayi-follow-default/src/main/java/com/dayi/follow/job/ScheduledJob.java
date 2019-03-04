@@ -22,12 +22,11 @@ public class ScheduledJob {
     /**
      * 统计跟进人的日志
      */
-    @Scheduled(cron = "0 30 23 * * ?")
+    @Scheduled(cron = "0 47 16 * * ?")
     public void countFollowUpLog() {
         logger.info("开始统计跟进人每天业绩...");
         if (countService.countFollowUpLog()) {
             logger.info("统计完成！");
         }
-
     }
 }

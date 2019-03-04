@@ -17,6 +17,7 @@ import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.OrgService;
 import com.dayi.follow.vo.index.*;
 import com.dayi.follow.vo.org.OrgDataVo;
+import com.dayi.mybatis.support.Page;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -316,14 +317,31 @@ public class CountServiceImpl implements CountService {
     @Override
     public boolean countFollowUpLog() {
         List<FollowUp> followUps = followUpMapper.findAll();
+        //统计昨天23:30:01到今天17:30:00的数据
+        String stratTime = DateTime.now().plusDays(-1).withHourOfDay(23).withMinuteOfHour(30)
+                .withSecondOfMinute(1).toString("yyyy-MM-dd HH:mm:ss");
+
+        String endTime = DateTime.now().withHourOfDay(17).withMinuteOfHour(30)
+                .withSecondOfMinute(0).toString("yyyy-MM-dd HH:mm:ss");
+
+        String yesStratTime = DateTime.now().plusDays(-1).millisOfDay().withMinimumValue()
+                .toString("yyyy-MM-dd HH:mm:ss");
+        String yesEndTime = DateTime.now().plusDays(-1).millisOfDay().withMaximumValue()
+                .toString("yyyy-MM-dd HH:mm:ss");
+
+        Page<FollowUpLog> page = new Page<>();
+        page = followUpLogMapper.findLogsByTime(page, stratTime, endTime);
+
+        if (page.getTotalRecord() <= 0) {//昨天不是第一天改时间
+            //统计昨天17:30:01到今天17:30:00的数据
+            stratTime = DateTime.now().plusDays(-1).withHourOfDay(17)
+                    .withMinuteOfHour(30).withSecondOfMinute(1).toString("yyyy-MM-dd HH:mm:ss");
+
+            endTime = DateTime.now().withHourOfDay(17).withMinuteOfHour(30)
+                    .withSecondOfMinute(0).toString("yyyy-MM-dd HH:mm:ss");
+        }
+
         for (FollowUp followUp : followUps) {
-            //统计昨天23:30:01到今天23:30:00的数据
-            String stratTime = DateTime.now().plusDays(-1).millisOfDay().withMaximumValue()
-                    .plusMinutes(-30).plusSeconds(2).toString("yyyy-MM-dd HH:mm:ss");
-
-            String endTime = DateTime.now().plusDays(1).millisOfDay().withMinimumValue()
-                    .plusMinutes(-30).toString("yyyy-MM-dd HH:mm:ss");
-
             FollowUpLog followUpLog = new FollowUpLog();
 
             int openNum = followAgentMapper.getOpenAccountNum(followUp.getId(), stratTime, endTime, dayiDataBaseStr);
@@ -352,12 +370,7 @@ public class CountServiceImpl implements CountService {
             BigDecimal manageFund = this.getOrgManageFund(orgs);
             followUpLog.setManageFund(manageFund);
 
-            stratTime = DateTime.now().plusDays(-1).millisOfDay().withMaximumValue().plusMinutes(-60)
-                    .toString("yyyy-MM-dd HH:mm:ss");
-
-            endTime = DateTime.now().millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
-
-            FollowUpLog log = followUpLogMapper.getLog(followUp.getId(), stratTime, endTime);
+            FollowUpLog log = followUpLogMapper.getLog(followUp.getId(), yesStratTime, yesEndTime);
 
             if (log == null) {
                 followUpLog.setManageGrowthFund(manageFund);
