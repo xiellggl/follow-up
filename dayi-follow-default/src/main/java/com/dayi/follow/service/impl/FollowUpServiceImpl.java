@@ -152,9 +152,7 @@ public class FollowUpServiceImpl implements FollowUpService {
         List<String> followIds = new ArrayList<String>();
         followIds.add(followId);
 
-        agentList = followUpMapper.findAgents(searchVo, followIds, dayiDataBaseStr);
-
-        return doAgentMore(agentList);
+        return followUpMapper.findAgents(searchVo, followIds, dayiDataBaseStr);
     }
 
     @Override
@@ -185,9 +183,7 @@ public class FollowUpServiceImpl implements FollowUpService {
     @Override
     @Log(target = OperateLog.class, action = BaseLog.LogAction.SEARCH, what = "跟进人管理", note = "导出全部代理商明细列表")
     public List<FMDetailListVo> findAllAgentList(SearchVo searchVo) {
-        List<FMDetailListVo> agentList = followUpMapper.findAgents(searchVo, null, dayiDataBaseStr);
-
-        return doAgentMore(agentList);
+        return followUpMapper.findAgents(searchVo, null, dayiDataBaseStr);
     }
 
     @Override
