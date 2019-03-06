@@ -266,6 +266,50 @@
                 return false;
             }
         });
+
+
+        //历史最高货款编辑
+        $("#editMaxFundFm").on("click",function(){
+            $(".default_con").hide();
+            $(".edit_con").show();
+
+        });
+
+        //取消
+        $("#cancel").on("click",function () {
+            $(".default_con").show();
+            $(".edit_con").hide();
+        });
+
+        //保存
+        $("#save").on("click",function(){
+            var newHisFund = Number($(".newHisFund").val());
+            var hisMaxFund = Number('${detailVo.hisMaxFund}');
+            console.log(newHisFund)
+
+            if( newHisFund < 0 || newHisFund == null){
+                layer.alert("输入的金额不能为负数哦");
+                return;
+            }
+            if(newHisFund < hisMaxFund){
+                layer.alert("所输金额需大于当前历史最高货款");
+                return;
+            }
+            common.ajax.handle({
+                url: "/agent/hisfund/edit",
+                data: {
+                    agentId: agentId,
+                    hisFund: newHisFund
+                },
+                succback: function (data) {
+                    common.successMsg(data.msg, function () {
+                        console.log(data.msg)
+                    });
+                }
+            });
+
+        })
+
     });
 </script>
 </body>
