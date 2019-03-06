@@ -272,7 +272,6 @@
         $("#editMaxFundFm").on("click",function(){
             $(".default_con").hide();
             $(".edit_con").show();
-
         });
 
         //取消
@@ -285,8 +284,6 @@
         $("#save").on("click",function(){
             var newHisFund = Number($(".newHisFund").val());
             var hisMaxFund = Number('${detailVo.hisMaxFund}');
-            console.log(newHisFund)
-
             if( newHisFund < 0 || newHisFund == null){
                 layer.alert("输入的金额不能为负数哦");
                 return;
@@ -303,13 +300,12 @@
                 },
                 succback: function (data) {
                     common.successMsg(data.msg, function () {
-                        console.log(data.msg)
+                        $(".default_con").show();
+                        $(".edit_con").hide();
                     });
                 }
             });
-
         })
-
     });
 </script>
 </body>
