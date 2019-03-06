@@ -302,6 +302,7 @@
                     common.successMsg(data.msg, function () {
                         $(".default_con").show();
                         $(".edit_con").hide();
+                        window.location.reload();
                     });
                 }
             });
