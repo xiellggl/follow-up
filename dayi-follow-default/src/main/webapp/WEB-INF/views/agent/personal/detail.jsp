@@ -32,6 +32,7 @@
     <link rel="stylesheet" type="text/css" media="all" href="/static/public/daterangepicker3/daterangepicker.css"/>
     <style>
         .customer-info tr th{text-align: right;}
+        .default_con button, .edit_con button { height: 30px;line-height: 10px;margin-left: 25px }
     </style>
 </head>
 <body class="no-skin">
@@ -268,19 +269,19 @@
         });
 
 
-        //历史最高货款编辑
+        //历史最高货款编辑 add by zengxiaobin
         $("#editMaxFundFm").on("click",function(){
             $(".default_con").hide();
             $(".edit_con").show();
         });
 
-        //取消
+        //取消 add by zengxiaobin
         $("#cancel").on("click",function () {
             $(".default_con").show();
             $(".edit_con").hide();
         });
 
-        //保存
+        //保存 add by zengxiaobin
         $("#save").on("click",function(){
             var newHisFund = Number($(".newHisFund").val());
             var hisMaxFund = Number('${detailVo.hisMaxFund}');
