@@ -131,7 +131,10 @@ public class AgentController extends BaseController {
         String agentId = request.getParameter("agentId");
 
         if (!Misc.isNumber(agentId)) return BizResult.fail("代理商ID格式有误！");
-        if (!Misc.isNumber(hisFund)) return BizResult.fail("历史最高货款格式有误！");
+
+        String regex = "^(-?[1-9]\\d*\\.?\\d*)|(-?0\\.\\d*[1-9])|(-?[0])|(-?[0]\\.\\d*)$";
+
+        if (StringUtils.isBlank(hisFund) || !hisFund.matches(regex)) return BizResult.fail("历史最高货款格式有误！");
 
         return followAgentService.updateHisFund(Integer.valueOf(agentId), BigDecimal.valueOf(Double.valueOf(hisFund)));
     }
