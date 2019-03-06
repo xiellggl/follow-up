@@ -1,7 +1,7 @@
 package com.dayi.follow.controller;
 
-import com.dayi.common.util.BigDecimals;
 import com.dayi.common.util.BizResult;
+import com.dayi.common.util.Misc;
 import com.dayi.follow.base.BaseController;
 import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.conf.Constants;
@@ -11,16 +11,15 @@ import com.dayi.follow.enums.BankTypeEnum;
 import com.dayi.follow.enums.ContactTypeEnum;
 import com.dayi.follow.model.follow.AgentContact;
 import com.dayi.follow.model.follow.FollowAgent;
-import com.dayi.follow.model.follow.FollowUp;
 import com.dayi.follow.service.AgentService;
 import com.dayi.follow.service.FollowAgentService;
 import com.dayi.follow.service.FollowUpService;
 import com.dayi.follow.util.CollectionUtil;
 import com.dayi.follow.util.PageUtil;
 import com.dayi.follow.util.StringUtil;
-import com.dayi.follow.vo.*;
+import com.dayi.follow.vo.LoginVo;
+import com.dayi.follow.vo.SearchVo;
 import com.dayi.follow.vo.agent.DetailVo;
-import com.dayi.mybatis.common.util.Misc;
 import com.dayi.mybatis.support.Page;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -131,8 +130,8 @@ public class AgentController extends BaseController {
         String hisFund = request.getParameter("hisFund");
         String agentId = request.getParameter("agentId");
 
-        if (StringUtils.isBlank(agentId)) return BizResult.fail("请选择代理商！");
-        if (StringUtils.isBlank(hisFund)) return BizResult.fail("历史最高货款不能为空！");
+        if (!Misc.isNumber(agentId)) return BizResult.fail("代理商ID格式有误！");
+        if (!Misc.isNumber(hisFund)) return BizResult.fail("历史最高货款格式有误！");
 
         return followAgentService.updateHisFund(Integer.valueOf(agentId), BigDecimal.valueOf(Double.valueOf(hisFund)));
     }
