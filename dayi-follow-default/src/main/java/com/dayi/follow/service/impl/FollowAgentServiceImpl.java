@@ -340,5 +340,20 @@ public class FollowAgentServiceImpl implements FollowAgentService {
 
     }
 
+    @Override
+    public BizResult updateHisFund(Integer agentId, BigDecimal hisFund) {
+        FollowAgent followAgent = followAgentMapper.getFollowAgentByAgentId(agentId);
+        if (followAgent == null) return BizResult.FAIL;
+
+        BigDecimal hisFundOld = followAgent.getHisMaxFund();
+        if (hisFund.compareTo(hisFundOld) == 1) {
+            followAgent.setHisMaxFund(hisFund);
+            followAgentMapper.updateAll(followAgent);
+            return BizResult.SUCCESS;
+        }
+
+        return BizResult.fail("输入数值必须大于当前值！");
+    }
+
 }
 

@@ -9,6 +9,7 @@ import com.dayi.follow.vo.agent.DetailVo;
 import com.dayi.follow.vo.SearchVo;
 import com.dayi.mybatis.support.Page;
 
+import java.math.BigDecimal;
 import java.util.List;
 /**
  * @author xiell
@@ -40,6 +41,8 @@ public interface FollowAgentService {
     BizResult clear(FollowAgent followAgent);
 
     BizResult clearBatch(List<FollowAgent> followAgents);
+
+    BizResult updateHisFund(Integer agentId, BigDecimal hisFund);
 
 
 }

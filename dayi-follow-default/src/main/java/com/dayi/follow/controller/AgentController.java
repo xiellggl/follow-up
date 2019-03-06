@@ -1,5 +1,6 @@
 package com.dayi.follow.controller;
 
+import com.dayi.common.util.BigDecimals;
 import com.dayi.common.util.BizResult;
 import com.dayi.follow.base.BaseController;
 import com.dayi.follow.component.UserComponent;
@@ -22,6 +23,7 @@ import com.dayi.follow.vo.agent.DetailVo;
 import com.dayi.mybatis.common.util.Misc;
 import com.dayi.mybatis.support.Page;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,6 +33,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.math.BigDecimal;
 
 /**
  * @author xiell
@@ -114,6 +117,24 @@ public class AgentController extends BaseController {
         model.addAttribute("customerIntentionTypes", AgentIntenTypeEnum.values());//客户意向度
         model.addAttribute("returnUrl", returnUrl);//返回代理商进来列表的路径
         return "agent/personal/detail";
+    }
+
+    /**
+     * 我的客户-代理商详细-修改历史最高货款
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping("/hisfund/edit")
+    @ResponseBody
+    public BizResult hisFundEdit(HttpServletRequest request) {
+        String hisFund = request.getParameter("hisFund");
+        String agentId = request.getParameter("agentId");
+
+        if (StringUtils.isBlank(agentId)) return BizResult.fail("请选择代理商！");
+        if (StringUtils.isBlank(hisFund)) return BizResult.fail("历史最高货款不能为空！");
+
+        return followAgentService.updateHisFund(Integer.valueOf(agentId), BigDecimal.valueOf(Double.valueOf(hisFund)));
     }
 
     /**
