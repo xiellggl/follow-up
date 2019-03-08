@@ -317,18 +317,12 @@ public class CountServiceImpl implements CountService {
     @Override
     public boolean countFollowUpLog() {
         List<FollowUp> followUps = followUpMapper.findAll();
-        //统计昨天23:30:01到今天17:30:00的数据
-        String stratTime = DateTime.now().plusDays(-1).withHourOfDay(23).withMinuteOfHour(30)
-                .withSecondOfMinute(1).toString("yyyy-MM-dd HH:mm:ss");
 
-        String endTime = DateTime.now().withHourOfDay(17).withMinuteOfHour(30)
+        //查找昨天23:00:00到今天00:00:00是否存在数据
+        String stratTime = DateTime.now().plusDays(-1).withHourOfDay(23).withMinuteOfHour(0)
                 .withSecondOfMinute(0).toString("yyyy-MM-dd HH:mm:ss");
 
-        String yesStratTime = DateTime.now().plusDays(-1).millisOfDay().withMinimumValue()
-                .toString("yyyy-MM-dd HH:mm:ss");
-        String yesEndTime = DateTime.now().plusDays(-1).millisOfDay().withMaximumValue()
-                .toString("yyyy-MM-dd HH:mm:ss");
-
+        String endTime = DateTime.now().secondOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
         Page<FollowUpLog> page = new Page<>();
         page = followUpLogMapper.findLogsByTime(page, stratTime, endTime);
 
@@ -339,7 +333,20 @@ public class CountServiceImpl implements CountService {
 
             endTime = DateTime.now().withHourOfDay(17).withMinuteOfHour(30)
                     .withSecondOfMinute(0).toString("yyyy-MM-dd HH:mm:ss");
+        }else {
+            //统计昨天23:30:01到今天17:30:00的数据
+            stratTime = DateTime.now().plusDays(-1).withHourOfDay(23).withMinuteOfHour(30)
+                    .withSecondOfMinute(1).toString("yyyy-MM-dd HH:mm:ss");
+
+            endTime = DateTime.now().withHourOfDay(17).withMinuteOfHour(30)
+                    .withSecondOfMinute(0).toString("yyyy-MM-dd HH:mm:ss");
         }
+
+        String yesStratTime = DateTime.now().plusDays(-1).millisOfDay().withMinimumValue()
+                .toString("yyyy-MM-dd HH:mm:ss");
+        String yesEndTime = DateTime.now().plusDays(-1).millisOfDay().withMaximumValue()
+                .toString("yyyy-MM-dd HH:mm:ss");
+
 
         for (FollowUp followUp : followUps) {
             FollowUpLog followUpLog = new FollowUpLog();

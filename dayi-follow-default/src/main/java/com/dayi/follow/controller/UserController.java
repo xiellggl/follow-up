@@ -337,14 +337,38 @@ public class UserController extends BaseController {
     public BizResult test(Date date) {
         if (date == null) return BizResult.FAIL;
         List<FollowUp> followUps = followUpMapper.findAll();
+
+        //查找昨天23:00:00到今天00:00:00是否存在数据
+        String stratTime = new DateTime(date).plusDays(-1).withHourOfDay(23).withMinuteOfHour(0)
+                .withSecondOfMinute(0).toString("yyyy-MM-dd HH:mm:ss");
+
+        String endTime = new DateTime(date).secondOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
+        Page<FollowUpLog> page = new Page<>();
+        page = followUpLogMapper.findLogsByTime(page, stratTime, endTime);
+
+        if (page.getTotalRecord() <= 0) {//昨天不是第一天改时间
+            //统计昨天17:30:01到今天17:30:00的数据
+            stratTime = new DateTime(date).plusDays(-1).withHourOfDay(17)
+                    .withMinuteOfHour(30).withSecondOfMinute(1).toString("yyyy-MM-dd HH:mm:ss");
+
+            endTime = new DateTime(date).withHourOfDay(17).withMinuteOfHour(30)
+                    .withSecondOfMinute(0).toString("yyyy-MM-dd HH:mm:ss");
+        }else {
+            //统计昨天23:30:01到今天17:30:00的数据
+            stratTime = new DateTime(date).plusDays(-1).withHourOfDay(23).withMinuteOfHour(30)
+                    .withSecondOfMinute(1).toString("yyyy-MM-dd HH:mm:ss");
+
+            endTime = new DateTime(date).withHourOfDay(17).withMinuteOfHour(30)
+                    .withSecondOfMinute(0).toString("yyyy-MM-dd HH:mm:ss");
+        }
+
+        String yesStratTime = new DateTime(date).plusDays(-1).millisOfDay().withMinimumValue()
+                .toString("yyyy-MM-dd HH:mm:ss");
+        String yesEndTime = new DateTime(date).plusDays(-1).millisOfDay().withMaximumValue()
+                .toString("yyyy-MM-dd HH:mm:ss");
+
+
         for (FollowUp followUp : followUps) {
-            //统计昨天23:30:01到今天23:30:00的数据
-            String stratTime = new DateTime(date).plusDays(-1).millisOfDay().withMaximumValue()
-                    .plusMinutes(-30).plusSeconds(2).toString("yyyy-MM-dd HH:mm:ss");
-
-            String endTime = new DateTime(date).plusDays(1).millisOfDay().withMinimumValue()
-                    .plusMinutes(-30).toString("yyyy-MM-dd HH:mm:ss");
-
             FollowUpLog followUpLog = new FollowUpLog();
 
             int openNum = followAgentMapper.getOpenAccountNum(followUp.getId(), stratTime, endTime, dayiDataBaseStr);
@@ -365,20 +389,15 @@ public class UserController extends BaseController {
             followUpLog.setId(followUpLogMapper.getNewId());
             followUpLog.setFollowId(followUp.getId());
             followUpLog.setDeptId(followUp.getDeptId());
-            followUpLog.setCreateTime(DateUtil.getTime(endTime));
-            followUpLog.setUpdateTime(DateUtil.getTime(endTime));
+            followUpLog.setCreateTime(date);
+            followUpLog.setUpdateTime(date);
 
             List<Organization> orgs = followOrgMapper.findOrgsByfollowId(followUp.getId(), endTime, dayiDataBaseStr);
 
             BigDecimal manageFund = countService.getOrgManageFund(orgs);
             followUpLog.setManageFund(manageFund);
 
-            stratTime = new DateTime(date).plusDays(-1).millisOfDay().withMaximumValue().plusMinutes(-60)
-                    .toString("yyyy-MM-dd HH:mm:ss");
-
-            endTime = new DateTime(date).millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
-
-            FollowUpLog log = followUpLogMapper.getLog(followUp.getId(), stratTime, endTime);
+            FollowUpLog log = followUpLogMapper.getLog(followUp.getId(), yesStratTime, yesEndTime);
 
             if (log == null) {
                 followUpLog.setManageGrowthFund(manageFund);
