@@ -102,13 +102,20 @@
             <tr>
                 <th>分配金额</th>
                 <td>${detailVo.assignFundFm}</td>
-                <th>历史最高货款</th>
-                <td class="default_con">${detailVo.hisMaxFundFm} <button class="btn btn-primary" id="editMaxFundFm">编辑</button></td>
-                <td class="edit_con" style="display: none">
-                    <input type="text" value="${detailVo.hisMaxFund}" class="newHisFund">
-                    <button class="btn btn-primary" id="save">保存</button>
-                    <button class="btn btn-default" id="cancel">取消</button>
-                </td>
+                        <th>历史最高货款</th>
+                <c:choose>
+                    <c:when test="${hisFundEdit eq true}">
+                        <td class="default_con">${detailVo.hisMaxFundFm} <button class="btn btn-primary" id="editMaxFundFm">编辑</button></td>
+                        <td class="edit_con" style="display: none">
+                            <input type="text" value="${detailVo.hisMaxFund}" class="newHisFund">
+                            <button class="btn btn-primary" id="save">保存</button>
+                            <button class="btn btn-default" id="cancel">取消</button>
+                        </td>
+                    </c:when>
+                    <c:otherwise>
+                        <td>${detailVo.hisMaxFundFm}</td>
+                    </c:otherwise>
+                </c:choose>
             </tr>
         </table>
     </div>

@@ -18,6 +18,9 @@
         <c:set var="teamLoginlogAgent" value="true" />
     </c:if>
 </c:forEach>
+<%--用来判断是否显示历史货款编辑--%>
+<c:set var="hisFundEdit" value="false" />
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>

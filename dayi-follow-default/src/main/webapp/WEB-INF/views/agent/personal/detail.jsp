@@ -23,6 +23,9 @@
         <c:set var="loginlogAgent" value="true" />
     </c:if>
 </c:forEach>
+<%--用来判断是否显示历史货款编辑--%>
+<c:set var="hisFundEdit" value="true" />
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -65,6 +68,7 @@
                         </h2>
                     <a href="/agent/list?${returnUrl}" style="float: right;margin: 20px 10px 0 0;" class="btn btn-sm btn-info" type="reset">返回</a>
                     </div>
+                    <
                     <%@include file="../agent_detail_inc.jsp"%>
                 </div>
             </c:if>
