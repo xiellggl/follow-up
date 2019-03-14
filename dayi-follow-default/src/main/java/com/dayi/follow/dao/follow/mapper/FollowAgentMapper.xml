@@ -409,7 +409,7 @@
     <select id="getOpenAccountNum" parameterType="map" resultType="java.lang.Integer">
         SELECT count(create_date) from follow_agent a
         LEFT JOIN (
-            SELECT min(create_date) as create_date,agent from ${assistDataBase}.protocol
+            SELECT min(create_date) as create_date,agent from ${assistDataBase}.finance_agent_apply
             group by agent HAVING create_date between #{startDate}  and #{endDate}
         )b on b.agent=a.agent_id
         WHERE a.follow_id =#{followId}
