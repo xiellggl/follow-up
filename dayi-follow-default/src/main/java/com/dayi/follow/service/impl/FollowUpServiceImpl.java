@@ -2,6 +2,7 @@ package com.dayi.follow.service.impl;
 
 
 import com.dayi.common.util.BigDecimals;
+import com.dayi.common.util.BizResult;
 import com.dayi.component.annotation.Log;
 import com.dayi.component.model.BaseLog;
 import com.dayi.follow.component.UserComponent;
@@ -136,11 +137,7 @@ public class FollowUpServiceImpl implements FollowUpService {
         List<String> followIds = new ArrayList<String>();
         followIds.add(followId);
 
-        page = followUpMapper.findAgents(page, searchVo, followIds, dayiDataBaseStr);
-
-        page.setResults(doAgentMore(page.getResults()));
-
-        return page;
+        return followUpMapper.findAgents(page, searchVo, followIds, dayiDataBaseStr);
     }
 
     @Override
@@ -173,11 +170,7 @@ public class FollowUpServiceImpl implements FollowUpService {
     @Log(target = OperateLog.class, action = BaseLog.LogAction.SEARCH, what = "跟进人管理", note = "查询全部代理商明细列表")
     public Page<FMDetailListVo> findAllAgentPage(Page page, SearchVo searchVo) {
 
-        page = followUpMapper.findAgents(page, searchVo, null, dayiDataBaseStr);
-
-        page.setResults(doAgentMore(page.getResults()));
-
-        return page;
+        return followUpMapper.findAgents(page, searchVo, null, dayiDataBaseStr);
     }
 
     @Override
@@ -267,6 +260,27 @@ public class FollowUpServiceImpl implements FollowUpService {
         }
         return orgs;
     }
+
+    @Override
+    public BizResult updateTotalFundBefore(Integer agentId, BigDecimal newValue) {
+        FollowAgent followAgent = followAgentMapper.getFollowAgentByAgentId(agentId);
+        if (followAgent == null) return BizResult.FAIL;
+
+        BigDecimal fund = followAgent.getTotalFundBefore();
+        if (newValue.compareTo(fund) == 1) {
+            followAgent.setTotalFundBefore(newValue);
+            followAgentMapper.updateAll(followAgent);
+            return BizResult.SUCCESS;
+        }
+        return BizResult.fail("输入数值必须大于当前值！");
+    }
+
+    @Override
+    public BizResult getManageFund(SearchVo searchVo, String followId) {
+        BigDecimal manageFund = followUpMapper.getManageFund(searchVo, followId, dayiDataBaseStr);
+        return BizResult.succ(manageFund);
+    }
+
 
 }
 

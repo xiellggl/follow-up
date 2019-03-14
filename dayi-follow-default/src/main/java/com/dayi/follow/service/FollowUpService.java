@@ -1,11 +1,13 @@
 package com.dayi.follow.service;
 
+import com.dayi.common.util.BizResult;
 import com.dayi.follow.model.follow.FollowUp;
 import com.dayi.follow.vo.SearchVo;
 import com.dayi.follow.vo.followup.FMDetailListVo;
 import com.dayi.follow.vo.followup.FollowUpListVo;
 import com.dayi.mybatis.support.Page;
 
+import java.math.BigDecimal;
 import java.util.List;
 /**
  * @author xiell
@@ -61,6 +63,10 @@ public interface FollowUpService {
 
     //查询所有跟进人
     List<FollowUp> findAll();
+
+    BizResult updateTotalFundBefore(Integer agentId, BigDecimal newValue);
+
+    BizResult getManageFund(SearchVo searchVo,String followId);
 
 
 }

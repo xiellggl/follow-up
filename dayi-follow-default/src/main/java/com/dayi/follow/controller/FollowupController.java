@@ -1,10 +1,13 @@
 package com.dayi.follow.controller;
 
+import com.dayi.common.util.BizResult;
+import com.dayi.common.util.Misc;
 import com.dayi.follow.base.BaseController;
 import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.conf.Constants;
 import com.dayi.follow.model.follow.Department;
 import com.dayi.follow.service.DeptService;
+import com.dayi.follow.service.FollowAgentService;
 import com.dayi.follow.service.FollowUpService;
 import com.dayi.follow.util.PageUtil;
 import com.dayi.follow.vo.LoginVo;
@@ -13,6 +16,7 @@ import com.dayi.follow.vo.export.AgentDetailExport;
 import com.dayi.follow.vo.export.MakerDetailExport;
 import com.dayi.follow.vo.followup.FMDetailListVo;
 import com.dayi.mybatis.support.Page;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +29,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -38,6 +43,8 @@ public class FollowupController extends BaseController {
     FollowUpService followUpService;
     @Resource
     UserComponent userComponent;
+    @Resource
+    FollowAgentService followAgentService;
     @Resource
     DeptService deptService;
     private static Logger logger = LoggerFactory.getLogger(FollowupController.class);
@@ -169,6 +176,29 @@ public class FollowupController extends BaseController {
         AgentDetailExport export = new AgentDetailExport(fileName, title, allAgentList);
         export.exportExcel(request, response);
     }
+
+    @RequestMapping(value = "/edit/totalfundbefore")
+    @ResponseBody
+    public BizResult editAssignFund(HttpServletRequest request) {
+        String value = request.getParameter("totalFundBefore");
+        String agentId = request.getParameter("agentId");
+
+        if (!Misc.isNumber(agentId)) return BizResult.fail("代理商ID格式有误！");
+
+        String regex = "^(-?[1-9]\\d*\\.?\\d*)|(-?0\\.\\d*[1-9])|(-?[0])|(-?[0]\\.\\d*)$";
+
+        if (StringUtils.isBlank(value) || !value.matches(regex)) return BizResult.fail("变更前总资产格式有误！");
+
+        return followUpService.updateTotalFundBefore(Integer.valueOf(agentId), BigDecimal.valueOf(Double.valueOf(value)));
+    }
+
+    @RequestMapping(value = "/get/managefund")
+    @ResponseBody
+    public BizResult getManageFund(SearchVo searchVo, String followId) {
+        return followUpService.getManageFund(searchVo, followId);
+    }
+
+
 
 
 }

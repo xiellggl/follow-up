@@ -9,6 +9,7 @@ import com.dayi.mybatis.support.Page;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -47,4 +48,7 @@ public interface FollowUpMapper extends BaseMapper<FollowUp> {
     List<FollowUp> findAll();
 
     FollowUp getByInviteCode(String inviteCode);
+
+
+    BigDecimal getManageFund(@Param("searchVo") SearchVo searchVo,@Param("followId") String followId, @Param("assistDataBase") String assistDataBase);
 }
