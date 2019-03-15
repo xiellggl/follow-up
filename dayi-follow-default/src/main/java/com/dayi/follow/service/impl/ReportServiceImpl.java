@@ -118,11 +118,6 @@ public class ReportServiceImpl implements ReportService {
         }
 
         BeanUtils.copyProperties(dateVo, weekVo);
-
-        if (weekVo.getInCash() != null && weekVo.getOutCash() != null) {
-            weekVo.setGrowthFund(weekVo.getInCash().subtract(weekVo.getOutCash()));
-        }
-
         return weekVo;
     }
 
@@ -196,9 +191,6 @@ public class ReportServiceImpl implements ReportService {
 
         BeanUtils.copyProperties(dateVo, monthVo);
 
-        if (monthVo.getInCash() != null && monthVo.getOutCash() != null) {
-            monthVo.setGrowthFund(monthVo.getInCash().subtract(monthVo.getOutCash()));
-        }
         return monthVo;
 
     }
@@ -461,17 +453,25 @@ public class ReportServiceImpl implements ReportService {
                 sum.setOutCash(sum.getOutCash().add(item.getOutCash()));//出金
             }
 
-            if (sum.getManageGrowthFund() == null) {
-                sum.setManageGrowthFund(BigDecimal.ZERO.add(item.getManageGrowthFund()));//管理资金净增
+            if (sum.getFund() == null) {
+                sum.setFund(BigDecimal.ZERO.add(item.getFund()));//管理资金规模
             } else {
-                sum.setManageGrowthFund(sum.getManageGrowthFund().add(item.getManageGrowthFund()));//管理资金净增
+                sum.setFund(sum.getFund().add(item.getFund()));//管理资金规模
             }
 
             if (sum.getGrowthFund() == null) {
-                sum.setGrowthFund(BigDecimal.ZERO.add(item.getGrowthFund()));//资金净增
+                sum.setGrowthFund(BigDecimal.ZERO.add(item.getGrowthFund()));//管理资金规模净增
             } else {
-                sum.setGrowthFund(sum.getGrowthFund().add(item.getGrowthFund()));//资金净增
+                sum.setGrowthFund(sum.getGrowthFund().add(item.getGrowthFund()));//管理资金规模净增
             }
+
+            if (sum.getMakerFund() == null) {
+                sum.setMakerFund(BigDecimal.ZERO.add(item.getMakerFund()));//创客管理资金规模
+            } else {
+                sum.setMakerFund(sum.getMakerFund().add(item.getMakerFund()));//创客管理资金规模
+            }
+
+
 
         }
         sum.setName("团队总计");

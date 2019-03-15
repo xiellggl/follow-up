@@ -10,8 +10,11 @@ public class ReportVo {
 
     private Integer openAccountNum;//新开户数
 
-    private BigDecimal growthFund;//资金净增
-    private String growthFundFm;//资金净增（格式化：显示前两位和小数点位，其余用*标识）
+    private BigDecimal growthFund;//资产规模净增
+    private String growthFundFm;//资产规模净增（格式化：显示前两位和小数点位，其余用*标识）
+
+    private BigDecimal fund;//管理资产规模
+    private String fundFm;//管理资产规模（格式化：显示前两位和小数点位，其余用*标识）
 
     private BigDecimal inCash;//入金总额
     private String inCashFm;//入金总额（格式化：显示前两位和小数点位，其余用*标识）
@@ -30,8 +33,8 @@ public class ReportVo {
 
     private String name;//姓名
 
-    private BigDecimal manageGrowthFund;//管理资金净增
-    private String manageGrowthFundFm;//管理资金净增
+    private BigDecimal makerFund;//创客管理资产规模
+    private String makerFundFm;//创客管理资产规模
 
     public String getDeptId() {
         return deptId;
@@ -152,24 +155,45 @@ public class ReportVo {
         this.name = name;
     }
 
-    public BigDecimal getManageGrowthFund() {
-        return manageGrowthFund;
+    public BigDecimal getFund() {
+        return fund;
     }
 
-    public void setManageGrowthFund(BigDecimal manageGrowthFund) {
-        this.manageGrowthFund = manageGrowthFund;
+    public void setFund(BigDecimal fund) {
+        this.fund = fund;
     }
 
-    public String getManageGrowthFundFm() {
-        if (this.manageGrowthFund != null) {
-            manageGrowthFundFm = Misc.parseMoney(manageGrowthFund.doubleValue(), 2);
+    public String getFundFm() {
+        if (this.fund != null) {
+            fundFm = Misc.parseMoney(fund.doubleValue(), 2);
         }else {
-            manageGrowthFundFm="0.00";
+            fundFm="0.00";
         }
-        return manageGrowthFundFm;
+        return fundFm;
     }
 
-    public void setManageGrowthFundFm(String manageGrowthFundFm) {
-        this.manageGrowthFundFm = manageGrowthFundFm;
+    public void setFundFm(String fundFm) {
+        this.fundFm = fundFm;
+    }
+
+    public BigDecimal getMakerFund() {
+        return makerFund;
+    }
+
+    public void setMakerFund(BigDecimal makerFund) {
+        this.makerFund = makerFund;
+    }
+
+    public String getMakerFundFm() {
+        if (this.makerFund != null) {
+            makerFundFm = Misc.parseMoney(makerFund.doubleValue(), 2);
+        }else {
+            makerFundFm="0.00";
+        }
+        return makerFundFm;
+    }
+
+    public void setMakerFundFm(String makerFundFm) {
+        this.makerFundFm = makerFundFm;
     }
 }

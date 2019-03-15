@@ -9,9 +9,6 @@ public class ReportDailyVo {
 
     private Integer openAccountNum;//新开户数
 
-    private BigDecimal growthFund;//资金净增
-    private String growthFundFm;//资金净增（格式化：显示前两位和小数点位，其余用*标识）
-
     private BigDecimal inCash;//入金总额
     private String inCashFm;//入金总额（格式化：显示前两位和小数点位，其余用*标识）
 
@@ -29,8 +26,14 @@ public class ReportDailyVo {
 
     private String name;//姓名
 
-    private BigDecimal manageGrowthFund;//管理资金净增
-    private String manageGrowthFundFm;//管理资金净增
+    private BigDecimal fund;//管理资金规模
+    private String fundFm;//管理资金规模
+
+    private BigDecimal growthFund;//管理资金规模净增
+    private String growthFundFm;//管理资金规模净增
+
+    private BigDecimal makerFund;//创客管理资金规模
+    private String makerFundFm;//创客管理资金规模
 
     public String getDeptId() {
         return deptId;
@@ -151,24 +154,45 @@ public class ReportDailyVo {
         this.name = name;
     }
 
-    public BigDecimal getManageGrowthFund() {
-        return manageGrowthFund;
+    public BigDecimal getMakerFund() {
+        return makerFund;
     }
 
-    public void setManageGrowthFund(BigDecimal manageGrowthFund) {
-        this.manageGrowthFund = manageGrowthFund;
+    public void setMakerFund(BigDecimal makerFund) {
+        this.makerFund = makerFund;
     }
 
-    public String getManageGrowthFundFm() {
-        if (this.manageGrowthFund != null) {
-            manageGrowthFundFm = Misc.parseMoney(manageGrowthFund.doubleValue(), 2);
+    public String getMakerFundFm() {
+        if (this.makerFund != null) {
+            makerFundFm = Misc.parseMoney(makerFund.doubleValue(), 2);
         }else {
-            manageGrowthFundFm="0.00";
+            makerFundFm="0.00";
         }
-        return manageGrowthFundFm;
+        return makerFundFm;
     }
 
-    public void setManageGrowthFundFm(String manageGrowthFundFm) {
-        this.manageGrowthFundFm = manageGrowthFundFm;
+    public void setMakerFundFm(String makerFundFm) {
+        this.makerFundFm = makerFundFm;
+    }
+
+    public BigDecimal getFund() {
+        return fund;
+    }
+
+    public void setFund(BigDecimal fund) {
+        this.fund = fund;
+    }
+
+    public String getFundFm() {
+        if (this.fund != null) {
+            fundFm = Misc.parseMoney(fund.doubleValue(), 2);
+        }else {
+            fundFm="0.00";
+        }
+        return fundFm;
+    }
+
+    public void setFundFm(String fundFm) {
+        this.fundFm = fundFm;
     }
 }

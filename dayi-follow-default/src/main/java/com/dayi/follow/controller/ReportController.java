@@ -211,7 +211,6 @@ public class ReportController extends BaseController {
      */
     @RequestMapping("/admin/daily")
     public String adminDaily(HttpServletRequest request, Page page, Model model) {
-        LoginVo currVo = userComponent.getCurrUser(request);
 
         String date = request.getParameter("date");
         String deptName = request.getParameter("deptName");

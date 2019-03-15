@@ -17,11 +17,12 @@ public class TeamDailyDetailExport extends AbstractExcel<ReportDailyVo> {
     private Column column1 = addColumn("日期", 4000);
     private Column column2 = addColumn("姓名", 4000);
     private Column column3 = addColumn("今日新开户数", 4000);
-    private Column column4 = addColumn("创客净增资金规模", 4000);
-    private Column column5 = addColumn("入金总额", 3000);
-    private Column column6 = addColumn("入金人数", 3000);
-    private Column column7 = addColumn("实际出金总额", 3000);
-    private Column column8 = addColumn("实际出金人数", 3000);
+    private Column column4 = addColumn("入金总额", 3000);
+    private Column column5 = addColumn("出金总额", 3000);
+    private Column column6 = addColumn("管理资产规模", 4000);
+    private Column column7 = addColumn("资产规模净增", 4000);
+    private Column column8 = addColumn("创客管理资产规模", 4000);
+
 
     public TeamDailyDetailExport(String fileName, String fileTitle, List<ReportDailyVo> datas) {
         super(fileName, fileTitle, datas);
@@ -34,16 +35,16 @@ public class TeamDailyDetailExport extends AbstractExcel<ReportDailyVo> {
         column2.setValue(vo.getName());
         // 今日新开户数
         column3.setValue(vo.getOpenAccountNum());
-        // 今日创客净增资金规模
-        column4.setValue(vo.getManageGrowthFundFm());
         // 网银转入总额
         column5.setValue(vo.getInCashFm());
         // 转出到卡总额
-        column6.setValue(vo.getInCashNum());
-        // 入金人数
-        column7.setValue(vo.getOutCashFm());
-        // 出金人数
-        column8.setValue(vo.getOutCashNum());
+        column6.setValue(vo.getOutCashFm());
+        // 管理资产规模
+        column7.setValue(vo.getFundFm());
+        // 资产规模净增
+        column8.setValue(vo.getGrowthFundFm());
+        //创客管理资产规模
+        column4.setValue(vo.getMakerFundFm());
     }
 }
 

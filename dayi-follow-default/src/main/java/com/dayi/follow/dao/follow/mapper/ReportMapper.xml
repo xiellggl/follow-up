@@ -21,8 +21,9 @@
 
     <select id="findTeamDaily" parameterType="map" resultType="com.dayi.follow.vo.report.ReportDailyVo">
         select date(create_time)date,fd.name deptName,sum(open_account_num)openAccountNum,
-                sum(manage_growth_fund)manageGrowthFund,sum(in_cash)inCash,sum(in_cash_num)inCashNum,
-                sum(out_cash)outCash,sum(out_cash_num)outCashNum
+                sum(maker_fund)makerFund,sum(in_cash)inCash,sum(in_cash_num)inCashNum,
+                sum(out_cash)outCash,sum(out_cash_num)outCashNum,sum(fund)fund,
+                sum(growth_fund)growthFund
         from follow_up_log
         left join (
               SELECT name,id from department
@@ -53,7 +54,8 @@
     <select id="getWeek" parameterType="map" resultType="com.dayi.follow.vo.report.MyWeekVo">
         SELECT dept_id,b.name deptName,c.name ,follow_id,
               sum(open_account_num)openAccountNum,sum(in_cash)inCash,
-              sum(out_cash)outCash,sum(manage_growth_fund)manageGrowthFund
+              sum(out_cash)outCash,sum(maker_fund)makerFund,
+              sum(fund)fund,sum(growth_fund)growthFund
         from follow_up_log a
         left join (
         SELECT id,name from department
@@ -68,8 +70,9 @@
     </select>
 
     <select id="findTeamWeek" parameterType="map" resultType="com.dayi.follow.vo.report.ReportVo">
-        select follow_id,dept_id,c.name ,sum(open_account_num)openAccountNum,sum(manage_growth_fund)manageGrowthFund,
-                sum(in_cash)inCash,sum(in_cash_num)inCashNum,sum(out_cash)outCash,sum(out_cash_num)outCashNum
+        select follow_id,dept_id,c.name ,sum(open_account_num)openAccountNum,sum(maker_fund)makerFund,
+                sum(in_cash)inCash,sum(in_cash_num)inCashNum,sum(out_cash)outCash,sum(out_cash_num)outCashNum,
+                sum(fund)fund,sum(growth_fund)growthFund
         from follow_up_log a
         left join (
             SELECT name,id from department
@@ -87,7 +90,8 @@
     <select id="getMonth" parameterType="map" resultType="com.dayi.follow.vo.report.MyMonthVo">
         SELECT dept_id,b.name deptName,c.name ,follow_id,
         sum(open_account_num)openAccountNum,sum(in_cash)inCash,
-        sum(out_cash)outCash,sum(manage_growth_fund)manageGrowthFund
+        sum(out_cash)outCash,sum(maker_fund)makerFund,
+        sum(fund)fund,sum(growth_fund)growthFund
         from follow_up_log a
         left join (
         SELECT id,name from department
@@ -103,7 +107,7 @@
 
     <select id="findTeamMonth" parameterType="map" resultType="com.dayi.follow.vo.report.ReportVo">
         select follow_id,dept_id,b.name deptName,c.name,sum(open_account_num)openAccountNum,
-                sum(manage_growth_fund)manageGrowthFund,
+                sum(maker_fund)makerFund,sum(fund)fund,sum(growth_fund)growthFund,
                 sum(in_cash)inCash,sum(out_cash)outCash
         from follow_up_log a
         left join (
@@ -178,15 +182,9 @@
         ORDER BY c.id asc , a.follow_id asc
     </select>
 
-    <select id="getLastManageFund" parameterType="map" resultType="java.math.BigDecimal">
-        SELECT IFNULL(sum(manage_fund),0) FROM follow_up_log
-        WHERE  create_time BETWEEN #{startDate} and #{endDate}
-        and follow_id=#{followId}
-    </select>
-
     <select id="findAdminDaily" parameterType="map" resultType="com.dayi.follow.vo.report.ReportVo">
         SELECT date(create_time)date,b.name deptName,dept_id ,sum(open_account_num)openAccountNum,
-                sum(manage_growth_fund)manageGrowthFund,sum(in_cash)inCash,sum(in_cash_num)inCashNum,
+                sum(maker_fund)makerGrowthFund,sum(in_cash)inCash,sum(in_cash_num)inCashNum,
                 sum(out_cash)outCash,sum(out_cash_num)outCashNum
         from follow_up_log  a
         left join(
@@ -203,7 +201,7 @@
 
     <select id="findAdminDailyDetail" parameterType="map" resultType="com.dayi.follow.vo.report.ReportDailyVo">
         SELECT date(create_time)date,b.name deptName,c.name,dept_id ,open_account_num,
-        manage_growth_fund,in_cash,in_cash_num,
+        maker_growth_fund,in_cash,in_cash_num,
         out_cash,out_cash_num
         from follow_up_log  a
         left join(
