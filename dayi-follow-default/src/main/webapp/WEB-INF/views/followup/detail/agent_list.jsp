@@ -155,7 +155,7 @@
 
                             <c:if test="${empty page.results}">
                                 <tr>
-                                    <td colspan="11" class="no_data">暂无数据</td>
+                                    <td colspan="12" class="no_data">暂无数据</td>
                                 </tr>
                             </c:if>
 

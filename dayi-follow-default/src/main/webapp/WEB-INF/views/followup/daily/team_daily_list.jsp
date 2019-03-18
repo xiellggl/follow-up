@@ -66,7 +66,7 @@
                                     </a>
                                 </th>
                                 <th class="hidden-xs">
-                                    资产规模净值
+                                    管理资产规模净值
                                     <a href="#" data-toggle="tooltip" title="环比历史最高，当前管理资产规模 - 历史最高资产规模">
                                         <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
                                     </a>
