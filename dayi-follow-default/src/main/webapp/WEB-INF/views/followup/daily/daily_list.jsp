@@ -4,7 +4,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8" />
-    <title>我的日报</title>
+    <title>销售报表-销售日报</title>
     <%@include file="/inc/followup/csslink.jsp"%>
     <link rel="stylesheet" type="text/css" media="all" href="/static/public/daterangepicker3/daterangepicker.css" />
 </head>
@@ -20,8 +20,8 @@
                         <i class="ace-icon fa fa-home home-icon"></i>
                         <a href="/">首页</a>
                     </li>
-                    <li>个人报表</li>
-                    <li class="active">我的日报</li>
+                    <li>销售报表</li>
+                    <li class="active">销售日报</li>
                 </ul>
             </div>
             <div class="page-content">
@@ -51,12 +51,27 @@
                             <tr>
                                 <th>日期</th>
                                 <th class="hidden-xs">所在团队</th>
-                                <th class="hidden-xs">今日新开户</th>
-                                <th class="hidden-xs">创客净增资金规模</th>
+                                <th class="hidden-xs">今日新开户数</th>
                                 <th class="hidden-xs">入金总额</th>
-                                <th>入金人数</th>
-                                <th class="hidden-xs">实际出金总额</th>
-                                <th>实际出金人数</th>
+                                <th class="hidden-xs">出金总额</th>
+                                <th>
+                                    管理资产规模
+                                    <a href="#" data-toggle="tooltip" title="名下所有代理商的总货款之和（从分配时算起）">
+                                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                                    </a>
+                                </th>
+                                <th class="hidden-xs">
+                                    管理资产规模净值
+                                    <a href="#" data-toggle="tooltip" title="环比历史最高，当前管理资产规模 - 历史最高资产规模">
+                                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                                    </a>
+                                </th>
+                                <th>
+                                    创客管理资产规模
+                                    <a href="#" data-toggle="tooltip" title="创客名下所有代理商的协议资金之和">
+                                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                                    </a>
+                                </th>
                             </tr>
                             </thead>
                             <tbody>

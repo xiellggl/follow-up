@@ -52,11 +52,31 @@
                                 <th>日期</th>
                                 <th class="hidden-xs">团队名称</th>
                                 <th class="hidden-xs">今日新开户</th>
-                                <th class="hidden-xs">创客净增资金规模</th>
                                 <th class="hidden-xs">入金总额</th>
-                                <th>入金人数</th>
-                                <th class="hidden-xs">实际出金总额</th>
-                                <th>实际出金人数</th>
+                                <th class="hidden-xs">
+                                    出金总额
+                                    <a href="#" data-toggle="tooltip" title="由实际出金计算所得">
+                                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                                    </a>
+                                </th>
+                                <th class="hidden-xs">
+                                    管理资产规模
+                                    <a href="#" data-toggle="tooltip" title="名下所有代理商的总货款之和（从分配时算起）">
+                                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                                    </a>
+                                </th>
+                                <th class="hidden-xs">
+                                    管理资产规模净值
+                                    <a href="#" data-toggle="tooltip" title="环比历史最高，当前管理资产规模 - 历史最高资产规模">
+                                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                                    </a>
+                                </th>
+                                <th class="hidden-xs">
+                                    创客管理资产规模
+                                    <a href="#" data-toggle="tooltip" title="创客名下所有代理商的协议资金（代理中）之和">
+                                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                                    </a>
+                                </th>
                                 <th>操作</th>
                             </tr>
                             </thead>

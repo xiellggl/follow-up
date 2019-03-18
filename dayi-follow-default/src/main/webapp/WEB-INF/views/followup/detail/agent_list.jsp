@@ -8,6 +8,11 @@
     <title>代理商跟进人查询</title>
     <%@include file="/inc/followup/csslink.jsp"%>
     <link rel="stylesheet" type="text/css" media="all" href="/static/public/daterangepicker3/daterangepicker.css"/>
+    <style>
+        .edit-total-before{
+
+        }
+    </style>
 </head>
 <body class="no-skin">
 <%@include file="/inc/followup/topbar.jsp"%>
@@ -142,6 +147,7 @@
                                 <th class="hidden-xs">变更日期</th>
                                 <th>变更前总资产</th>
                                 <th>当前总资产</th>
+                                <th>管理资产规模</th>
                                 <th>代理商服务费</th>
                             </tr>
                             </thead>
@@ -149,7 +155,7 @@
 
                             <c:if test="${empty page.results}">
                                 <tr>
-                                    <td colspan="11" class="no_data">暂无数据</td>
+                                    <td colspan="12" class="no_data">暂无数据</td>
                                 </tr>
                             </c:if>
 
@@ -173,8 +179,19 @@
                                             <%--变更日期--%>
                                         <td class="hidden-xs"><fmt:formatDate value="${item.changeDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                             <%--变更前总资产--%>
-                                        <td><fmt:formatNumber value="${item.totalFundBefore}" pattern="#,##0.##" type="number"/></td>
+                                        <td class="beforeCon">
+                                            <fmt:formatNumber value="${item.totalFundBefore}" pattern="#,##0.##" type="number"/>
+                                            <button class="btn btn-primary totalBefore" style="height: 20px;line-height: 2px;float: right;">编辑</button>
+                                        </td>
+                                        <td class="edit_con" style="display: none">
+                                            <input type="text" value="${item.totalFundBefore}" class="newBeforeBalance" style="padding: 0">
+                                            <button class="btn btn-primary save" style="height: 20px;line-height: 2px" data-id="${item.id}">保存</button>
+                                            <%--<button class="btn btn-default" class="cancel">取消</button>--%>
+                                        </td>
+
                                             <%--当前总资产--%>
+                                        <td><fmt:formatNumber value="${item.totalFund}" pattern="#,##0.##" type="number"/></td>
+                                            <%--管理资产规模--%>
                                         <td><fmt:formatNumber value="${item.totalFund}" pattern="#,##0.##" type="number"/></td>
                                             <%--代理商服务费--%>
                                         <td><fmt:formatNumber value="${item.interest}" pattern="#,##0.##" type="number"/></td>
@@ -218,6 +235,32 @@
         $('.dates').on('cancel.daterangepicker', function (ev, picker) {
             $(this).val('');
         });
+
+        //编辑变更前总资产（button有两个class属性，导致jquery无法获取到Dom对象）
+        $(".totalBefore").on("click",function(){
+            $(this).parents('.beforeCon').hide();   //隐藏
+            $(this).parents('.beforeCon').siblings('.edit_con').show();  //进入编辑状态
+        });
+
+        //保存
+        $(".save").on("click",function(){
+            var id = $(this).attr("data-id");
+            var newBeforeBalance = Number($(".newBeforeBalance").val());
+            console.log(id);
+            console.log(newBeforeBalance);
+
+            //ajax请求
+
+
+            //请求成功恢复到默认状态
+            $(this).parents('.beforeCon').show;   //隐藏
+            $(this).parents('.edit_con').siblings('.beforeCon').show();  //进入编辑状态
+
+
+
+        });
+
+
 
     });
 </script>

@@ -4,7 +4,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8"/>
-    <title>个人报表-我的周报</title>
+    <title>销售报表-销售周报</title>
     <%@include file="/inc/followup/csslink.jsp" %>
     <link rel="stylesheet" type="text/css" media="all" href="/static/public/flexoCalendar/flexoCalendar.css"/>
 </head>
@@ -20,8 +20,8 @@
                         <i class="ace-icon fa fa-home home-icon"></i>
                         <a href="/">首页</a>
                     </li>
-                    <li>个人报表</li>
-                    <li class="active">我的周报</li>
+                    <li>销售报表</li>
+                    <li class="active">销售周报</li>
                 </ul><!-- /.breadcrumb -->
             </div>
             <div class="page-content">
@@ -58,10 +58,26 @@
                             <tr>
                                 <th>姓名</th>
                                 <th>本周新开户</th>
-                                <th>创客管理资金净增</th>
                                 <th>本周入金总额</th>
                                 <th>本周出金总额</th>
-                                <th>本周资金净增</th>
+                                <th>
+                                    管理资产规模
+                                    <a href="#" data-toggle="tooltip" title="名下所有代理商的总货款之和（从分配时算起）">
+                                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                                    </a>
+                                </th>
+                                <th>
+                                    管理资产规模净值
+                                    <a href="#" data-toggle="tooltip" title="环比历史最高，当前管理资产规模 - 历史最高资产规模">
+                                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                                    </a>
+                                </th>
+                                <th>
+                                    创客管理资产规模
+                                    <a href="#" data-toggle="tooltip" title="创客名下所有代理商的协议资金之和">
+                                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                                    </a>
+                                </th>
                             </tr>
                             </thead>
                             <tbody>
@@ -77,6 +93,7 @@
                                         <td>${weekVo.manageGrowthFundFm}</td>
                                         <td>${weekVo.inCashFm}</td>
                                         <td>${weekVo.outCashFm}</td>
+                                        <td>${weekVo.growthFundFm}</td>
                                         <td>${weekVo.growthFundFm}</td>
                                     </tr>
                             </c:if>

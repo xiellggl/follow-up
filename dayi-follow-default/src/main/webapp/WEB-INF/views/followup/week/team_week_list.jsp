@@ -58,10 +58,26 @@
                             <tr>
                                 <th>姓名</th>
                                 <th>本周新开户</th>
-                                <th>创客管理资金净增</th>
                                 <th>本周入金总额</th>
                                 <th>本周出金总额</th>
-                                <th>本周资金净增</th>
+                                <th>
+                                    管理资产规模
+                                    <a href="#" data-toggle="tooltip" title="名下所有代理商的总货款之和（从分配时算起）">
+                                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                                    </a>
+                                </th>
+                                <th>
+                                    资产规模净值
+                                    <a href="#" data-toggle="tooltip" title="环比历史最高，当前管理资产规模 - 历史最高资产规模">
+                                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                                    </a>
+                                </th>
+                                <th>
+                                    创客资产规模
+                                    <a href="#" data-toggle="tooltip" title="创客名下所有代理商的协议资金之和">
+                                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                                    </a>
+                                </th>
                             </tr>
                             </thead>
                             <tbody>
@@ -78,6 +94,7 @@
                                         <td>${item.manageGrowthFundFm}</td>
                                         <td>${item.inCashFm}</td>
                                         <td>${item.outCashFm}</td>
+                                        <td>${item.growthFundFm}</td>
                                         <td>${item.growthFundFm}</td>
                                     </tr>
                                 </c:forEach>
