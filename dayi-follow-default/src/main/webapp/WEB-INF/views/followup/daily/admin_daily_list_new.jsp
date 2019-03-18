@@ -74,13 +74,12 @@
                             <thead>
                             <tr>
                                 <th>日期</th>
-                                <th>团队名称</th>
-                                <th>今日新开户</th>
-                                <th>创客净增资金规模</th>
-                                <th>入金总额</th>
-                                <th>入金人数</th>
-                                <th>实际出金总额</th>
-                                <th>实际出金人数</th>
+                                <th>客户来源</th>
+                                <th>今日入金</th>
+                                <th>今日出金</th>
+                                <th>今日净增</th>
+                                <th>管理资产规模</th>
+                                <th>资产管理规模净值</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
@@ -101,7 +100,6 @@
                                             <td>${item.inCash}</td>
                                             <td>${item.inCashNum}</td>
                                             <td>${item.outCash}</td>
-                                            <td>${item.outCashNum}</td>
                                         <td>
                                             <a href="./daily/detail?deptId=${item.deptId}&date=${item.date}">
                                                 <i class="ace-icon fa fa-external-link"></i> 查看

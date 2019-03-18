@@ -58,10 +58,26 @@
                             <tr>
                                 <th>姓名</th>
                                 <th>本月新开户</th>
-                                <th>创客管理资金净增</th>
                                 <th>本月入金总额</th>
                                 <th>本月出金总额</th>
-                                <th>本月资金净增</th>
+                                <th>
+                                    管理资产规模
+                                    <a href="#" data-toggle="tooltip" title="名下所有代理商的总货款之和（从分配时算起）">
+                                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                                    </a>
+                                </th>
+                                <th>
+                                    资产规模净值
+                                    <a href="#" data-toggle="tooltip" title="环比历史最高，当前管理资产规模 - 历史最高资产规模">
+                                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                                    </a>
+                                </th>
+                                <th>
+                                    创客管理资产规模
+                                    <a href="#" data-toggle="tooltip" title="创客名下所有代理商的协议资金之和">
+                                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                                    </a>
+                                </th>
                             </tr>
                             </thead>
                             <tbody>
@@ -79,11 +95,15 @@
                                     <td>${item.inCashFm}</td>
                                     <td>${item.outCashFm}</td>
                                     <td>${item.growthFundFm}</td>
+                                    <td>${item.growthFundFm}</td>
                                 </tr>
                                 </c:forEach>
                             </c:if>
                             </tbody>
                         </table>
+                        <div>
+                            历史最高资产规模： <span>15586.36</span>
+                        </div>
                     </div>
                 </div>
             </div>
