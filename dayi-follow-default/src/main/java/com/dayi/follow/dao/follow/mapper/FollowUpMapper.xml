@@ -47,7 +47,8 @@
 
     <select id="findFollowUps" resultType="com.dayi.follow.vo.followup.FollowUpListVo" parameterType="map">
         SELECT a.id,a.name,a.invite_code,e.name deptName,a.user_name,a.disable,count(DISTINCT c.id)agentNum,
-              sum(0.8*d.cargo_interest+d.cargo_interest_puchas)agentFund,a.create_time
+              sum(0.8*d.cargo_interest+d.cargo_interest_puchas+d.useable + d.frozen + d.out_frozen)agentFund,
+              a.create_time,a.his_max_fund
         from follow_up a
         left join (
             select follow_id,agent_id from follow_agent
@@ -98,19 +99,19 @@
     </select>
 
     <sql id="conditions">
-        <if test="''!=searchVo.followUp and null!=searchVo.followUp">
+        <if test="null!=searchVo and ''!=searchVo.followUp and null!=searchVo.followUp">
             and c.name like CONCAT('%','${searchVo.followUp}','%' )
         </if>
-        <if test="''!=searchVo.followUpBefore and null!=searchVo.followUpBefore">
+        <if test="null!=searchVo and ''!=searchVo.followUpBefore and null!=searchVo.followUpBefore">
             and a.follow_up_before like CONCAT('%','${searchVo.followUpBefore}','%' )
         </if>
-        <if test="''!=searchVo.cusName and null!=searchVo.cusName">
+        <if test="null!=searchVo and ''!=searchVo.cusName and null!=searchVo.cusName">
             and b.link_person like CONCAT('%','${searchVo.cusName}','%' )
         </if>
-        <if test="''!=searchVo.mobile and null!=searchVo.mobile">
+        <if test="null!=searchVo and ''!=searchVo.mobile and null!=searchVo.mobile">
             and b.mobile like CONCAT('%','${searchVo.mobile}','%' )
         </if>
-        <if test="null!=searchVo.changeDateStart and ''!= searchVo.changeDateStart and null!=searchVo.changeDateEnd and ''!= searchVo.changeDateEnd">
+        <if test="null!=searchVo and null!=searchVo.changeDateStart and ''!= searchVo.changeDateStart and null!=searchVo.changeDateEnd and ''!= searchVo.changeDateEnd">
             and a.assign_date BETWEEN #{searchVo.changeDateStart} and #{searchVo.changeDateEnd}
         </if>
 
@@ -195,7 +196,7 @@
             and a.follow_id = #{followId}
         </if>
         <include refid="conditions"/>
-        <if test="''!=searchVo.inviteCode and null!=searchVo.inviteCode">
+        <if test="null!=searchVo and ''!=searchVo.inviteCode and null!=searchVo.inviteCode">
             and b.record_invite_code like CONCAT('%','${searchVo.inviteCode}','%' )
         </if>
     </select>

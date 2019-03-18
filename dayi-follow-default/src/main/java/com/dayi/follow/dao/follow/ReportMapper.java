@@ -31,8 +31,31 @@ public interface ReportMapper extends BaseMapper<BaseVo> {
 
     List<ReportVo> findTeamMonth(@Param("deptId") String deptId, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
-    //管理员日报
-    Page<ReportVo> findAdminDaily(Page page, @Param("deptName") String deptName, @Param("startDate") String startDate, @Param("endDate") String endDate);
+    //获取指定时间内的报表统计
+    ReportVo getReport(@Param("startDate") String startDate, @Param("endDate") String endDate);
+
+    //获取指定时间内创客和城市服务商入金
+    BigDecimal getMakerInCash(@Param("startDate") String startDate, @Param("endDate") String endDate);
+    //获取指定时间内创客和城市服务商出金
+    BigDecimal getMakerOutCash(@Param("startDate") String startDate, @Param("endDate") String endDate);
+    //获取指定时间内创客和城市服务商管理资产规模
+    BigDecimal getManageFund(@Param("startDate") String startDate, @Param("endDate") String endDate);
+
+
+    //获取指定时间内无跟进人和创客的代理商入金
+    BigDecimal getOtherInCash(@Param("startDate") String startDate, @Param("endDate") String endDate);
+    //获取指定时间内无跟进人和创客的代理商出金
+    BigDecimal getOtherOutCash(@Param("startDate") String startDate, @Param("endDate") String endDate);
+    //获取指定时间内无跟进人和创客的代理商管理资产规模
+    BigDecimal getOtherManageFund(@Param("startDate") String startDate, @Param("endDate") String endDate);
+
+    //获取指定时间内跟进人的代理商入金
+    BigDecimal getFollowUpInCash(@Param("startDate") String startDate, @Param("endDate") String endDate);
+    //获取指定时间内跟进人的代理商出金
+    BigDecimal getFollowUpOutCash(@Param("startDate") String startDate, @Param("endDate") String endDate);
+    //获取指定时间内跟进人的代理商管理资产规模
+    BigDecimal getFollowUpManageFund(@Param("startDate") String startDate, @Param("endDate") String endDate);
+
 
     //管理员日报详情
     Page<ReportDailyVo> findAdminDailyDetail(Page page, @Param("deptId") String deptId, @Param("startDate") String startDate, @Param("endDate") String endDate);

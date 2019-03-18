@@ -2,21 +2,20 @@ package com.dayi.follow.service.impl;
 
 
 import com.dayi.common.util.BigDecimals;
+import com.dayi.common.util.NameItem;
 import com.dayi.follow.dao.dayi.AgentMapper;
 import com.dayi.follow.dao.dayi.CountMapper;
 import com.dayi.follow.dao.dayi.OrgMapper;
 import com.dayi.follow.dao.follow.*;
 import com.dayi.follow.enums.OrgTypeEnum;
 import com.dayi.follow.enums.SwitchStatusEnum;
-import com.dayi.follow.model.follow.Department;
-import com.dayi.follow.model.follow.FollowUp;
-import com.dayi.follow.model.follow.FollowUpLog;
-import com.dayi.follow.model.follow.Organization;
+import com.dayi.follow.model.follow.*;
 import com.dayi.follow.service.CountService;
 import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.OrgService;
 import com.dayi.follow.vo.index.*;
 import com.dayi.follow.vo.org.OrgDataVo;
+import com.dayi.follow.vo.report.ReportVo;
 import com.dayi.mybatis.support.Page;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +24,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.xml.transform.Source;
 import java.lang.annotation.Retention;
 import java.math.BigDecimal;
 import java.util.*;
@@ -52,6 +52,8 @@ public class CountServiceImpl implements CountService {
     private OrgMapper orgMapper;
     @Resource
     private FollowUpLogMapper followUpLogMapper;
+    @Resource
+    private SourceReportMapper sourceReportMapper;
     @Resource
     private OrgService orgService;
     @Value("${follow.dataBase}")
@@ -333,7 +335,7 @@ public class CountServiceImpl implements CountService {
 
             endTime = DateTime.now().withHourOfDay(17).withMinuteOfHour(30)
                     .withSecondOfMinute(0).toString("yyyy-MM-dd HH:mm:ss");
-        }else {
+        } else {
             //统计昨天23:30:01到今天17:30:00的数据
             stratTime = DateTime.now().plusDays(-1).withHourOfDay(23).withMinuteOfHour(30)
                     .withSecondOfMinute(1).toString("yyyy-MM-dd HH:mm:ss");
@@ -374,19 +376,86 @@ public class CountServiceImpl implements CountService {
 
             List<Organization> orgs = followOrgMapper.findOrgsByfollowId(followUp.getId(), endTime, dayiDataBaseStr);
 
-            BigDecimal manageFund = this.getOrgManageFund(orgs);
-            followUpLog.setManageFund(manageFund);
+            BigDecimal makerFund = this.getOrgManageFund(orgs);
+            followUpLog.setMakerFund(makerFund);
+
+            BigDecimal fund = followUpMapper.getManageFund(null, followUp.getId(), dayiDataBaseStr);
+            followUpLog.setManageFund(fund);
 
             FollowUpLog log = followUpLogMapper.getLog(followUp.getId(), yesStratTime, yesEndTime);
 
             if (log == null) {
-                followUpLog.setManageGrowthFund(manageFund);
+                followUpLog.setMakerGrowthFund(makerFund);
+                followUpLog.setManageGrowthFund(fund);
             } else {
-                followUpLog.setManageGrowthFund(manageFund.subtract(log.getManageFund()));
+                followUpLog.setMakerGrowthFund(makerFund.subtract(log.getMakerFund()));
+                followUpLog.setManageGrowthFund(fund.subtract(log.getManageFund()));
             }
             followUpLogMapper.add(followUpLog);
         }
+
+        countSourceReport();
+
         return true;
+    }
+
+    @Override
+    public void countSourceReport() {
+        String startDate = DateTime.now().plusDays(-1).withHourOfDay(17).withMinuteOfHour(30).withSecondOfMinute(1).toString();
+        String endDate = DateTime.now().withHourOfDay(17).withMinuteOfHour(30).withSecondOfMinute(0).toString();
+
+        String yesStartDate = DateTime.now().plusDays(-1).withHourOfDay(17).withMinuteOfHour(0).withSecondOfMinute(0).toString();
+        String yesEndDate = DateTime.now().plusDays(-1).withHourOfDay(18).withMinuteOfHour(0).withSecondOfMinute(0).toString();
+
+        Iterator<NameItem> iterator = SourceReport.TYPE_ALL.iterator();
+
+        BigDecimal inCash = null;
+        BigDecimal outCash = null;
+        BigDecimal manageFund = null;
+        BigDecimal lastManageFund = null;
+
+        while (iterator.hasNext()) {
+            SourceReport sr = new SourceReport();
+            NameItem next = iterator.next();
+            if (SourceReport.TYPE_ZG.getId() == next.getId()) {//资管中心
+                inCash = reportMapper.getFollowUpInCash(startDate, endDate);
+                outCash = reportMapper.getFollowUpOutCash(startDate, endDate);
+                manageFund = reportMapper.getFollowUpManageFund(startDate, endDate);
+
+                SourceReport preSR = sourceReportMapper.getByTime(SourceReport.TYPE_ZG.getId(), yesStartDate, yesEndDate);
+                lastManageFund = preSR.getManageFund();
+                sr.setType(SourceReport.TYPE_ZG.getId());
+            }
+            if (SourceReport.TYPE_MAKER.getId() == next.getId()) {//创客
+                inCash = reportMapper.getMakerInCash(startDate, endDate);
+                outCash = reportMapper.getMakerOutCash(startDate, endDate);
+                manageFund = reportMapper.getManageFund(startDate, endDate);
+
+                SourceReport preSR = sourceReportMapper.getByTime(SourceReport.TYPE_MAKER.getId(), yesStartDate, yesEndDate);
+                lastManageFund = preSR.getManageFund();
+                sr.setType(SourceReport.TYPE_MAKER.getId());
+
+
+            }
+            if (SourceReport.TYPE_OTHER.getId() == next.getId()) {//其它
+                inCash = reportMapper.getOtherInCash(startDate, endDate);
+                outCash = reportMapper.getOtherOutCash(startDate, endDate);
+                manageFund = reportMapper.getOtherManageFund(startDate, endDate);
+
+                SourceReport preSR = sourceReportMapper.getByTime(SourceReport.TYPE_OTHER.getId(), yesStartDate, yesEndDate);
+                lastManageFund = preSR.getManageFund();
+                sr.setType(SourceReport.TYPE_OTHER.getId());
+            }
+
+            sr.setInCash(inCash);
+            sr.setOutCash(outCash);
+            sr.setGrowthFund(inCash.subtract(outCash));
+            sr.setManageFund(manageFund);
+            sr.setManageGrowthFund(manageFund.subtract(lastManageFund));
+
+            sourceReportMapper.add(sr);
+
+        }
     }
 
     @Override

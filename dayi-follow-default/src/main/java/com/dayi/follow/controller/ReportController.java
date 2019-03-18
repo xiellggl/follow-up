@@ -4,6 +4,7 @@ import com.dayi.follow.base.BaseController;
 import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.conf.Constants;
 import com.dayi.follow.model.follow.Department;
+import com.dayi.follow.model.follow.SourceReport;
 import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.FollowUpService;
 import com.dayi.follow.service.ReportService;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.transform.Source;
 import java.io.IOException;
 import java.util.List;
 
@@ -210,17 +212,14 @@ public class ReportController extends BaseController {
      * @return
      */
     @RequestMapping("/admin/daily")
-    public String adminDaily(HttpServletRequest request, Page page, Model model) {
+    public String adminDaily(HttpServletRequest request, Model model) {
 
         String date = request.getParameter("date");
-        String deptName = request.getParameter("deptName");
 
-        page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
-
-        page = reportService.findAdminDaily(page, deptName, date);
+        List list = reportService.findAdminDaily(date);
 
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
-        model.addAttribute("page", page);
+        model.addAttribute("list", list);
         request.setAttribute("pageUrl", pageUrl);
         return "/followup/daily/admin_daily_list";
     }

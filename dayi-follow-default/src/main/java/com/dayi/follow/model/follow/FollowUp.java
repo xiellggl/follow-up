@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 
 /**
@@ -36,6 +37,8 @@ public class FollowUp extends BaseModel implements Principal {
     private String roleids;//角色ids
     @NotNull(message = "请选择身份！")
     private Integer identity;//1-跟进人，2-非跟进人
+
+    private BigDecimal hisMaxFund;//历史最高资产规模
 
     public final static NameItem IS_FOLLOWUP=NameItem.valueOf("跟进人",1);
     public final static NameItem NOT_FOLLOWUP=NameItem.valueOf("非跟进人",2);
@@ -148,5 +151,13 @@ public class FollowUp extends BaseModel implements Principal {
 
     public void setUpdateBy(String updateBy) {
         this.updateBy = updateBy;
+    }
+
+    public BigDecimal getHisMaxFund() {
+        return hisMaxFund;
+    }
+
+    public void setHisMaxFund(BigDecimal hisMaxFund) {
+        this.hisMaxFund = hisMaxFund;
     }
 }

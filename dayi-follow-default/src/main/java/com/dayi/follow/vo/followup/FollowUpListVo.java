@@ -29,6 +29,9 @@ public class FollowUpListVo {
     private BigDecimal orgFund;//创客资金
     private String orgFundFm;//格式化创客资金
 
+    private BigDecimal hisMaxFund;//历史最高资金规模
+    private String hisMaxFundFm;//历史最高资金规模
+
     private Date createTime;//创建时间
     private String createTimeFm;
 
@@ -187,5 +190,26 @@ public class FollowUpListVo {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public BigDecimal getHisMaxFund() {
+        return hisMaxFund;
+    }
+
+    public void setHisMaxFund(BigDecimal hisMaxFund) {
+        this.hisMaxFund = hisMaxFund;
+    }
+
+    public String getHisMaxFundFm() {
+        if (hisMaxFund != BigDecimal.ZERO && hisMaxFund != null) {
+            hisMaxFundFm = Misc.parseMoney(hisMaxFund.doubleValue(), 2);
+        } else {
+            hisMaxFundFm = "0.00";
+        }
+        return hisMaxFundFm;
+    }
+
+    public void setHisMaxFundFm(String hisMaxFundFm) {
+        this.hisMaxFundFm = hisMaxFundFm;
     }
 }

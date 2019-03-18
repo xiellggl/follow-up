@@ -21,6 +21,7 @@ import com.dayi.mybatis.support.Page;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -86,6 +87,15 @@ public class FollowUpServiceImpl implements FollowUpService {
 
             BigDecimal orgFund = countService.getOrgManageFund(orgs);
             vo.setOrgFund(orgFund);
+
+            //判断今天是否是本月最后一天，如果是就覆盖
+            int lastDay = DateTime.now().dayOfMonth().withMaximumValue().getDayOfMonth();
+            int today = DateTime.now().getDayOfMonth();
+
+            if (today == lastDay) {
+                BigDecimal manageFund = followUpMapper.getManageFund(null, vo.getId(), dayiDataBaseStr);
+                vo.setHisMaxFund(manageFund);
+            }
         }
 
         return page;

@@ -40,9 +40,9 @@ public class TeamDailyDetailExport extends AbstractExcel<ReportDailyVo> {
         // 转出到卡总额
         column6.setValue(vo.getOutCashFm());
         // 管理资产规模
-        column7.setValue(vo.getFundFm());
+        column7.setValue(vo.getManageFundFm());
         // 资产规模净增
-        column8.setValue(vo.getGrowthFundFm());
+        column8.setValue(vo.getManageGrowthFundFm());
         //创客管理资产规模
         column4.setValue(vo.getMakerFundFm());
     }

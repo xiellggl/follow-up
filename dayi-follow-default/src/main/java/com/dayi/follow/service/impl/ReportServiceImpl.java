@@ -1,14 +1,17 @@
 package com.dayi.follow.service.impl;
 
 import com.dayi.common.util.BigDecimals;
+import com.dayi.follow.dao.dayi.OrgMapper;
 import com.dayi.follow.dao.follow.*;
 import com.dayi.follow.model.follow.FollowUpLog;
+import com.dayi.follow.model.follow.SourceReport;
 import com.dayi.follow.service.CountService;
 import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.ReportService;
 import com.dayi.follow.vo.report.*;
 import com.dayi.mybatis.support.Page;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -17,6 +20,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -38,6 +42,10 @@ public class ReportServiceImpl implements ReportService {
     FollowAgentMapper followAgentMapper;
     @Resource
     FollowUpLogMapper followUpLogMapper;
+    @Resource
+    OrgMapper orgMapper;
+    @Resource
+    SourceReportMapper sourceReportMapper;
     @Resource
     CountService countService;
     @Value("${dayi.dataBase}")
@@ -214,18 +222,10 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public Page<ReportVo> findAdminDaily(Page page, String deptName, String betweenDate) {
-        String startDate = "";
-        String endDate = "";
-        if (!StringUtils.isBlank(betweenDate)) {
-            String[] split = betweenDate.split(" - ");
-            startDate = split[0];
-            endDate = DateTime.parse(split[1]).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
-        }
-
-        page = reportMapper.findAdminDaily(page, deptName, startDate, endDate);
-
-        return page;
+    public List findAdminDaily(String date) {
+        String startDate = DateTime.parse(date).millisOfSecond().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
+        String endDate = DateTime.parse(date).millisOfSecond().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
+        return sourceReportMapper.findByTime(null,startDate,endDate);
     }
 
     @Override
@@ -453,10 +453,10 @@ public class ReportServiceImpl implements ReportService {
                 sum.setOutCash(sum.getOutCash().add(item.getOutCash()));//出金
             }
 
-            if (sum.getFund() == null) {
-                sum.setFund(BigDecimal.ZERO.add(item.getFund()));//管理资金规模
+            if (sum.getManageFund() == null) {
+                sum.setManageFund(BigDecimal.ZERO.add(item.getManageFund()));//管理资金规模
             } else {
-                sum.setFund(sum.getFund().add(item.getFund()));//管理资金规模
+                sum.setManageFund(sum.getManageFund().add(item.getManageFund()));//管理资金规模
             }
 
             if (sum.getGrowthFund() == null) {

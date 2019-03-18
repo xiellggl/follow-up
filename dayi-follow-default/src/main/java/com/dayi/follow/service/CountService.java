@@ -60,4 +60,6 @@ public interface CountService {
 
     boolean countFollowUpLog();
 
+    void countSourceReport();
+
 }

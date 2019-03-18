@@ -7,6 +7,7 @@ package com.dayi.follow.service;
  */
 
 
+import com.dayi.follow.model.follow.SourceReport;
 import com.dayi.follow.vo.report.*;
 import com.dayi.mybatis.support.Page;
 
@@ -41,7 +42,7 @@ public interface ReportService {
     TeamMonthVo countTeamMonth(String deptId, String month);
 
     //管理员日报
-    Page<ReportVo> findAdminDaily(Page page, String deptName, String betweenDate);
+    List findAdminDaily(String betweenDate);
 
     //管理员日报详情
     Page findAdminDailyDetail(Page page, String deptId, String date);

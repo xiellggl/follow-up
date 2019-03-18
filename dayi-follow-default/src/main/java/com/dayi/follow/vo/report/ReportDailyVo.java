@@ -26,11 +26,11 @@ public class ReportDailyVo {
 
     private String name;//姓名
 
-    private BigDecimal fund;//管理资金规模
-    private String fundFm;//管理资金规模
+    private BigDecimal manageFund;//管理资金规模
+    private String manageFundFm;//管理资金规模
 
-    private BigDecimal growthFund;//管理资金规模净增
-    private String growthFundFm;//管理资金规模净增
+    private BigDecimal manageGrowthFund;//管理资金规模净增
+    private String manageGrowthFundFm;//管理资金规模净增
 
     private BigDecimal makerFund;//创客管理资金规模
     private String makerFundFm;//创客管理资金规模
@@ -80,25 +80,46 @@ public class ReportDailyVo {
         this.inCashNum = inCashNum;
     }
 
-    public BigDecimal getGrowthFund() {
-        return growthFund;
+    public BigDecimal getManageFund() {
+        return manageFund;
     }
 
-    public void setGrowthFund(BigDecimal growthFund) {
-        this.growthFund = growthFund;
+    public void setManageFund(BigDecimal manageFund) {
+        this.manageFund = manageFund;
     }
 
-    public String getGrowthFundFm() {
-        if (this.growthFund != null) {
-            growthFundFm = Misc.parseMoney(growthFund.doubleValue(), 2);
+    public String getManageFundFm() {
+        if (this.manageFund != null) {
+            manageFundFm = Misc.parseMoney(manageFund.doubleValue(), 2);
         }else {
-            growthFundFm="0.00";
+            manageFundFm="0.00";
         }
-        return growthFundFm;
+        return manageFundFm;
     }
 
-    public void setGrowthFundFm(String growthFundFm) {
-        this.growthFundFm = growthFundFm;
+    public void setManageFundFm(String manageFundFm) {
+        this.manageFundFm = manageFundFm;
+    }
+
+    public BigDecimal getManageGrowthFund() {
+        return manageGrowthFund;
+    }
+
+    public void setManageGrowthFund(BigDecimal manageGrowthFund) {
+        this.manageGrowthFund = manageGrowthFund;
+    }
+
+    public String getManageGrowthFundFm() {
+        if (this.manageGrowthFund != null) {
+            manageGrowthFundFm = Misc.parseMoney(manageGrowthFund.doubleValue(), 2);
+        }else {
+            manageGrowthFundFm="0.00";
+        }
+        return manageGrowthFundFm;
+    }
+
+    public void setManageGrowthFundFm(String manageGrowthFundFm) {
+        this.manageGrowthFundFm = manageGrowthFundFm;
     }
 
     public BigDecimal getOutCash() {
@@ -175,24 +196,5 @@ public class ReportDailyVo {
         this.makerFundFm = makerFundFm;
     }
 
-    public BigDecimal getFund() {
-        return fund;
-    }
 
-    public void setFund(BigDecimal fund) {
-        this.fund = fund;
-    }
-
-    public String getFundFm() {
-        if (this.fund != null) {
-            fundFm = Misc.parseMoney(fund.doubleValue(), 2);
-        }else {
-            fundFm="0.00";
-        }
-        return fundFm;
-    }
-
-    public void setFundFm(String fundFm) {
-        this.fundFm = fundFm;
-    }
 }

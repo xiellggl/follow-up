@@ -16,6 +16,9 @@ public class FollowUpLog extends BaseModel {
     private Integer inCashNum;//入金人数
     private BigDecimal outCash;//转出到卡总额
     private Integer outCashNum;//出金人数
+    private BigDecimal makerFund;//管理资产规模
+    private BigDecimal makerGrowthFund;//管理资产规模净增
+
     private BigDecimal manageFund;//管理资产规模
     private BigDecimal manageGrowthFund;//管理资产规模净增
 
@@ -73,6 +76,22 @@ public class FollowUpLog extends BaseModel {
 
     public void setOutCashNum(Integer outCashNum) {
         this.outCashNum = outCashNum;
+    }
+
+    public BigDecimal getMakerFund() {
+        return makerFund;
+    }
+
+    public void setMakerFund(BigDecimal makerFund) {
+        this.makerFund = makerFund;
+    }
+
+    public BigDecimal getMakerGrowthFund() {
+        return makerGrowthFund;
+    }
+
+    public void setMakerGrowthFund(BigDecimal makerGrowthFund) {
+        this.makerGrowthFund = makerGrowthFund;
     }
 
     public BigDecimal getManageFund() {

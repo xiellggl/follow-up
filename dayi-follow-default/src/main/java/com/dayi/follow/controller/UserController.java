@@ -394,15 +394,20 @@ public class UserController extends BaseController {
 
             List<Organization> orgs = followOrgMapper.findOrgsByfollowId(followUp.getId(), endTime, dayiDataBaseStr);
 
-            BigDecimal manageFund = countService.getOrgManageFund(orgs);
-            followUpLog.setManageFund(manageFund);
+            BigDecimal makerFund = countService.getOrgManageFund(orgs);
+            followUpLog.setMakerFund(makerFund);
+
+            BigDecimal fund = followUpMapper.getManageFund(null,followUp.getId(),dayiDataBaseStr);
+            followUpLog.setManageFund(fund);
 
             FollowUpLog log = followUpLogMapper.getLog(followUp.getId(), yesStratTime, yesEndTime);
 
             if (log == null) {
-                followUpLog.setManageGrowthFund(manageFund);
+                followUpLog.setMakerGrowthFund(makerFund);
+                followUpLog.setManageGrowthFund(fund);
             } else {
-                followUpLog.setManageGrowthFund(manageFund.subtract(log.getManageFund()));
+                followUpLog.setMakerGrowthFund(makerFund.subtract(log.getMakerFund()));
+                followUpLog.setManageGrowthFund(fund.subtract(log.getManageFund()));
             }
             followUpLogMapper.add(followUpLog);
         }
