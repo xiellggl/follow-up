@@ -57,7 +57,7 @@
             select id,account_id from ${assistDataBase}.agent where del_status!=-1
         )c on c.id =b.agent_id
         LEFT join (
-            SELECT id,cargo_interest,cargo_interest_puchas from ${assistDataBase}.finance_account
+            SELECT id,cargo_interest,cargo_interest_puchas,useable,frozen,out_frozen from ${assistDataBase}.finance_account
         )d on d.id = c.account_id
         left join (
             SELECT  id,name from department

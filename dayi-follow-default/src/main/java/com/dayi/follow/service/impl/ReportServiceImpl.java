@@ -223,9 +223,11 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public List findAdminDaily(String date) {
-        String startDate = DateTime.parse(date).millisOfSecond().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
-        String endDate = DateTime.parse(date).millisOfSecond().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
-        return sourceReportMapper.findByTime(null,startDate,endDate);
+        if (StringUtils.isBlank(date)) return null;
+
+        String startDate = DateTime.parse(date).millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
+        String endDate = DateTime.parse(date).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
+        return sourceReportMapper.findByTime(null, startDate, endDate);
     }
 
     @Override
@@ -454,9 +456,12 @@ public class ReportServiceImpl implements ReportService {
             }
 
             if (sum.getManageFund() == null) {
-                sum.setManageFund(BigDecimal.ZERO.add(item.getManageFund()));//管理资金规模
+                if (item.getManageFund() == null) sum.setManageFund(BigDecimal.ZERO);
+                else
+                    sum.setManageFund(BigDecimal.ZERO.add(item.getManageFund()));//管理资金规模
             } else {
-                sum.setManageFund(sum.getManageFund().add(item.getManageFund()));//管理资金规模
+                if (item.getManageFund() != null)
+                    sum.setManageFund(sum.getManageFund().add(item.getManageFund()));//管理资金规模
             }
 
             if (sum.getGrowthFund() == null) {
