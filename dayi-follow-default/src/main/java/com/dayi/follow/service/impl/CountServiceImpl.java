@@ -389,7 +389,11 @@ public class CountServiceImpl implements CountService {
                 followUpLog.setManageGrowthFund(fund);
             } else {
                 followUpLog.setMakerGrowthFund(makerFund.subtract(log.getMakerFund()));
-                followUpLog.setManageGrowthFund(fund.subtract(log.getManageFund()));
+                if (followUp.getHisMaxFund() != null) {
+                    followUpLog.setManageGrowthFund(fund.subtract(followUp.getHisMaxFund()));
+                } else {
+                    followUpLog.setManageGrowthFund(fund);
+                }
             }
             followUpLogMapper.add(followUpLog);
         }
@@ -404,8 +408,10 @@ public class CountServiceImpl implements CountService {
         String startDate = DateTime.now().plusDays(-1).withHourOfDay(17).withMinuteOfHour(30).withSecondOfMinute(1).toString("yyyy-MM-dd HH:mm:ss");
         String endDate = DateTime.now().withHourOfDay(17).withMinuteOfHour(30).withSecondOfMinute(0).toString("yyyy-MM-dd HH:mm:ss");
 
-        String yesStartDate = DateTime.now().plusDays(-1).withHourOfDay(17).withMinuteOfHour(0).withSecondOfMinute(0).toString("yyyy-MM-dd HH:mm:ss");
-        String yesEndDate = DateTime.now().plusDays(-1).withHourOfDay(18).withMinuteOfHour(0).withSecondOfMinute(0).toString("yyyy-MM-dd HH:mm:ss");
+        String yesStartDate = DateTime.now().plusMonths(-1).dayOfMonth().withMaximumValue().withHourOfDay(17)
+                .withMinuteOfHour(0).withSecondOfMinute(0).toString("yyyy-MM-dd HH:mm:ss");
+        String yesEndDate = DateTime.now().plusMonths(-1).dayOfMonth().withMaximumValue().withHourOfDay(18)
+                .withMinuteOfHour(0).withSecondOfMinute(0).toString("yyyy-MM-dd HH:mm:ss");
 
         Iterator<NameItem> iterator = SourceReport.TYPE_ALL.iterator();
 
