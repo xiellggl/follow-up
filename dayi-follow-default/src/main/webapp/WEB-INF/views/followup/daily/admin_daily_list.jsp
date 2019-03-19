@@ -30,7 +30,7 @@
                         您当前操作
                         <small>
                             <i class="ace-icon fa fa-angle-double-right"></i>
-                            团队日报
+                            管理员日报
                         </small>
                     </h1>
                 </div>
@@ -74,20 +74,34 @@
                             <thead>
                             <tr>
                                 <th>日期</th>
-                                <th>团队名称</th>
-                                <th>今日新开户</th>
-                                <th>创客净增资金规模</th>
-                                <th>入金总额</th>
-                                <th>入金人数</th>
-                                <th>实际出金总额</th>
-                                <th>实际出金人数</th>
+                                <th>客户来源</th>
+                                <th>今日入金</th>
+                                <th>今日出金</th>
+                                <th>
+                                    今日净增
+                                    <a href="#" data-toggle="tooltip" title="今日入金 - 今日出金，可为负数">
+                                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                                    </a>
+                                </th>
+                                <th>
+                                    管理资产规模
+                                    <a href="#" data-toggle="tooltip" title="名下所有代理商的总货款之和（从分配时算起）">
+                                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                                    </a>
+                                </th>
+                                <th>
+                                    资产管理规模净值
+                                    <a href="#" data-toggle="tooltip" title="环比上月资产规模，当前管理资产规模 - 上月资产规模">
+                                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                                    </a>
+                                </th>
                                 <th>操作</th>
                             </tr>
                             </thead>
                             <tbody>
                             <c:if test="${empty page.results}">
                                 <tr>
-                                    <td colspan="9" class="no_data">暂无数据记录</td>
+                                    <td colspan="8" class="no_data">暂无数据记录</td>
                                 </tr>
                             </c:if>
 
@@ -101,10 +115,9 @@
                                             <td>${item.inCash}</td>
                                             <td>${item.inCashNum}</td>
                                             <td>${item.outCash}</td>
-                                            <td>${item.outCashNum}</td>
                                         <td>
                                             <a href="./daily/detail?deptId=${item.deptId}&date=${item.date}">
-                                                <i class="ace-icon fa fa-external-link"></i> 查看
+                                                <i class="ace-icon fa fa-external-link"></i> 查看详情
                                             </a>
                                         </td>
                                     </tr>
