@@ -401,11 +401,11 @@ public class CountServiceImpl implements CountService {
 
     @Override
     public void countSourceReport() {
-        String startDate = DateTime.now().plusDays(-1).withHourOfDay(17).withMinuteOfHour(30).withSecondOfMinute(1).toString();
-        String endDate = DateTime.now().withHourOfDay(17).withMinuteOfHour(30).withSecondOfMinute(0).toString();
+        String startDate = DateTime.now().plusDays(-1).withHourOfDay(17).withMinuteOfHour(30).withSecondOfMinute(1).toString("yyyy-MM-dd HH:mm:ss");
+        String endDate = DateTime.now().withHourOfDay(17).withMinuteOfHour(30).withSecondOfMinute(0).toString("yyyy-MM-dd HH:mm:ss");
 
-        String yesStartDate = DateTime.now().plusDays(-1).withHourOfDay(17).withMinuteOfHour(0).withSecondOfMinute(0).toString();
-        String yesEndDate = DateTime.now().plusDays(-1).withHourOfDay(18).withMinuteOfHour(0).withSecondOfMinute(0).toString();
+        String yesStartDate = DateTime.now().plusDays(-1).withHourOfDay(17).withMinuteOfHour(0).withSecondOfMinute(0).toString("yyyy-MM-dd HH:mm:ss");
+        String yesEndDate = DateTime.now().plusDays(-1).withHourOfDay(18).withMinuteOfHour(0).withSecondOfMinute(0).toString("yyyy-MM-dd HH:mm:ss");
 
         Iterator<NameItem> iterator = SourceReport.TYPE_ALL.iterator();
 
@@ -418,43 +418,51 @@ public class CountServiceImpl implements CountService {
             SourceReport sr = new SourceReport();
             NameItem next = iterator.next();
             if (SourceReport.TYPE_ZG.getId() == next.getId()) {//资管中心
-                inCash = reportMapper.getFollowUpInCash(startDate, endDate);
-                outCash = reportMapper.getFollowUpOutCash(startDate, endDate);
-                manageFund = reportMapper.getFollowUpManageFund(startDate, endDate);
+                inCash = sourceReportMapper.getFollowUpInCash(startDate, endDate);
+                outCash = sourceReportMapper.getFollowUpOutCash(startDate, endDate);
+                manageFund = sourceReportMapper.getFollowUpManageFund(startDate, endDate);
 
                 SourceReport preSR = sourceReportMapper.getByTime(SourceReport.TYPE_ZG.getId(), yesStartDate, yesEndDate);
-                lastManageFund = preSR.getManageFund();
+                if (preSR != null) {
+                    lastManageFund = preSR.getManageFund();
+                }
                 sr.setType(SourceReport.TYPE_ZG.getId());
             }
             if (SourceReport.TYPE_MAKER.getId() == next.getId()) {//创客
-                inCash = reportMapper.getMakerInCash(startDate, endDate);
-                outCash = reportMapper.getMakerOutCash(startDate, endDate);
-                manageFund = reportMapper.getManageFund(startDate, endDate);
+                inCash = sourceReportMapper.getMakerInCash(startDate, endDate, dayiDataBaseStr);
+                outCash = sourceReportMapper.getMakerOutCash(startDate, endDate, dayiDataBaseStr);
+                manageFund = sourceReportMapper.getMakerManageFund(startDate, endDate, dayiDataBaseStr);
 
                 SourceReport preSR = sourceReportMapper.getByTime(SourceReport.TYPE_MAKER.getId(), yesStartDate, yesEndDate);
-                lastManageFund = preSR.getManageFund();
+                if (preSR != null) {
+                    lastManageFund = preSR.getManageFund();
+                }
                 sr.setType(SourceReport.TYPE_MAKER.getId());
 
 
             }
             if (SourceReport.TYPE_OTHER.getId() == next.getId()) {//其它
-                inCash = reportMapper.getOtherInCash(startDate, endDate);
-                outCash = reportMapper.getOtherOutCash(startDate, endDate);
-                manageFund = reportMapper.getOtherManageFund(startDate, endDate);
+                inCash = sourceReportMapper.getOtherInCash(startDate, endDate, dayiDataBaseStr);
+                outCash = sourceReportMapper.getOtherOutCash(startDate, endDate, dayiDataBaseStr);
+                manageFund = sourceReportMapper.getOtherManageFund(startDate, endDate, dayiDataBaseStr);
 
                 SourceReport preSR = sourceReportMapper.getByTime(SourceReport.TYPE_OTHER.getId(), yesStartDate, yesEndDate);
-                lastManageFund = preSR.getManageFund();
+                if (preSR != null) {
+                    lastManageFund = preSR.getManageFund();
+                }
                 sr.setType(SourceReport.TYPE_OTHER.getId());
             }
-
+            sr.setId(sourceReportMapper.getNewId());
             sr.setInCash(inCash);
             sr.setOutCash(outCash);
             sr.setGrowthFund(inCash.subtract(outCash));
             sr.setManageFund(manageFund);
-            sr.setManageGrowthFund(manageFund.subtract(lastManageFund));
-
+            if (lastManageFund != null) {
+                sr.setManageGrowthFund(manageFund.subtract(lastManageFund));
+            } else {
+                sr.setManageGrowthFund(manageFund);
+            }
             sourceReportMapper.add(sr);
-
         }
     }
 
