@@ -231,7 +231,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public List findAdminDailyDetail(String date) {
+    public List<AdminDetailVo> findAdminDailyDetail(String date) {
         if (StringUtils.isBlank(date)) return null;
 
         String startDate = DateTime.parse(date).millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
@@ -248,13 +248,17 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public List<ReportDailyVo> findAdminDailyDetailList(String deptId, String date) {
-        List<ReportDailyVo> list = new ArrayList();
-        if (StringUtils.isBlank(deptId) || StringUtils.isBlank(date)) return list;//必须同时满足
+    public List<ReportVo> findAdminDailyDetailList(String date) {
+        List<ReportVo> reportVos = new ArrayList<>();
 
-        String startDate = DateTime.parse(date).millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
-        String endDate = DateTime.parse(date).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
-        return reportMapper.findAdminDailyDetail(deptId, startDate, endDate);
+        List<AdminDetailVo> list = this.findAdminDailyDetail(date);
+        //进行处理，将子集合取出来
+        for (AdminDetailVo adv : list) {
+            List<ReportVo> reportVos1 = adv.getpList();
+            reportVos.add(adv);
+            reportVos.addAll(reportVos1);
+        }
+        return reportVos;
     }
 
     @Override
@@ -482,7 +486,6 @@ public class ReportServiceImpl implements ReportService {
             } else {
                 sum.setMakerFund(sum.getMakerFund().add(item.getMakerFund()));//创客管理资金规模
             }
-
 
 
         }

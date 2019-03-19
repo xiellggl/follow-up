@@ -197,7 +197,7 @@
     </select>
 
     <select id="findAdminDetailTotal" parameterType="map" resultType="com.dayi.follow.vo.report.AdminDetailVo">
-        SELECT b.name deptName,dept_id ,sum(open_account_num)openAccountNum,sum(sign_org_num)signOrgNum,sum(in_cash)inCash,sum(out_cash)outCash,
+        SELECT date(create_time)date,b.name deptName,dept_id ,sum(open_account_num)openAccountNum,ifnull(sum(sign_org_num),0)signOrgNum,sum(in_cash)inCash,sum(out_cash)outCash,
                sum(manage_fund)manageFund,sum(manage_growth_fund)manageGrowthFund,sum(maker_fund)makerFund
         from follow_up_log  a
         left join(
@@ -210,7 +210,7 @@
 
 
     <select id="findAdminDetailPer" parameterType="map" resultType="com.dayi.follow.vo.report.ReportVo">
-        SELECT c.name,open_account_num,sign_org_num,in_cash,out_cash,
+        SELECT date(create_time)date,c.name,open_account_num,ifnull(sign_org_num,0)signOrgNum,in_cash,out_cash,
                manage_fund,manage_growth_fund,maker_fund
         from follow_up_log  a
         left join(

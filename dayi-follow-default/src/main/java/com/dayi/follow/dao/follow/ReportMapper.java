@@ -39,9 +39,6 @@ public interface ReportMapper extends BaseMapper<BaseVo> {
     //管理员日报详情
     List findAdminDetailPer(@Param("deptId") String deptId,@Param("startDate") String startDate, @Param("endDate") String endDate);
 
-    //查找管理员日报详情列表
-    List<ReportDailyVo> findAdminDailyDetail(@Param("deptId") String deptId, @Param("startDate") String startDate, @Param("endDate") String endDate);
-
     //管理员周报
     Page<WeekVo> findAdminWeekSum(Page page, @Param("startDate") String startDate, @Param("endDate") String endDate);
 

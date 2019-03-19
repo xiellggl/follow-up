@@ -45,10 +45,10 @@ public interface ReportService {
     List findAdminDaily(String betweenDate);
 
     //管理员日报详情
-    List findAdminDailyDetail(String date);
+    List<AdminDetailVo> findAdminDailyDetail(String date);
 
     //管理员日报详情列表
-    List<ReportDailyVo> findAdminDailyDetailList(String deptId, String date);
+    List<ReportVo> findAdminDailyDetailList(String date);
 
     //管理员周报
     AdminWeekVo countAdminWeek(Page page, String betweenDate);

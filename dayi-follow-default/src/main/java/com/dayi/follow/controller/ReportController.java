@@ -10,6 +10,7 @@ import com.dayi.follow.service.FollowUpService;
 import com.dayi.follow.service.ReportService;
 import com.dayi.follow.util.PageUtil;
 import com.dayi.follow.vo.LoginVo;
+import com.dayi.follow.vo.export.AdminDetailExport;
 import com.dayi.follow.vo.export.AdminMonthExport;
 import com.dayi.follow.vo.export.AdminWeekExport;
 import com.dayi.follow.vo.export.TeamDailyDetailExport;
@@ -254,15 +255,15 @@ public class ReportController extends BaseController {
     @RequestMapping("/admin/daily/detail/export")
     public void adminDailyExport(HttpServletRequest request, HttpServletResponse response) throws IOException {
         LoginVo currVo = userComponent.getCurrUser(request);
-        String deptId = request.getParameter("deptId");
+
         String date = request.getParameter("date");
 
-        List list = reportService.findAdminDailyDetailList(deptId, date);
+        List list = reportService.findAdminDailyDetailList(date);
 
-        String fileTitle = "团队日报详情";
+        String fileTitle = "管理员日报详情";
         String fileName = currVo.getName() + "-" + fileTitle + new DateTime().toString("yyyy-MM-dd HH:mm:ss");
 
-        TeamDailyDetailExport export = new TeamDailyDetailExport(fileName, fileTitle, list);
+        AdminDetailExport export = new AdminDetailExport(fileName, fileTitle, list);
         export.exportExcel(request, response);
     }
 

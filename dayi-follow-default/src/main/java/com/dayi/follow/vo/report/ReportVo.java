@@ -4,6 +4,7 @@ package com.dayi.follow.vo.report;
 import com.dayi.follow.util.Misc;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 //日报数据,周报，月报都有用到
 public class ReportVo {
@@ -27,6 +28,7 @@ public class ReportVo {
     private Integer outCashNum;//出金人数
 
     private String date;//日报日期
+
     private String deptName;//部门名称
 
     private String deptId;//部门id
@@ -39,6 +41,17 @@ public class ReportVo {
     //加于管理员日报
     private BigDecimal growthFund;//时间内净增
     private String growthFundFm;//时间内净增
+
+    //加于管理员日报详情
+    private Integer signOrgNum;//新签创客
+
+    public Integer getSignOrgNum() {
+        return signOrgNum;
+    }
+
+    public void setSignOrgNum(Integer signOrgNum) {
+        this.signOrgNum = signOrgNum;
+    }
 
     public String getDeptId() {
         return deptId;
