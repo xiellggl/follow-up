@@ -75,7 +75,11 @@
                                 <c:if test="${not empty page.results}">
                                     <c:forEach items="${page.results}" var="item">
                                         <tr>
-                                            <td>-</td>
+                                            <td class="first_row">
+                                                <span class="detail-icon">
+                                                    <i class="fa fa-minus"></i>
+                                                </span>
+                                            </td>
                                             <td>2019-3-19</td>
                                             <td>${item.openAccountNum}</td>
                                             <td>${item.manageGrowthFund}</td>
@@ -129,6 +133,22 @@
 <script>
     seajs.use(["common"], function (common) {
         common.head('_report_admin_daily');
+
+        $(".first_row").on("click",function (e) {
+            if($(this).find('i.fa').hasClass('fa-plus')){  //收起状态
+                $(this).find('i.fa').removeClass('fa-plus').addClass('fa-minus');
+                $(this).parents('tr').siblings().show();
+            } else {  //展开状态
+                $(this).find('i.fa').addClass('fa-plus').removeClass('fa-minus');
+                $(this).parents('tr').siblings().hide();
+            }
+        });
+
+
+
+
+
+
     });
 </script>
 </body>
