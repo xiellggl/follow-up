@@ -43,13 +43,26 @@
                             <table class="table table-striped table-bordered table-hover" id="dynamic-table">
                                 <thead>
                                 <tr>
-                                    <th>姓名</th>
+                                    <th></th>
+                                    <th>日期</th>
+                                    <th>团队名称</th>
                                     <th>今日新开户</th>
-                                    <th>创客净增资金规模</th>
+                                    <th>新签创客</th>
                                     <th>入金总额</th>
-                                    <th>入金人数</th>
-                                    <th>实际出金总额</th>
-                                    <th>实际出金人数</th>
+                                    <th>出金总额</th>
+                                    <th>管理资产规模</th>
+                                    <th>
+                                        资产规模净值
+                                        <a href="#" data-toggle="tooltip" title="环比历史最高，当前管理资产规模 - 历史最高资产规模">
+                                            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                                        </a>
+                                    </th>
+                                    <th>
+                                        创客管理资产规模
+                                        <a href="#" data-toggle="tooltip" title="创客名下所有代理商的协议资金之和">
+                                            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                                        </a>
+                                    </th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -62,13 +75,16 @@
                                 <c:if test="${not empty page.results}">
                                     <c:forEach items="${page.results}" var="item">
                                         <tr>
-                                            <td>${item.name}</td>
+                                            <td>-</td>
+                                            <td>2019-3-19</td>
                                             <td>${item.openAccountNum}</td>
                                             <td>${item.manageGrowthFund}</td>
                                             <td>${item.inCash}</td>
                                             <td>${item.inCashNum}</td>
                                             <td>${item.outCash}</td>
                                             <td>${item.outCashNum}</td>
+                                            <td>111</td>
+                                            <td>111</td>
                                         </tr>
                                     </c:forEach>
                                 </c:if>
