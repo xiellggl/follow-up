@@ -231,13 +231,20 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public Page findAdminDailyDetail(Page page, String deptId, String date) {
-
-        if (StringUtils.isBlank(deptId) || StringUtils.isBlank(date)) return page;//必须同时满足
+    public List findAdminDailyDetail(String date) {
+        if (StringUtils.isBlank(date)) return null;
 
         String startDate = DateTime.parse(date).millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
         String endDate = DateTime.parse(date).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
-        return reportMapper.findAdminDailyDetail(page, deptId, startDate, endDate);
+
+        List<AdminDetailVo> totalList = reportMapper.findAdminDetailTotal(startDate, endDate);
+
+        for (AdminDetailVo vo : totalList) {
+            List perList = reportMapper.findAdminDetailPer(vo.getDeptId(), startDate, endDate);
+            vo.setpList(perList);
+        }
+
+        return totalList;
     }
 
     @Override

@@ -24,3 +24,7 @@ CREATE TABLE `source_report`  (
   `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改日期',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+#日志表
+ALTER TABLE `follow_up_log`
+ADD COLUMN `sign_org_num` int(11) NULL COMMENT '新签创客人数' AFTER `out_cash_num`;

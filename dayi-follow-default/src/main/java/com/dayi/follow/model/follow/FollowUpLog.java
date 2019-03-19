@@ -22,6 +22,16 @@ public class FollowUpLog extends BaseModel {
     private BigDecimal manageFund;//管理资产规模
     private BigDecimal manageGrowthFund;//管理资产规模净增
 
+    private Integer signOrgNum;//新签创客人数
+
+    public Integer getSignOrgNum() {
+        return signOrgNum;
+    }
+
+    public void setSignOrgNum(Integer signOrgNum) {
+        this.signOrgNum = signOrgNum;
+    }
+
     public String getFollowId() {
         return followId;
     }

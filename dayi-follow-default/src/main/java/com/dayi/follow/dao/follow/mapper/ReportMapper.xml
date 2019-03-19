@@ -196,21 +196,32 @@
         </if>
     </select>
 
-    <select id="findAdminDailyDetail" parameterType="map" resultType="com.dayi.follow.vo.report.ReportDailyVo">
-        SELECT date(create_time)date,b.name deptName,c.name,dept_id ,open_account_num,
-        maker_growth_fund,in_cash,in_cash_num,
-        out_cash,out_cash_num
+    <select id="findAdminDetailTotal" parameterType="map" resultType="com.dayi.follow.vo.report.AdminDetailVo">
+        SELECT b.name deptName,dept_id ,sum(open_account_num)openAccountNum,sum(sign_org_num)signOrgNum,sum(in_cash)inCash,sum(out_cash)outCash,
+               sum(manage_fund)manageFund,sum(manage_growth_fund)manageGrowthFund,sum(maker_fund)makerFund
         from follow_up_log  a
         left join(
             SELECT name,id from department
         )b on b.id=a.dept_id
-        left join(
-            SELECT id,name FROM follow_up
-        )c on c.id=a.follow_id
         WHERE 1=1
         and a.create_time BETWEEN #{startDate} and #{endDate}
-        and a.dept_id=#{deptId}
-        ORDER BY create_time desc
+        GROUP by b.id
+    </select>
+
+
+    <select id="findAdminDetailPer" parameterType="map" resultType="com.dayi.follow.vo.report.ReportVo">
+        SELECT c.name,open_account_num,sign_org_num,in_cash,out_cash,
+               manage_fund,manage_growth_fund,maker_fund
+        from follow_up_log  a
+        left join(
+            SELECT name,id from department
+        )b on b.id=a.dept_id
+        left join (
+            SELECT name,id from follow_up
+        )c on c.id =a.follow_id
+        WHERE 1=1
+        and a.create_time BETWEEN #{startDate} and #{endDate}
+        and b.id=#{deptId}
     </select>
 
 </mapper>

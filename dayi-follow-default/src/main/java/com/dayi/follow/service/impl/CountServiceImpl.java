@@ -368,6 +368,10 @@ public class CountServiceImpl implements CountService {
             int outCashNum = followAgentMapper.getOutCashNum(followUp.getId(), stratTime, endTime, dayiDataBaseStr);
             followUpLog.setOutCashNum(outCashNum);
 
+            //统计新签创客人数
+            int orgNum = followOrgMapper.getNewSignOrgNum(followUp.getId(), stratTime, endTime, dayiDataBaseStr);
+            followUpLog.setSignOrgNum(orgNum);
+
             followUpLog.setId(followUpLogMapper.getNewId());
             followUpLog.setFollowId(followUp.getId());
             followUpLog.setDeptId(followUp.getDeptId());

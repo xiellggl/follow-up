@@ -232,21 +232,16 @@ public class ReportController extends BaseController {
      */
     @RequestMapping("/admin/daily/detail")
     public String adminDailyDetail(HttpServletRequest request, Page page, Model model) {
-        String deptId = request.getParameter("deptId");
         String date = request.getParameter("date");
 
         page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
 
-        Department department = deptService.getDept(deptId);
-
-        page = reportService.findAdminDailyDetail(page, deptId, date);
+        List list = reportService.findAdminDailyDetail(date);
 
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
         request.setAttribute("pageUrl", pageUrl);
-        model.addAttribute("page", page);
-        model.addAttribute("deptName", department.getName());
+        model.addAttribute("list", list);
         model.addAttribute("date", date);
-        model.addAttribute("deptId", deptId);
         return "followup/daily/admin_daily_detail";
     }
 

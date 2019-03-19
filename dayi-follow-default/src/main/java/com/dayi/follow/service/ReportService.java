@@ -45,7 +45,7 @@ public interface ReportService {
     List findAdminDaily(String betweenDate);
 
     //管理员日报详情
-    Page findAdminDailyDetail(Page page, String deptId, String date);
+    List findAdminDailyDetail(String date);
 
     //管理员日报详情列表
     List<ReportDailyVo> findAdminDailyDetailList(String deptId, String date);
