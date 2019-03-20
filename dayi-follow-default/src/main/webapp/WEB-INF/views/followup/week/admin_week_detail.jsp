@@ -4,7 +4,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8"/>
-    <title>管理员报表-管理员周报</title>
+    <title>管理员报表-管理员周报详情</title>
     <%@include file="/inc/followup/csslink.jsp" %>
     <link rel="stylesheet" type="text/css" media="all" href="/static/public/flexoCalendar/flexoCalendar.css"/>
 </head>
@@ -21,7 +21,7 @@
                         <a href="/">首页</a>
                     </li>
                     <li>管理员报表</li>
-                    <li class="active">管理员周报</li>
+                    <li class="active">管理员周报详情</li>
                 </ul><!-- /.breadcrumb -->
             </div>
             <div class="page-content">
@@ -30,7 +30,7 @@
                         您当前操作
                         <small>
                             <i class="ace-icon fa fa-angle-double-right"></i>
-                            团队周报(${adminWeekVo.startDate} - ${adminWeekVo.endDate})
+                            管理员周报详情(${adminWeekVo.startDate} - ${adminWeekVo.endDate})
                         </small>
                     </h1>
                     <div class="pull-right">
@@ -62,49 +62,50 @@
                         <table class="table table-striped table-bordered">
                             <thead>
                             <tr>
-                                <th>客户来源</th>
-                                <th>本周入金</th>
-                                <th>本周出金</th>
+                                <th></th>
+                                <th>日期</th>
+                                <th>团队名称</th>
+                                <th>本周新开户</th>
+                                <th>新签创客</th>
+                                <th>入金总额</th>
+                                <th>出金总额</th>
+                                <th>管理资产规模</th>
                                 <th>
-                                    本周净增
-                                    <a href="#" data-toggle="tooltip" title="本周入金 - 本周出金">
+                                    资产规模净值
+                                    <a href="#" data-toggle="tooltip" title="环比历史最高，当前管理资产规模 - 历史最高资产规模">
                                         <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
                                     </a>
                                 </th>
                                 <th>
-                                    管理资产规模
-                                    <a href="#" data-toggle="tooltip" title="名下所有代理商的总货款之和（从分配时算起）">
+                                    创客管理资产规模
+                                    <a href="#" data-toggle="tooltip" title="创客名下所有代理商的协议资金之和">
                                         <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
                                     </a>
                                 </th>
-                                <th>
-                                    资产管理规模净值
-                                    <a href="#" data-toggle="tooltip" title="环比上月资产规模，当前管理资产规模 - 上月资产规模">
-                                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
-                                    </a>
-                                </th>
-                                <th>操作</th>
                             </tr>
                             </thead>
                             <tbody>
                             <c:if test="${empty adminWeekVo.weekVos}">
                                 <tr>
-                                    <td colspan="7" class="no_data">暂无数据记录</td>
+                                    <td colspan="10" class="no_data">暂无数据记录</td>
                                 </tr>
                             </c:if>
 
                             <c:if test="${not empty adminWeekVo.weekVos}">
                                 <c:forEach items="${adminWeekVo.weekVos}" var="item">
                                     <tr>
+                                        <td class="first_row">
+                                            <span class="detail-icon">
+                                                <i class="fa fa-minus"></i>
+                                            </span>
+                                        </td>
                                         <td>${item.deptName}</td>
                                         <td>${item.name}</td>
                                         <td>${item.monOpen}</td>
                                         <td>${item.tueOpen}</td>
                                         <td>${item.wedOpen}</td>
                                         <td>${item.thuOpen}</td>
-                                        <td>
-                                            <a href="./week/detail?">查看详情</a>
-                                        </td>
+                                        <td>${item.friOpen}</td>
                                     </tr>
                                 </c:forEach>
                             </c:if>
@@ -142,6 +143,17 @@
                 }
             });
         });
+
+        $(".first_row").on("click",function (e) {
+            if($(this).find('i.fa').hasClass('fa-plus')){  //收起状态
+                $(this).find('i.fa').removeClass('fa-plus').addClass('fa-minus');
+                $(this).parents('tr').siblings().show();
+            } else {  //展开状态
+                $(this).find('i.fa').addClass('fa-plus').removeClass('fa-minus');
+                $(this).parents('tr').siblings().hide();
+            }
+        });
+
 
 
         //给Body加一个Click监听事件

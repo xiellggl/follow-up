@@ -62,20 +62,34 @@
                         <table class="table table-striped table-bordered">
                             <thead>
                             <tr>
-                                <th>团队名称</th>
-                                <th>姓名</th>
-                                <th>邀请码</th>
-                                <th>新签创客</th>
-                                <th>完成有效开户量</th>
-                                <th>月完成入金总额</th>
-                                <th>当前管理总资产规模</th>
-                                <th>管理资产规模净值（环比上个月）</th>
+                                <th>客户来源</th>
+                                <th>本月入金</th>
+                                <th>本月出金</th>
+                                <th>
+                                    本月净增
+                                    <a href="#" data-toggle="tooltip" title="本月入金 - 本月出金">
+                                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                                    </a>
+                                </th>
+                                <th>
+                                    管理资产规模
+                                    <a href="#" data-toggle="tooltip" title="名下所有代理商的总货款之和（从分配时算起）">
+                                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                                    </a>
+                                </th>
+                                <th>
+                                    资产管理规模净值
+                                    <a href="#" data-toggle="tooltip" title="环比上月资产规模，当前管理资产规模 - 上月资产规模">
+                                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                                    </a>
+                                </th>
+                                <th>操作</th>
                             </tr>
                             </thead>
                             <tbody>
                             <c:if test="${empty adminMonthVo.monthVos}">
                                 <tr>
-                                    <td colspan="8" class="no_data">暂无数据记录</td>
+                                    <td colspan="7" class="no_data">暂无数据记录</td>
                                 </tr>
                             </c:if>
                             <c:if test="${not empty adminMonthVo.monthVos}">
@@ -87,8 +101,9 @@
                                         <td>${item.orgNum}</td>
                                         <td>${item.openNum}</td>
                                         <td>${item.inCash}</td>
-                                        <td>${item.manageFund eq null ? '暂无数据':item.manageFund}</td>
-                                        <td>${item.ringGrowthRatio}</td>
+                                        <td>
+                                            <a href="./month/detail?">查看详情</a>
+                                        </td>
                                     </tr>
                                 </c:forEach>
                             </c:if>

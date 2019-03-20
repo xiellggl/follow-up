@@ -4,7 +4,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8"/>
-    <title>管理员报表-管理员周报</title>
+    <title>管理员报表-管理员月报详情</title>
     <%@include file="/inc/followup/csslink.jsp" %>
     <link rel="stylesheet" type="text/css" media="all" href="/static/public/flexoCalendar/flexoCalendar.css"/>
 </head>
@@ -21,7 +21,7 @@
                         <a href="/">首页</a>
                     </li>
                     <li>管理员报表</li>
-                    <li class="active">管理员周报</li>
+                    <li class="active">管理员月报详情</li>
                 </ul><!-- /.breadcrumb -->
             </div>
             <div class="page-content">
@@ -30,11 +30,11 @@
                         您当前操作
                         <small>
                             <i class="ace-icon fa fa-angle-double-right"></i>
-                            团队周报(${adminWeekVo.startDate} - ${adminWeekVo.endDate})
+                            管理员月报详情(${adminMonthVo.month})
                         </small>
                     </h1>
                     <div class="pull-right">
-                        <a href="./week/export?date=${adminWeekVo.startDate} - ${adminWeekVo.endDate}" class="btn btn-xs btn-danger">
+                        <a href="./month/export?date=${adminMonthVo.month}" class="btn btn-xs btn-danger">
                             <span class="ace-icon glyphicon glyphicon-export"></span>
                             一键导出
                         </a>
@@ -43,13 +43,13 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <ul class="nav nav-tabs">
-                            <li ${adminWeekVo.startDate eq adminWeekVo.thisWeekStart ? 'class="active"':''}><a href="?date=${adminWeekVo.thisWeekStart} - ${adminWeekVo.thisWeekEnd}">本周</a></li>
-                            <li ${adminWeekVo.startDate eq adminWeekVo.lastWeekStart ? 'class="active"':''}><a href="?date=${adminWeekVo.lastWeekStart} - ${adminWeekVo.lastWeekEnd}">上一周</a></li>
-                            <c:if test="${adminWeekVo.startDate ne adminWeekVo.thisWeekStart and adminWeekVo.startDate ne adminWeekVo.lastWeekStart}">
-                                <li class="active"><a>${adminWeekVo.startDate} - ${adminWeekVo.endDate}</a></li>
+                            <li ${adminMonthVo.month eq adminMonthVo.thisMonth ? 'class="active"':''}><a href="?date=${adminMonthVo.thisMonth}">本月</a></li>
+                            <li ${adminMonthVo.month eq adminMonthVo.lastMonth ? 'class="active"':''}><a href="?date=${adminMonthVo.lastMonth}">上一月</a></li>
+                            <c:if test="${adminMonthVo.month ne adminMonthVo.thisMonth and adminMonthVo.month ne adminMonthVo.lastMonth}">
+                                <li class="active"><a>${adminMonthVo.month}</a></li>
                             </c:if>
                             <li>
-                                <a class="dates" data-toggle="popover" id="showWeeklyPicker">
+                                <a class="dates" data-toggle="popover" id="showmonthlyPicker">
                                     更多 <i class="ace-icon fa fa-angle-double-right"></i>
                                 </a>
                             </li>
@@ -62,55 +62,59 @@
                         <table class="table table-striped table-bordered">
                             <thead>
                             <tr>
-                                <th>客户来源</th>
-                                <th>本周入金</th>
-                                <th>本周出金</th>
+                                <th></th>
+                                <th>日期</th>
+                                <th>团队名称</th>
+                                <th>本月新开户</th>
+                                <th>新签创客</th>
+                                <th>入金总额</th>
+                                <th>出金总额</th>
+                                <th>管理资产规模</th>
                                 <th>
-                                    本周净增
-                                    <a href="#" data-toggle="tooltip" title="本周入金 - 本周出金">
-                                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
-                                    </a>
-                                </th>
-                                <th>
-                                    管理资产规模
-                                    <a href="#" data-toggle="tooltip" title="名下所有代理商的总货款之和（从分配时算起）">
+                                    资产规模净值
+                                    <a href="#" data-toggle="tooltip" title="环比历史最高，当前管理资产规模 - 历史最高资产规模">
                                         <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
                                     </a>
                                 </th>
                                 <th>
                                     资产管理规模净值
-                                    <a href="#" data-toggle="tooltip" title="环比上月资产规模，当前管理资产规模 - 上月资产规模">
+                                    <a href="#" data-toggle="tooltip" title="创客名下所有代理商的协议资金之和">
                                         <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
                                     </a>
                                 </th>
-                                <th>操作</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <c:if test="${empty adminWeekVo.weekVos}">
+                            <c:if test="${empty adminMonthVo.monthVos}">
                                 <tr>
-                                    <td colspan="7" class="no_data">暂无数据记录</td>
+                                    <td colspan="10" class="no_data">暂无数据记录</td>
                                 </tr>
                             </c:if>
-
-                            <c:if test="${not empty adminWeekVo.weekVos}">
-                                <c:forEach items="${adminWeekVo.weekVos}" var="item">
+                            <c:if test="${not empty adminMonthVo.monthVos}">
+                                <c:forEach items="${adminMonthVo.monthVos}" var="item">
                                     <tr>
+                                        <td class="first_row">
+                                            <span class="detail-icon">
+                                                <i class="fa fa-minus"></i>
+                                            </span>
+                                        </td>
+                                        <td>${item.date}</td>
                                         <td>${item.deptName}</td>
                                         <td>${item.name}</td>
-                                        <td>${item.monOpen}</td>
-                                        <td>${item.tueOpen}</td>
-                                        <td>${item.wedOpen}</td>
-                                        <td>${item.thuOpen}</td>
+                                        <td>${item.inviteCode}</td>
+                                        <td>${item.orgNum}</td>
+                                        <td>${item.openNum}</td>
+                                        <td>${item.inCash}</td>
+                                        <td>${item.inCash}</td>
                                         <td>
-                                            <a href="./week/detail?">查看详情</a>
+                                            <a href="./month/detail?">查看详情</a>
                                         </td>
                                     </tr>
                                 </c:forEach>
                             </c:if>
                             </tbody>
                         </table>
-                        <c:if test="${not empty adminWeekVo.weekVos}">
+                        <c:if test="${not empty adminMonthVo.monthVos}">
                             <div class="pagerBar" id="pagerBar">
                                 <common:page url="${pageUrl}" type="3"/>
                             </div>
@@ -126,22 +130,33 @@
 <script>
     seajs.use(["common", "flexoCalendar"], function (common) {
         common.head();
-        $("#showWeeklyPicker").popover({
+        $("#showmonthlyPicker").popover({
             container:"body",
             placement:"bottom",
             html:true,
-            content:'<div id="weeklyContent" style="width: 230px;"></div>'
+            content:'<div id="monthlyContent" style="width: 230px;"></div>'
         }).on("shown.bs.popover",function () {
-            $("#weeklyContent").flexoCalendar({
-                type:'weekly',
-                //allowDate:['2018-01','2018-08'],
+            $("#monthlyContent").flexoCalendar({
+                type:'monthly',
                 onselect:function (date) {
-                    var dateArr = date.split(",");
-                    var endDate = new Date(dateArr[0]).getTime() + 1000*60*60*24*4;
-                    window.location.href = "?date=" + dateArr[0] + " - " + common.dateFormat(endDate,"yyyy-MM-dd");
+                    window.location.href = "?date=" + date;
                 }
             });
         });
+
+
+        $(".first_row").on("click",function (e) {
+            if($(this).find('i.fa').hasClass('fa-plus')){  //收起状态
+                $(this).find('i.fa').removeClass('fa-plus').addClass('fa-minus');
+                $(this).parents('tr').siblings().show();
+            } else {  //展开状态
+                $(this).find('i.fa').addClass('fa-plus').removeClass('fa-minus');
+                $(this).parents('tr').siblings().hide();
+            }
+        });
+
+
+
 
 
         //给Body加一个Click监听事件
