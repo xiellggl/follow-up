@@ -6,6 +6,7 @@ import com.dayi.follow.base.BaseController;
 import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.conf.Constants;
 import com.dayi.follow.model.follow.Department;
+import com.dayi.follow.model.follow.FollowUp;
 import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.FollowAgentService;
 import com.dayi.follow.service.FollowUpService;
@@ -180,7 +181,7 @@ public class FollowupController extends BaseController {
     @RequestMapping(value = "/edit/totalfundbefore")
     @ResponseBody
     public BizResult editAssignFund(HttpServletRequest request) {
-        String value = request.getParameter("totalFundBefore");
+        String value = request.getParameter("fund");
         String agentId = request.getParameter("agentId");
 
         if (!Misc.isNumber(agentId)) return BizResult.fail("代理商ID格式有误！");
@@ -196,6 +197,16 @@ public class FollowupController extends BaseController {
     @ResponseBody
     public BizResult getManageFund(SearchVo searchVo, String followId) {
         return followUpService.getManageFund(searchVo, followId);
+    }
+
+    @RequestMapping(value = "/get/hismaxfund")
+    @ResponseBody
+    public BizResult getHismaxfund(String followId) {
+        FollowUp followUp = followUpService.get(followId);
+        if (followUp != null) {
+            return BizResult.succ(followUp.getHisMaxFund());
+        }
+        return BizResult.fail("用户不存在！");
     }
 
 
