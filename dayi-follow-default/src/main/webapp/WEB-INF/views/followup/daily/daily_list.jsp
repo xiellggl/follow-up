@@ -84,13 +84,20 @@
                                 <c:forEach items="${page.results}" var="item">
                                     <tr>
                                         <td>${item.date}</td>
+                                        <%--团队名称--%>
                                         <td class="hidden-xs">${item.deptName}</td>
+                                        <%--新开户数--%>
                                         <td class="hidden-xs">${item.openAccountNum}</td>
-                                        <td class="hidden-xs">${item.manageGrowthFundFm}</td>
+                                        <%--入金总额--%>
                                         <td class="hidden-xs">${item.inCashFm}</td>
-                                        <td>${item.inCashNum}</td>
+                                        <%--出金总额--%>
                                         <td class="hidden-xs">${item.outCashFm}</td>
-                                        <td>${item.outCashNum}</td>
+                                        <%--管理资产规模--%>
+                                        <td class="hidden-xs">${item.manageFundFm}</td>
+                                        <%--管理资产规模净值--%>
+                                        <td>${item.manageGrowthFundFm}</td>
+                                        <%--创客管理资金规模--%>
+                                        <td class="hidden-xs">${item.makerFund}</td>
                                     </tr>
                                 </c:forEach>
                             </c:if>

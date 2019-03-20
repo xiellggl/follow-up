@@ -90,11 +90,11 @@
                                     <tr>
                                         <td>${monthVo.name}</td>
                                         <td>${monthVo.openAccountNum}</td>
-                                        <td>${monthVo.manageGrowthFundFm}</td>
                                         <td>${monthVo.inCashFm}</td>
                                         <td>${monthVo.outCashFm}</td>
-                                        <td>${monthVo.growthFundFm}</td>
-                                        <td>${monthVo.growthFundFm}</td>
+                                        <td>${monthVo.manageFundFm}</td>
+                                        <td>${monthVo.manageGrowthFundFm}</td>
+                                        <td>${monthVo.makerFund}</td>
                                     </tr>
                             </c:if>
                             </tbody>

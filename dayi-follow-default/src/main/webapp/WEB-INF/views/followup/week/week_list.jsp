@@ -20,8 +20,8 @@
                         <i class="ace-icon fa fa-home home-icon"></i>
                         <a href="/">首页</a>
                     </li>
-                    <li>销售报表</li>
-                    <li class="active">销售周报</li>
+                    <li>个人报表</li>
+                    <li class="active">个人周报</li>
                 </ul><!-- /.breadcrumb -->
             </div>
             <div class="page-content">
@@ -30,7 +30,7 @@
                         您当前操作
                         <small>
                             <i class="ace-icon fa fa-angle-double-right"></i>
-                            团队周报(${weekVo.startDate} - ${weekVo.endDate})
+                            个人周报(${weekVo.startDate} - ${weekVo.endDate})
                         </small>
                     </h1>
                 </div>
@@ -83,18 +83,18 @@
                             <tbody>
                             <c:if test="${weekVo.name eq null or weekVo.name eq ''}">
                                 <tr>
-                                    <td colspan="8" class="no_data">暂无数据记录</td>
+                                    <td colspan="7" class="no_data">暂无数据记录</td>
                                 </tr>
                             </c:if>
                             <c:if test="${weekVo.name ne null and weekVo.name ne ''}">
                                     <tr>
                                         <td>${weekVo.name}</td>
                                         <td>${weekVo.openAccountNum}</td>
-                                        <td>${weekVo.manageGrowthFundFm}</td>
                                         <td>${weekVo.inCashFm}</td>
                                         <td>${weekVo.outCashFm}</td>
+                                        <td>${weekVo.manageFundFm}</td>
                                         <td>${weekVo.growthFundFm}</td>
-                                        <td>${weekVo.growthFundFm}</td>
+                                        <td>${weekVo.makerFund}</td>
                                     </tr>
                             </c:if>
                             </tbody>
