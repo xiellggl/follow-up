@@ -96,6 +96,9 @@
                             </c:if>
                             </tbody>
                         </table>
+                        <div>
+                            历史最高资产规模：<span>10000000.00</span>
+                        </div>
                         <c:if test="${not empty page}">
                             <div class="pagerBar" id="pagerBar">
                                 <common:page url="${pageUrl}" type="3"/>
