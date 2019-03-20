@@ -4,7 +4,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8" />
-    <title>销售报表-销售日报</title>
+    <title>个人报表-个人日报</title>
     <%@include file="/inc/followup/csslink.jsp"%>
     <link rel="stylesheet" type="text/css" media="all" href="/static/public/daterangepicker3/daterangepicker.css" />
 </head>
@@ -20,8 +20,8 @@
                         <i class="ace-icon fa fa-home home-icon"></i>
                         <a href="/">首页</a>
                     </li>
-                    <li>销售报表</li>
-                    <li class="active">销售日报</li>
+                    <li>个人报表</li>
+                    <li class="active">个人日报</li>
                 </ul>
             </div>
             <div class="page-content">
@@ -104,7 +104,7 @@
                             </tbody>
                         </table>
                         <div>
-                            历史最高资产规模：<span>10000000.00</span>
+                            历史最高资产规模：<span class="hisMaxFund">8866</span>
                         </div>
                         <c:if test="${not empty page}">
                             <div class="pagerBar" id="pagerBar">
@@ -136,6 +136,18 @@
         $('.dates').on('cancel.daterangepicker', function (ev, picker) {
             $(this).val('');
         });
+
+        //请求历史最高资产规模
+        // common.ajax.handle({
+        //     url: "/followup/get/hismaxfund",
+        //     data: { },
+        //     succback: function (data) {
+        //         $(".hisMaxFund").text(data.result);
+        //
+        //         // common.successMsg(data.msg, function () {
+        //         // });
+        //     }
+        // });
     });
 </script>
 </body>
