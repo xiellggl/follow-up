@@ -99,6 +99,9 @@
                             </c:if>
                             </tbody>
                         </table>
+                        <div>
+                            历史最高资产规模：<span>10000000.00</span>
+                        </div>
                     </div>
                 </div>
             </div>

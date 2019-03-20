@@ -186,7 +186,6 @@
                                         <td class="edit_con" style="display: none">
                                             <input type="text" value="${item.totalFundBefore}" class="newBeforeBalance" style="padding: 0">
                                             <button class="btn btn-primary save" style="height: 20px;line-height: 2px" data-id="${item.id}">保存</button>
-                                            <%--<button class="btn btn-default" class="cancel">取消</button>--%>
                                         </td>
 
                                             <%--当前总资产--%>
