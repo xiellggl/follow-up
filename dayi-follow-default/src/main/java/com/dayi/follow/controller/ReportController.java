@@ -161,7 +161,7 @@ public class ReportController extends BaseController {
 
         WeekVo weekVo = reportService.getTeamWeek(currVo.getDeptId(), date);
 
-        model.addAttribute("teamWeekVo", weekVo);
+        model.addAttribute("weekVo", weekVo);
         return "/followup/week/team_week_list";
     }
 
@@ -197,7 +197,7 @@ public class ReportController extends BaseController {
 
         MonthVo monthVo = reportService.getTeamMonth(currVo.getDeptId(), date);
 
-        model.addAttribute("teamMonthVo", monthVo);
+        model.addAttribute("monthVo", monthVo);
         return "/followup/month/team_month_list";
     }
 
@@ -214,9 +214,7 @@ public class ReportController extends BaseController {
 
         List list = reportService.findAdminDaily(date);
 
-        String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
         model.addAttribute("list", list);
-        request.setAttribute("pageUrl", pageUrl);
         return "/followup/daily/admin_daily_list";
     }
 
@@ -234,8 +232,6 @@ public class ReportController extends BaseController {
 
         List list = reportService.findAdminDailyDetail(date);
 
-        String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
-        request.setAttribute("pageUrl", pageUrl);
         model.addAttribute("list", list);
         model.addAttribute("date", date);
         return "followup/daily/admin_daily_detail";
@@ -274,15 +270,13 @@ public class ReportController extends BaseController {
 
         WeekVo weekVo = reportService.findAdminWeek(date);
 
-        String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
-        request.setAttribute("pageUrl", pageUrl);
-        model.addAttribute("adminWeekVo", weekVo);
+        model.addAttribute("weekVo", weekVo);
         return "/followup/week/admin_week_list";
     }
 
 
     /**
-     * 管理员周报
+     * 管理员周报详情
      *
      * @param request
      * @return
@@ -293,15 +287,13 @@ public class ReportController extends BaseController {
 
         List<AdminDetailVo> list = reportService.findAdminWeekDetail(date);
 
-        String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
-        request.setAttribute("pageUrl", pageUrl);
         model.addAttribute("list", list);
         return "/followup/week/admin_week_list";
     }
 
 
     /**
-     * 管理员周报导出
+     * 管理员周报详情导出
      *
      * @param request
      * @return
@@ -343,7 +335,7 @@ public class ReportController extends BaseController {
     }
 
     /**
-     * 管理员月报
+     * 管理员月报详情
      *
      * @param request
      * @return
@@ -360,7 +352,7 @@ public class ReportController extends BaseController {
 
 
     /**
-     * 管理员月报导出
+     * 管理员月报详情导出
      *
      * @param request
      * @return
