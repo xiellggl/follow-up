@@ -9,9 +9,9 @@
         </if>
     </select>
 
-    <select id="sumByTime" resultType="com.dayi.follow.model.follow.SourceReport" parameterType="map">
-        select ifnull(sum(in_cash),0)inCash,ifnull(sum(out_cash),0)outCash,ifnull(sum(growth_fund),0)growthFund,
-              ifnull(sum(manage_fund),0)manageFund,ifnull(sum(manage_growth_fund),0)manageGrowthFund
+    <select id="sumByTime" resultType="com.dayi.follow.vo.report.SourceReportVo" parameterType="map">
+        select type,sum(in_cash)inCash,sum(out_cash)outCash,sum(growth_fund)growthFund,
+              sum(manage_fund)manageFund,sum(manage_growth_fund)manageGrowthFund
         from source_report
         where create_time between #{startDate}
         and #{endDate} and type =#{type}

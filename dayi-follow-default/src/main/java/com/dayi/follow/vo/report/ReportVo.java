@@ -4,7 +4,9 @@ package com.dayi.follow.vo.report;
 import com.dayi.follow.util.Misc;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 //日报数据,周报，月报都有用到
 public class ReportVo {
@@ -80,8 +82,8 @@ public class ReportVo {
     public String getInCashFm() {
         if (this.inCash != null) {
             inCashFm = Misc.parseMoney(inCash.doubleValue(), 2);
-        }else {
-            inCashFm="0.00";
+        } else {
+            inCashFm = "0.00";
         }
         return inCashFm;
     }
@@ -109,8 +111,8 @@ public class ReportVo {
     public String getGrowthFundFm() {
         if (this.growthFund != null) {
             growthFundFm = Misc.parseMoney(growthFund.doubleValue(), 2);
-        }else {
-            growthFundFm="0.00";
+        } else {
+            growthFundFm = "0.00";
         }
         return growthFundFm;
     }
@@ -130,8 +132,8 @@ public class ReportVo {
     public String getOutCashFm() {
         if (this.outCash != null) {
             outCashFm = Misc.parseMoney(outCash.doubleValue(), 2);
-        }else {
-            outCashFm="0.00";
+        } else {
+            outCashFm = "0.00";
         }
         return outCashFm;
     }
@@ -183,8 +185,8 @@ public class ReportVo {
     public String getManageFundFm() {
         if (this.manageFund != null) {
             manageFundFm = Misc.parseMoney(manageFund.doubleValue(), 2);
-        }else {
-            manageFundFm="0.00";
+        } else {
+            manageFundFm = "0.00";
         }
         return manageFundFm;
     }
@@ -204,8 +206,8 @@ public class ReportVo {
     public String getMakerFundFm() {
         if (this.makerFund != null) {
             makerFundFm = Misc.parseMoney(makerFund.doubleValue(), 2);
-        }else {
-            makerFundFm="0.00";
+        } else {
+            makerFundFm = "0.00";
         }
         return makerFundFm;
     }
@@ -225,8 +227,8 @@ public class ReportVo {
     public String getManageGrowthFundFm() {
         if (this.manageGrowthFund != null) {
             manageGrowthFundFm = Misc.parseMoney(manageGrowthFund.doubleValue(), 2);
-        }else {
-            manageGrowthFundFm="0.00";
+        } else {
+            manageGrowthFundFm = "0.00";
         }
         return manageGrowthFundFm;
     }
@@ -234,4 +236,40 @@ public class ReportVo {
     public void setManageGrowthFundFm(String manageGrowthFundFm) {
         this.manageGrowthFundFm = manageGrowthFundFm;
     }
+
+    public static final List sum(List<ReportVo> list) {
+        List newList = new ArrayList();
+        newList.addAll(list);
+
+        if (!list.isEmpty()) {
+
+            int openNum = 0;
+            BigDecimal inCash = BigDecimal.ZERO;
+            BigDecimal outCash = BigDecimal.ZERO;
+            BigDecimal manageFund = BigDecimal.ZERO;
+            BigDecimal manageGrowthFund = BigDecimal.ZERO;
+            BigDecimal makerFund = BigDecimal.ZERO;
+
+            for (ReportVo item : list) {
+                openNum = openNum + item.getOpenAccountNum();
+                inCash.add(item.getInCash());
+                outCash.add(item.getOutCash());
+                manageFund.add(item.getManageFund());
+                manageGrowthFund.add(item.getManageGrowthFund());
+                makerFund.add(item.getMakerFund());
+            }
+
+            ReportVo sr = new ReportVo();
+            sr.setName("团队总计");
+            sr.setOpenAccountNum(openNum);
+            sr.setInCash(inCash);
+            sr.setOutCash(outCash);
+            sr.setManageFund(manageFund);
+            sr.setManageGrowthFund(manageGrowthFund);
+            sr.setGrowthFund(makerFund);
+            newList.add(sr);
+        }
+        return newList;
+    }
+
 }

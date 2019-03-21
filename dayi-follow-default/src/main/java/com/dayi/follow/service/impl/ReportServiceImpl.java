@@ -166,7 +166,8 @@ public class ReportServiceImpl implements ReportService {
 
         String startDate = DateTime.parse(date).millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
         String endDate = DateTime.parse(date).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
-        return sourceReportMapper.findByTime(null, startDate, endDate);
+        List list = sourceReportMapper.findByTime(null, startDate, endDate);
+        return SourceReportVo.sum(list);
     }
 
     @Override
@@ -204,17 +205,13 @@ public class ReportServiceImpl implements ReportService {
     public WeekVo findAdminWeek(String betweenDate) {
         WeekVo weekVo = new WeekVo(betweenDate);
 
-        List srs = new ArrayList();
+        SourceReportVo zg = sourceReportMapper.sumByTime(SourceReport.TYPE_ZG.getId(), weekVo.getStartDateHMS(), weekVo.getEndDateHMS());
+        SourceReportVo maker = sourceReportMapper.sumByTime(SourceReport.TYPE_MAKER.getId(), weekVo.getStartDateHMS(), weekVo.getEndDateHMS());
+        SourceReportVo other = sourceReportMapper.sumByTime(SourceReport.TYPE_OTHER.getId(), weekVo.getStartDateHMS(), weekVo.getEndDateHMS());
 
-        SourceReport zg = sourceReportMapper.sumByTime(SourceReport.TYPE_ZG.getId(), weekVo.getStartDateHMS(), weekVo.getEndDateHMS());
-        SourceReport maker = sourceReportMapper.sumByTime(SourceReport.TYPE_MAKER.getId(), weekVo.getStartDateHMS(), weekVo.getEndDateHMS());
-        SourceReport other = sourceReportMapper.sumByTime(SourceReport.TYPE_OTHER.getId(), weekVo.getStartDateHMS(), weekVo.getEndDateHMS());
-
-        srs.add(zg);
-        srs.add(maker);
-        srs.add(other);
-
-        weekVo.setItems(srs);
+        weekVo.addSRItem(zg);
+        weekVo.addSRItem(maker);
+        weekVo.addSRItem(other);
 
         return weekVo;
     }
@@ -251,17 +248,14 @@ public class ReportServiceImpl implements ReportService {
     public MonthVo findAdminMonth(String month) {
         MonthVo monthVo = new MonthVo(month);
 
-        List srs = new ArrayList();
+        SourceReportVo zg = sourceReportMapper.sumByTime(SourceReport.TYPE_ZG.getId(), monthVo.getMonthStartHMS(), monthVo.getMonthEndHMS());
+        SourceReportVo maker = sourceReportMapper.sumByTime(SourceReport.TYPE_MAKER.getId(), monthVo.getMonthStartHMS(), monthVo.getMonthEndHMS());
+        SourceReportVo other = sourceReportMapper.sumByTime(SourceReport.TYPE_OTHER.getId(), monthVo.getMonthStartHMS(), monthVo.getMonthEndHMS());
 
-        SourceReport zg = sourceReportMapper.sumByTime(SourceReport.TYPE_ZG.getId(), monthVo.getMonthStartHMS(), monthVo.getMonthEndHMS());
-        SourceReport maker = sourceReportMapper.sumByTime(SourceReport.TYPE_MAKER.getId(), monthVo.getMonthStartHMS(), monthVo.getMonthEndHMS());
-        SourceReport other = sourceReportMapper.sumByTime(SourceReport.TYPE_OTHER.getId(), monthVo.getMonthStartHMS(), monthVo.getMonthEndHMS());
+        monthVo.addSRItem(zg);
+        monthVo.addSRItem(maker);
+        monthVo.addSRItem(other);
 
-        srs.add(zg);
-        srs.add(maker);
-        srs.add(other);
-
-        monthVo.setItems(srs);
         return monthVo;
     }
 

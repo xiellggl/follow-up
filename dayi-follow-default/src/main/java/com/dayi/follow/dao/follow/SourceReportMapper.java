@@ -2,6 +2,8 @@ package com.dayi.follow.dao.follow;
 
 import com.dayi.follow.model.follow.FollowUpLog;
 import com.dayi.follow.model.follow.SourceReport;
+import com.dayi.follow.vo.report.ReportVo;
+import com.dayi.follow.vo.report.SourceReportVo;
 import com.dayi.mybatis.support.BaseMapper;
 import com.dayi.mybatis.support.Page;
 import org.apache.ibatis.annotations.Param;
@@ -16,7 +18,7 @@ public interface SourceReportMapper extends BaseMapper<SourceReport> {
             " and #{endDate} and type =#{type} ")
     SourceReport getByTime(@Param("type") int type,@Param("startDate") String startDate,@Param("endDate") String endDate);
 
-    SourceReport sumByTime(@Param("type") int type,@Param("startDate") String startDate,@Param("endDate") String endDate);
+    SourceReportVo sumByTime(@Param("type") int type, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
     List findByTime(@Param("type") Integer type, @Param("startDate") String startDate, @Param("endDate") String endDate);
 

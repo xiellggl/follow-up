@@ -5,12 +5,13 @@ import com.dayi.common.util.NameItems;
 import com.dayi.mybatis.support.BaseModel;
 
 import java.math.BigDecimal;
+import java.util.Iterator;
 
 /**
  * @author xiell
  * @date 2019/3/18
  */
-public class SourceReport extends BaseModel{
+public class SourceReport extends BaseModel {
     private Integer type;//来源类型
     private BigDecimal inCash;//网银转入总额
     private BigDecimal outCash;//转出到卡总额
@@ -24,7 +25,7 @@ public class SourceReport extends BaseModel{
     public static final NameItem TYPE_MAKER = NameItem.valueOf("创客", 2);
     public static final NameItem TYPE_OTHER = NameItem.valueOf("其它", 3);
 
-    public final static NameItems TYPE_ALL = NameItems.valueOf(TYPE_ZG,TYPE_MAKER,TYPE_OTHER);
+    public final static NameItems TYPE_ALL = NameItems.valueOf(TYPE_ZG, TYPE_MAKER, TYPE_OTHER);
 
 
     public Integer getType() {
@@ -73,5 +74,17 @@ public class SourceReport extends BaseModel{
 
     public void setManageGrowthFund(BigDecimal manageGrowthFund) {
         this.manageGrowthFund = manageGrowthFund;
+    }
+
+    public final static String getTypeName(Integer id) {
+        if (id == null) return null;
+        Iterator<NameItem> iterator = TYPE_ALL.iterator();
+        while (iterator.hasNext()) {
+            NameItem next = iterator.next();
+            if (id == next.getId()) {
+                return next.getName();
+            }
+        }
+        return null;
     }
 }
