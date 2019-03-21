@@ -70,7 +70,7 @@
                                 <tbody>
                                 <c:if test="${empty page.results}">
                                     <tr>
-                                        <td colspan="9" class="no_data">暂无数据记录</td>
+                                        <td colspan="7" class="no_data">暂无数据记录</td>
                                     </tr>
                                 </c:if>
 
@@ -79,11 +79,11 @@
                                         <tr>
                                             <td>${item.name}</td>
                                             <td>${item.openAccountNum}</td>
-                                            <td>${item.manageGrowthFundFm}</td>
                                             <td>${item.inCashFm}</td>
-                                            <td>${item.inCashNum}</td>
                                             <td>${item.outCashFm}</td>
-                                            <td>${item.outCashNum}</td>
+                                            <td>${item.manageFundFm}</td>
+                                            <td>${item.manageGrowthFundFm}</td>
+                                            <td>${item.makerFundFm}</td>
                                         </tr>
                                     </c:forEach>
                                 </c:if>

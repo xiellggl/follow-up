@@ -83,20 +83,20 @@
                             <tbody>
                             <c:if test="${empty page.results}">
                                 <tr>
-                                    <td colspan="12" class="no_data">暂无数据记录</td>
+                                    <td colspan="9" class="no_data">暂无数据记录</td>
                                 </tr>
                             </c:if>
                             <c:if test="${not empty page.results}">
                                 <c:forEach items="${page.results}" var="item">
                                     <tr>
                                         <td>${item.date}</td>
-                                        <td class="hidden-xs">${item.deptName}</td>
-                                        <td class="hidden-xs">${item.openAccountNum}</td>
-                                        <td class="hidden-xs">${item.manageGrowthFundFm}</td>
-                                        <td class="hidden-xs">${item.inCashFm}</td>
-                                        <td>${item.inCashNum}</td>
-                                        <td class="hidden-xs">${item.outCashFm}</td>
-                                        <td>${item.outCashNum}</td>
+                                        <td>${item.deptName}</td>
+                                        <td>${item.openAccountNum}</td>
+                                        <td>${item.inCashFm}</td>
+                                        <td>${item.outCashFm}</td>
+                                        <td>${item.manageFundFm}</td>
+                                        <td>${item.manageGrowthFundFm}</td>
+                                        <td>${item.makerFundFm}</td>
                                         <td>
                                             <a href="./daily/detail?date=${item.date}">
                                                 <i class="ace-icon fa fa-external-link"></i> 查看
