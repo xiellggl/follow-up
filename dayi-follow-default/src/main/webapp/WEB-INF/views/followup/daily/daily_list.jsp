@@ -4,7 +4,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8" />
-    <title>销售报表-销售日报</title>
+    <title>个人报表-个人日报</title>
     <%@include file="/inc/followup/csslink.jsp"%>
     <link rel="stylesheet" type="text/css" media="all" href="/static/public/daterangepicker3/daterangepicker.css" />
 </head>
@@ -20,8 +20,8 @@
                         <i class="ace-icon fa fa-home home-icon"></i>
                         <a href="/">首页</a>
                     </li>
-                    <li>销售报表</li>
-                    <li class="active">销售日报</li>
+                    <li>个人报表</li>
+                    <li class="active">个人日报</li>
                 </ul>
             </div>
             <div class="page-content">
@@ -84,20 +84,27 @@
                                 <c:forEach items="${page.results}" var="item">
                                     <tr>
                                         <td>${item.date}</td>
+                                        <%--团队名称--%>
                                         <td class="hidden-xs">${item.deptName}</td>
+                                        <%--新开户数--%>
                                         <td class="hidden-xs">${item.openAccountNum}</td>
-                                        <td class="hidden-xs">${item.manageGrowthFundFm}</td>
+                                        <%--入金总额--%>
                                         <td class="hidden-xs">${item.inCashFm}</td>
-                                        <td>${item.inCashNum}</td>
+                                        <%--出金总额--%>
                                         <td class="hidden-xs">${item.outCashFm}</td>
-                                        <td>${item.outCashNum}</td>
+                                        <%--管理资产规模--%>
+                                        <td class="hidden-xs">${item.manageFundFm}</td>
+                                        <%--管理资产规模净值--%>
+                                        <td>${item.manageGrowthFundFm}</td>
+                                        <%--创客管理资金规模--%>
+                                        <td class="hidden-xs">${item.makerFund}</td>
                                     </tr>
                                 </c:forEach>
                             </c:if>
                             </tbody>
                         </table>
                         <div>
-                            历史最高资产规模：<span>10000000.00</span>
+                            历史最高资产规模：<span class="hisMaxFund">8866</span>
                         </div>
                         <c:if test="${not empty page}">
                             <div class="pagerBar" id="pagerBar">
@@ -129,6 +136,18 @@
         $('.dates').on('cancel.daterangepicker', function (ev, picker) {
             $(this).val('');
         });
+
+        //请求历史最高资产规模
+        // common.ajax.handle({
+        //     url: "/followup/get/hismaxfund",
+        //     data: { },
+        //     succback: function (data) {
+        //         $(".hisMaxFund").text(data.result);
+        //
+        //         // common.successMsg(data.msg, function () {
+        //         // });
+        //     }
+        // });
     });
 </script>
 </body>

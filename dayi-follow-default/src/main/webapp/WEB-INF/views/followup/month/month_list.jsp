@@ -4,7 +4,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8"/>
-    <title>销售报表-销售月报</title>
+    <title>个人报表-个人月报</title>
     <%@include file="/inc/followup/csslink.jsp" %>
     <link rel="stylesheet" type="text/css" media="all" href="/static/public/flexoCalendar/flexoCalendar.css"/>
 </head>
@@ -20,8 +20,8 @@
                         <i class="ace-icon fa fa-home home-icon"></i>
                         <a href="/">首页</a>
                     </li>
-                    <li>销售报表</li>
-                    <li class="active">销售月报</li>
+                    <li>个人报表</li>
+                    <li class="active">个人月报</li>
                 </ul><!-- /.breadcrumb -->
             </div>
             <div class="page-content">
@@ -30,7 +30,7 @@
                         您当前操作
                         <small>
                             <i class="ace-icon fa fa-angle-double-right"></i>
-                            团队月报(${monthVo.month})
+                            个人月报(${monthVo.month})
                         </small>
                     </h1>
                 </div>
@@ -90,11 +90,11 @@
                                     <tr>
                                         <td>${monthVo.name}</td>
                                         <td>${monthVo.openAccountNum}</td>
-                                        <td>${monthVo.manageGrowthFundFm}</td>
                                         <td>${monthVo.inCashFm}</td>
                                         <td>${monthVo.outCashFm}</td>
-                                        <td>${monthVo.growthFundFm}</td>
-                                        <td>${monthVo.growthFundFm}</td>
+                                        <td>${monthVo.manageFundFm}</td>
+                                        <td>${monthVo.manageGrowthFundFm}</td>
+                                        <td>${monthVo.makerFund}</td>
                                     </tr>
                             </c:if>
                             </tbody>

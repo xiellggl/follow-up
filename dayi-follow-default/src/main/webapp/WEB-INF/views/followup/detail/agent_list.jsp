@@ -237,30 +237,35 @@
 
         //编辑变更前总资产（button有两个class属性，导致jquery无法获取到Dom对象）
         $(".totalBefore").on("click",function(){
-            $(this).parents('.beforeCon').hide();   //隐藏
+            $(this).parents('.beforeCon').hide();   //隐藏父元素
             $(this).parents('.beforeCon').siblings('.edit_con').show();  //进入编辑状态
+        });
+
+        var newBeforeBalance = 0;
+        //键盘事件
+        $(".newBeforeBalance").keyup(function(e){
+            newBeforeBalance = e.target.value;  //实时获取用户输入的值
         });
 
         //保存
         $(".save").on("click",function(){
-            var id = $(this).attr("data-id");
-            var newBeforeBalance = Number($(".newBeforeBalance").val());
-            console.log(id);
-            console.log(newBeforeBalance);
-
+            var memberId = $(this).attr("data-id");
             //ajax请求
-
-
-            //请求成功恢复到默认状态
-            $(this).parents('.beforeCon').show;   //隐藏
-            $(this).parents('.edit_con').siblings('.beforeCon').show();  //进入编辑状态
-
-
-
+            common.ajax.handle({
+                url: "/followup/edit/totalfundbefore",
+                data: {
+                    agentId: memberId,
+                    fund: newBeforeBalance
+                },
+                succback: function (data) {
+                    common.successMsg(data.msg, function () {
+                        $(".beforeCon").show();
+                        $(".edit_con").hide();
+                        window.location.reload();
+                    });
+                }
+            });
         });
-
-
-
     });
 </script>
 </body>
