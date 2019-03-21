@@ -3,7 +3,7 @@ package com.dayi.follow.vo.export;
 
 import com.dayi.common.web.excel.AbstractExcel;
 import com.dayi.common.web.excel.Column;
-import com.dayi.follow.vo.report.ReportDailyVo;
+import com.dayi.follow.vo.report.ReportVo;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author xiell
  */
-public class TeamDailyDetailExport extends AbstractExcel<ReportDailyVo> {
+public class TeamDailyDetailExport extends AbstractExcel<ReportVo> {
     // 按照文档列头顺序添加
     private Column column1 = addColumn("日期", 4000);
     private Column column2 = addColumn("姓名", 4000);
@@ -24,11 +24,11 @@ public class TeamDailyDetailExport extends AbstractExcel<ReportDailyVo> {
     private Column column8 = addColumn("创客管理资产规模", 4000);
 
 
-    public TeamDailyDetailExport(String fileName, String fileTitle, List<ReportDailyVo> datas) {
+    public TeamDailyDetailExport(String fileName, String fileTitle, List<ReportVo> datas) {
         super(fileName, fileTitle, datas);
     }
 
-    protected void fillData(ReportDailyVo vo) {
+    protected void fillData(ReportVo vo) {
         // 日期
         column1.setValue(vo.getDate());
         // 姓名

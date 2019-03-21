@@ -9,6 +9,14 @@
         </if>
     </select>
 
+    <select id="sumByTime" resultType="com.dayi.follow.model.follow.SourceReport" parameterType="map">
+        select ifnull(sum(in_cash),0)inCash,ifnull(sum(out_cash),0)outCash,ifnull(sum(growth_fund),0)growthFund,
+              ifnull(sum(manage_fund),0)manageFund,ifnull(sum(manage_growth_fund),0)manageGrowthFund
+        from source_report
+        where create_time between #{startDate}
+        and #{endDate} and type =#{type}
+    </select>
+
 
     <select id="getMakerManageFund" parameterType="map" resultType="java.math.BigDecimal">
         SELECT ifnull(sum(c.useable + c.frozen + c.out_frozen +  0.8*c.cargo_interest+c.cargo_interest_puchas - d.total_fund_before),0)manageFund

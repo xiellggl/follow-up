@@ -3,7 +3,6 @@ package com.dayi.follow.service.impl;
 import com.dayi.common.util.BigDecimals;
 import com.dayi.follow.dao.dayi.OrgMapper;
 import com.dayi.follow.dao.follow.*;
-import com.dayi.follow.model.follow.FollowUpLog;
 import com.dayi.follow.model.follow.SourceReport;
 import com.dayi.follow.service.CountService;
 import com.dayi.follow.service.DeptService;
@@ -11,16 +10,13 @@ import com.dayi.follow.service.ReportService;
 import com.dayi.follow.vo.report.*;
 import com.dayi.mybatis.support.Page;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -98,8 +94,8 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public List<ReportDailyVo> exportTeamDailyDetail(String deptId, String date) {
-        List<ReportDailyVo> list = new ArrayList<ReportDailyVo>();
+    public List<ReportVo> exportTeamDailyDetail(String deptId, String date) {
+        List<ReportVo> list = new ArrayList<>();
         if (StringUtils.isBlank(deptId) || StringUtils.isBlank(date)) return list;
 
         String startDate = DateTime.parse(date).millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
@@ -112,113 +108,56 @@ public class ReportServiceImpl implements ReportService {
 
     //个人周报
     @Override
-    public MyWeekVo getWeek(String followId, String betweenDate) {
-        MyWeekVo weekVo;
+    public WeekVo getWeek(String followId, String betweenDate) {
+        WeekVo weekVo = new WeekVo(betweenDate);
 
-        DateVo dateVo = this.doWeekDate(betweenDate);
+        List items = new ArrayList();
 
-        weekVo = reportMapper.getWeek(followId, dateVo.getStartDate(), dateVo.getEndDate());
+        ReportVo week = reportMapper.sumByTime(followId, weekVo.getStartDateHMS(), weekVo.getEndDateHMS());
 
-        dateVo.setEndDate(DateTime.parse(dateVo.getEndDate(), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toString("yyyy-MM-dd"));
+        items.add(week);
 
-        if (weekVo == null) {
-            weekVo = new MyWeekVo();
-        }
-
-        BeanUtils.copyProperties(dateVo, weekVo);
+        weekVo.setItems(items);
         return weekVo;
-    }
-
-    private DateVo doWeekDate(String betweenDate) {
-        DateVo dateVo = new DateVo();
-
-        dateVo.setLastWeekStart(DateTime.now().plusWeeks(-1).withDayOfWeek(1).toString("yyyy-MM-dd"));
-        dateVo.setLastWeekEnd(DateTime.now().plusWeeks(-1).withDayOfWeek(5).toString("yyyy-MM-dd"));
-        dateVo.setThisWeekStart(DateTime.now().withDayOfWeek(1).toString("yyyy-MM-dd"));
-        dateVo.setThisWeekEnd(DateTime.now().withDayOfWeek(5).toString("yyyy-MM-dd"));
-
-        if (StringUtils.isBlank(betweenDate)) {//默认取上个星期
-            dateVo.setStartDate(dateVo.getLastWeekStart());
-            dateVo.setEndDate(DateTime.now().plusWeeks(-1).withDayOfWeek(5).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss"));
-        } else {
-            String[] split = betweenDate.split(" - ");
-            dateVo.setStartDate(split[0]);
-            dateVo.setEndDate(DateTime.parse(split[1]).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss"));
-        }
-        return dateVo;
     }
 
     //团队周报
     @Override
-    public TeamWeekVo countTeamWeek(String deptId, String betweenDate) {
-        TeamWeekVo teamWeekVo = new TeamWeekVo();
+    public WeekVo getTeamWeek(String deptId, String betweenDate) {
+        WeekVo weekVo = new WeekVo(betweenDate);
 
-        DateVo dateVo = this.doWeekDate(betweenDate);
+        List<ReportVo> reportVos = reportMapper.findTeamByTime(deptId, weekVo.getStartDateHMS(), weekVo.getEndDateHMS());
 
-        List<ReportVo> reportVos = reportMapper.findTeamWeek(deptId, dateVo.getStartDate(), dateVo.getEndDate());
+        weekVo.setItems(doMore(reportVos));
 
-        dateVo.setEndDate(DateTime.parse(dateVo.getEndDate(), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toString("yyyy-MM-dd"));
-        BeanUtils.copyProperties(dateVo, teamWeekVo);
-
-        if (reportVos.isEmpty()) return teamWeekVo;
-
-        teamWeekVo.setReportVos(doMore(reportVos));
-
-        return teamWeekVo;
-    }
-
-    private DateVo doMonthDate(String date) {
-        DateVo dateVo = new DateVo();
-
-        dateVo.setLastMonth(DateTime.now().plusMonths(-1).toString("yyyy-MM"));//上月
-        dateVo.setThisMonth(DateTime.now().toString("yyyy-MM"));//本月
-
-        if (StringUtils.isBlank(date)) {//默认取上个月
-            dateVo.setMonth(dateVo.getLastMonth());
-        } else {
-            dateVo.setMonth(date);
-        }
-        return dateVo;
+        return weekVo;
     }
 
     @Override
-    public MyMonthVo getMonth(String followId, String month) {
+    public MonthVo getMonth(String followId, String month) {
+        MonthVo monthVo = new MonthVo(month);
 
-        MyMonthVo monthVo;
+        List list = new ArrayList();
 
-        DateVo dateVo = this.doMonthDate(month);
+        ReportVo rp = reportMapper.sumByTime(followId, monthVo.getMonthStartHMS(), monthVo.getMonthEndHMS());
 
-        String startDate = DateTime.parse(dateVo.getMonth()).toString("yyyy-MM-dd HH:mm:ss");//本月开始
-        String endDate = DateTime.parse(dateVo.getMonth()).dayOfMonth().withMaximumValue().millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");//本月结束
+        list.add(rp);
 
-        monthVo = reportMapper.getMonth(followId, startDate, endDate);
-
-        if (monthVo == null) {
-            monthVo = new MyMonthVo();
-        }
-
-        BeanUtils.copyProperties(dateVo, monthVo);
+        monthVo.setItems(list);
 
         return monthVo;
 
     }
 
     @Override
-    public TeamMonthVo countTeamMonth(String deptId, String month) {
-        TeamMonthVo teamMonthVo = new TeamMonthVo();
+    public MonthVo getTeamMonth(String deptId, String month) {
+        MonthVo monthVo = new MonthVo(month);
 
-        DateVo dateVo = doMonthDate(month);
+        List<ReportVo> reportVos = reportMapper.findTeamByTime(deptId, monthVo.getMonthStartHMS(), monthVo.getMonthEndHMS());
 
-        String startDate = DateTime.parse(dateVo.getMonth()).toString("yyyy-MM-dd HH:mm:ss");//本月开始
-        String endDate = DateTime.parse(dateVo.getMonth()).dayOfMonth().withMaximumValue().millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");//本月结束
+        monthVo.setItems(doMore(reportVos));
 
-        List<ReportVo> reportVos = reportMapper.findTeamMonth(deptId, startDate, endDate);
-
-        teamMonthVo.setReportVos(doMore(reportVos));
-
-        BeanUtils.copyProperties(dateVo, teamMonthVo);
-
-        return teamMonthVo;
+        return monthVo;
     }
 
     @Override
@@ -262,179 +201,191 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public AdminWeekVo countAdminWeek(Page page, String betweenDate) {
-        AdminWeekVo adminWeekVo = new AdminWeekVo();
-        String startDate;
-        String endDate;
+    public WeekVo findAdminWeek(String betweenDate) {
+        WeekVo weekVo = new WeekVo(betweenDate);
 
-        DateVo dateVo = doWeekDate(betweenDate);
+        List srs = new ArrayList();
 
-        if (StringUtils.isBlank(betweenDate)) {
-            startDate = dateVo.getLastWeekStart();
-            endDate = dateVo.getLastWeekEnd();
-        } else {
-            String[] split = betweenDate.split(" - ");
-            startDate = split[0];
-            endDate = DateTime.parse(split[1]).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
-        }
+        SourceReport zg = sourceReportMapper.sumByTime(SourceReport.TYPE_ZG.getId(), weekVo.getStartDateHMS(), weekVo.getEndDateHMS());
+        SourceReport maker = sourceReportMapper.sumByTime(SourceReport.TYPE_MAKER.getId(), weekVo.getStartDateHMS(), weekVo.getEndDateHMS());
+        SourceReport other = sourceReportMapper.sumByTime(SourceReport.TYPE_OTHER.getId(), weekVo.getStartDateHMS(), weekVo.getEndDateHMS());
 
-        dateVo.setEndDate(DateTime.parse(dateVo.getEndDate(), DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toString("yyyy-MM-dd"));
-        BeanUtils.copyProperties(dateVo, adminWeekVo);
+        srs.add(zg);
+        srs.add(maker);
+        srs.add(other);
 
-        page = reportMapper.findAdminWeekSum(page, startDate, endDate);
+        weekVo.setItems(srs);
 
-        Page per = new Page();
-        per.setPageNo(page.getPageNo());
-        per.setPageSize(page.getPageSize() * 5);
-
-        per = reportMapper.findAdminWeekPer(per, startDate, endDate);
-
-        adminWeekVo.setWeekVos(mergeData(page.getResults(), per.getResults()));
-
-        return adminWeekVo;
+        return weekVo;
     }
 
     @Override
-    public List<WeekVo> findAdminWeekList(String betweenDate) {
-        List<WeekVo> list = new ArrayList<>();
+    public List<AdminDetailVo> findAdminWeekDetail(String betweenDate) {
+        WeekVo weekVo = new WeekVo(betweenDate);
 
-        if (StringUtils.isBlank(betweenDate)) return list;
+        List<AdminDetailVo> totalList = reportMapper.findAdminDetailTotal(weekVo.getStartDateHMS(), weekVo.getEndDateHMS());
 
-        String[] split = betweenDate.split(" - ");
-        String startDate = split[0];
-        String endDate = DateTime.parse(split[1]).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
+        for (AdminDetailVo vo : totalList) {
+            List perList = reportMapper.findAdminDetailPer(vo.getDeptId(), weekVo.getStartDateHMS(), weekVo.getEndDateHMS());
+            vo.setpList(perList);
+        }
 
-        List<WeekVo> sum = reportMapper.findAdminWeekSum(startDate, endDate);
-
-        Page page = new Page();
-        page.setPageSize(sum.size() * 5);
-        Page<WeekVo> per = reportMapper.findAdminWeekPer(page, startDate, endDate);
-
-        return mergeData(sum, per.getResults());
+        return totalList;
     }
 
     @Override
-    public AdminMonthVo countAdminMonth(Page page, String month) {
-        AdminMonthVo adminMonthVo = new AdminMonthVo();
+    public List<ReportVo> findAdminWeekDetailList(String betweenDate) {
+        List<ReportVo> reportVos = new ArrayList<>();
 
-        DateVo dateVo = doMonthDate(month);
-
-        String startDate = DateTime.parse(dateVo.getMonth()).toString("yyyy-MM-dd HH:mm:ss");//本月开始
-        String endDate = DateTime.parse(dateVo.getMonth()).dayOfMonth().withMaximumValue().millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");//本月结束
-
-        BeanUtils.copyProperties(dateVo, adminMonthVo);
-
-        page = reportMapper.findAdminMonth(page, startDate, endDate);//本月
-        adminMonthVo.setMonthVos(doAdminMonth(page.getResults(), dateVo.getMonth()));
-        return adminMonthVo;
+        List<AdminDetailVo> list = this.findAdminWeekDetail(betweenDate);
+        //进行处理，将子集合取出来
+        for (AdminDetailVo adv : list) {
+            List<ReportVo> reportVos1 = adv.getpList();
+            reportVos.add(adv);
+            reportVos.addAll(reportVos1);
+        }
+        return reportVos;
     }
 
     @Override
-    public List<MonthVo> findAdminMonthList(String deptId, String month) {
-        List<MonthVo> list = new ArrayList<>();
-        if (StringUtils.isBlank(month)) return list;
+    public MonthVo findAdminMonth(String month) {
+        MonthVo monthVo = new MonthVo(month);
 
-        String startDate = DateTime.parse(month).toString("yyyy-MM-dd HH:mm:ss");//本月开始
-        String endDate = DateTime.parse(month).dayOfMonth().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");//本月结束
+        List srs = new ArrayList();
 
-        List<MonthVo> monthList = reportMapper.findAdminMonth(startDate, endDate);//本月
-        return doAdminMonth(monthList, month);
+        SourceReport zg = sourceReportMapper.sumByTime(SourceReport.TYPE_ZG.getId(), monthVo.getMonthStartHMS(), monthVo.getMonthEndHMS());
+        SourceReport maker = sourceReportMapper.sumByTime(SourceReport.TYPE_MAKER.getId(), monthVo.getMonthStartHMS(), monthVo.getMonthEndHMS());
+        SourceReport other = sourceReportMapper.sumByTime(SourceReport.TYPE_OTHER.getId(), monthVo.getMonthStartHMS(), monthVo.getMonthEndHMS());
+
+        srs.add(zg);
+        srs.add(maker);
+        srs.add(other);
+
+        monthVo.setItems(srs);
+        return null;
     }
 
-    private List<MonthVo> doAdminMonth(List<MonthVo> list, String month) {
-        String date1 = "";
-        String date2 = "";
-        String date3 = "";
-        String date4 = "";
-        if (!StringUtils.isBlank(month)) {
-            date1 = DateTime.parse(month).dayOfMonth().withMaximumValue().millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");//本月最后一天开始
-            date2 = DateTime.parse(month).dayOfMonth().withMaximumValue().millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");//本月结束
+    @Override
+    public List<AdminDetailVo> findAdminMonthDetail(String month) {
+        MonthVo monthVo = new MonthVo(month);
 
-            date3 = DateTime.parse(month).plusMonths(-1).dayOfMonth().withMaximumValue().millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");//上月最后一天开始
-            date4 = DateTime.parse(month).plusMonths(-1).dayOfMonth().withMaximumValue().millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");//上月结束
-        } else {
-            return list;
+        List<AdminDetailVo> totalList = reportMapper.findAdminDetailTotal(monthVo.getMonthStartHMS(), monthVo.getMonthEndHMS());
+
+        for (AdminDetailVo vo : totalList) {
+            List perList = reportMapper.findAdminDetailPer(vo.getDeptId(), monthVo.getMonthStartHMS(), monthVo.getMonthEndHMS());
+            vo.setpList(perList);
         }
-        for (MonthVo vo : list) {
-            if (vo == null) continue;
-            //获取新签创客
-            int orgNum = followOrgMapper.getNewSignOrgNum(vo.getFollowId(), month, date2, dayiDataBaseStr);
-            vo.setOrgNum(orgNum);
-
-            FollowUpLog log1 = followUpLogMapper.getLog(vo.getFollowId(), date1, date2);
-
-            if (log1 != null) {//这月最后一天日报已经生成
-                BigDecimal agentFund1 = followAgentMapper.getAgentFund(vo.getFollowId(), date2, dayiDataBaseStr);//加上代理商
-                BigDecimal fund1 = log1.getManageFund().add(agentFund1);
-                vo.setManageFund(fund1.setScale(2, BigDecimal.ROUND_HALF_UP));
-
-                FollowUpLog log2 = followUpLogMapper.getLog(vo.getFollowId(), date3, date4);
-                if (log2 == null) {
-                    vo.setRingGrowthRatio("上月无数据");
-                    continue;
-                }
-
-                BigDecimal agentFund2 = followAgentMapper.getAgentFund(vo.getFollowId(), date4, dayiDataBaseStr);
-                BigDecimal fund2 = log2.getManageFund().add(agentFund2);
-
-                if (BigDecimal.ZERO.compareTo(fund2) == 0) {
-                    vo.setRingGrowthRatio("上月无数据");
-                } else {
-                    BigDecimal subtract = fund1.subtract(fund2);//获取净增
-                    BigDecimal divide = subtract.divide(fund2, 2, BigDecimal.ROUND_HALF_UP);
-                    BigDecimal value = divide.multiply(BigDecimal.valueOf(100)).setScale(2, BigDecimal.ROUND_HALF_UP);
-                    vo.setRingGrowthRatio(value + "%");
-                }
-
-            } else {//还没有生成-未知，所以跳过
-                vo.setManageFund(null);
-                vo.setRingGrowthRatio("暂无数据");
-                continue;
-            }
-        }
-        return list;
+        return totalList;
     }
 
-    private List<WeekVo> mergeData(List<WeekVo> sum, List<WeekVo> per) {
-        List<WeekVo> adminWeekVos = new ArrayList<>();
+    @Override
+    public List<ReportVo> findAdminMonthDetailList(String month) {
+        List<ReportVo> reportVos = new ArrayList<>();
 
-        for (int j = 0; j < sum.size(); j++) {
-            WeekVo vo = new WeekVo();
-            vo.setDeptName(sum.get(j).getDeptName());
-            vo.setName(sum.get(j).getName());
-            vo.setOpenAccountNum(sum.get(j).getOpenAccountNum());
-            vo.setInCash(sum.get(j).getInCash());
-
-            for (int i = 0 + 5 * j; i < 5 + 5 * j; i++) {
-                switch ((i + 5) % 5) {
-                    case 0:
-                        vo.setMonOpen(per.get(i).getOpenAccountNum());
-                        vo.setMonInCash(per.get(i).getInCash());
-                        break;
-                    case 1:
-                        vo.setTueOpen(per.get(i).getOpenAccountNum());
-                        vo.setTueInCash(per.get(i).getInCash());
-                        break;
-                    case 2:
-                        vo.setWedOpen(per.get(i).getOpenAccountNum());
-                        vo.setWedInCash(per.get(i).getInCash());
-                        break;
-                    case 3:
-                        vo.setThuOpen(per.get(i).getOpenAccountNum());
-                        vo.setThuInCash(per.get(i).getInCash());
-                        break;
-                    case 4:
-                        vo.setFriOpen(per.get(i).getOpenAccountNum());
-                        vo.setFriInCash(per.get(i).getInCash());
-                        break;
-                }
-
-            }
-            adminWeekVos.add(vo);
+        List<AdminDetailVo> list = this.findAdminMonthDetail(month);
+        //进行处理，将子集合取出来
+        for (AdminDetailVo adv : list) {
+            List<ReportVo> reportVos1 = adv.getpList();
+            reportVos.add(adv);
+            reportVos.addAll(reportVos1);
         }
-        return adminWeekVos;
-
+        return reportVos;
     }
+
+//    private List<MonthVo> doAdminMonth(List<MonthVo> list, String month) {
+//        String date1 = "";
+//        String date2 = "";
+//        String date3 = "";
+//        String date4 = "";
+//        if (!StringUtils.isBlank(month)) {
+//            date1 = DateTime.parse(month).dayOfMonth().withMaximumValue().millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");//本月最后一天开始
+//            date2 = DateTime.parse(month).dayOfMonth().withMaximumValue().millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");//本月结束
+//
+//            date3 = DateTime.parse(month).plusMonths(-1).dayOfMonth().withMaximumValue().millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");//上月最后一天开始
+//            date4 = DateTime.parse(month).plusMonths(-1).dayOfMonth().withMaximumValue().millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");//上月结束
+//        } else {
+//            return list;
+//        }
+//        for (MonthVo vo : list) {
+//            if (vo == null) continue;
+//            //获取新签创客
+//            int orgNum = followOrgMapper.getNewSignOrgNum(vo.getFollowId(), month, date2, dayiDataBaseStr);
+//            vo.setOrgNum(orgNum);
+//
+//            FollowUpLog log1 = followUpLogMapper.getLog(vo.getFollowId(), date1, date2);
+//
+//            if (log1 != null) {//这月最后一天日报已经生成
+//                BigDecimal agentFund1 = followAgentMapper.getAgentFund(vo.getFollowId(), date2, dayiDataBaseStr);//加上代理商
+//                BigDecimal fund1 = log1.getManageFund().add(agentFund1);
+//                vo.setManageFund(fund1.setScale(2, BigDecimal.ROUND_HALF_UP));
+//
+//                FollowUpLog log2 = followUpLogMapper.getLog(vo.getFollowId(), date3, date4);
+//                if (log2 == null) {
+//                    vo.setRingGrowthRatio("上月无数据");
+//                    continue;
+//                }
+//
+//                BigDecimal agentFund2 = followAgentMapper.getAgentFund(vo.getFollowId(), date4, dayiDataBaseStr);
+//                BigDecimal fund2 = log2.getManageFund().add(agentFund2);
+//
+//                if (BigDecimal.ZERO.compareTo(fund2) == 0) {
+//                    vo.setRingGrowthRatio("上月无数据");
+//                } else {
+//                    BigDecimal subtract = fund1.subtract(fund2);//获取净增
+//                    BigDecimal divide = subtract.divide(fund2, 2, BigDecimal.ROUND_HALF_UP);
+//                    BigDecimal value = divide.multiply(BigDecimal.valueOf(100)).setScale(2, BigDecimal.ROUND_HALF_UP);
+//                    vo.setRingGrowthRatio(value + "%");
+//                }
+//
+//            } else {//还没有生成-未知，所以跳过
+//                vo.setManageFund(null);
+//                vo.setRingGrowthRatio("暂无数据");
+//                continue;
+//            }
+//        }
+//        return list;
+//    }
+//
+//    private List<WeekBaseVo> mergeData(List<WeekBaseVo> sum, List<WeekBaseVo> per) {
+//        List<WeekBaseVo> adminWeekVos = new ArrayList<>();
+//
+//        for (int j = 0; j < sum.size(); j++) {
+//            WeekBaseVo vo = new WeekBaseVo();
+//            vo.setDeptName(sum.get(j).getDeptName());
+//            vo.setName(sum.get(j).getName());
+//            vo.setOpenAccountNum(sum.get(j).getOpenAccountNum());
+//            vo.setInCash(sum.get(j).getInCash());
+//
+//            for (int i = 0 + 5 * j; i < 5 + 5 * j; i++) {
+//                switch ((i + 5) % 5) {
+//                    case 0:
+//                        vo.setMonOpen(per.get(i).getOpenAccountNum());
+//                        vo.setMonInCash(per.get(i).getInCash());
+//                        break;
+//                    case 1:
+//                        vo.setTueOpen(per.get(i).getOpenAccountNum());
+//                        vo.setTueInCash(per.get(i).getInCash());
+//                        break;
+//                    case 2:
+//                        vo.setWedOpen(per.get(i).getOpenAccountNum());
+//                        vo.setWedInCash(per.get(i).getInCash());
+//                        break;
+//                    case 3:
+//                        vo.setThuOpen(per.get(i).getOpenAccountNum());
+//                        vo.setThuInCash(per.get(i).getInCash());
+//                        break;
+//                    case 4:
+//                        vo.setFriOpen(per.get(i).getOpenAccountNum());
+//                        vo.setFriInCash(per.get(i).getInCash());
+//                        break;
+//                }
+//
+//            }
+//            adminWeekVos.add(vo);
+//        }
+//        return adminWeekVos;
+//
+//    }
 
     /**
      * 统计团队周报和团队月报的总计数据

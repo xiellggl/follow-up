@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dayi.follow.dao.follow.ReportMapper">
-    <select id="findDaily" parameterType="map" resultType="com.dayi.follow.vo.report.ReportDailyVo">
+    <select id="findDaily" parameterType="map" resultType="com.dayi.follow.vo.report.ReportVo">
     SELECT *,date(create_time)date from follow_up_log a
     left join (
         SELECT id deptId ,name deptName from department
@@ -19,7 +19,7 @@
 
 
 
-    <select id="findTeamDaily" parameterType="map" resultType="com.dayi.follow.vo.report.ReportDailyVo">
+    <select id="findTeamDaily" parameterType="map" resultType="com.dayi.follow.vo.report.ReportVo">
         select date(create_time)date,fd.name deptName,sum(open_account_num)openAccountNum,
                 sum(maker_fund)makerFund,sum(in_cash)inCash,sum(in_cash_num)inCashNum,
                 sum(out_cash)outCash,sum(out_cash_num)outCashNum,sum(manage_fund)manageFund,
@@ -36,7 +36,7 @@
         GROUP BY date(create_time) ORDER BY create_time desc
     </select>
 
-    <select id="findTeamDailyDetail" parameterType="map" resultType="com.dayi.follow.vo.report.ReportDailyVo">
+    <select id="findTeamDailyDetail" parameterType="map" resultType="com.dayi.follow.vo.report.ReportVo">
         SELECT *,date(create_time)date from follow_up_log a
         left join (
         SELECT id deptId ,name deptName from department
@@ -51,7 +51,7 @@
         ORDER  by a.create_time desc
     </select>
 
-    <select id="getWeek" parameterType="map" resultType="com.dayi.follow.vo.report.MyWeekVo">
+    <select id="sumByTime" parameterType="map" resultType="com.dayi.follow.vo.report.ReportVo">
         SELECT dept_id,b.name deptName,c.name ,follow_id,
               sum(open_account_num)openAccountNum,sum(in_cash)inCash,
               sum(out_cash)outCash,sum(maker_fund)makerFund,
@@ -69,7 +69,7 @@
         </if>
     </select>
 
-    <select id="findTeamWeek" parameterType="map" resultType="com.dayi.follow.vo.report.ReportVo">
+    <select id="findTeamByTime" parameterType="map" resultType="com.dayi.follow.vo.report.ReportVo">
         select follow_id,dept_id,c.name ,sum(open_account_num)openAccountNum,sum(maker_fund)makerFund,
                 sum(in_cash)inCash,sum(in_cash_num)inCashNum,sum(out_cash)outCash,sum(out_cash_num)outCashNum,
                 sum(manage_fund)manageFund,sum(manage_growth_fund)manageGrowthFund
@@ -85,115 +85,6 @@
             and create_time BETWEEN #{startDate} and #{endDate}
         </if>
         group by follow_id  ORDER BY dept_id asc, follow_id asc
-    </select>
-
-    <select id="getMonth" parameterType="map" resultType="com.dayi.follow.vo.report.MyMonthVo">
-        SELECT dept_id,b.name deptName,c.name ,follow_id,
-        sum(open_account_num)openAccountNum,sum(in_cash)inCash,
-        sum(out_cash)outCash,sum(maker_fund)makerFund,
-        sum(manage_fund)manageFund,sum(manage_growth_fund)manageGrowthFund
-        from follow_up_log a
-        left join (
-        SELECT id,name from department
-        )b on b.id =a.dept_id
-        left join(
-            SELECT id,name from follow_up
-        )c on c.id=a.follow_id
-        where a.follow_id =#{followId}
-        <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
-            and a.create_time BETWEEN #{startDate} and #{endDate}
-        </if>
-    </select>
-
-    <select id="findTeamMonth" parameterType="map" resultType="com.dayi.follow.vo.report.ReportVo">
-        select follow_id,dept_id,b.name deptName,c.name,sum(open_account_num)openAccountNum,
-                sum(maker_fund)makerFund,sum(manage_fund)manageFund,sum(manage_growth_fund)manageGrowthFund,
-                sum(in_cash)inCash,sum(out_cash)outCash
-        from follow_up_log a
-        left join (
-            SELECT name,id from department
-        )b on b.id=a.dept_id
-        left join(
-            SELECT id,name from follow_up
-        )c on c.id =a.follow_id
-        WHERE dept_id= #{deptId}
-        <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
-            and create_time BETWEEN #{startDate} and #{endDate}
-        </if>
-        group by follow_id  ORDER BY dept_id asc, follow_id asc
-    </select>
-
-
-    <select id="findAdminWeekPer" parameterType="map" resultType="com.dayi.follow.vo.report.WeekVo">
-     	SELECT date,follow_id,sum(num1)openAccountNum,sum(num2)inCash,e.id deptId
-        from  (
-                SELECT date,follow_id,if(date=createDate,openNum,0)num1,if(date=createDate,inCashNum,0)num2,d.id
-                from (
-                        SELECT #{startDate} date
-                        union SELECT DATE_ADD(#{startDate},INTERVAL 1 day)
-                        union SELECT DATE_ADD(#{startDate},INTERVAL 2 day)
-                        union SELECT DATE_ADD(#{startDate},INTERVAL 3 day)
-                        union SELECT DATE_ADD(#{startDate},INTERVAL 4 day)
-                )a
-                cross  join (
-                        SELECT date(create_time)createDate,follow_id ,sum(open_account_num)openNum,sum(in_cash)inCashNum,c.id
-                        from follow_up_log b
-                        left join (
-                                SELECT id from department
-                        )c on b.dept_id=c.id  WHERE 1=1
-                        <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
-                            and date(create_time) BETWEEN #{startDate} and #{endDate}
-                        </if>
-                        GROUP BY  follow_id,date(create_time)
-                 )d
-         )e GROUP BY follow_id,date ORDER BY deptId asc, follow_id asc,date asc
-    </select>
-
-    <select id="findAdminWeekSum" parameterType="map" resultType="com.dayi.follow.vo.report.WeekVo">
-        SELECT dept_id,b.name deptName,c.name,follow_id,
-              sum(open_account_num)openAccountNum,sum(in_cash)inCash
-        from follow_up_log a
-        left join (
-            SELECT name,id from department
-        )b on b.id=a.dept_id
-        left join (
-            SELECT name,id FROM follow_up
-        )c on c.id =a.follow_id where 1=1
-        <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
-         and date(create_time) BETWEEN #{startDate} and #{endDate}
-        </if>
-        group by follow_id  ORDER BY dept_id asc, follow_id asc
-    </select>
-
-    <select id="findAdminMonth" parameterType="map" resultType="com.dayi.follow.vo.report.MonthVo">
-        SELECT a.follow_id,c.name deptName,b.name,b.invite_code,sum(open_account_num)openNum,sum(in_cash)inCash
-        from follow_up_log a
-        LEFT join (
-            SELECT id,name,invite_code from follow_up
-        )b on b.id =a.follow_id
-        left join (
-            SELECT id,name from department
-        )c on c.id =a.dept_id
-        where 1=1
-        <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
-            and create_time BETWEEN #{startDate} and #{endDate}
-        </if>
-        group by a.follow_id
-        ORDER BY c.id asc , a.follow_id asc
-    </select>
-
-    <select id="getReport" parameterType="map" resultType="com.dayi.follow.vo.report.ReportVo">
-        SELECT date(create_time)date,b.name deptName,dept_id ,sum(open_account_num)openAccountNum,
-                sum(maker_fund)makerFund,sum(in_cash)inCash,sum(in_cash_num)inCashNum,
-                sum(out_cash)outCash,sum(out_cash_num)outCashNum,sum(manage_fund)manageFund,
-                (inCash-outCash) growthFund,sum(manage_growth_fund)manageGrowthFund
-        from follow_up_log  a
-        left join(
-            SELECT name,id from department
-        )b on b.id=a.dept_id  WHERE 1=1
-        <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
-            and a.create_time BETWEEN #{startDate} and #{endDate}
-        </if>
     </select>
 
     <select id="findAdminDetailTotal" parameterType="map" resultType="com.dayi.follow.vo.report.AdminDetailVo">

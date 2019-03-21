@@ -168,8 +168,6 @@ public class FollowupController extends BaseController {
     @RequestMapping(value = "/all/agent/list/export")
     @ResponseBody
     public void allAgentExport(HttpServletRequest request, HttpServletResponse response, SearchVo searchVo) throws IOException {
-        LoginVo currVo = userComponent.getCurrUser(request);
-
         List<FMDetailListVo> allAgentList = followUpService.findAllAgentList(searchVo);
 
         String title = "跟进代理商明细";
@@ -201,8 +199,9 @@ public class FollowupController extends BaseController {
 
     @RequestMapping(value = "/get/hismaxfund")
     @ResponseBody
-    public BizResult getHismaxfund(String followId) {
-        FollowUp followUp = followUpService.get(followId);
+    public BizResult getHismaxfund(HttpServletRequest request) {
+        LoginVo currVo = userComponent.getCurrUser(request);
+        FollowUp followUp = followUpService.get(currVo.getId());
         if (followUp != null) {
             return BizResult.succ(followUp.getHisMaxFund());
         }

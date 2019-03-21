@@ -1,6 +1,7 @@
 package com.dayi.follow.model.follow;
 
 import com.dayi.common.util.NameItem;
+import com.dayi.common.util.NameItems;
 import com.dayi.mybatis.support.BaseModel;
 import com.dayi.user.authorization.authc.Principal;
 import com.dayi.user.model.*;
@@ -40,9 +41,9 @@ public class FollowUp extends BaseModel implements Principal {
 
     private BigDecimal hisMaxFund;//历史最高资产规模
 
-    public final static NameItem IS_FOLLOWUP=NameItem.valueOf("跟进人",1);
-    public final static NameItem NOT_FOLLOWUP=NameItem.valueOf("非跟进人",2);
-
+    public final static NameItem IS_FOLLOWUP = NameItem.valueOf("跟进人", 1);
+    public final static NameItem NOT_FOLLOWUP = NameItem.valueOf("非跟进人", 2);
+    public final static NameItems IDEN_ALL = NameItems.valueOf(IS_FOLLOWUP, NOT_FOLLOWUP);
 
     public Integer getIdentity() {
         return identity;

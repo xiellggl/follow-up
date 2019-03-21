@@ -7,7 +7,6 @@ package com.dayi.follow.service;
  */
 
 
-import com.dayi.follow.model.follow.SourceReport;
 import com.dayi.follow.vo.report.*;
 import com.dayi.mybatis.support.Page;
 
@@ -27,22 +26,23 @@ public interface ReportService {
     Page findTeamDailyDetail(Page page, String deptId, String date);
 
     //导出团队日报详情
-    List<ReportDailyVo> exportTeamDailyDetail(String deptId, String date);
+    List<ReportVo> exportTeamDailyDetail(String deptId, String date);
 
     //个人周报
-    MyWeekVo getWeek(String followId, String betweenDate);
+    WeekVo getWeek(String followId, String betweenDate);
 
     //团队周报
-    TeamWeekVo countTeamWeek(String deptId, String betweenDate);
+    WeekVo getTeamWeek(String deptId, String betweenDate);
 
     //个人月报
-    MyMonthVo getMonth(String followId, String month);
+    MonthVo getMonth(String followId, String month);
 
     //团队月报
-    TeamMonthVo countTeamMonth(String deptId, String month);
+    MonthVo getTeamMonth(String deptId, String month);
+
 
     //管理员日报
-    List findAdminDaily(String betweenDate);
+    List findAdminDaily(String date);
 
     //管理员日报详情
     List<AdminDetailVo> findAdminDailyDetail(String date);
@@ -50,15 +50,23 @@ public interface ReportService {
     //管理员日报详情列表
     List<ReportVo> findAdminDailyDetailList(String date);
 
+
     //管理员周报
-    AdminWeekVo countAdminWeek(Page page, String betweenDate);
+    WeekVo findAdminWeek(String betweenDate);
+
+    //管理员周报
+    List<AdminDetailVo> findAdminWeekDetail(String betweenDate);
 
     //管理员周报导出
-    List<WeekVo> findAdminWeekList(String betweenDate);
+    List<ReportVo> findAdminWeekDetailList(String betweenDate);
+
 
     //管理员月报
-    AdminMonthVo countAdminMonth(Page page, String month);
+    MonthVo findAdminMonth(String month);
+
+    //管理员月报
+    List<AdminDetailVo> findAdminMonthDetail(String month);
 
     //管理员月报导出
-    List<MonthVo> findAdminMonthList(String deptId, String month);
+    List<ReportVo> findAdminMonthDetailList(String month);
 }

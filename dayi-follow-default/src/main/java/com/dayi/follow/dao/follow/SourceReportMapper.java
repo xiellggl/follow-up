@@ -16,6 +16,8 @@ public interface SourceReportMapper extends BaseMapper<SourceReport> {
             " and #{endDate} and type =#{type} ")
     SourceReport getByTime(@Param("type") int type,@Param("startDate") String startDate,@Param("endDate") String endDate);
 
+    SourceReport sumByTime(@Param("type") int type,@Param("startDate") String startDate,@Param("endDate") String endDate);
+
     List findByTime(@Param("type") Integer type, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
     //获取指定时间内创客和城市服务商入金
