@@ -83,7 +83,7 @@
                             <tbody>
                             <c:if test="${empty teamWeekVo.reportVos}">
                                 <tr>
-                                    <td colspan="8" class="no_data">暂无数据记录</td>
+                                    <td colspan="7" class="no_data">暂无数据记录</td>
                                 </tr>
                             </c:if>
                             <c:if test="${not empty teamWeekVo.reportVos}">
@@ -91,11 +91,11 @@
                                     <tr>
                                         <td>${item.name}</td>
                                         <td>${item.openAccountNum}</td>
-                                        <td>${item.manageGrowthFundFm}</td>
                                         <td>${item.inCashFm}</td>
                                         <td>${item.outCashFm}</td>
-                                        <td>${item.growthFundFm}</td>
-                                        <td>${item.growthFundFm}</td>
+                                        <td>${item.manageFundFm}</td>
+                                        <td>${item.manageGrowthFundFm}</td>
+                                        <td>${item.makerFundFm}</td>
                                     </tr>
                                 </c:forEach>
                             </c:if>
