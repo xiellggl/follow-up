@@ -108,8 +108,8 @@
                             <c:if test="${not empty page.results}">
                                 <c:forEach items="${page.results}" var="item">
                                     <tr>
-                                            <td>${item.date}</td>
-                                            <td>${item.deptName}</td>
+                                            <td>2019-3-21</td>
+                                            <td>资产管理中心</td>
                                             <td>${item.openAccountNum}</td>
                                             <td>${item.manageGrowthFund}</td>
                                             <td>${item.inCash}</td>
