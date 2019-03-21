@@ -95,12 +95,14 @@
                             <c:if test="${not empty monthVo.items}">
                                 <c:forEach items="${monthVo.items}" var="item">
                                     <tr>
-                                        <td>${item.deptName}</td>
-                                        <td>${item.name}</td>
-                                        <td>${item.inviteCode}</td>
-                                        <td>${item.orgNum}</td>
-                                        <td>${item.openNum}</td>
-                                        <td>${item.inCash}</td>
+                                        <td>
+                                            资产管理中心
+                                        </td>
+                                        <td>${item.inCashFm}</td>
+                                        <td>${item.outCashFm}</td>
+                                        <td>${item.growthFundFm}</td>
+                                        <td>${item.manageFundFm}</td>
+                                        <td>${item.manageGrowthFundFm}</td>
                                         <td>
                                             <a href="./month/detail?">查看详情</a>
                                         </td>
