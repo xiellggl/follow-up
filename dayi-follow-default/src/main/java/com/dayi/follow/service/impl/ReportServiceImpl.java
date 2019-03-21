@@ -128,7 +128,7 @@ public class ReportServiceImpl implements ReportService {
 
         List<ReportVo> reportVos = reportMapper.findTeamByTime(deptId, weekVo.getStartDateHMS(), weekVo.getEndDateHMS());
 
-        weekVo.setItems(doMore(reportVos));
+        weekVo.setItems(reportVos);
 
         return weekVo;
     }
@@ -155,7 +155,7 @@ public class ReportServiceImpl implements ReportService {
 
         List<ReportVo> reportVos = reportMapper.findTeamByTime(deptId, monthVo.getMonthStartHMS(), monthVo.getMonthEndHMS());
 
-        monthVo.setItems(doMore(reportVos));
+        monthVo.setItems(reportVos);
 
         return monthVo;
     }
@@ -262,7 +262,7 @@ public class ReportServiceImpl implements ReportService {
         srs.add(other);
 
         monthVo.setItems(srs);
-        return null;
+        return monthVo;
     }
 
     @Override
@@ -290,158 +290,5 @@ public class ReportServiceImpl implements ReportService {
             reportVos.addAll(reportVos1);
         }
         return reportVos;
-    }
-
-//    private List<MonthVo> doAdminMonth(List<MonthVo> list, String month) {
-//        String date1 = "";
-//        String date2 = "";
-//        String date3 = "";
-//        String date4 = "";
-//        if (!StringUtils.isBlank(month)) {
-//            date1 = DateTime.parse(month).dayOfMonth().withMaximumValue().millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");//本月最后一天开始
-//            date2 = DateTime.parse(month).dayOfMonth().withMaximumValue().millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");//本月结束
-//
-//            date3 = DateTime.parse(month).plusMonths(-1).dayOfMonth().withMaximumValue().millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");//上月最后一天开始
-//            date4 = DateTime.parse(month).plusMonths(-1).dayOfMonth().withMaximumValue().millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");//上月结束
-//        } else {
-//            return list;
-//        }
-//        for (MonthVo vo : list) {
-//            if (vo == null) continue;
-//            //获取新签创客
-//            int orgNum = followOrgMapper.getNewSignOrgNum(vo.getFollowId(), month, date2, dayiDataBaseStr);
-//            vo.setOrgNum(orgNum);
-//
-//            FollowUpLog log1 = followUpLogMapper.getLog(vo.getFollowId(), date1, date2);
-//
-//            if (log1 != null) {//这月最后一天日报已经生成
-//                BigDecimal agentFund1 = followAgentMapper.getAgentFund(vo.getFollowId(), date2, dayiDataBaseStr);//加上代理商
-//                BigDecimal fund1 = log1.getManageFund().add(agentFund1);
-//                vo.setManageFund(fund1.setScale(2, BigDecimal.ROUND_HALF_UP));
-//
-//                FollowUpLog log2 = followUpLogMapper.getLog(vo.getFollowId(), date3, date4);
-//                if (log2 == null) {
-//                    vo.setRingGrowthRatio("上月无数据");
-//                    continue;
-//                }
-//
-//                BigDecimal agentFund2 = followAgentMapper.getAgentFund(vo.getFollowId(), date4, dayiDataBaseStr);
-//                BigDecimal fund2 = log2.getManageFund().add(agentFund2);
-//
-//                if (BigDecimal.ZERO.compareTo(fund2) == 0) {
-//                    vo.setRingGrowthRatio("上月无数据");
-//                } else {
-//                    BigDecimal subtract = fund1.subtract(fund2);//获取净增
-//                    BigDecimal divide = subtract.divide(fund2, 2, BigDecimal.ROUND_HALF_UP);
-//                    BigDecimal value = divide.multiply(BigDecimal.valueOf(100)).setScale(2, BigDecimal.ROUND_HALF_UP);
-//                    vo.setRingGrowthRatio(value + "%");
-//                }
-//
-//            } else {//还没有生成-未知，所以跳过
-//                vo.setManageFund(null);
-//                vo.setRingGrowthRatio("暂无数据");
-//                continue;
-//            }
-//        }
-//        return list;
-//    }
-//
-//    private List<WeekBaseVo> mergeData(List<WeekBaseVo> sum, List<WeekBaseVo> per) {
-//        List<WeekBaseVo> adminWeekVos = new ArrayList<>();
-//
-//        for (int j = 0; j < sum.size(); j++) {
-//            WeekBaseVo vo = new WeekBaseVo();
-//            vo.setDeptName(sum.get(j).getDeptName());
-//            vo.setName(sum.get(j).getName());
-//            vo.setOpenAccountNum(sum.get(j).getOpenAccountNum());
-//            vo.setInCash(sum.get(j).getInCash());
-//
-//            for (int i = 0 + 5 * j; i < 5 + 5 * j; i++) {
-//                switch ((i + 5) % 5) {
-//                    case 0:
-//                        vo.setMonOpen(per.get(i).getOpenAccountNum());
-//                        vo.setMonInCash(per.get(i).getInCash());
-//                        break;
-//                    case 1:
-//                        vo.setTueOpen(per.get(i).getOpenAccountNum());
-//                        vo.setTueInCash(per.get(i).getInCash());
-//                        break;
-//                    case 2:
-//                        vo.setWedOpen(per.get(i).getOpenAccountNum());
-//                        vo.setWedInCash(per.get(i).getInCash());
-//                        break;
-//                    case 3:
-//                        vo.setThuOpen(per.get(i).getOpenAccountNum());
-//                        vo.setThuInCash(per.get(i).getInCash());
-//                        break;
-//                    case 4:
-//                        vo.setFriOpen(per.get(i).getOpenAccountNum());
-//                        vo.setFriInCash(per.get(i).getInCash());
-//                        break;
-//                }
-//
-//            }
-//            adminWeekVos.add(vo);
-//        }
-//        return adminWeekVos;
-//
-//    }
-
-    /**
-     * 统计团队周报和团队月报的总计数据
-     */
-    private List<ReportVo> doMore(List<ReportVo> items) {
-        ReportVo sum = new ReportVo();
-        if (CollectionUtils.isEmpty(items)) {
-            return items;
-        }
-        for (ReportVo item : items) {
-            BigDecimal subtracts = BigDecimals.subtracts(item.getInCash().doubleValue(), item.getOutCash().doubleValue());
-            item.setGrowthFund(subtracts); //计算本周资金净增
-
-            if (sum.getOpenAccountNum() == null) {
-                sum.setOpenAccountNum(0 + item.getOpenAccountNum());//开户数
-            } else {
-                sum.setOpenAccountNum(sum.getOpenAccountNum() + item.getOpenAccountNum());//开户数
-            }
-
-            if (sum.getInCash() == null) {
-                sum.setInCash(BigDecimal.ZERO.add(item.getInCash()));//入金
-            } else {
-                sum.setInCash(sum.getInCash().add(item.getInCash()));//入金
-            }
-
-            if (sum.getOutCash() == null) {
-                sum.setOutCash(BigDecimal.ZERO.add(item.getOutCash()));//出金
-            } else {
-                sum.setOutCash(sum.getOutCash().add(item.getOutCash()));//出金
-            }
-
-            if (sum.getManageFund() == null) {
-                if (item.getManageFund() == null) sum.setManageFund(BigDecimal.ZERO);
-                else
-                    sum.setManageFund(BigDecimal.ZERO.add(item.getManageFund()));//管理资金规模
-            } else {
-                if (item.getManageFund() != null)
-                    sum.setManageFund(sum.getManageFund().add(item.getManageFund()));//管理资金规模
-            }
-
-            if (sum.getGrowthFund() == null) {
-                sum.setGrowthFund(BigDecimal.ZERO.add(item.getGrowthFund()));//管理资金规模净增
-            } else {
-                sum.setGrowthFund(sum.getGrowthFund().add(item.getGrowthFund()));//管理资金规模净增
-            }
-
-            if (sum.getMakerFund() == null) {
-                sum.setMakerFund(BigDecimal.ZERO.add(item.getMakerFund()));//创客管理资金规模
-            } else {
-                sum.setMakerFund(sum.getMakerFund().add(item.getMakerFund()));//创客管理资金规模
-            }
-
-
-        }
-        sum.setName("团队总计");
-        items.add(sum);
-        return items;
     }
 }
