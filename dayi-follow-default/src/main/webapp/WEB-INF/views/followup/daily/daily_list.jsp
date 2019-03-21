@@ -104,7 +104,7 @@
                             </tbody>
                         </table>
                         <div>
-                            历史最高资产规模：<span class="hisMaxFund">8866</span>
+                            历史最高资产规模：<span class="hisMaxFund">0.00</span>
                         </div>
                         <c:if test="${not empty page}">
                             <div class="pagerBar" id="pagerBar">
@@ -138,16 +138,13 @@
         });
 
         //请求历史最高资产规模
-        // common.ajax.handle({
-        //     url: "/followup/get/hismaxfund",
-        //     data: { },
-        //     succback: function (data) {
-        //         $(".hisMaxFund").text(data.result);
-        //
-        //         // common.successMsg(data.msg, function () {
-        //         // });
-        //     }
-        // });
+        common.ajax.handle({
+            url: "/followup/get/hismaxfund",
+            data: { },
+            succback: function (data) {
+                $(".hisMaxFund").text(data.result);
+            }
+        });
     });
 </script>
 </body>

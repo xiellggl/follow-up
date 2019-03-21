@@ -81,26 +81,28 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:if test="${weekVo.name eq null or weekVo.name eq ''}">
+                            <c:if test="${empty items}">
                                 <tr>
                                     <td colspan="7" class="no_data">暂无数据记录</td>
                                 </tr>
                             </c:if>
-                            <c:if test="${weekVo.name ne null and weekVo.name ne ''}">
+                            <c:if test="${not empty items}">
+                                <c:forEach items="${items}" var="item">
                                     <tr>
-                                        <td>${weekVo.name}</td>
-                                        <td>${weekVo.openAccountNum}</td>
-                                        <td>${weekVo.inCashFm}</td>
-                                        <td>${weekVo.outCashFm}</td>
-                                        <td>${weekVo.manageFundFm}</td>
-                                        <td>${weekVo.growthFundFm}</td>
-                                        <td>${weekVo.makerFund}</td>
+                                        <td>${item.name}</td>
+                                        <td>${item.openAccountNum}</td>
+                                        <td>${item.inCashFm}</td>
+                                        <td>${item.outCashFm}</td>
+                                        <td>${item.manageFundFm}</td>
+                                        <td>${item.growthFundFm}</td>
+                                        <td>${item.makerFund}</td>
                                     </tr>
+                                </c:forEach>
                             </c:if>
                             </tbody>
                         </table>
                         <div>
-                            历史最高资产规模：<span>10000000.00</span>
+                            历史最高资产规模：<span class="hisMaxFund">0.00</span>
                         </div>
                     </div>
                 </div>
@@ -129,6 +131,17 @@
                 }
             });
         });
+
+
+        //请求历史最高资产规模
+        common.ajax.handle({
+            url: "/followup/get/hismaxfund",
+            data: { },
+            succback: function (data) {
+                $(".hisMaxFund").text(data.result);
+            }
+        });
+
 
 
         //给Body加一个Click监听事件
