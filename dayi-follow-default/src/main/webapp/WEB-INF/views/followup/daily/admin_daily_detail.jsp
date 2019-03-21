@@ -68,7 +68,7 @@
                                 <tbody>
                                 <c:if test="${empty page.results}">
                                     <tr>
-                                        <td colspan="9" class="no_data">暂无数据记录</td>
+                                        <td colspan="10" class="no_data">暂无数据记录</td>
                                     </tr>
                                 </c:if>
 
@@ -80,15 +80,23 @@
                                                     <i class="fa fa-minus"></i>
                                                 </span>
                                             </td>
-                                            <td>2019-3-19</td>
+                                            <td>
+                                                2019-3-21
+                                            </td>
+                                            <td>${item.deptName}</td>
                                             <td>${item.openAccountNum}</td>
-                                            <td>${item.manageGrowthFund}</td>
-                                            <td>${item.inCash}</td>
-                                            <td>${item.inCashNum}</td>
-                                            <td>${item.outCash}</td>
-                                            <td>${item.outCashNum}</td>
-                                            <td>111</td>
-                                            <td>111</td>
+                                            <%--新签创客--%>
+                                            <td>${item.orgNum}</td>
+                                            <%--入金总额--%>
+                                            <td>${item.inCashFm}</td>
+                                            <%--出金总额--%>
+                                            <td>${item.outCashFm}</td>
+                                            <%--管理资产规模--%>
+                                            <td>${item.manageFundFm}</td>
+                                            <%--资产规模净值--%>
+                                            <td>${item.manageGrowthFundFm}</td>
+                                            <%--创客管理资产规模--%>
+                                            <td>${item.makerFundFm}</td>
                                         </tr>
                                     </c:forEach>
                                 </c:if>
