@@ -81,13 +81,13 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:if test="${empty items}">
+                            <c:if test="${empty weekVo.items}">
                                 <tr>
                                     <td colspan="7" class="no_data">暂无数据记录</td>
                                 </tr>
                             </c:if>
-                            <c:if test="${not empty items}">
-                                <c:forEach items="${items}" var="item">
+                            <c:if test="${not empty weekVo.items}">
+                                <c:forEach items="${weekVo.items}" var="item">
                                     <tr>
                                         <td>${item.name}</td>
                                         <td>${item.openAccountNum}</td>

@@ -30,17 +30,17 @@
                         您当前操作
                         <small>
                             <i class="ace-icon fa fa-angle-double-right"></i>
-                            团队月报(${teamMonthVo.month})
+                            团队月报(${monthVo.month})
                         </small>
                     </h1>
                 </div>
                 <div class="row">
                     <div class="col-xs-12">
                         <ul class="nav nav-tabs">
-                            <li ${teamMonthVo.month eq teamMonthVo.thisMonth ? 'class="active"':''}><a href="?date=${teamMonthVo.thisMonth}">本月</a></li>
-                            <li ${teamMonthVo.month eq teamMonthVo.lastMonth ? 'class="active"':''}><a href="?date=${teamMonthVo.lastMonth}">上一月</a></li>
-                            <c:if test="${teamMonthVo.month ne teamMonthVo.thisMonth and teamMonthVo.month ne teamMonthVo.lastMonth}">
-                                <li class="active"><a>${teamMonthVo.month}</a></li>
+                            <li ${monthVo.month eq monthVo.thisMonth ? 'class="active"':''}><a href="?date=${monthVo.thisMonth}">本月</a></li>
+                            <li ${monthVo.month eq monthVo.lastMonth ? 'class="active"':''}><a href="?date=${monthVo.lastMonth}">上一月</a></li>
+                            <c:if test="${monthVo.month ne monthVo.thisMonth and monthVo.month ne monthVo.lastMonth}">
+                                <li class="active"><a>${monthVo.month}</a></li>
                             </c:if>
                             <li>
                                 <a class="dates" data-toggle="popover" id="showmonthlyPicker">
@@ -81,13 +81,13 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:if test="${empty teamMonthVo.reportVos}">
+                            <c:if test="${empty monthVo.items}">
                                 <tr>
                                     <td colspan="7" class="no_data">暂无数据记录</td>
                                 </tr>
                             </c:if>
-                            <c:if test="${not empty teamMonthVo.reportVos}">
-                                <c:forEach items="${teamMonthVo.reportVos}" var="item">
+                            <c:if test="${not empty monthVo.items}">
+                                <c:forEach items="${monthVo.items}" var="item">
                                 <tr>
                                     <td>${item.name}</td>
                                     <td>${item.openAccountNum}</td>
@@ -102,7 +102,7 @@
                             </tbody>
                         </table>
                         <div>
-                            历史最高资产规模： <span>15586.36</span>
+                            历史最高资产规模： <span class="hisMaxFund">0.00</span>
                         </div>
                     </div>
                 </div>
@@ -128,6 +128,18 @@
                 }
             });
         });
+
+        //请求历史最高资产规模
+        common.ajax.handle({
+            url: "/followup/get/hismaxfund",
+            data: { },
+            succback: function (data) {
+                $(".hisMaxFund").text(data.result);
+            }
+        });
+
+
+
     });
 </script>
 </body>
