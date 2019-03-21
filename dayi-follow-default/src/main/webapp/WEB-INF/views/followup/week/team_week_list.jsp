@@ -30,17 +30,17 @@
                         您当前操作
                         <small>
                             <i class="ace-icon fa fa-angle-double-right"></i>
-                            团队周报(${teamWeekVo.startDate} - ${teamWeekVo.endDate})
+                            团队周报(${weekVo.startDate} - ${weekVo.endDate})
                         </small>
                     </h1>
                 </div>
                 <div class="row">
                     <div class="col-xs-12">
                         <ul class="nav nav-tabs">
-                            <li ${teamWeekVo.startDate eq teamWeekVo.thisWeekStart ? 'class="active"':''}><a href="?date=${teamWeekVo.thisWeekStart} - ${teamWeekVo.thisWeekEnd}">本周</a></li>
-                            <li ${teamWeekVo.startDate eq teamWeekVo.lastWeekStart ? 'class="active"':''}><a href="?date=${teamWeekVo.lastWeekStart} - ${teamWeekVo.lastWeekEnd}">上一周</a></li>
-                            <c:if test="${teamWeekVo.startDate ne teamWeekVo.thisWeekStart and teamWeekVo.startDate ne teamWeekVo.lastWeekStart}">
-                                <li class="active"><a>${teamWeekVo.startDate} - ${teamWeekVo.endDate}</a></li>
+                            <li ${weekVo.startDate eq weekVo.thisWeekStart ? 'class="active"':''}><a href="?date=${weekVo.thisWeekStart} - ${weekVo.thisWeekEnd}">本周</a></li>
+                            <li ${weekVo.startDate eq weekVo.lastWeekStart ? 'class="active"':''}><a href="?date=${weekVo.lastWeekStart} - ${weekVo.lastWeekEnd}">上一周</a></li>
+                            <c:if test="${weekVo.startDate ne weekVo.thisWeekStart and weekVo.startDate ne weekVo.lastWeekStart}">
+                                <li class="active"><a>${weekVo.startDate} - ${weekVo.endDate}</a></li>
                             </c:if>
                             <li>
                                 <a class="dates" data-toggle="popover" id="showWeeklyPicker">
@@ -81,13 +81,13 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:if test="${empty teamWeekVo.reportVos}">
+                            <c:if test="${empty weekVo.items}">
                                 <tr>
                                     <td colspan="7" class="no_data">暂无数据记录</td>
                                 </tr>
                             </c:if>
-                            <c:if test="${not empty teamWeekVo.reportVos}">
-                                <c:forEach items="${teamWeekVo.reportVos}" var="item">
+                            <c:if test="${not empty weekVo.items}">
+                                <c:forEach items="${weekVo.items}" var="item">
                                     <tr>
                                         <td>${item.name}</td>
                                         <td>${item.openAccountNum}</td>
@@ -102,7 +102,7 @@
                             </tbody>
                         </table>
                         <div>
-                            历史最高资产规模：<span>10000000.00</span>
+                            历史最高资产规模：<span class="hisMaxFund">0.00</span>
                         </div>
                     </div>
                 </div>
@@ -132,6 +132,15 @@
             });
         });
 
+
+        //请求历史最高资产规模
+        common.ajax.handle({
+            url: "/followup/get/hismaxfund",
+            data: { },
+            succback: function (data) {
+                $(".hisMaxFund").text(data.result);
+            }
+        });
 
         //给Body加一个Click监听事件
         /*$('body').on('click', function(event) {

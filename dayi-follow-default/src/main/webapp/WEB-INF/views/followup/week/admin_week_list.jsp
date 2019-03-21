@@ -30,11 +30,11 @@
                         您当前操作
                         <small>
                             <i class="ace-icon fa fa-angle-double-right"></i>
-                            团队周报(${adminWeekVo.startDate} - ${adminWeekVo.endDate})
+                            团队周报(${weekVo.startDate} - ${weekVo.endDate})
                         </small>
                     </h1>
                     <div class="pull-right">
-                        <a href="./week/export?date=${adminWeekVo.startDate} - ${adminWeekVo.endDate}" class="btn btn-xs btn-danger">
+                        <a href="./week/export?date=${weekVo.startDate} - ${weekVo.endDate}" class="btn btn-xs btn-danger">
                             <span class="ace-icon glyphicon glyphicon-export"></span>
                             一键导出
                         </a>
@@ -43,10 +43,10 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <ul class="nav nav-tabs">
-                            <li ${adminWeekVo.startDate eq adminWeekVo.thisWeekStart ? 'class="active"':''}><a href="?date=${adminWeekVo.thisWeekStart} - ${adminWeekVo.thisWeekEnd}">本周</a></li>
-                            <li ${adminWeekVo.startDate eq adminWeekVo.lastWeekStart ? 'class="active"':''}><a href="?date=${adminWeekVo.lastWeekStart} - ${adminWeekVo.lastWeekEnd}">上一周</a></li>
-                            <c:if test="${adminWeekVo.startDate ne adminWeekVo.thisWeekStart and adminWeekVo.startDate ne adminWeekVo.lastWeekStart}">
-                                <li class="active"><a>${adminWeekVo.startDate} - ${adminWeekVo.endDate}</a></li>
+                            <li ${weekVo.startDate eq weekVo.thisWeekStart ? 'class="active"':''}><a href="?date=${weekVo.thisWeekStart} - ${weekVo.thisWeekEnd}">本周</a></li>
+                            <li ${weekVo.startDate eq weekVo.lastWeekStart ? 'class="active"':''}><a href="?date=${weekVo.lastWeekStart} - ${weekVo.lastWeekEnd}">上一周</a></li>
+                            <c:if test="${weekVo.startDate ne weekVo.thisWeekStart and weekVo.startDate ne weekVo.lastWeekStart}">
+                                <li class="active"><a>${weekVo.startDate} - ${weekVo.endDate}</a></li>
                             </c:if>
                             <li>
                                 <a class="dates" data-toggle="popover" id="showWeeklyPicker">
