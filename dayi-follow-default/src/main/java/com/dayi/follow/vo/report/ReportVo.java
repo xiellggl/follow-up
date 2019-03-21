@@ -252,11 +252,11 @@ public class ReportVo {
 
             for (ReportVo item : list) {
                 openNum = openNum + item.getOpenAccountNum();
-                inCash.add(item.getInCash());
-                outCash.add(item.getOutCash());
-                manageFund.add(item.getManageFund());
-                manageGrowthFund.add(item.getManageGrowthFund());
-                makerFund.add(item.getMakerFund());
+                inCash = inCash.add(item.getInCash());
+                outCash = outCash.add(item.getOutCash());
+                manageFund = manageFund.add(item.getManageFund());
+                manageGrowthFund = manageGrowthFund.add(item.getManageGrowthFund());
+                makerFund = makerFund.add(item.getMakerFund());
             }
 
             ReportVo sr = new ReportVo();

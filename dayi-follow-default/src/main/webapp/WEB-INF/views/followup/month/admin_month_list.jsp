@@ -93,16 +93,16 @@
                                 </tr>
                             </c:if>
                             <c:if test="${not empty monthVo.items}">
-                                <c:forEach items="${monthVo.items}" var="item">
+                                <c:forEach items="${monthVo.SRSumList}" var="item">
                                     <tr>
                                         <td>
-                                            资产管理中心
+                                            ${item.typeStr}
                                         </td>
-                                        <td>${item.inCashFm}</td>
-                                        <td>${item.outCashFm}</td>
-                                        <td>${item.growthFundFm}</td>
-                                        <td>${item.manageFundFm}</td>
-                                        <td>${item.manageGrowthFundFm}</td>
+                                        <td>${item.inCash}</td>
+                                        <td>${item.outCash}</td>
+                                        <td>${item.growthFund}</td>
+                                        <td>${item.manageFund}</td>
+                                        <td>${item.manageGrowthFund}</td>
                                         <td>
                                             <a href="./month/detail?">查看详情</a>
                                         </td>

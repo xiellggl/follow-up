@@ -91,11 +91,11 @@ public class SourceReportVo {
             BigDecimal manageGrowthFund = BigDecimal.ZERO;
 
             for (SourceReportVo item : list) {
-                inCash.add(item.getInCash());
-                outCash.add(item.getOutCash());
-                growthFund.add(item.getGrowthFund());
-                manageFund.add(item.getManageFund());
-                manageGrowthFund.add(item.getManageGrowthFund());
+                inCash = inCash.add(item.getInCash());
+                outCash = outCash.add(item.getOutCash());
+                growthFund = growthFund.add(item.getGrowthFund());
+                manageFund = manageFund.add(item.getManageFund());
+                manageGrowthFund = manageGrowthFund.add(item.getManageGrowthFund());
             }
 
             SourceReportVo sr = new SourceReportVo();
