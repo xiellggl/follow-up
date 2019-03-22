@@ -109,10 +109,10 @@
                                 <c:forEach items="${list}" var="item">
                                     <tr>
                                             <td>${item.date}</td>
-                                            <td>${item.deptName}</td>
+                                            <td>${item.typeStr}</td>
                                             <td>${item.inCash}</td>
                                             <td>${item.outCash}</td>
-                                            <td>${item.manageGrowthFund}</td>
+                                            <td>${item.growthFund}</td>
                                             <td>${item.manageFund}</td>
                                             <td>${item.manageGrowthFund}</td>
                                         <td>
