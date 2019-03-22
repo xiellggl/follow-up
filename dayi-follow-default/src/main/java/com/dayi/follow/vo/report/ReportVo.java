@@ -238,6 +238,7 @@ public class ReportVo {
     }
 
     public static final List sum(List<ReportVo> list) {
+        if (list == null) return null;
         List newList = new ArrayList();
         newList.addAll(list);
 

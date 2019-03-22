@@ -2,6 +2,7 @@ package com.dayi.follow.vo.report;
 
 
 import com.dayi.follow.model.follow.SourceReport;
+import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
@@ -85,6 +86,7 @@ public class SourceReportVo {
     }
 
     public static final List sum(List<SourceReportVo> list) {
+        if (list == null) return null;
         List newList = new ArrayList();
         newList.addAll(list);
 
