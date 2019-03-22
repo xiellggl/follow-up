@@ -109,12 +109,12 @@
                                 <c:forEach items="${list}" var="item">
                                     <tr>
                                             <td>${item.date}</td>
-                                            <td>${item.deptName}</td>
+                                            <td>${item.typeStr}</td>
                                             <td>${item.inCash}</td>
                                             <td>${item.outCash}</td>
-                                            <td>${item.manageGrowthFundFm}</td>
-                                            <td>${item.manageFundFm}</td>
-                                            <td>${item.manageGrowthFundFm}</td>
+                                            <td>${item.growthFund}</td>
+                                            <td>${item.manageFund}</td>
+                                            <td>${item.manageGrowthFund}</td>
                                         <td>
                                             <a href="./daily/detail?deptId=${item.deptId}&date=${item.date}">
                                                 <i class="ace-icon fa fa-external-link"></i> 查看详情

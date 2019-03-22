@@ -20,7 +20,7 @@ public interface SourceReportMapper extends BaseMapper<SourceReport> {
 
     SourceReportVo sumByTime(@Param("type") int type, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
-    List findByTime(@Param("type") Integer type, @Param("startDate") String startDate, @Param("endDate") String endDate);
+    List<SourceReportVo> findByTime(@Param("type") Integer type, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
     //获取指定时间内创客和城市服务商入金
     BigDecimal getMakerInCash(@Param("startDate") String startDate, @Param("endDate") String endDate,@Param("assistDataBase") String assistDataBase);

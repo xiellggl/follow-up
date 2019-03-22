@@ -19,6 +19,12 @@ public class SourceReportVo {
     private BigDecimal manageFund;//管理资产规模
     private BigDecimal manageGrowthFund;//管理资产规模净增
 
+    private String date;
+
+    public String getDate() {
+        return date;
+    }
+
 
     public void setTypeStr(String typeStr) {
         this.typeStr = typeStr;
