@@ -99,22 +99,22 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:if test="${empty page.results}">
+                            <c:if test="${empty list}">
                                 <tr>
                                     <td colspan="8" class="no_data">暂无数据记录</td>
                                 </tr>
                             </c:if>
 
-                            <c:if test="${not empty page.results}">
-                                <c:forEach items="${page.results}" var="item">
+                            <c:if test="${not empty list}">
+                                <c:forEach items="${list}" var="item">
                                     <tr>
                                             <td>${item.date}</td>
                                             <td>${item.deptName}</td>
-                                            <td>${item.openAccountNum}</td>
-                                            <td>${item.manageGrowthFund}</td>
                                             <td>${item.inCash}</td>
-                                            <td>${item.inCashNum}</td>
                                             <td>${item.outCash}</td>
+                                            <td>${item.manageGrowthFundFm}</td>
+                                            <td>${item.manageFundFm}</td>
+                                            <td>${item.manageGrowthFundFm}</td>
                                         <td>
                                             <a href="./daily/detail?deptId=${item.deptId}&date=${item.date}">
                                                 <i class="ace-icon fa fa-external-link"></i> 查看详情
