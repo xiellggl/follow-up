@@ -42,28 +42,10 @@
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-calendar"></i>
                                     </span>
-                                    <input type="text" class="form-control admin_sea dates" name="date" value="${param.date}"
+                                    <input type="text" class="form-control admin_sea dates" name="date" value="${date}"
                                            placeholder="日志日期"/>
                                 </div>
                             </div>
-                            <%--<div class="col-xs-12 col-sm-4 maintop">--%>
-                                <%--<div class="input-group">--%>
-                                    <%--<span class="input-group-addon">--%>
-                                        <%--<i class="ace-icon fa fa-check"></i>--%>
-                                    <%--</span>--%>
-                                    <%--<input type="text" name="deptName" class="form-control search-query admin_sea" value="${param.deptName}" placeholder="团队"/>--%>
-                                    <%--<div class="input-group-btn">--%>
-                                        <%--<button type="submit" class="btn btn-xs btn-purple">--%>
-                                            <%--<span class="ace-icon fa fa-search"></span>--%>
-                                            <%--搜索--%>
-                                        <%--</button>--%>
-                                        <%--<a href="?" class="btn btn-xs btn-info">--%>
-                                            <%--<span class="ace-icon fa fa-globe"></span>--%>
-                                            <%--显示全部--%>
-                                        <%--</a>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
                         </div>
                     </form>
                 </div>
@@ -149,12 +131,13 @@
         var date_o = {
             autoUpdateInput: false,
             locale: locale_cn,
+            singleDatePicker: true      //设置为单个的datepicker，而不是有区间的datepicker 默认false
         };
         date_o.locale.cancelLabel = "清空";
         $('.dates').daterangepicker(date_o);
 
         $('.dates').on('apply.daterangepicker', function (ev, picker) {
-            $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
+            $(this).val(picker.startDate.format('YYYY-MM-DD'));
         });
 
         $('.dates').on('cancel.daterangepicker', function (ev, picker) {
