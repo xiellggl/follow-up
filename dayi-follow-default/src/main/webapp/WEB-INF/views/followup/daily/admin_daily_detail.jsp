@@ -80,13 +80,11 @@
                                                     <i class="fa fa-minus"></i>
                                                 </span>
                                             </td>
-                                            <td>
-                                                ${item.date}
-                                            </td>
+                                            <td>${item.date}</td>
                                             <td>${item.deptName}</td>
                                             <td>${item.openAccountNum}</td>
                                             <%--新签创客--%>
-                                            <td>${item.orgNum}</td>
+                                            <td>${item.signOrgNum}</td>
                                             <%--入金总额--%>
                                             <td>${item.inCash}</td>
                                             <%--出金总额--%>

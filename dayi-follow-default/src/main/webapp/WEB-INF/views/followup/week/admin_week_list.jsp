@@ -30,7 +30,7 @@
                         您当前操作
                         <small>
                             <i class="ace-icon fa fa-angle-double-right"></i>
-                            团队周报(${weekVo.startDate} - ${weekVo.endDate})
+                            管理员周报(${weekVo.startDate} - ${weekVo.endDate})
                         </small>
                     </h1>
                     <div class="pull-right">
@@ -87,21 +87,21 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:if test="${empty adminWeekVo.weekVos}">
+                            <c:if test="${empty weekVo.SRSumList}">
                                 <tr>
                                     <td colspan="7" class="no_data">暂无数据记录</td>
                                 </tr>
                             </c:if>
 
-                            <c:if test="${not empty adminWeekVo.weekVos}">
-                                <c:forEach items="${adminWeekVo.weekVos}" var="item">
+                            <c:if test="${not empty weekVo.SRSumList}">
+                                <c:forEach items="${weekVo.SRSumList}" var="item">
                                     <tr>
-                                        <td>${item.deptName}</td>
-                                        <td>${item.name}</td>
-                                        <td>${item.monOpen}</td>
-                                        <td>${item.tueOpen}</td>
-                                        <td>${item.wedOpen}</td>
-                                        <td>${item.thuOpen}</td>
+                                        <td>${item.typeStr}</td>
+                                        <td>${item.inCash}</td>
+                                        <td>${item.outCash}</td>
+                                        <td>${item.growthFund}</td>
+                                        <td>${item.manageGrowthFund}</td>
+                                        <td>${item.growthFund}</td>
                                         <td>
                                             <a href="./week/detail?">查看详情</a>
                                         </td>

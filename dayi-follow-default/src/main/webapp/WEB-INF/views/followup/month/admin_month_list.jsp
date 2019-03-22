@@ -87,17 +87,15 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:if test="${empty monthVo.items}">
+                            <c:if test="${empty monthVo.SRSumList}">
                                 <tr>
                                     <td colspan="7" class="no_data">暂无数据记录</td>
                                 </tr>
                             </c:if>
-                            <c:if test="${not empty monthVo.items}">
+                            <c:if test="${not empty monthVo.SRSumList}">
                                 <c:forEach items="${monthVo.SRSumList}" var="item">
                                     <tr>
-                                        <td>
-                                            ${item.typeStr}
-                                        </td>
+                                        <td>${item.typeStr}</td>
                                         <td>${item.inCash}</td>
                                         <td>${item.outCash}</td>
                                         <td>${item.growthFund}</td>
