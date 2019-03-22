@@ -212,8 +212,12 @@ public class ReportController extends BaseController {
 
         String date = request.getParameter("date");
 
-        List list = reportService.findAdminDaily(date);
+        if (StringUtils.isBlank(date)) {
+            date = DateTime.now().toString("yyyy-MM-dd");
+        }
 
+        List list = reportService.findAdminDaily(date);
+        model.addAttribute("date", date);
         model.addAttribute("list", list);
         return "/followup/daily/admin_daily_list";
     }
