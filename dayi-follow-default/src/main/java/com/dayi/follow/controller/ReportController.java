@@ -288,7 +288,7 @@ public class ReportController extends BaseController {
         List<AdminDetailVo> list = reportService.findAdminWeekDetail(date);
 
         model.addAttribute("list", list);
-        return "/followup/week/admin_week_list";
+        return "/followup/week/admin_week_detail";
     }
 
 
@@ -347,7 +347,7 @@ public class ReportController extends BaseController {
         List<AdminDetailVo> list = reportService.findAdminMonthDetail(date);
 
         model.addAttribute("list", list);
-        return "/followup/month/admin_month_list";
+        return "/followup/month/admin_month_detail";
     }
 
 

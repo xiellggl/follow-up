@@ -30,32 +30,32 @@
                         您当前操作
                         <small>
                             <i class="ace-icon fa fa-angle-double-right"></i>
-                            管理员周报详情(${adminWeekVo.startDate} - ${adminWeekVo.endDate})
+                            管理员周报详情(${weekVo.startDate} - ${weekVo.endDate})
                         </small>
                     </h1>
                     <div class="pull-right">
-                        <a href="./week/export?date=${adminWeekVo.startDate} - ${adminWeekVo.endDate}" class="btn btn-xs btn-danger">
+                        <a href="./week/export?date=${weekVo.startDate} - ${weekVo.endDate}" class="btn btn-xs btn-danger">
                             <span class="ace-icon glyphicon glyphicon-export"></span>
                             一键导出
                         </a>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-xs-12">
-                        <ul class="nav nav-tabs">
-                            <li ${adminWeekVo.startDate eq adminWeekVo.thisWeekStart ? 'class="active"':''}><a href="?date=${adminWeekVo.thisWeekStart} - ${adminWeekVo.thisWeekEnd}">本周</a></li>
-                            <li ${adminWeekVo.startDate eq adminWeekVo.lastWeekStart ? 'class="active"':''}><a href="?date=${adminWeekVo.lastWeekStart} - ${adminWeekVo.lastWeekEnd}">上一周</a></li>
-                            <c:if test="${adminWeekVo.startDate ne adminWeekVo.thisWeekStart and adminWeekVo.startDate ne adminWeekVo.lastWeekStart}">
-                                <li class="active"><a>${adminWeekVo.startDate} - ${adminWeekVo.endDate}</a></li>
-                            </c:if>
-                            <li>
-                                <a class="dates" data-toggle="popover" id="showWeeklyPicker">
-                                    更多 <i class="ace-icon fa fa-angle-double-right"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                <%--<div class="row">--%>
+                    <%--<div class="col-xs-12">--%>
+                        <%--<ul class="nav nav-tabs">--%>
+                            <%--<li ${adminWeekVo.startDate eq adminWeekVo.thisWeekStart ? 'class="active"':''}><a href="?date=${adminWeekVo.thisWeekStart} - ${adminWeekVo.thisWeekEnd}">本周</a></li>--%>
+                            <%--<li ${adminWeekVo.startDate eq adminWeekVo.lastWeekStart ? 'class="active"':''}><a href="?date=${adminWeekVo.lastWeekStart} - ${adminWeekVo.lastWeekEnd}">上一周</a></li>--%>
+                            <%--<c:if test="${adminWeekVo.startDate ne adminWeekVo.thisWeekStart and adminWeekVo.startDate ne adminWeekVo.lastWeekStart}">--%>
+                                <%--<li class="active"><a>${adminWeekVo.startDate} - ${adminWeekVo.endDate}</a></li>--%>
+                            <%--</c:if>--%>
+                            <%--<li>--%>
+                                <%--<a class="dates" data-toggle="popover" id="showWeeklyPicker">--%>
+                                    <%--更多 <i class="ace-icon fa fa-angle-double-right"></i>--%>
+                                <%--</a>--%>
+                            <%--</li>--%>
+                        <%--</ul>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
                 <div class="space-10"></div>
                 <div class="row" id="listPan">
                     <div class="col-xs-12">
