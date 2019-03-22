@@ -112,9 +112,9 @@
                                             <td>${item.deptName}</td>
                                             <td>${item.inCash}</td>
                                             <td>${item.outCash}</td>
-                                            <td>${item.manageGrowthFundFm}</td>
-                                            <td>${item.manageFundFm}</td>
-                                            <td>${item.manageGrowthFundFm}</td>
+                                            <td>${item.manageGrowthFund}</td>
+                                            <td>${item.manageFund}</td>
+                                            <td>${item.manageGrowthFund}</td>
                                         <td>
                                             <a href="./daily/detail?deptId=${item.deptId}&date=${item.date}">
                                                 <i class="ace-icon fa fa-external-link"></i> 查看详情

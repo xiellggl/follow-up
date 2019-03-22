@@ -66,7 +66,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <c:if test="${empty page.results}">
+                                <c:if test="${empty list}">
                                     <tr>
                                         <td colspan="10" class="no_data">暂无数据记录</td>
                                     </tr>
