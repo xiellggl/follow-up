@@ -103,7 +103,9 @@
                                         <td>${item.manageGrowthFund}</td>
                                         <td>${item.growthFund}</td>
                                         <td>
-                                            <a href="./week/detail?">查看详情</a>
+                                            <a href="./week/detail?date=${item.date}">
+                                                <c:if test="${item.typeStr eq '资管中心'}">查看详情</c:if>
+                                            </a>
                                         </td>
                                     </tr>
                                 </c:forEach>

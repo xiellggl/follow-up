@@ -100,15 +100,13 @@
                                         </td>
                                         <td>${item.date}</td>
                                         <td>${item.deptName}</td>
-                                        <td>${item.name}</td>
-                                        <td>${item.inviteCode}</td>
-                                        <td>${item.orgNum}</td>
-                                        <td>${item.openNum}</td>
+                                        <td>${item.openAccountNum}</td>
+                                        <td>${item.signOrgNum}</td>
                                         <td>${item.inCash}</td>
-                                        <td>${item.inCash}</td>
-                                        <td>
-                                            <a href="./month/detail?">查看详情</a>
-                                        </td>
+                                        <td>${item.outCash}</td>
+                                        <td>${item.manageFundFm}</td>
+                                        <td>${item.manageGrowthFundFm}</td>
+                                        <td>${item.makerFund}</td>
                                     </tr>
                                 </c:forEach>
                             </c:if>
