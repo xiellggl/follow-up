@@ -85,33 +85,35 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:if test="${empty adminWeekVo.weekVos}">
+                            <c:if test="${empty weekVo.SRSumList}">
                                 <tr>
                                     <td colspan="10" class="no_data">暂无数据记录</td>
                                 </tr>
                             </c:if>
 
-                            <c:if test="${not empty adminWeekVo.weekVos}">
-                                <c:forEach items="${adminWeekVo.weekVos}" var="item">
+                            <c:if test="${not empty weekVo.SRSumList}">
+                                <c:forEach items="${weekVo.SRSumList}" var="item">
                                     <tr>
                                         <td class="first_row">
                                             <span class="detail-icon">
                                                 <i class="fa fa-minus"></i>
                                             </span>
                                         </td>
+                                        <td>${item.date}</td>
                                         <td>${item.deptName}</td>
-                                        <td>${item.name}</td>
-                                        <td>${item.monOpen}</td>
-                                        <td>${item.tueOpen}</td>
-                                        <td>${item.wedOpen}</td>
-                                        <td>${item.thuOpen}</td>
-                                        <td>${item.friOpen}</td>
+                                        <td>${item.openAccountNum}</td>
+                                        <td>${item.signOrgNum}</td>
+                                        <td>${item.inCash}</td>
+                                        <td>${item.outCash}</td>
+                                        <td>${item.manageFund}</td>
+                                        <td>${item.manageGrowthFund}</td>
+                                        <td>${item.makerFund}</td>
                                     </tr>
                                 </c:forEach>
                             </c:if>
                             </tbody>
                         </table>
-                        <c:if test="${not empty adminWeekVo.weekVos}">
+                        <c:if test="${not empty weekVo.SRSumList}">
                             <div class="pagerBar" id="pagerBar">
                                 <common:page url="${pageUrl}" type="3"/>
                             </div>

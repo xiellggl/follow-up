@@ -102,7 +102,7 @@
                                         <td>${item.manageFund}</td>
                                         <td>${item.manageGrowthFund}</td>
                                         <td>
-                                            <a href="./month/detail?month=${item.date}">
+                                            <a href="./month/detail?month=${date}">
                                                 <c:if test="${item.typeStr eq '资管中心'}">
                                                     查看详情
                                                 </c:if>
@@ -113,7 +113,7 @@
                             </c:if>
                             </tbody>
                         </table>
-                        <c:if test="${not empty monthVo.items}">
+                        <c:if test="${not empty monthVo.SRSumList}">
                             <div class="pagerBar" id="pagerBar">
                                 <common:page url="${pageUrl}" type="3"/>
                             </div>
