@@ -46,24 +46,24 @@
                                            placeholder="日志日期"/>
                                 </div>
                             </div>
-                            <div class="col-xs-12 col-sm-4 maintop">
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <i class="ace-icon fa fa-check"></i>
-                                    </span>
-                                    <input type="text" name="deptName" class="form-control search-query admin_sea" value="${param.deptName}" placeholder="团队"/>
-                                    <div class="input-group-btn">
-                                        <button type="submit" class="btn btn-xs btn-purple">
-                                            <span class="ace-icon fa fa-search"></span>
-                                            搜索
-                                        </button>
-                                        <a href="?" class="btn btn-xs btn-info">
-                                            <span class="ace-icon fa fa-globe"></span>
-                                            显示全部
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+                            <%--<div class="col-xs-12 col-sm-4 maintop">--%>
+                                <%--<div class="input-group">--%>
+                                    <%--<span class="input-group-addon">--%>
+                                        <%--<i class="ace-icon fa fa-check"></i>--%>
+                                    <%--</span>--%>
+                                    <%--<input type="text" name="deptName" class="form-control search-query admin_sea" value="${param.deptName}" placeholder="团队"/>--%>
+                                    <%--<div class="input-group-btn">--%>
+                                        <%--<button type="submit" class="btn btn-xs btn-purple">--%>
+                                            <%--<span class="ace-icon fa fa-search"></span>--%>
+                                            <%--搜索--%>
+                                        <%--</button>--%>
+                                        <%--<a href="?" class="btn btn-xs btn-info">--%>
+                                            <%--<span class="ace-icon fa fa-globe"></span>--%>
+                                            <%--显示全部--%>
+                                        <%--</a>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
                         </div>
                     </form>
                 </div>
@@ -108,16 +108,18 @@
                             <c:if test="${not empty list}">
                                 <c:forEach items="${list}" var="item">
                                     <tr>
-                                            <td>${item.date}</td>
-                                            <td>${item.typeStr}</td>
-                                            <td>${item.inCash}</td>
-                                            <td>${item.outCash}</td>
-                                            <td>${item.growthFund}</td>
-                                            <td>${item.manageFund}</td>
-                                            <td>${item.manageGrowthFund}</td>
+                                        <td>${item.date}</td>
+                                        <td>${item.typeStr}</td>
+                                        <td>${item.inCash}</td>
+                                        <td>${item.outCash}</td>
+                                        <td>${item.growthFund}</td>
+                                        <td>${item.manageFund}</td>
+                                        <td>${item.manageGrowthFund}</td>
                                         <td>
-                                            <a href="./daily/detail?deptId=${item.deptId}&date=${item.date}">
-                                                <i class="ace-icon fa fa-external-link"></i> 查看详情
+                                            <a href="./daily/detail?date=${item.date}">
+                                                <c:if test="${item.typeStr eq '资管中心'}">
+                                                    <i class="ace-icon fa fa-external-link"></i>查看详情
+                                                </c:if>
                                             </a>
                                         </td>
                                     </tr>

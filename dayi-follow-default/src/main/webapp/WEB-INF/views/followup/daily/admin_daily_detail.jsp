@@ -24,11 +24,11 @@
                 </ul><!-- /.breadcrumb -->
             </div>
             <div class="page-content">
-                <c:if test="${not empty date and not empty deptId}">
+                <c:if test="${not empty date}">
                     <div class="page-header clearfix">
                         <div class="pull-left">
-                            日期：${date}<br />
-                            团队：${deptName}
+                            <%--日期：${date}<br />--%>
+                            <%--团队：${deptName}--%>
                         </div>
                         <div class="pull-right">
                             <a href="./detail/export?deptId=${deptId}&date=${date}" class="btn btn-xs btn-danger">
@@ -72,8 +72,8 @@
                                     </tr>
                                 </c:if>
 
-                                <c:if test="${not empty page.results}">
-                                    <c:forEach items="${page.results}" var="item">
+                                <c:if test="${not empty list}">
+                                    <c:forEach items="${list}" var="item">
                                         <tr>
                                             <td class="first_row">
                                                 <span class="detail-icon">
@@ -81,22 +81,22 @@
                                                 </span>
                                             </td>
                                             <td>
-                                                2019-3-21
+                                                ${item.date}
                                             </td>
                                             <td>${item.deptName}</td>
                                             <td>${item.openAccountNum}</td>
                                             <%--新签创客--%>
                                             <td>${item.orgNum}</td>
                                             <%--入金总额--%>
-                                            <td>${item.inCashFm}</td>
+                                            <td>${item.inCash}</td>
                                             <%--出金总额--%>
-                                            <td>${item.outCashFm}</td>
+                                            <td>${item.outCash}</td>
                                             <%--管理资产规模--%>
-                                            <td>${item.manageFundFm}</td>
+                                            <td>${item.manageFund}</td>
                                             <%--资产规模净值--%>
-                                            <td>${item.manageGrowthFundFm}</td>
+                                            <td>${item.manageGrowthFund}</td>
                                             <%--创客管理资产规模--%>
-                                            <td>${item.makerFundFm}</td>
+                                            <td>${item.makerFund}</td>
                                         </tr>
                                     </c:forEach>
                                 </c:if>
@@ -110,7 +110,7 @@
                         </div>
                     </div>
                 </c:if>
-                <c:if test="${empty date or empty deptId}">
+                <c:if test="${empty date}">
                     <div class="page-header clearfix">
                         <h1 class="pull-left">
                             您当前操作
