@@ -127,7 +127,6 @@
                                 <th class="hidden-xs">邀请码</th>
                                 <th>账号</th>
                                 <th>所属团队</th>
-                                <th>状态</th>
                                 <th style="text-align: center;">跟进客户数</th>
                                 <th>历史最高资产规模</th>
                                 <th class="tr hidden-xs" style="text-align: center;">资金管理规模</th>
@@ -149,9 +148,8 @@
                                         <td class="hidden-xs">${item.inviteCode}</td>
                                         <td>${item.userName}</td>
                                         <td>${item.deptName}</td>
-                                        <td>已启用</td>
                                         <td>${item.agentNum}</td>
-                                        <td>历史最高资产规模</td>
+                                        <td>${item.hisMaxFund}</td>
                                         <td class="tr hidden-xs">${item.agentFundFm}</td>
                                         <td class="hidden-sm hidden-xs">
                                             <fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/>

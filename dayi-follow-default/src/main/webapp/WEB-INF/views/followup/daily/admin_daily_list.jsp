@@ -55,7 +55,7 @@
                         <table class="table table-striped table-bordered table-hover" id="dynamic-table">
                             <thead>
                             <tr>
-                                <th>日期</th>
+                                <%--<th>日期</th>--%>
                                 <th>客户来源</th>
                                 <th>今日入金</th>
                                 <th>今日出金</th>
@@ -83,14 +83,14 @@
                             <tbody>
                             <c:if test="${empty list}">
                                 <tr>
-                                    <td colspan="8" class="no_data">暂无数据记录</td>
+                                    <td colspan="7" class="no_data">暂无数据记录</td>
                                 </tr>
                             </c:if>
 
                             <c:if test="${not empty list}">
                                 <c:forEach items="${list}" var="item">
                                     <tr>
-                                        <td>${item.date}</td>
+                                        <%--<td>${item.date}</td>--%>
                                         <td>${item.typeStr}</td>
                                         <td>${item.inCash}</td>
                                         <td>${item.outCash}</td>
