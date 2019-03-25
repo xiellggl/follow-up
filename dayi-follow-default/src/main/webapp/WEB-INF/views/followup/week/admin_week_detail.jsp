@@ -30,7 +30,7 @@
                         您当前操作
                         <small>
                             <i class="ace-icon fa fa-angle-double-right"></i>
-                            管理员周报详情(${date})
+                            管理员周报详情(${weekVo.startDate} - ${weekVo.endDate})
                         </small>
                     </h1>
                     <div class="pull-right">
@@ -85,7 +85,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:if test="${empty list}">
+                            <c:if test="${empty weekVo.SRSumList}">
                                 <tr>
                                     <td colspan="10" class="no_data">暂无数据记录</td>
                                 </tr>
