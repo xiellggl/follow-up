@@ -85,7 +85,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:if test="${empty weekVo.SRSumList}">
+                            <c:if test="${empty list}">
                                 <tr>
                                     <td colspan="10" class="no_data">暂无数据记录</td>
                                 </tr>
@@ -113,7 +113,7 @@
                             </c:if>
                             </tbody>
                         </table>
-                        <c:if test="${not empty weekVo.SRSumList}">
+                        <c:if test="${not empty list}">
                             <div class="pagerBar" id="pagerBar">
                                 <common:page url="${pageUrl}" type="3"/>
                             </div>
