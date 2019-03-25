@@ -42,7 +42,7 @@
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-calendar"></i>
                                     </span>
-                                    <input type="text" class="form-control admin_sea dates" name="date" value="${date}"
+                                    <input style="width: 120px;" type="text" class="form-control admin_sea dates" name="date" value="${date}"
                                            placeholder="日志日期"/>
                                 </div>
                             </div>
@@ -98,11 +98,11 @@
                                         <td>${item.manageFund}</td>
                                         <td>${item.manageGrowthFund}</td>
                                         <td>
+                                            <c:if test="${item.type eq 1}">
                                             <a href="./daily/detail?date=${item.date}">
-                                                <c:if test="${item.typeStr eq '资管中心'}">
                                                     <i class="ace-icon fa fa-external-link"></i>查看详情
-                                                </c:if>
                                             </a>
+                                            </c:if>
                                         </td>
                                     </tr>
                                 </c:forEach>
