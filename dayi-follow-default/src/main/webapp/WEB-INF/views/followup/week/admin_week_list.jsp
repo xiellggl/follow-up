@@ -112,7 +112,7 @@
                             </c:if>
                             </tbody>
                         </table>
-                        <c:if test="${not empty adminWeekVo.weekVos}">
+                        <c:if test="${not empty weekVo.SRSumList}">
                             <div class="pagerBar" id="pagerBar">
                                 <common:page url="${pageUrl}" type="3"/>
                             </div>
