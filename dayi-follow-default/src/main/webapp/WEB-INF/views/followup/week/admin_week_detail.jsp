@@ -30,7 +30,7 @@
                         您当前操作
                         <small>
                             <i class="ace-icon fa fa-angle-double-right"></i>
-                            管理员周报详情(${weekVo.startDate} - ${weekVo.endDate})
+                            管理员周报详情(${date})
                         </small>
                     </h1>
                     <div class="pull-right">
