@@ -92,13 +92,18 @@
                             </c:if>
 
                             <c:if test="${not empty weekVo.SRSumList}">
-                                <c:forEach items="${weekVo.SRSumList}" var="item">
+                                <c:forEach items="${weekVo.SRSumList}" var="item" varStatus="key">
                                     <tr>
-                                        <td class="first_row">
-                                            <span class="detail-icon">
-                                                <i class="fa fa-minus"></i>
-                                            </span>
-                                        </td>
+                                        <c:if test="${key.index eq 0}">
+                                            <td class="first_row">
+                                                <span class="detail-icon">
+                                                    <i class="fa fa-minus"></i>
+                                                </span>
+                                            </td>
+                                        </c:if>
+                                        <c:if test="${key.index ne 0}">
+                                            <td class=""></td>
+                                        </c:if>
                                         <td>${item.date}</td>
                                         <td>${item.deptName}</td>
                                         <td>${item.openAccountNum}</td>
