@@ -75,16 +75,11 @@
                                 <c:if test="${not empty list}">
                                     <c:forEach items="${list}" var="item" varStatus="key" >
                                         <tr>
-                                            <c:if test="${key.index eq 0}">
-                                                <td class="first_row">
-                                                    <span class="detail-icon">
-                                                        <i class="fa fa-minus"></i>
-                                                    </span>
-                                                </td>
-                                            </c:if>
-                                            <c:if test="${key.index ne 0}">
-                                                <td class=""></td>
-                                            </c:if>
+                                            <td class="first_row" data-tag="${item.date}-${item.deptId}">
+                                                <span class="detail-icon">
+                                                    <i class="fa fa-minus"></i>
+                                                </span>
+                                            </td>
                                             <td>${item.date}</td>
                                             <td>${item.deptName}</td>
                                             <td>${item.openAccountNum}</td>
@@ -101,6 +96,26 @@
                                             <%--创客管理资产规模--%>
                                             <td>${item.makerFund}</td>
                                         </tr>
+                                        <c:forEach items="${item.pList}" var="row" varStatus="rowkey">
+                                            <tr class="${row.date}-${row.deptId}">
+                                                <td></td>
+                                                <td>${row.date}</td>
+                                                <td>${row.name}</td>
+                                                <td>${row.openAccountNum}</td>
+                                                    <%--新签创客--%>
+                                                <td>${row.signOrgNum}</td>
+                                                    <%--入金总额--%>
+                                                <td>${row.inCash}</td>
+                                                    <%--出金总额--%>
+                                                <td>${row.outCash}</td>
+                                                    <%--管理资产规模--%>
+                                                <td>${row.manageFund}</td>
+                                                    <%--资产规模净值--%>
+                                                <td>${row.manageGrowthFund}</td>
+                                                    <%--创客管理资产规模--%>
+                                                <td>${row.makerFund}</td>
+                                            </tr>
+                                        </c:forEach>
                                     </c:forEach>
                                 </c:if>
                                 </tbody>
@@ -146,20 +161,18 @@
         common.head('_report_admin_daily');
 
         $(".first_row").on("click",function (e) {
-            if($(this).find('i.fa').hasClass('fa-plus')){  //收起状态
-                $(this).find('i.fa').removeClass('fa-plus').addClass('fa-minus');
-                $(this).parents('tr').siblings().show();
-            } else {  //展开状态
-                $(this).find('i.fa').addClass('fa-plus').removeClass('fa-minus');
-                $(this).parents('tr').siblings().hide();
+            var parentTag = $(this).attr("data-tag");
+
+            if($(this).find('i.fa').hasClass('fa-plus')){
+                //收起状态 +
+                $(this).find('i.fa').removeClass('fa-plus').addClass(' fa-minus');
+                $(this).parents('tr').siblings('.' + parentTag).show();
+            } else {
+                //展开状态
+                $(this).find('i.fa').addClass(' fa-plus').removeClass(' fa-minus');
+                $(this).parents('tr').siblings('.' + parentTag).hide();
             }
         });
-
-
-
-
-
-
     });
 </script>
 </body>
