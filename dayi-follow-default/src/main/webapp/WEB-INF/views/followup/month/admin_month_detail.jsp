@@ -40,22 +40,6 @@
                         </a>
                     </div>
                 </div>
-                <%--<div class="row">--%>
-                    <%--<div class="col-xs-12">--%>
-                        <%--<ul class="nav nav-tabs">--%>
-                            <%--<li ${adminMonthVo.month eq adminMonthVo.thisMonth ? 'class="active"':''}><a href="?date=${adminMonthVo.thisMonth}">本月</a></li>--%>
-                            <%--<li ${adminMonthVo.month eq adminMonthVo.lastMonth ? 'class="active"':''}><a href="?date=${adminMonthVo.lastMonth}">上一月</a></li>--%>
-                            <%--<c:if test="${adminMonthVo.month ne adminMonthVo.thisMonth and adminMonthVo.month ne adminMonthVo.lastMonth}">--%>
-                                <%--<li class="active"><a>${adminMonthVo.month}</a></li>--%>
-                            <%--</c:if>--%>
-                            <%--<li>--%>
-                                <%--<a class="dates" data-toggle="popover" id="showmonthlyPicker">--%>
-                                    <%--更多 <i class="ace-icon fa fa-angle-double-right"></i>--%>
-                                <%--</a>--%>
-                            <%--</li>--%>
-                        <%--</ul>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
                 <div class="space-10"></div>
                 <div class="row" id="listPan">
                     <div class="col-xs-12">
@@ -85,13 +69,13 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:if test="${empty monthVo.SRSumList}">
+                            <c:if test="${empty list}">
                                 <tr>
                                     <td colspan="10" class="no_data">暂无数据记录</td>
                                 </tr>
                             </c:if>
-                            <c:if test="${not empty monthVo.SRSumList}">
-                                <c:forEach items="${monthVo.SRSumList}" var="item" varStatus="key">
+                            <c:if test="${not empty list}">
+                                <c:forEach items="${list}" var="item" varStatus="key">
                                     <tr>
                                         <c:if test="${key.index eq 0}">
                                             <td class="first_row">
@@ -117,7 +101,7 @@
                             </c:if>
                             </tbody>
                         </table>
-                        <c:if test="${not empty monthVo.SRSumList}">
+                        <c:if test="${not empty list}">
                             <div class="pagerBar" id="pagerBar">
                                 <common:page url="${pageUrl}" type="3"/>
                             </div>
