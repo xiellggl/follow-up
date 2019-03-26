@@ -77,7 +77,7 @@
                                         <tr>
                                             <td class="collapse_row" data-tag="${item.date}-${item.deptId}">
                                                 <span class="detail-icon">
-                                                    <i class="fa fa-plus"></i>
+                                                    <i class="fa fa-plus blue"></i>
                                                 </span>
                                             </td>
                                             <td>${item.date}</td>
