@@ -4,7 +4,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8"/>
-    <title>销售报表-销售周报</title>
+    <title>个人报表-个人周报</title>
     <%@include file="/inc/followup/csslink.jsp" %>
     <link rel="stylesheet" type="text/css" media="all" href="/static/public/flexoCalendar/flexoCalendar.css"/>
 </head>
@@ -95,7 +95,7 @@
                                         <td>${item.outCashFm}</td>
                                         <td>${item.manageFundFm}</td>
                                         <td>${item.growthFundFm}</td>
-                                        <td>${item.makerFund}</td>
+                                        <td>${item.makerFundFm}</td>
                                     </tr>
                                 </c:forEach>
                             </c:if>
