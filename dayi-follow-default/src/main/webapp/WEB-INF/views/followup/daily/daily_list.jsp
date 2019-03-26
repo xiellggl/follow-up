@@ -104,7 +104,7 @@
                             </tbody>
                         </table>
                         <div>
-                            历史最高资产规模：<span class="hisMaxFund">0.00</span>
+                            历史最高资产规模：<span class="hisMaxFund"></span>
                         </div>
                         <c:if test="${not empty page}">
                             <div class="pagerBar" id="pagerBar">

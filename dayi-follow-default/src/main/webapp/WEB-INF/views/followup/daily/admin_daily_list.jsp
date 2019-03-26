@@ -37,12 +37,12 @@
                 <div class="row">
                     <form class="form-horizontal">
                         <div class="clearfix maintop">
-                            <div class="col-xs-12 col-sm-3 maintop">
+                            <div class="col-xs-12 col-sm-3 maintop" style="width: 180px">
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-calendar"></i>
                                     </span>
-                                    <input style="width: 120px;" type="text" class="form-control admin_sea dates" name="date" value="${date}"
+                                    <input type="text" class="form-control admin_sea dates" name="date" value="${date}"
                                            placeholder="日志日期"/>
                                 </div>
                             </div>

@@ -102,7 +102,7 @@
                             </tbody>
                         </table>
                         <div>
-                            历史最高资产规模： <span class="hisMaxFund">0.00</span>
+                            历史最高资产规模： <span class="hisMaxFund"></span>
                         </div>
                     </div>
                 </div>
@@ -137,9 +137,6 @@
                 $(".hisMaxFund").text(data.result);
             }
         });
-
-
-
     });
 </script>
 </body>
