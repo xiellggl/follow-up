@@ -75,9 +75,9 @@
                                 <c:if test="${not empty list}">
                                     <c:forEach items="${list}" var="item" varStatus="key" >
                                         <tr>
-                                            <td class="first_row" data-tag="${item.date}-${item.deptId}">
+                                            <td class="collapse_row" data-tag="${item.date}-${item.deptId}">
                                                 <span class="detail-icon">
-                                                    <i class="fa fa-minus"></i>
+                                                    <i class="fa fa-plus"></i>
                                                 </span>
                                             </td>
                                             <td>${item.date}</td>
@@ -97,7 +97,7 @@
                                             <td>${item.makerFund}</td>
                                         </tr>
                                         <c:forEach items="${item.pList}" var="row" varStatus="rowkey">
-                                            <tr class="${row.date}-${row.deptId}">
+                                            <tr class="${row.date}-${row.deptId}" style="display: none;">
                                                 <td></td>
                                                 <td>${row.date}</td>
                                                 <td>${row.name}</td>
@@ -160,13 +160,13 @@
     seajs.use(["common"], function (common) {
         common.head('_report_admin_daily');
 
-        $(".first_row").on("click",function (e) {
+        $(".collapse_row").on("click",function (e) {
             var parentTag = $(this).attr("data-tag");
 
             if($(this).find('i.fa').hasClass('fa-plus')){
                 //收起状态 +
                 $(this).find('i.fa').removeClass('fa-plus').addClass(' fa-minus');
-                $(this).parents('tr').siblings('.' + parentTag).show();
+                $(this).parents('tr').siblings('.' + parentTag).show();  //点击 + 展开数据
             } else {
                 //展开状态
                 $(this).find('i.fa').addClass(' fa-plus').removeClass(' fa-minus');
