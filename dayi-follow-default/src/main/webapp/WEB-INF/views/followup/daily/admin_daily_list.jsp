@@ -46,6 +46,16 @@
                                            placeholder="日志日期"/>
                                 </div>
                             </div>
+                            <div class="col-xs-12 col-sm-4 maintop" style="width: 100px;">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="submit" class="btn btn-xs btn-purple">
+                                            <span class="ace-icon fa fa-search"></span>
+                                            搜索
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </form>
                 </div>
