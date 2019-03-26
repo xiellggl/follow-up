@@ -90,7 +90,7 @@
                                 </tbody>
                             </table>
                             <div>
-                                历史最高资产规模: <span>10000000.00</span>
+                                历史最高资产规模: <span class="hisMaxFund"></span>
                             </div>
                             <c:if test="${not empty page}">
                                 <div class="pagerBar" id="pagerBar">
@@ -130,6 +130,17 @@
 <script>
     seajs.use(["common"], function (common) {
         common.head("_report_team_daily");
+
+        //请求历史最高资产规模
+        common.ajax.handle({
+            url: "/followup/get/hismaxfund",
+            data: { },
+            succback: function (data) {
+                $(".hisMaxFund").text(data.result);
+            }
+        });
+
+
     });
 </script>
 </body>
