@@ -95,7 +95,7 @@
                                         <td>${item.outCashFm}</td>
                                         <td>${item.manageFundFm}</td>
                                         <td>${item.growthFundFm}</td>
-                                        <td>${item.makerFund}</td>
+                                        <td>${item.makerFundFm}</td>
                                     </tr>
                                 </c:forEach>
                             </c:if>

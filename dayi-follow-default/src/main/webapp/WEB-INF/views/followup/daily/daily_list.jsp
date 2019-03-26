@@ -97,7 +97,7 @@
                                         <%--管理资产规模净值--%>
                                         <td>${item.manageGrowthFundFm}</td>
                                         <%--创客管理资金规模--%>
-                                        <td class="hidden-xs">${item.makerFund}</td>
+                                        <td class="hidden-xs">${item.makerFundFm}</td>
                                     </tr>
                                 </c:forEach>
                             </c:if>
