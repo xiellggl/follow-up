@@ -23,7 +23,8 @@ public class AgentDetailExport extends AbstractExcel<FMDetailListVo> {
     private Column column7 = addColumn("变更日期", 4000);
     private Column column8 = addColumn("变更前总资产", 4000);
     private Column column9 = addColumn("当前总资产", 6000);
-    private Column column10 = addColumn("代理商服务费", 6000);
+    private Column column10 = addColumn("管理资产规模", 6000);
+    private Column column11 = addColumn("代理商服务费", 6000);
 
 
     public AgentDetailExport(String fileName, String fileTitle, List<FMDetailListVo> datas) {
@@ -48,7 +49,8 @@ public class AgentDetailExport extends AbstractExcel<FMDetailListVo> {
         column7.setValue(new DateTime(vo.getChangeDate()).toString("yyyy-MM-dd HH:mm:ss"));
         column8.setValue(vo.getTotalFundBefore());
         column9.setValue(vo.getTotalFund());
-        column10.setValue(vo.getInterest());
+        column10.setValue(vo.getManageFund());
+        column11.setValue(vo.getInterest());
     }
 }
 
