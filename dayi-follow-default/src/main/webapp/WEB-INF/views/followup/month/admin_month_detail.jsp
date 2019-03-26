@@ -77,7 +77,7 @@
                             <c:if test="${not empty list}">
                                 <c:forEach items="${list}" var="item">
                                     <tr>
-                                        <td class="collapse_row" data-tag="${item.date}-${item.deptId}">
+                                        <td class="collapse_row" data-tag="${item.date}-${item.deptId}" style="cursor: pointer">
                                             <span class="detail-icon">
                                                 <i class="fa fa-plus blue"></i>
                                             </span>
