@@ -30,11 +30,11 @@
                         您当前操作
                         <small>
                             <i class="ace-icon fa fa-angle-double-right"></i>
-                            管理员月报详情(${adminMonthVo.month})
+                            管理员月报详情(${date})
                         </small>
                     </h1>
                     <div class="pull-right">
-                        <a href="./month/export?date=${adminMonthVo.month}" class="btn btn-xs btn-danger">
+                        <a href="./export?date=${date}" class="btn btn-xs btn-danger">
                             <span class="ace-icon glyphicon glyphicon-export"></span>
                             一键导出
                         </a>

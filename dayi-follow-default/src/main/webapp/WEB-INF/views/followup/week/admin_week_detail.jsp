@@ -34,7 +34,7 @@
                         </small>
                     </h1>
                     <div class="pull-right">
-                        <a href="./week/export?date=${weekVo.startDate} - ${weekVo.endDate}" class="btn btn-xs btn-danger">
+                        <a href="./export?date=${date}" class="btn btn-xs btn-danger">
                             <span class="ace-icon glyphicon glyphicon-export"></span>
                             一键导出
                         </a>

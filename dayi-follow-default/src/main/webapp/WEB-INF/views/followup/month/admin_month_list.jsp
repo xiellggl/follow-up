@@ -103,7 +103,7 @@
                                         <td>${item.manageGrowthFund}</td>
                                         <td>
                                             <c:if test="${item.type eq 1}">
-                                            <a href="./month/detail?month=${monthVo.month}">
+                                            <a href="./month/detail?date=${monthVo.month}">
                                                 查看详情
                                             </a>
                                             </c:if>
