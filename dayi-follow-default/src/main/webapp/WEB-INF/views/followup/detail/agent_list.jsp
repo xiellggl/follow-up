@@ -201,6 +201,10 @@
                             </tbody>
                         </table>
 
+                        <div>
+                            管理资产规模总额： <span class="manageFundTotal"></span>
+                        </div>
+
                         <c:if test="${not empty page.results}">
                             <div class="pagerBar" id="pagerBar">
                                 <common:page url="${pageUrl}" type="3" />
@@ -220,6 +224,7 @@
     seajs.use(["common","daterangepicker"], function (common) {
         //菜单高亮
         common.head("_followup_list");
+        var followId = '${param.followId}';     //路由参数
         var date_o = {
             autoUpdateInput: false,
             locale: locale_cn,
@@ -265,6 +270,18 @@
                     });
                 }
             });
+        });
+
+
+        //获取管理资产规模总额
+        common.ajax.handle({
+            url: "/followup/get/managefund",
+            data: {
+                followId: followId
+            },
+            succback: function (data) {
+                $(".manageFundTotal").html(data.result);
+            }
         });
     });
 </script>
