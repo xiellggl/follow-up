@@ -79,7 +79,7 @@
                                     <tr>
                                         <td class="collapse_row" data-tag="${item.date}-${item.deptId}">
                                             <span class="detail-icon">
-                                                <i class="fa fa-plus"></i>
+                                                <i class="fa fa-plus blue"></i>
                                             </span>
                                         </td>
                                         <td>${item.date}</td>
@@ -95,15 +95,15 @@
                                     <c:forEach items="${item.pList}" var="row">
                                         <tr class="${row.date}-${row.deptId}" style="display: none;">
                                             <td></td>
-                                            <td>${item.date}</td>
-                                            <td>${item.name}</td>
-                                            <td>${item.openAccountNum}</td>
-                                            <td>${item.signOrgNum}</td>
-                                            <td>${item.inCash}</td>
-                                            <td>${item.outCash}</td>
-                                            <td>${item.manageFund}</td>
-                                            <td>${item.manageGrowthFund}</td>
-                                            <td>${item.makerFund}</td>
+                                            <td>${row.date}</td>
+                                            <td>${row.name}</td>
+                                            <td>${row.openAccountNum}</td>
+                                            <td>${row.signOrgNum}</td>
+                                            <td>${row.inCash}</td>
+                                            <td>${row.outCash}</td>
+                                            <td>${row.manageFund}</td>
+                                            <td>${row.manageGrowthFund}</td>
+                                            <td>${row.makerFund}</td>
                                         </tr>
                                     </c:forEach>
                                 </c:forEach>
