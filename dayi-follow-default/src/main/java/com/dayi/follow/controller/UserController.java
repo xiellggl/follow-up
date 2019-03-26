@@ -2,13 +2,11 @@ package com.dayi.follow.controller;
 
 import com.dayi.common.util.BizResult;
 import com.dayi.common.util.DateUtil;
+import com.dayi.common.util.NameItem;
 import com.dayi.common.web.util.IPUtil;
 import com.dayi.follow.base.BaseController;
 import com.dayi.follow.component.UserComponent;
-import com.dayi.follow.dao.follow.FollowAgentMapper;
-import com.dayi.follow.dao.follow.FollowOrgMapper;
-import com.dayi.follow.dao.follow.FollowUpLogMapper;
-import com.dayi.follow.dao.follow.FollowUpMapper;
+import com.dayi.follow.dao.follow.*;
 import com.dayi.follow.model.follow.*;
 import com.dayi.follow.service.CountService;
 import com.dayi.follow.service.DeptService;
@@ -42,6 +40,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -65,6 +64,8 @@ public class UserController extends BaseController {
     FollowUpLogMapper followUpLogMapper;
     @Resource
     FollowOrgMapper followOrgMapper;
+    @Resource
+    SourceReportMapper sourceReportMapper;
     @Value("${dayi.dataBase}")
     String dayiDataBaseStr;
     @Resource
@@ -386,6 +387,10 @@ public class UserController extends BaseController {
             int outCashNum = followAgentMapper.getOutCashNum(followUp.getId(), stratTime, endTime, dayiDataBaseStr);
             followUpLog.setOutCashNum(outCashNum);
 
+            //统计新签创客人数
+            int orgNum = followOrgMapper.getNewSignOrgNum(followUp.getId(), stratTime, endTime, dayiDataBaseStr);
+            followUpLog.setSignOrgNum(orgNum);
+
             followUpLog.setId(followUpLogMapper.getNewId());
             followUpLog.setFollowId(followUp.getId());
             followUpLog.setDeptId(followUp.getDeptId());
@@ -407,12 +412,85 @@ public class UserController extends BaseController {
                 followUpLog.setManageGrowthFund(fund);
             } else {
                 followUpLog.setMakerGrowthFund(makerFund.subtract(log.getMakerFund()));
-                followUpLog.setManageGrowthFund(fund.subtract(log.getManageFund()));
+                if (followUp.getHisMaxFund() != null) {
+                    followUpLog.setManageGrowthFund(fund.subtract(followUp.getHisMaxFund()));
+                } else {
+                    followUpLog.setManageGrowthFund(fund);
+                }
             }
             followUpLogMapper.add(followUpLog);
         }
+        this.countSourceReport(date);
         return BizResult.SUCCESS;
 
+    }
+
+    private void countSourceReport(Date date) {
+        String startDate = new DateTime(date).plusDays(-1).withHourOfDay(17).withMinuteOfHour(30).withSecondOfMinute(1).toString("yyyy-MM-dd HH:mm:ss");
+        String endDate = new DateTime(date).withHourOfDay(17).withMinuteOfHour(30).withSecondOfMinute(0).toString("yyyy-MM-dd HH:mm:ss");
+
+        String yesStartDate = new DateTime(date).plusMonths(-1).dayOfMonth().withMaximumValue().withHourOfDay(17)
+                .withMinuteOfHour(0).withSecondOfMinute(0).toString("yyyy-MM-dd HH:mm:ss");
+        String yesEndDate = new DateTime(date).plusMonths(-1).dayOfMonth().withMaximumValue().withHourOfDay(18)
+                .withMinuteOfHour(0).withSecondOfMinute(0).toString("yyyy-MM-dd HH:mm:ss");
+
+        Iterator<NameItem> iterator = SourceReport.TYPE_ALL.iterator();
+
+        BigDecimal inCash = null;
+        BigDecimal outCash = null;
+        BigDecimal manageFund = null;
+        BigDecimal lastManageFund = null;
+
+        while (iterator.hasNext()) {
+            SourceReport sr = new SourceReport();
+            NameItem next = iterator.next();
+            if (SourceReport.TYPE_ZG.getId() == next.getId()) {//资管中心
+                inCash = sourceReportMapper.getFollowUpInCash(startDate, endDate);
+                outCash = sourceReportMapper.getFollowUpOutCash(startDate, endDate);
+                manageFund = sourceReportMapper.getFollowUpManageFund(startDate, endDate);
+
+                SourceReport preSR = sourceReportMapper.getByTime(SourceReport.TYPE_ZG.getId(), yesStartDate, yesEndDate);
+                if (preSR != null) {
+                    lastManageFund = preSR.getManageFund();
+                }
+                sr.setType(SourceReport.TYPE_ZG.getId());
+            }
+            if (SourceReport.TYPE_MAKER.getId() == next.getId()) {//创客
+                inCash = sourceReportMapper.getMakerInCash(startDate, endDate, dayiDataBaseStr);
+                outCash = sourceReportMapper.getMakerOutCash(startDate, endDate, dayiDataBaseStr);
+                manageFund = sourceReportMapper.getMakerManageFund(startDate, endDate, dayiDataBaseStr);
+
+                SourceReport preSR = sourceReportMapper.getByTime(SourceReport.TYPE_MAKER.getId(), yesStartDate, yesEndDate);
+                if (preSR != null) {
+                    lastManageFund = preSR.getManageFund();
+                }
+                sr.setType(SourceReport.TYPE_MAKER.getId());
+
+
+            }
+            if (SourceReport.TYPE_OTHER.getId() == next.getId()) {//其它
+                inCash = sourceReportMapper.getOtherInCash(startDate, endDate, dayiDataBaseStr);
+                outCash = sourceReportMapper.getOtherOutCash(startDate, endDate, dayiDataBaseStr);
+                manageFund = sourceReportMapper.getOtherManageFund(startDate, endDate, dayiDataBaseStr);
+
+                SourceReport preSR = sourceReportMapper.getByTime(SourceReport.TYPE_OTHER.getId(), yesStartDate, yesEndDate);
+                if (preSR != null) {
+                    lastManageFund = preSR.getManageFund();
+                }
+                sr.setType(SourceReport.TYPE_OTHER.getId());
+            }
+            sr.setId(sourceReportMapper.getNewId());
+            sr.setInCash(inCash);
+            sr.setOutCash(outCash);
+            sr.setGrowthFund(inCash.subtract(outCash));
+            sr.setManageFund(manageFund);
+            if (lastManageFund != null) {
+                sr.setManageGrowthFund(manageFund.subtract(lastManageFund));
+            } else {
+                sr.setManageGrowthFund(manageFund);
+            }
+            sourceReportMapper.add(sr);
+        }
     }
 
 
