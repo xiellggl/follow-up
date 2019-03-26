@@ -73,7 +73,7 @@
                                 </c:if>
 
                                 <c:if test="${not empty list}">
-                                    <c:forEach items="${list}" var="item" varStatus="key" >
+                                    <c:forEach items="${list}" var="item">
                                         <tr>
                                             <td class="collapse_row" data-tag="${item.date}-${item.deptId}">
                                                 <span class="detail-icon">
@@ -96,7 +96,7 @@
                                             <%--创客管理资产规模--%>
                                             <td>${item.makerFund}</td>
                                         </tr>
-                                        <c:forEach items="${item.pList}" var="row" varStatus="rowkey">
+                                        <c:forEach items="${item.pList}" var="row">
                                             <tr class="${row.date}-${row.deptId}" style="display: none;">
                                                 <td></td>
                                                 <td>${row.date}</td>

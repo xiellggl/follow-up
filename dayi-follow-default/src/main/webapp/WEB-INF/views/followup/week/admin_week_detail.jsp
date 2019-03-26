@@ -92,18 +92,13 @@
                             </c:if>
 
                             <c:if test="${not empty list}">
-                                <c:forEach items="${list}" var="item" varStatus="key">
+                                <c:forEach items="${list}" var="item">
                                     <tr>
-                                        <c:if test="${key.index eq 0}">
-                                            <td class="first_row">
-                                                    <span class="detail-icon">
-                                                        <i class="fa fa-minus"></i>
-                                                    </span>
-                                            </td>
-                                        </c:if>
-                                        <c:if test="${key.index ne 0}">
-                                            <td class=""></td>
-                                        </c:if>
+                                        <td class="collapse_row" data-tag="${item.date}-${item.deptId}">
+                                            <span class="detail-icon">
+                                                <i class="fa fa-plus"></i>
+                                            </span>
+                                        </td>
                                         <td>${item.date}</td>
                                         <td>${item.deptName}</td>
                                         <td>${item.openAccountNum}</td>
@@ -114,6 +109,20 @@
                                         <td>${item.manageGrowthFund}</td>
                                         <td>${item.makerFund}</td>
                                     </tr>
+                                    <c:forEach items="${item.pList}" var="row">
+                                        <tr class="${row.date}-${row.deptId}" style="display: none;">
+                                            <td></td>
+                                            <td>${row.date}</td>
+                                            <td>${row.name}</td>
+                                            <td>${row.openAccountNum}</td>
+                                            <td>${row.signOrgNum}</td>
+                                            <td>${row.inCash}</td>
+                                            <td>${row.outCash}</td>
+                                            <td>${row.manageFund}</td>
+                                            <td>${row.manageGrowthFund}</td>
+                                            <td>${row.makerFund}</td>
+                                        </tr>
+                                    </c:forEach>
                                 </c:forEach>
                             </c:if>
                             </tbody>
@@ -151,17 +160,19 @@
             });
         });
 
-        $(".first_row").on("click",function (e) {
-            if($(this).find('i.fa').hasClass('fa-plus')){  //收起状态
-                $(this).find('i.fa').removeClass('fa-plus').addClass('fa-minus');
-                $(this).parents('tr').siblings().show();
-            } else {  //展开状态
-                $(this).find('i.fa').addClass('fa-plus').removeClass('fa-minus');
-                $(this).parents('tr').siblings().hide();
+        $(".collapse_row").on("click",function (e) {
+            var parentTag = $(this).attr("data-tag");
+
+            if($(this).find('i.fa').hasClass('fa-plus')){
+                //收起状态 +
+                $(this).find('i.fa').removeClass('fa-plus').addClass(' fa-minus');
+                $(this).parents('tr').siblings('.' + parentTag).show();  //点击 + 展开数据
+            } else {
+                //展开状态
+                $(this).find('i.fa').addClass(' fa-plus').removeClass(' fa-minus');
+                $(this).parents('tr').siblings('.' + parentTag).hide();
             }
         });
-
-
 
         //给Body加一个Click监听事件
         /*$('body').on('click', function(event) {
