@@ -121,7 +121,8 @@
     <select id="findAgents" parameterType="map" resultType="com.dayi.follow.vo.followup.FMDetailListVo">
         SELECT a.follow_id,a.follow_up_before,a.assign_date changeDate,a.agent_fund_before agentCargoBefore,
         a.total_fund_before,b.id,b.link_person,b.mobile,b.create_date,b.record_invite_code inviteCode,c.name followUp,
-        IFNULL(d.useable + d.frozen + d.out_frozen +  0.8*d.cargo_interest+d.cargo_interest_puchas, 0) totalFund,
+        IFNULL(d.useable + d.frozen + d.out_frozen +  0.8*d.cargo_interest+d.cargo_interest_puchas, 0)  totalFund,
+        (d.useable + d.frozen + d.out_frozen +  0.8*d.cargo_interest+d.cargo_interest_puchas - a.total_fund_before)manageFund,
         d.interest from follow_agent a
         left join (
             select * from ${assistDataBase}.agent where del_status !=-1

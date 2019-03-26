@@ -1,5 +1,6 @@
 package com.dayi.follow.vo.followup;
 
+import com.dayi.common.util.BigDecimals;
 import com.dayi.follow.enums.AgentCusTypeEnum;
 import com.dayi.follow.enums.AgentIntenTypeEnum;
 import com.dayi.follow.util.CheckIdCardUtils;
@@ -44,7 +45,17 @@ public class FMDetailListVo {
 
     private BigDecimal growthFund;//净增总资产
 
+    private BigDecimal manageFund;//管理资产规模
+
     private BigDecimal interest;//利息（服务费）
+
+    public BigDecimal getManageFund() {
+        return manageFund;
+    }
+
+    public void setManageFund(BigDecimal manageFund) {
+        this.manageFund = manageFund;
+    }
 
     public Integer getId() {
         return id;
