@@ -149,7 +149,16 @@
                                         <td>${item.userName}</td>
                                         <td>${item.deptName}</td>
                                         <td>${item.agentNum}</td>
-                                        <td>${item.hisMaxFund}</td>
+                                        <td class="default_con">
+                                                ${item.hisMaxFund}
+                                                <button class="btn btn-primary edit_btn" data-id="${item.id}" style="height: 20px;line-height: 2px;float: right;">编辑</button>
+                                        </td>
+                                        <td class="edit_con" style="display: none">
+                                            <input type="text" value="${item.hisMaxFund}" class="newHisMaxFundInput" style="padding: 2px">
+                                            <button class="btn btn-default cancel" style="height: 20px;line-height: 2px;float: right;margin-left: 10px">取消</button>
+                                            <button class="btn btn-primary save" style="height: 20px;line-height: 2px;float: right;">保存</button>
+                                        </td>
+
                                         <td class="tr hidden-xs">${item.agentFundFm}</td>
                                         <td class="hidden-sm hidden-xs">
                                             <fmt:formatDate value="${item.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/>
@@ -190,6 +199,46 @@
 <script>
     seajs.use(["common"], function (common) {
         common.head();
+
+        //进入编辑状态
+        $(".edit_btn").on("click",function(){
+            $(this).parents('.default_con').hide();   //隐藏父元素
+            $(this).parents('.default_con').siblings('.edit_con').show();  //进入编辑状态
+        });
+
+
+        //实时获取用户编辑的数据
+        var newHisMaxFund = 0;
+        $(".newHisMaxFundInput").keyup(function(e){
+            newHisMaxFund = e.target.value;  //实时获取用户输入的值
+        });
+
+
+        //保存,请求数据接口等待后端提供
+        $(".save").on("click",function () {
+            var id = $(this).attr("data-id");
+            common.ajax.handle({
+                url: "/followup/edit/totalfundbefore",
+                data: {
+                    agentId: id,
+                    fund: newHisMaxFund
+                },
+                succback: function (data) {
+                    common.successMsg(data.msg, function () {
+                        $(".default_con").show();
+                        $(".edit_con").hide();
+                        window.location.reload();
+                    });
+                }
+            });
+        });
+
+        //取消编辑
+        $(".cancel").on("click",function(){
+            $(".default_con").show();
+            $(".edit_con").hide();
+        });
+
     });
 </script>
 </body>
