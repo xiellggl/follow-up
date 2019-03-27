@@ -66,6 +66,8 @@ public interface FollowUpService {
 
     BizResult updateTotalFundBefore(Integer agentId, BigDecimal newValue);
 
+    BizResult updateHisMaxFund(String followId, BigDecimal newValue);
+
     BizResult getManageFund(SearchVo searchVo,String followId);
 
 

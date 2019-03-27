@@ -208,6 +208,19 @@ public class FollowupController extends BaseController {
         return BizResult.fail("用户不存在！");
     }
 
+    @RequestMapping(value = "/edit/hismaxfund")
+    @ResponseBody
+    public BizResult editHismaxfund(HttpServletRequest request) {
+        String value = request.getParameter("fund");
+        String followId = request.getParameter("followId");
+
+        String regex = "^(-?[1-9]\\d*\\.?\\d*)|(-?0\\.\\d*[1-9])|(-?[0])|(-?[0]\\.\\d*)$";
+
+        if (StringUtils.isBlank(value) || !value.matches(regex)) return BizResult.fail("金额格式有误！");
+
+        return followUpService.updateHisMaxFund(followId, BigDecimal.valueOf(Double.valueOf(value)));
+    }
+
 
 
 

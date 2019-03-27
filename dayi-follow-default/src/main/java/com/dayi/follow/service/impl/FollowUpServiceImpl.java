@@ -290,6 +290,20 @@ public class FollowUpServiceImpl implements FollowUpService {
     }
 
     @Override
+    public BizResult updateHisMaxFund(String followId, BigDecimal newValue) {
+        FollowUp followUp = followUpMapper.get(followId);
+
+        if (followUp == null) return BizResult.FAIL;
+
+        if (newValue.compareTo(followUp.getHisMaxFund()) == 1) {
+            followUp.setHisMaxFund(newValue);
+            followUpMapper.updateAll(followUp);
+            return BizResult.SUCCESS;
+        }
+        return BizResult.fail("输入数值必须大于当前值！");
+    }
+
+    @Override
     public BizResult getManageFund(SearchVo searchVo, String followId) {
         BigDecimal manageFund = followUpMapper.getManageFund(searchVo, followId, dayiDataBaseStr);
         return BizResult.succ(manageFund);
