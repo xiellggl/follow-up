@@ -192,7 +192,7 @@
                                             <%--当前总资产--%>
                                         <td><fmt:formatNumber value="${item.totalFund}" pattern="#,##0.##" type="number"/></td>
                                             <%--管理资产规模--%>
-                                        <td><fmt:formatNumber value="${item.manageFund}" pattern="#,##0.##" type="number"/></td>
+                                        <td><fmt:formatNumber value="${item.manageFund<0?0:item.manageFund}" pattern="#,##0.##" type="number"/></td>
                                             <%--代理商服务费--%>
                                         <td><fmt:formatNumber value="${item.interest}" pattern="#,##0.##" type="number"/></td>
                                     </tr>
