@@ -297,7 +297,7 @@ public class FollowUpServiceImpl implements FollowUpService {
 
         if (followUp == null) return BizResult.FAIL;
 
-        if (newValue.compareTo(followUp.getHisMaxFund()) == 1) {
+        if ((followUp.getHisMaxFund() == null && newValue.doubleValue() > 0) || (newValue.compareTo(followUp.getHisMaxFund()) == 1)) {
             followUp.setHisMaxFund(newValue);
             followUpMapper.updateAll(followUp);
             return BizResult.SUCCESS;
