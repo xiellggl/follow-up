@@ -185,7 +185,8 @@
                                         </td>
                                         <td class="edit_con" style="display: none">
                                             <input type="text" value="${item.totalFundBefore}" class="newBeforeBalance" style="padding: 0">
-                                            <button class="btn btn-primary save" style="height: 20px;line-height: 2px" data-id="${item.id}">保存</button>
+                                            <button type="button" class="btn btn-default cancel" data-id="${item.id}" style="height: 20px;line-height: 2px;float: right;margin-left: 10px">取消</button>
+                                            <button type="button" class="btn btn-primary save"  data-id="${item.id}" style="height: 20px;line-height: 2px;float: right">保存</button>
                                         </td>
 
                                             <%--当前总资产--%>
@@ -270,6 +271,12 @@
                     });
                 }
             });
+        });
+
+        //取消
+        $(".cancel").on("click",function(){
+            $(".beforeCon").show();
+            $(".edit_con").hide();
         });
 
 
