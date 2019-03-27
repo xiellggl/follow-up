@@ -281,13 +281,12 @@ public class FollowUpServiceImpl implements FollowUpService {
         FollowAgent followAgent = followAgentMapper.getFollowAgentByAgentId(agentId);
         if (followAgent == null) return BizResult.FAIL;
 
-        BigDecimal fund = followAgent.getTotalFundBefore();
-        if (newValue.compareTo(fund) == 1) {
+        if (newValue.compareTo(BigDecimal.ZERO) == 1) {
             followAgent.setTotalFundBefore(newValue);
             followAgentMapper.updateAll(followAgent);
             return BizResult.SUCCESS;
         }
-        return BizResult.fail("输入数值必须大于当前值！");
+        return BizResult.fail("输入数值必须大于或等于0！");
     }
 
     @Override
