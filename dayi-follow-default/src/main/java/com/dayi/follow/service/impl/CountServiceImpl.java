@@ -390,14 +390,13 @@ public class CountServiceImpl implements CountService {
 
             if (log == null) {
                 followUpLog.setMakerGrowthFund(makerFund);
-                followUpLog.setManageGrowthFund(fund);
             } else {
                 followUpLog.setMakerGrowthFund(makerFund.subtract(log.getMakerFund()));
-                if (followUp.getHisMaxFund() != null) {
-                    followUpLog.setManageGrowthFund(fund.subtract(followUp.getHisMaxFund()));
-                } else {
-                    followUpLog.setManageGrowthFund(fund);
-                }
+            }
+            if (followUp.getHisMaxFund() != null) {
+                followUpLog.setManageGrowthFund(fund.subtract(followUp.getHisMaxFund()));
+            } else {
+                followUpLog.setManageGrowthFund(fund);
             }
             followUpLogMapper.add(followUpLog);
         }
@@ -472,6 +471,8 @@ public class CountServiceImpl implements CountService {
             } else {
                 sr.setManageGrowthFund(manageFund);
             }
+            sr.setCreateTime(new Date());
+            sr.setUpdateTime(new Date());
             sourceReportMapper.add(sr);
         }
     }
