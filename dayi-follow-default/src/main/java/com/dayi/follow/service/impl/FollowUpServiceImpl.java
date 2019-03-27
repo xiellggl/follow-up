@@ -89,13 +89,13 @@ public class FollowUpServiceImpl implements FollowUpService {
             vo.setOrgFund(orgFund);
 
             //判断今天是否是本月最后一天，如果是就覆盖
-            int lastDay = DateTime.now().dayOfMonth().withMaximumValue().getDayOfMonth();
-            int today = DateTime.now().getDayOfMonth();
-
-            if (today == lastDay) {
+//            int lastDay = DateTime.now().dayOfMonth().withMaximumValue().getDayOfMonth();
+//            int today = DateTime.now().getDayOfMonth();
+//
+//            if (today == lastDay) {
                 BigDecimal manageFund = followUpMapper.getManageFund(null, vo.getId(), dayiDataBaseStr);
                 vo.setHisMaxFund(manageFund);
-            }
+//            }
         }
 
         return page;
