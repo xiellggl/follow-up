@@ -93,8 +93,13 @@ public class FollowUpServiceImpl implements FollowUpService {
 //            int today = DateTime.now().getDayOfMonth();
 //
 //            if (today == lastDay) {
-                BigDecimal manageFund = followUpMapper.getManageFund(null, vo.getId(), dayiDataBaseStr);
-                vo.setHisMaxFund(manageFund);
+            BigDecimal manageFund = followUpMapper.getManageFund(null, vo.getId(), dayiDataBaseStr);
+            vo.setHisMaxFund(manageFund);
+            FollowUp followUp = followUpMapper.get(vo.getId());
+            if (followUp != null) {
+                followUp.setHisMaxFund(manageFund);
+                followUpMapper.updateAll(followUp);
+            }
 //            }
         }
 
