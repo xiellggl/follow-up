@@ -55,6 +55,8 @@ public class FollowUpServiceImpl implements FollowUpService {
     private DeptService deptService;
     @Resource
     private OrgService orgService;
+    @Resource
+    private FollowUpLogMapper followUpLogMapper;
     @Value("${dayi.dataBase}")
     String dayiDataBaseStr;
 
@@ -88,21 +90,21 @@ public class FollowUpServiceImpl implements FollowUpService {
             BigDecimal orgFund = countService.getOrgManageFund(orgs);
             vo.setOrgFund(orgFund);
 
-            //判断今天是否是本月最后一天，如果是就覆盖
-//            int lastDay = DateTime.now().dayOfMonth().withMaximumValue().getDayOfMonth();
-//            int today = DateTime.now().getDayOfMonth();
-//
-//            if (today == lastDay) {
-            BigDecimal manageFund = followUpMapper.getManageFund(null, vo.getId(), dayiDataBaseStr);
-            vo.setHisMaxFund(manageFund);
-            FollowUp followUp = followUpMapper.get(vo.getId());
-            if (followUp != null) {
-                followUp.setHisMaxFund(manageFund);
-                followUpMapper.updateAll(followUp);
-            }
-//            }
-        }
+            //判断最后一天的日报生成没有，生成了就进行比较
 
+            String dateStart = DateTime.now().dayOfMonth().withMaximumValue().millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
+            String dateEnd = DateTime.now().dayOfMonth().withMaximumValue().millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
+
+            FollowUpLog log = followUpLogMapper.getLog(vo.getId(), dateStart, dateEnd);
+            if (log != null && log.getManageFund() != null) {
+                FollowUp followUp = followUpMapper.get(vo.getId());
+                if (followUp != null && log.getManageFund().compareTo(followUp.getHisMaxFund()) == 1) {
+                    vo.setHisMaxFund(log.getManageFund());
+                    followUp.setHisMaxFund(log.getManageFund());
+                    followUpMapper.updateAll(followUp);
+                }
+            }
+        }
         return page;
     }
 
