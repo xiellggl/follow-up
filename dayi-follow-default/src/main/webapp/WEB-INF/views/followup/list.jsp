@@ -150,13 +150,13 @@
                                         <td>${item.deptName}</td>
                                         <td>${item.agentNum}</td>
                                         <td class="default_con">
-                                                ${item.hisMaxFund}
-                                                <button class="btn btn-primary edit_btn" data-id="${item.id}" style="height: 20px;line-height: 2px;float: right;">编辑</button>
+                                                ${item.hisMaxFundFm}
+                                                <button type="button" class="btn btn-primary edit_btn" style="height: 20px;line-height: 2px;float: right;">编辑</button>
                                         </td>
                                         <td class="edit_con" style="display: none">
                                             <input type="text" value="${item.hisMaxFund}" class="newHisMaxFundInput" style="padding: 2px">
-                                            <button class="btn btn-default cancel" style="height: 20px;line-height: 2px;float: right;margin-left: 10px">取消</button>
-                                            <button class="btn btn-primary save" style="height: 20px;line-height: 2px;float: right;">保存</button>
+                                            <button type="button" class="btn btn-default cancel" style="height: 20px;line-height: 2px;float: right;margin-left: 10px">取消</button>
+                                            <button type="button" data-id="${item.id}" class="btn btn-primary save" style="height: 20px;line-height: 2px;float: right;">保存</button>
                                         </td>
 
                                         <td class="tr hidden-xs">${item.agentFundFm}</td>
@@ -216,11 +216,11 @@
 
         //保存,请求数据接口等待后端提供
         $(".save").on("click",function () {
-            var id = $(this).attr("data-id");
+            var followId = $(this).attr("data-id");
             common.ajax.handle({
-                url: "/followup/edit/totalfundbefore",
+                url: "/followup/edit/hismaxfund",
                 data: {
-                    agentId: id,
+                    followId: followId,
                     fund: newHisMaxFund
                 },
                 succback: function (data) {
