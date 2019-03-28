@@ -183,7 +183,7 @@
     </select>
 
     <select id="getManageFund" parameterType="map" resultType="java.math.BigDecimal">
-        SELECT sum(if((d.totalFund &lt; ifnull(total_fund_before,0)),0,(d.totalFund - total_fund_before)))
+        SELECT ifnull(sum(if((d.totalFund &lt; ifnull(total_fund_before,0)),0,(d.totalFund - ifnull(total_fund_before,0)))),0)
         from follow_agent a
         left join (
         select * from ${assistDataBase}.agent where del_status !=-1
