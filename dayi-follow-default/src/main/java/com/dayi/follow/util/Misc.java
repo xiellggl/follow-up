@@ -1,5 +1,6 @@
 package com.dayi.follow.util;
 
+import com.dayi.common.util.BigDecimals;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -209,25 +210,32 @@ public class Misc {
     }
 
     /** 格式化金额：显示前 Num 位和小数点位，其余用*标识 */
-    public static String parseMoney(Double money, int showNum){
+    public static String parseMoney(Double money, int showNum) {
         String r = "";
-        if(money == null)  return r;
+        if (money == null) return r;
         // String s = BigDecimal.valueOf(money).stripTrailingZeros().toPlainString();
+
+        if (money.compareTo(0.0) == -1) {//是负数
+            showNum++;
+        }
+
         String s = new DecimalFormat("0.00").format(money);
         int pot = -1;
-        for(int i = 0; i < s.length(); i++){
+        for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-            if(c == '.') { pot = i; }
-            if(pot != -1){ // 当存在小数时
-                if(i > (showNum - 1) && i < pot){
+            if (c == '.') {
+                pot = i;
+            }
+            if (pot != -1) { // 当存在小数时
+                if (i > (showNum - 1) && i < pot) {
                     r = r + "*";
-                }else{
+                } else {
                     r = r + c;
                 }
-            }else{ // 当不存在小数时
-                if(i > (showNum - 1)){
+            } else { // 当不存在小数时
+                if (i > (showNum - 1)) {
                     r = r + "*";
-                }else{
+                } else {
                     r = r + c;
                 }
             }
