@@ -150,7 +150,7 @@
                                         <td>${item.deptName}</td>
                                         <td>${item.agentNum}</td>
                                         <td class="default_con">
-                                                ${item.hisMaxFundFm}
+                                                ${item.hisMaxFund}
                                                 <button type="button" class="btn btn-primary edit_btn" style="height: 20px;line-height: 2px;float: right;">编辑</button>
                                         </td>
                                         <td class="edit_con" style="display: none">
