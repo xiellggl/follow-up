@@ -21,21 +21,19 @@
     <select id="getMakerManageFund" parameterType="map" resultType="java.math.BigDecimal">
         SELECT ifnull(sum(c.useable + c.frozen + c.out_frozen +  0.8*c.cargo_interest+c.cargo_interest_puchas),0)manageFund
         from ${assistDataBase}.agent a
-        left join (
+        right join (
         SELECT id from ${assistDataBase}.organization where org_type in (4,5) and status=1 and del_status!=-1
         )b on a.org_id = b.id
         left join (
         SELECT * from ${assistDataBase}.finance_account  WHERE create_date &lt; #{endDate}
         )c on c.id =a.account_id
         where a.del_status != -1
-
-
     </select>
 
     <select id="getMakerInCash" parameterType="map" resultType="java.math.BigDecimal">
         SELECT ifnull(sum(c.inAccrual),0)
         from ${assistDataBase}.agent a
-        left join (
+        right join (
         SELECT id from ${assistDataBase}.organization where org_type in (4,5) and status=1 and del_status!=-1
         )b on a.org_id = b.id
         LEFT JOIN (
@@ -49,7 +47,7 @@
     <select id="getMakerOutCash" parameterType="map" resultType="java.math.BigDecimal">
         SELECT ifnull(sum(c.outAccrual),0)
         from ${assistDataBase}.agent a
-        left join (
+        right join (
         SELECT id from ${assistDataBase}.organization where org_type in (4,5) and status=1 and del_status!=-1
         )b on a.org_id = b.id
         LEFT JOIN (
