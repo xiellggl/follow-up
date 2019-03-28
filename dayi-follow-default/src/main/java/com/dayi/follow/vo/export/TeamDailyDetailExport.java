@@ -36,15 +36,15 @@ public class TeamDailyDetailExport extends AbstractExcel<ReportVo> {
         // 今日新开户数
         column3.setValue(vo.getOpenAccountNum());
         // 网银转入总额
-        column5.setValue(vo.getInCashFm());
+        column4.setValue(vo.getInCashFm());
         // 转出到卡总额
-        column6.setValue(vo.getOutCashFm());
+        column5.setValue(vo.getOutCashFm());
         // 管理资产规模
-        column7.setValue(vo.getManageFundFm());
+        column6.setValue(vo.getManageFundFm());
         // 资产规模净增
-        column8.setValue(vo.getManageGrowthFundFm());
+        column7.setValue(vo.getManageGrowthFundFm());
         //创客管理资产规模
-        column4.setValue(vo.getMakerFundFm());
+        column8.setValue(vo.getMakerFundFm());
     }
 }
 
