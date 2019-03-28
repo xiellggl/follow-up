@@ -94,8 +94,8 @@
                                         <td>${item.inCashFm}</td>
                                         <td>${item.outCashFm}</td>
                                         <c:choose>
-                                            <c:when test="${fn:startsWith(item.manageFundFm, '-')}">
-                                                <td class="hidden-xs">${fn:replace(item.manageFundFm, '-', '')}</td>
+                                            <c:when test="${item.manageFund < 0 }">
+                                                <td class="hidden-xs">0.00</td>
                                             </c:when>
                                             <c:otherwise>
                                                 <td class="hidden-xs">${item.manageFundFm}</td>
