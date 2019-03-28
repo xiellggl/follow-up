@@ -71,7 +71,7 @@
                                 <th>今日出金</th>
                                 <th>
                                     今日净增
-                                    <a href="#" data-toggle="tooltip" title="今日入金 - 今日出金，可为负数">
+                                    <a href="#" data-toggle="tooltip" title="今日入金 - 今日出金">
                                         <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
                                     </a>
                                 </th>
@@ -83,7 +83,7 @@
                                 </th>
                                 <th>
                                     资产管理规模净值
-                                    <a href="#" data-toggle="tooltip" title="环比上月资产规模，当前管理资产规模 - 上月资产规模">
+                                    <a href="#" data-toggle="tooltip" title="环比上一天，当前管理资产规模 - 上一天的资产规模">
                                         <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
                                     </a>
                                 </th>
