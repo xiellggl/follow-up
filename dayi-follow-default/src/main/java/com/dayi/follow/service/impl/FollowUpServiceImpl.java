@@ -283,7 +283,7 @@ public class FollowUpServiceImpl implements FollowUpService {
         FollowAgent followAgent = followAgentMapper.getFollowAgentByAgentId(agentId);
         if (followAgent == null) return BizResult.FAIL;
 
-        if (newValue.compareTo(BigDecimal.ZERO) == 1) {
+        if (newValue.compareTo(BigDecimal.ZERO) == 1 || newValue.compareTo(BigDecimal.ZERO) == 0) {
             followAgent.setTotalFundBefore(newValue);
             followAgentMapper.updateAll(followAgent);
             return BizResult.SUCCESS;

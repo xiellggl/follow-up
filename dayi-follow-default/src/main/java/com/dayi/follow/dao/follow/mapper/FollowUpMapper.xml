@@ -183,14 +183,17 @@
     </select>
 
     <select id="getManageFund" parameterType="map" resultType="java.math.BigDecimal">
-        SELECT ifnull(sum(d.useable + d.frozen + d.out_frozen +  0.8*d.cargo_interest+d.cargo_interest_puchas - total_fund_before),0) from follow_agent a
+        SELECT sum(if((d.totalFund &lt; ifnull(total_fund_before,0)),0,(d.totalFund - total_fund_before)))
+        from follow_agent a
         left join (
         select * from ${assistDataBase}.agent where del_status !=-1
         )b on b.id =a.agent_id
         left join (
         select * from follow_up where identity!=0 and disable!=0
         )c on c.id =a.follow_id
-        left join ${assistDataBase}.finance_account d on d.id =b.account_id
+        left join (
+        SELECT id,ifnull((useable + frozen + out_frozen +  0.8*cargo_interest+cargo_interest_puchas),0)totalFund from ${assistDataBase}.finance_account
+        )d on d.id =b.account_id
         where b.id is not NULL and c.disable!=0
 
         <if test="null!=followId and ''!=followId">
