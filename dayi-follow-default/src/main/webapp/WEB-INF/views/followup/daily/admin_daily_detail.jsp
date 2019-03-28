@@ -59,7 +59,7 @@
                                     </th>
                                     <th>
                                         创客管理资产规模
-                                        <a href="#" data-toggle="tooltip" title="创客名下所有代理商的协议资金之和">
+                                        <a href="#" data-toggle="tooltip" title="创客名下所有代理商的协议资金（代理中）之和">
                                             <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
                                         </a>
                                     </th>

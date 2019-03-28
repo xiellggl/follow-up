@@ -79,7 +79,7 @@
                                 </th>
                                 <th>
                                     资产管理规模净值
-                                    <a href="#" data-toggle="tooltip" title="环比上月资产规模，当前管理资产规模 - 上月资产规模">
+                                    <a href="#" data-toggle="tooltip" title="环比上周资产规模，当前管理资产规模 - 上周资产规模">
                                         <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
                                     </a>
                                 </th>
