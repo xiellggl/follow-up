@@ -23,7 +23,7 @@
         select date(create_time)date,fd.name deptName,sum(open_account_num)openAccountNum,
                 sum(maker_fund)makerFund,sum(in_cash)inCash,sum(in_cash_num)inCashNum,
                 sum(out_cash)outCash,sum(out_cash_num)outCashNum,sum(manage_fund)manageFund,
-                sum(manage_growth_fund)growthFund
+                sum(manage_growth_fund)manageGrowthFund
         from follow_up_log
         left join (
               SELECT name,id from department
