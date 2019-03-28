@@ -93,7 +93,14 @@
                                         <%--出金总额--%>
                                         <td class="hidden-xs">${item.outCashFm}</td>
                                         <%--管理资产规模--%>
-                                        <td class="hidden-xs">${item.manageFundFm}</td>
+                                        <c:choose>
+                                            <c:when test="${fn:startsWith(item.manageFundFm, '-')}">
+                                                <td class="hidden-xs">${fn:replace(item.manageFundFm, '-', '')}</td>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <td class="hidden-xs">${item.manageFundFm}</td>
+                                            </c:otherwise>
+                                        </c:choose>
                                         <%--管理资产规模净值--%>
                                         <td>${item.manageGrowthFundFm}</td>
                                         <%--创客管理资金规模--%>
