@@ -413,12 +413,7 @@ public class UserController extends BaseController {
                 followUpLog.setMakerGrowthFund(makerFund.subtract(log.getMakerFund()));
             }
             if (followUp.getHisMaxFund() != null) {
-                BigDecimal subtract = fund.subtract(followUp.getHisMaxFund());
-                if (subtract.compareTo(BigDecimal.ZERO) == -1 || subtract.compareTo(BigDecimal.ZERO) == 0) {
-                    followUpLog.setManageGrowthFund(BigDecimal.ZERO);
-                } else {
-                    followUpLog.setManageGrowthFund(subtract);
-                }
+                followUpLog.setManageGrowthFund(fund.subtract(followUp.getHisMaxFund()));
             } else {
                 followUpLog.setManageGrowthFund(fund);
             }
