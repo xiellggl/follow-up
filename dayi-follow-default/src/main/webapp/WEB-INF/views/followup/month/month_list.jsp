@@ -93,7 +93,6 @@
                                         <td>${item.openAccountNum}</td>
                                         <td>${item.inCashFm}</td>
                                         <td>${item.outCashFm}</td>
-                                        <%--<td>${item.manageFundFm}</td>--%>
                                         <c:choose>
                                             <c:when test="${fn:startsWith(item.manageFundFm, '-')}">
                                                 <td class="hidden-xs">${fn:replace(item.manageFundFm, '-', '')}</td>
