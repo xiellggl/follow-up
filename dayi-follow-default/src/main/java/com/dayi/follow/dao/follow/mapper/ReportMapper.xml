@@ -48,7 +48,6 @@
         <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
             and a.create_time BETWEEN #{startDate} and #{endDate}
         </if>
-        ORDER  by a.create_time desc
     </select>
 
     <select id="sumByTime" parameterType="map" resultType="com.dayi.follow.vo.report.ReportVo">

@@ -88,9 +88,7 @@ public class ReportServiceImpl implements ReportService {
         String startDate = DateTime.parse(date).millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
         String endDate = DateTime.parse(date).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
 
-        page = reportMapper.findTeamDailyDetail(page, deptId, startDate, endDate);
-        return page;
-
+        return reportMapper.findTeamDailyDetail(page, deptId, startDate, endDate);
     }
 
     @Override
@@ -101,9 +99,7 @@ public class ReportServiceImpl implements ReportService {
         String startDate = DateTime.parse(date).millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
         String endDate = DateTime.parse(date).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
 
-        list = reportMapper.findTeamDailyDetail(deptId, startDate, endDate);
-        return list;
-
+        return reportMapper.findTeamDailyDetail(deptId, startDate, endDate);
     }
 
     //个人周报
