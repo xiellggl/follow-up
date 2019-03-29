@@ -53,8 +53,7 @@
     <select id="sumByTime" parameterType="map" resultType="com.dayi.follow.vo.report.ReportVo">
         SELECT dept_id,b.name deptName,c.name ,follow_id,
               sum(open_account_num)openAccountNum,sum(in_cash)inCash,
-              sum(out_cash)outCash,sum(maker_fund)makerFund,
-              sum(manage_fund)manageFund,sum(manage_growth_fund)manageGrowthFund
+              sum(out_cash)outCash,maker_fund,manage_fund,manage_growth_fund
         from follow_up_log a
         left join (
         SELECT id,name from department
@@ -66,12 +65,13 @@
         <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
             and a.create_time BETWEEN #{startDate} and #{endDate}
         </if>
+        order by create_time desc
     </select>
 
     <select id="findTeamByTime" parameterType="map" resultType="com.dayi.follow.vo.report.ReportVo">
-        select follow_id,dept_id,c.name ,sum(open_account_num)openAccountNum,sum(maker_fund)makerFund,
+        select follow_id,dept_id,c.name ,sum(open_account_num)openAccountNum,
                 sum(in_cash)inCash,sum(in_cash_num)inCashNum,sum(out_cash)outCash,sum(out_cash_num)outCashNum,
-                sum(manage_fund)manageFund,sum(manage_growth_fund)manageGrowthFund
+                manage_fund,manage_growth_fund,maker_fund
         from follow_up_log a
         left join (
             SELECT name,id from department
@@ -83,10 +83,10 @@
         <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
             and create_time BETWEEN #{startDate} and #{endDate}
         </if>
-        group by follow_id  ORDER BY dept_id asc, follow_id asc
+        group by follow_id  ORDER BY dept_id asc, follow_id asc, create_time desc
     </select>
 
-    <select id="findAdminDetailTotal" parameterType="map" resultType="com.dayi.follow.vo.report.AdminDetailVo">
+    <select id="findAdminDailyTotal" parameterType="map" resultType="com.dayi.follow.vo.report.AdminDetailVo">
         SELECT b.id deptId,date(create_time)date,b.name deptName,dept_id ,sum(open_account_num)openAccountNum,ifnull(sum(sign_org_num),0)signOrgNum,sum(in_cash)inCash,sum(out_cash)outCash,
                sum(manage_fund)manageFund,sum(manage_growth_fund)manageGrowthFund,sum(maker_fund)makerFund
         from follow_up_log  a
@@ -98,10 +98,46 @@
         GROUP by b.id
     </select>
 
+    <select id="findAdminDailyPer" parameterType="map" resultType="com.dayi.follow.vo.report.ReportVo">
+        SELECT dept_id,date(create_time)date,c.name,open_account_num,ifnull(sign_org_num,0)signOrgNum,in_cash,out_cash,
+        manage_fund,manage_growth_fund,maker_fund
+        from follow_up_log  a
+        left join(
+        SELECT name,id from department
+        )b on b.id=a.dept_id
+        left join (
+        SELECT name,id from follow_up
+        )c on c.id =a.follow_id
+        WHERE 1=1
+        and a.create_time BETWEEN #{startDate} and #{endDate}
+        and b.id=#{deptId}
+    </select>
+
+    <select id="findAdminDetailTotal" parameterType="map" resultType="com.dayi.follow.vo.report.AdminDetailVo">
+        SELECT dept_id,date,deptName,sum(openAccountNum)openAccountNum,sum(signOrgNum)signOrgNum,
+              sum(inCash)inCash,sum(outCash)outCash,sum(manage_fund)manageFund,
+              sum(manage_growth_fund)manageGrowthFund,sum(maker_fund)makerFund
+        from (
+                SELECT dept_id,b.name deptName,date(create_time)date,sum(open_account_num)openAccountNum,sum(ifnull(sign_org_num,0))signOrgNum,
+                       sum(in_cash)inCash,sum(out_cash)outCash,manage_fund,manage_growth_fund,maker_fund
+                from follow_up_log  a
+                left join(
+                    SELECT name,id from department
+                )b on b.id=a.dept_id
+                left join (
+                    SELECT name,id from follow_up
+                )c on c.id =a.follow_id
+                WHERE 1=1
+                and a.create_time BETWEEN #{startDate} and #{endDate}
+                GROUP BY c.id order by create_time desc
+        )t
+        GROUP by dept_id order by date desc
+    </select>
+
 
     <select id="findAdminDetailPer" parameterType="map" resultType="com.dayi.follow.vo.report.ReportVo">
-        SELECT dept_id,date(create_time)date,c.name,open_account_num,ifnull(sign_org_num,0)signOrgNum,in_cash,out_cash,
-               manage_fund,manage_growth_fund,maker_fund
+        SELECT dept_id,date(create_time)date,c.name,sum(open_account_num)openAccountNum,sum(ifnull(sign_org_num,0))signOrgNum,
+               sum(in_cash)inCash,sum(out_cash)outCash,manage_fund,manage_growth_fund,maker_fund
         from follow_up_log  a
         left join(
             SELECT name,id from department
@@ -112,6 +148,7 @@
         WHERE 1=1
         and a.create_time BETWEEN #{startDate} and #{endDate}
         and b.id=#{deptId}
+        GROUP BY c.id order by create_time desc
     </select>
 
 </mapper>

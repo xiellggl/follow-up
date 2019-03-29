@@ -10,8 +10,7 @@
     </select>
 
     <select id="sumByTime" resultType="com.dayi.follow.vo.report.SourceReportVo" parameterType="map">
-        select type,sum(in_cash)inCash,sum(out_cash)outCash,sum(growth_fund)growthFund,
-              sum(manage_fund)manageFund,sum(manage_growth_fund)manageGrowthFund
+        select type,sum(in_cash)inCash,sum(out_cash)outCash,sum(growth_fund)growthFund
         from source_report
         where create_time between #{startDate}
         and #{endDate} and type =#{type}

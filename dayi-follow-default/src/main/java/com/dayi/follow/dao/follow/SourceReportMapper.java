@@ -18,6 +18,10 @@ public interface SourceReportMapper extends BaseMapper<SourceReport> {
             " and #{endDate} and type =#{type} ")
     SourceReport getByTime(@Param("type") int type,@Param("startDate") String startDate,@Param("endDate") String endDate);
 
+    @Select(" select * from source_report where create_time between #{startDate} " +
+            " and #{endDate} and type =#{type} order by create_time desc limit 1")
+    SourceReport getRecentByTime(@Param("type") int type,@Param("startDate") String startDate,@Param("endDate") String endDate);
+
     SourceReportVo sumByTime(@Param("type") int type, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
     List<SourceReportVo> findByTime(@Param("type") Integer type, @Param("startDate") String startDate, @Param("endDate") String endDate);

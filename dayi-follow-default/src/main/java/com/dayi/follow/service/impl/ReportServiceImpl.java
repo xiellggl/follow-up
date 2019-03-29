@@ -173,10 +173,10 @@ public class ReportServiceImpl implements ReportService {
         String startDate = DateTime.parse(date).millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
         String endDate = DateTime.parse(date).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
 
-        List<AdminDetailVo> totalList = reportMapper.findAdminDetailTotal(startDate, endDate);
+        List<AdminDetailVo> totalList = reportMapper.findAdminDailyTotal(startDate, endDate);
 
         for (AdminDetailVo vo : totalList) {
-            List perList = reportMapper.findAdminDetailPer(vo.getDeptId(), startDate, endDate);
+            List perList = reportMapper.findAdminDailyPer(vo.getDeptId(), startDate, endDate);
             vo.setpList(perList);
         }
 
@@ -202,8 +202,28 @@ public class ReportServiceImpl implements ReportService {
         WeekVo weekVo = new WeekVo(betweenDate);
 
         SourceReportVo zg = sourceReportMapper.sumByTime(SourceReport.TYPE_ZG.getId(), weekVo.getStartDateHMS(), weekVo.getEndDateHMS());
+        //获取最新的管理资产规模和资产规模净增
+        SourceReport zgRT = sourceReportMapper.getRecentByTime(SourceReport.TYPE_ZG.getId(), weekVo.getStartDateHMS(), weekVo.getEndDateHMS());
+        if (zg != null && zgRT != null) {
+            zg.setManageFund(zgRT.getManageFund());
+            zg.setManageGrowthFund(zgRT.getManageGrowthFund());
+        }
+
         SourceReportVo maker = sourceReportMapper.sumByTime(SourceReport.TYPE_MAKER.getId(), weekVo.getStartDateHMS(), weekVo.getEndDateHMS());
+        SourceReport makerRT = sourceReportMapper.getRecentByTime(SourceReport.TYPE_MAKER.getId(), weekVo.getStartDateHMS(), weekVo.getEndDateHMS());
+
+        if (maker != null && makerRT != null) {
+            maker.setManageFund(makerRT.getManageFund());
+            maker.setManageGrowthFund(makerRT.getManageGrowthFund());
+        }
+
         SourceReportVo other = sourceReportMapper.sumByTime(SourceReport.TYPE_OTHER.getId(), weekVo.getStartDateHMS(), weekVo.getEndDateHMS());
+        SourceReport otherRT = sourceReportMapper.getRecentByTime(SourceReport.TYPE_OTHER.getId(), weekVo.getStartDateHMS(), weekVo.getEndDateHMS());
+
+        if (other != null && otherRT != null) {
+            other.setManageFund(otherRT.getManageFund());
+            other.setManageGrowthFund(otherRT.getManageGrowthFund());
+        }
 
         weekVo.addSRItem(zg);
         weekVo.addSRItem(maker);
@@ -245,8 +265,25 @@ public class ReportServiceImpl implements ReportService {
         MonthVo monthVo = new MonthVo(month);
 
         SourceReportVo zg = sourceReportMapper.sumByTime(SourceReport.TYPE_ZG.getId(), monthVo.getMonthStartHMS(), monthVo.getMonthEndHMS());
+        SourceReport zgRT = sourceReportMapper.getRecentByTime(SourceReport.TYPE_ZG.getId(), monthVo.getMonthStartHMS(), monthVo.getMonthEndHMS());
+        if (zg != null && zgRT != null) {
+            zg.setManageFund(zgRT.getManageFund());
+            zg.setManageGrowthFund(zgRT.getManageGrowthFund());
+        }
+
         SourceReportVo maker = sourceReportMapper.sumByTime(SourceReport.TYPE_MAKER.getId(), monthVo.getMonthStartHMS(), monthVo.getMonthEndHMS());
+        SourceReport makerRT = sourceReportMapper.getRecentByTime(SourceReport.TYPE_MAKER.getId(), monthVo.getMonthStartHMS(), monthVo.getMonthEndHMS());
+        if (maker != null && makerRT != null) {
+            maker.setManageFund(makerRT.getManageFund());
+            maker.setManageGrowthFund(makerRT.getManageGrowthFund());
+        }
+
         SourceReportVo other = sourceReportMapper.sumByTime(SourceReport.TYPE_OTHER.getId(), monthVo.getMonthStartHMS(), monthVo.getMonthEndHMS());
+        SourceReport otherRT = sourceReportMapper.getRecentByTime(SourceReport.TYPE_OTHER.getId(), monthVo.getMonthStartHMS(), monthVo.getMonthEndHMS());
+        if (other != null && otherRT != null) {
+            other.setManageFund(otherRT.getManageFund());
+            other.setManageGrowthFund(otherRT.getManageGrowthFund());
+        }
 
         monthVo.addSRItem(zg);
         monthVo.addSRItem(maker);

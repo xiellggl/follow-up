@@ -27,7 +27,11 @@ public interface ReportMapper extends BaseMapper<BaseVo> {
     List<ReportVo> findTeamByTime(@Param("deptId") String deptId, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
     //管理员日报详情
-    List findAdminDetailTotal(@Param("startDate") String startDate, @Param("endDate") String endDate);
+    List findAdminDailyTotal(@Param("startDate") String startDate, @Param("endDate") String endDate);
     //管理员日报详情
+    List findAdminDailyPer(@Param("deptId") String deptId,@Param("startDate") String startDate, @Param("endDate") String endDate);
+
+    List findAdminDetailTotal(@Param("startDate") String startDate, @Param("endDate") String endDate);
+
     List findAdminDetailPer(@Param("deptId") String deptId,@Param("startDate") String startDate, @Param("endDate") String endDate);
 }
