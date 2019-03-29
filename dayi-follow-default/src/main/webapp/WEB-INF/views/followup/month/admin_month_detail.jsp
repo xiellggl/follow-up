@@ -47,7 +47,6 @@
                             <thead>
                             <tr>
                                 <th></th>
-                                <th>日期</th>
                                 <th>团队名称</th>
                                 <th>本月新开户</th>
                                 <th>新签创客</th>
@@ -82,7 +81,6 @@
                                                 <i class="fa fa-plus blue"></i>
                                             </span>
                                         </td>
-                                        <td>${item.date}</td>
                                         <td>${item.deptName}</td>
                                         <td>${item.openAccountNum}</td>
                                         <td>${item.signOrgNum}</td>
@@ -95,7 +93,6 @@
                                     <c:forEach items="${item.pList}" var="row">
                                         <tr class="${row.date}-${row.deptId}" style="display: none;">
                                             <td></td>
-                                            <td>${row.date}</td>
                                             <td>${row.name}</td>
                                             <td>${row.openAccountNum}</td>
                                             <td>${row.signOrgNum}</td>

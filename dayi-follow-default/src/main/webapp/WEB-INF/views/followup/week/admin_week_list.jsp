@@ -73,13 +73,13 @@
                                 </th>
                                 <th>
                                     管理资产规模
-                                    <a href="#" data-toggle="tooltip" title="名下所有代理商的总货款之和（从分配时算起）">
+                                    <a href="#" data-toggle="tooltip" title="名下所有代理商的总货款之和 （从分配时算起）">
                                         <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
                                     </a>
                                 </th>
                                 <th>
                                     资产管理规模净值
-                                    <a href="#" data-toggle="tooltip" title="环比上周资产规模，当前管理资产规模 - 上周资产规模">
+                                    <a href="#" data-toggle="tooltip" title="环比上一个月份，当前管理资产规模 - 上个月的资产规模">
                                         <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
                                     </a>
                                 </th>
