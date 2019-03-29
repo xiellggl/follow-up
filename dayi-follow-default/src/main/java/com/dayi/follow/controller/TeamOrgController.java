@@ -4,6 +4,7 @@ import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.conf.Constants;
 import com.dayi.follow.enums.OrgTypeEnum;
 import com.dayi.follow.model.follow.Organization;
+import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.FollowOrgService;
 import com.dayi.follow.service.FollowUpService;
 import com.dayi.follow.service.OrgService;
@@ -11,6 +12,7 @@ import com.dayi.follow.util.PageUtil;
 import com.dayi.follow.util.StringUtil;
 import com.dayi.follow.vo.LoginVo;
 import com.dayi.follow.vo.SearchVo;
+import com.dayi.follow.vo.agent.DetailVo;
 import com.dayi.mybatis.common.util.Misc;
 import com.dayi.mybatis.support.Page;
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,6 +39,8 @@ public class TeamOrgController {
     FollowUpService followUpService;
     @Resource
     OrgService orgService;
+    @Resource
+    DeptService deptService;
 
     /**
      * 我的客户-创客列表
@@ -80,7 +85,13 @@ public class TeamOrgController {
 
         String followId = followOrgService.getFollowIdByOrgId(orgId);
 
-        List<String> followIds = followUpService.findIdsByDeptId(currVo.getDeptId());
+        List<String> followIds = new ArrayList<>();
+        List<String> subDeptIds = deptService.getSubDeptIds(currVo.getDeptId());
+        subDeptIds.add(currVo.getDeptId());
+        for (String subDeptId : subDeptIds) {
+            followIds.addAll(followUpService.findIdsByDeptId(subDeptId));
+        }
+        followIds.remove(currVo.getId());
 
         page.setPageSize(Constants.CONTACT_PAGE_SIZE);
 

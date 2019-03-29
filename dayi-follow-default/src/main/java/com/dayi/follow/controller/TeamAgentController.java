@@ -8,6 +8,7 @@ import com.dayi.follow.enums.BankTypeEnum;
 import com.dayi.follow.enums.ContactTypeEnum;
 import com.dayi.follow.model.follow.FollowUp;
 import com.dayi.follow.service.AgentService;
+import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.FollowAgentService;
 import com.dayi.follow.service.FollowUpService;
 import com.dayi.follow.util.CollectionUtil;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,6 +44,8 @@ public class TeamAgentController {
     AgentService agentService;
     @Resource
     FollowAgentService followAgentService;
+    @Resource
+    DeptService deptService;
 
     /**
      * 团队代理商列表
@@ -90,9 +94,15 @@ public class TeamAgentController {
 
         String followId = followAgentService.getFollowIdByAgentId(agentId);
 
-        List<String> followIds = followUpService.findIdsByDeptId(currVo.getDeptId());
+        List<String> followIds = new ArrayList<>();
+        List<String> subDeptIds = deptService.getSubDeptIds(currVo.getDeptId());
+        subDeptIds.add(currVo.getDeptId());
+        for (String subDeptId : subDeptIds) {
+            followIds.addAll(followUpService.findIdsByDeptId(subDeptId));
+        }
+        followIds.remove(currVo.getId());
 
-        DetailVo detailVo = new DetailVo();
+        DetailVo detailVo;
 
         if (followIds.contains(followId)) {//客户属于当前登陆者
             detailVo = followAgentService.getDetail(agentId);//代理商明细
@@ -124,7 +134,7 @@ public class TeamAgentController {
             followUp = followUpService.get(followId);
         }
 
-        page = followUpService.findTeamAssignSelect(page, followUpStr, currVo.getDeptId(),followId);
+        page = followUpService.findTeamAssignSelect(page, followUpStr, currVo.getDeptId(), followId);
 
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
         model.addAttribute("followUp", followUp);
@@ -149,7 +159,13 @@ public class TeamAgentController {
 
         String followId = followAgentService.getFollowIdByAgentId(agentId);
 
-        List<String> followIds = followUpService.findIdsByDeptId(currVo.getDeptId());
+        List<String> followIds = new ArrayList<>();
+        List<String> subDeptIds = deptService.getSubDeptIds(currVo.getDeptId());
+        subDeptIds.add(currVo.getDeptId());
+        for (String subDeptId : subDeptIds) {
+            followIds.addAll(followUpService.findIdsByDeptId(subDeptId));
+        }
+        followIds.remove(currVo.getId());
 
         page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
 
@@ -180,7 +196,13 @@ public class TeamAgentController {
 
         String followId = followAgentService.getFollowIdByAgentId(agentId);
 
-        List<String> followIds = followUpService.findIdsByDeptId(currVo.getDeptId());
+        List<String> followIds = new ArrayList<>();
+        List<String> subDeptIds = deptService.getSubDeptIds(currVo.getDeptId());
+        subDeptIds.add(currVo.getDeptId());
+        for (String subDeptId : subDeptIds) {
+            followIds.addAll(followUpService.findIdsByDeptId(subDeptId));
+        }
+        followIds.remove(currVo.getId());
 
         page.setPageSize(Constants.CONTACT_PAGE_SIZE);
 
