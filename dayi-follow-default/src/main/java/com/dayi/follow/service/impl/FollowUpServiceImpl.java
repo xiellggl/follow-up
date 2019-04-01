@@ -98,10 +98,12 @@ public class FollowUpServiceImpl implements FollowUpService {
             FollowUpLog log = followUpLogMapper.getLog(vo.getId(), dateStart, dateEnd);
             if (log != null && log.getManageFund() != null) {
                 FollowUp followUp = followUpMapper.get(vo.getId());
-                if (followUp != null && followUp.getHisMaxFund() != null && log.getManageFund().compareTo(followUp.getHisMaxFund()) == 1) {
-                    vo.setHisMaxFund(log.getManageFund());
-                    followUp.setHisMaxFund(log.getManageFund());
-                    followUpMapper.updateAll(followUp);
+                if (followUp != null ) {
+                    if (followUp.getHisMaxFund() == null || log.getManageFund().compareTo(followUp.getHisMaxFund()) == 1) {
+                        vo.setHisMaxFund(log.getManageFund());
+                        followUp.setHisMaxFund(log.getManageFund());
+                        followUpMapper.updateAll(followUp);
+                    }
                 }
             }
         }
