@@ -72,18 +72,20 @@
         select follow_id,dept_id,c.name ,sum(open_account_num)openAccountNum,
                 sum(in_cash)inCash,sum(in_cash_num)inCashNum,sum(out_cash)outCash,sum(out_cash_num)outCashNum,
                 manage_fund,manage_growth_fund,maker_fund
-        from follow_up_log a
+        from (
+            SELECT * FROM follow_up_log  WHERE dept_id= #{deptId}
+            <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
+                and create_time BETWEEN #{startDate} and #{endDate}
+            </if>
+            ORDER BY create_time DESC
+        ) a
         left join (
             SELECT name,id from department
         )b on b.id=a.dept_id
         left join (
             SELECT id,name from follow_up
         )c on c.id =a.follow_id
-        WHERE dept_id= #{deptId}
-        <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
-            and create_time BETWEEN #{startDate} and #{endDate}
-        </if>
-        group by follow_id  ORDER BY dept_id asc, follow_id asc, create_time desc
+        group by follow_id
     </select>
 
     <select id="findAdminDailyTotal" parameterType="map" resultType="com.dayi.follow.vo.report.AdminDetailVo">
