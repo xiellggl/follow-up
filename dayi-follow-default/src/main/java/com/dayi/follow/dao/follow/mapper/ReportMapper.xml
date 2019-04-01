@@ -54,18 +54,19 @@
         SELECT dept_id,b.name deptName,c.name ,follow_id,
               sum(open_account_num)openAccountNum,sum(in_cash)inCash,
               sum(out_cash)outCash,maker_fund,manage_fund,manage_growth_fund
-        from follow_up_log a
+        from (
+        SELECT * FROM follow_up_log  WHERE follow_id =#{followId}
+        <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
+            and create_time BETWEEN #{startDate} and #{endDate}
+        </if>
+        ORDER BY create_time DESC
+        ) a
         left join (
         SELECT id,name from department
         )b on b.id =a.dept_id
         left join(
             SELECT id,name from follow_up
         )c on c.id=a.follow_id
-        where a.follow_id =#{followId}
-        <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
-            and a.create_time BETWEEN #{startDate} and #{endDate}
-        </if>
-        order by create_time desc
     </select>
 
     <select id="findTeamByTime" parameterType="map" resultType="com.dayi.follow.vo.report.ReportVo">

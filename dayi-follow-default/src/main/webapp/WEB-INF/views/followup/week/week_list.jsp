@@ -101,7 +101,7 @@
                                                 <td class="hidden-xs">${item.manageFundFm}</td>
                                             </c:otherwise>
                                         </c:choose>
-                                        <td>${item.growthFundFm}</td>
+                                        <td>${item.manageGrowthFundFm}</td>
                                         <td>${item.makerFundFm}</td>
                                     </tr>
                                 </c:forEach>

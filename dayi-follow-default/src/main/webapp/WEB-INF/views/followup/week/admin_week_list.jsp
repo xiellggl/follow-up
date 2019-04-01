@@ -100,8 +100,8 @@
                                         <td>${item.inCash}</td>
                                         <td>${item.outCash}</td>
                                         <td>${item.growthFund}</td>
+                                        <td>${item.manageFund}</td>
                                         <td>${item.manageGrowthFund}</td>
-                                        <td>${item.growthFund}</td>
                                         <td>
                                             <c:if test="${item.type eq 1}">
                                             <a href="./week/detail?date=${weekVo.startDate} - ${weekVo.endDate}">
