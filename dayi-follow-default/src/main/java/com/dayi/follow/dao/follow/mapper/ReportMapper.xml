@@ -123,7 +123,13 @@
         from (
                 SELECT dept_id,b.name deptName,date(create_time)date,sum(open_account_num)openAccountNum,sum(ifnull(sign_org_num,0))signOrgNum,
                        sum(in_cash)inCash,sum(out_cash)outCash,manage_fund,manage_growth_fund,maker_fund
-                from follow_up_log  a
+                from (
+                        SELECT * FROM follow_up_log where 1=1
+                        <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
+                            and create_time BETWEEN #{startDate} and #{endDate}
+                        </if>
+                        ORDER BY create_time DESC
+                ) a
                 left join(
                     SELECT name,id from department
                 )b on b.id=a.dept_id
@@ -131,8 +137,7 @@
                     SELECT name,id from follow_up
                 )c on c.id =a.follow_id
                 WHERE 1=1
-                and a.create_time BETWEEN #{startDate} and #{endDate}
-                GROUP BY c.id order by create_time desc
+                GROUP BY c.id
         )t
         GROUP by dept_id order by date desc
     </select>
@@ -141,17 +146,20 @@
     <select id="findAdminDetailPer" parameterType="map" resultType="com.dayi.follow.vo.report.ReportVo">
         SELECT dept_id,date(create_time)date,c.name,sum(open_account_num)openAccountNum,sum(ifnull(sign_org_num,0))signOrgNum,
                sum(in_cash)inCash,sum(out_cash)outCash,manage_fund,manage_growth_fund,maker_fund
-        from follow_up_log  a
+        from (
+            SELECT * FROM follow_up_log  WHERE dept_id= #{deptId}
+            <if test="''!=startDate and null!=startDate and ''!=endDate and null!=endDate">
+                and create_time BETWEEN #{startDate} and #{endDate}
+            </if>
+            ORDER BY create_time DESC
+        ) a
         left join(
             SELECT name,id from department
         )b on b.id=a.dept_id
         left join (
             SELECT name,id from follow_up
         )c on c.id =a.follow_id
-        WHERE 1=1
-        and a.create_time BETWEEN #{startDate} and #{endDate}
-        and b.id=#{deptId}
-        GROUP BY c.id order by create_time desc
+        GROUP BY c.id
     </select>
 
 </mapper>
