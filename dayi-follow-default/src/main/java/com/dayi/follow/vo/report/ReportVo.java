@@ -255,8 +255,10 @@ public class ReportVo {
                 openNum = openNum + item.getOpenAccountNum();
                 inCash = inCash.add(item.getInCash());
                 outCash = outCash.add(item.getOutCash());
-                manageFund = manageFund.add(item.getManageFund());
-                manageGrowthFund = manageGrowthFund.add(item.getManageGrowthFund());
+
+                manageFund = manageFund.add(item.getManageFund() == null ? BigDecimal.ZERO : item.getManageFund());
+
+                manageGrowthFund = manageGrowthFund.add(item.getManageGrowthFund() == null ? BigDecimal.ZERO : item.getManageGrowthFund());
                 makerFund = makerFund.add(item.getMakerFund());
             }
 
