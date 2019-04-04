@@ -269,7 +269,7 @@ public class ReportVo {
             sr.setOutCash(outCash);
             sr.setManageFund(manageFund);
             sr.setManageGrowthFund(manageGrowthFund);
-            sr.setGrowthFund(makerFund);
+            sr.setMakerFund(makerFund);
             newList.add(sr);
         }
         return newList;
