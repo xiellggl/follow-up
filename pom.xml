@@ -10,7 +10,7 @@
     <name>${project.artifactId}</name>
     <description>dayi 跟进人服务 </description>
     <packaging>pom</packaging>
-    <version>1.0.3-SNAPSHOT</version>
+    <version>1.0.2</version>
 
     <modules>
         <module>dayi-follow-api</module>
