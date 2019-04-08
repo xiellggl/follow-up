@@ -22,10 +22,16 @@
                         <c:when test="${user.department.cityServer==1}">
                             <input type="text" id="inviteCode"
                                    value="${financeHost}/reg?inviteCode=${user.department.cityInviteCode}&followCode=${user.inviteCode}">
+
+                            <input type="text" id="inviteCode"
+                                   value="${financeHost}/m?inviteCode=${user.department.cityInviteCode}&followCode=${user.inviteCode}">
                         </c:when>
                         <c:otherwise>
                             <input type="text" id="inviteCode"
                                    value="${financeHost}/reg?inviteCode=${user.inviteCode}">
+
+                            <input type="text" id="inviteCode"
+                                   value="${financeHost}/m?inviteCode=${user.inviteCode}">
                         </c:otherwise>
                     </c:choose>
                     <a href="javascript:;" id="copyLink" data-clipboard-target="#inviteCode">复制</a>
