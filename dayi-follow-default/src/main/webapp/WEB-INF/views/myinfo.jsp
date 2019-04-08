@@ -20,7 +20,6 @@
                     <c:choose>
                         <%--上级机构是城市服务商的--%>
                         <c:when test="${user.department.cityServer==1}">
-                            PC邀请链接：
                             <input type="text" id="inviteCode" style="width: 380px" readonly
                                    value="${financeHost}/reg?inviteCode=${user.department.cityInviteCode}&followCode=${user.inviteCode}">
                             <a href="javascript:;" class="copyLink" data-clipboard-target="#inviteCode">复制</a>
