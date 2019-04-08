@@ -672,7 +672,7 @@ define(function(require, exports, module) {
             exports.loadPageHTML("/user/myinfo",null,function (html) {
                 $modal.html(html).show(300);
                 require.async("clipboard",function () {
-                    var clipboard = new Clipboard("#copyLink");
+                    var clipboard = new Clipboard(".copyLink");
                     clipboard.on("success",function (e) {
                         exports.successMsg('<div class="msg_success">复制成功</div>');
                     });
