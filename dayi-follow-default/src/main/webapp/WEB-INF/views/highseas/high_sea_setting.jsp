@@ -75,7 +75,7 @@
 <%@include file="/inc/followup/script.jsp"%>
 <script charset="UTF-8" async="" src="/static/public/daterangepicker3/moment.min.js"></script>
 <script>
-    seajs.use(["common", "daterangepicker"], function (common) {
+    seajs.use(["common", "multiselect"], function (common) {
         //菜单高亮
         common.head();
 
@@ -85,7 +85,7 @@
             nonSelectedText: '已开通结算银行',
             allSelectedText:"全部选中",
             nSelectedText: '个选中',
-            buttonClass: 'btn btn-white',
+            buttonClass: 'btn btn-white'
         });
 
 
