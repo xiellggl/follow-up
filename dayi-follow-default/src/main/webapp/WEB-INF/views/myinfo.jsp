@@ -26,7 +26,7 @@
                             <br>
                             H5邀请链接：
                             <input type="text" id="inviteCode2" style="width: 380px;margin: 12px 10px 0 0" readonly
-                                   value="${financeHost}/m?inviteCode=${user.department.cityInviteCode}&followCode=${user.inviteCode}">
+                                   value="${financeHost}/m/?inviteCode=${user.department.cityInviteCode}&followCode=${user.inviteCode}">
                             <a href="javascript:;" class="copyLink" data-clipboard-target="#inviteCode2">复制</a>
                         </c:when>
                         <c:otherwise>
@@ -36,7 +36,7 @@
                             <br>
                             H5邀请链接：
                             <input type="text" id="inviteCode4" style="width: 380px;margin: 12px 10px 0 0" readonly
-                                   value="${financeHost}/m?inviteCode=${user.inviteCode}">
+                                   value="${financeHost}/m/?inviteCode=${user.inviteCode}">
                             <a href="javascript:;" class="copyLink" data-clipboard-target="#inviteCode4">复制</a>
                         </c:otherwise>
                     </c:choose>
