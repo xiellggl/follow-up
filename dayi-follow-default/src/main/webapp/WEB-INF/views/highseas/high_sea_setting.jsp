@@ -79,6 +79,16 @@
         //菜单高亮
         common.head();
 
+        //多选下拉
+        var $bankType = $("#bankType");
+        $bankType.multiselect({
+            nonSelectedText: '已开通结算银行',
+            allSelectedText:"全部选中",
+            nSelectedText: '个选中',
+            buttonClass: 'btn btn-white',
+        });
+
+
         $("#save").on("click",function () {
             console.log(2555);
 
