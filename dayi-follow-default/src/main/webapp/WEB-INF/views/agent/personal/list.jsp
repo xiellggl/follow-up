@@ -151,6 +151,12 @@
                 window.location.href = pageurl;
             }
         });
+
+        //踢入公海
+        $(".goToSea").on("click",function () {
+            console.log(4455)
+        });
+
     });
 </script>
 </body>

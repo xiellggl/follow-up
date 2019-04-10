@@ -147,6 +147,7 @@
                                     </div>
                                     <div class="form-group" style="text-align: center;">
                                         <button type="submit" class="btn btn-primary">提交记录</button>
+                                        <button type="button" class="btn btn-danger goToUserLib">踢入公海</button>
                                         <button class="btn btn-info" type="reset">重置</button>
                                     </div>
                                 </div>
@@ -311,7 +312,15 @@
                     });
                 }
             });
-        })
+        });
+
+
+        //踢入公海
+        $(".goToUserLib").on("click",function (e) {
+            e.preventDefault();
+            console.log(58)
+        });
+
     });
 </script>
 </body>
