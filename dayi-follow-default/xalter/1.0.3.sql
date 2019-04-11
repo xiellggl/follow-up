@@ -1,11 +1,11 @@
 USE dayi_follow;
 
 ALTER TABLE `follow_agent`
-ADD COLUMN `high_sea_flag` tinyint(2) NOT NULL COMMENT '是否公海用户(0：不是,1：是)' AFTER `his_max_fund`;
+ADD COLUMN `high_sea_flag` tinyint(2) NOT NULL COMMENT '是否公海用户(0：不是,1：是)' AFTER `his_max_fund`,
 ADD COLUMN `ware_house_date` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP COMMENT '入库时间' AFTER `high_sea_flag`;
 
-#将羊毛党的客户作为公海基础
-UPDATE follow_agent set high_sea_flag = 1,follow_id = null  where follow_id =X
+#将羊毛党的客户作为公海基础(这条看情况执行)
+#UPDATE follow_agent set high_sea_flag = 1,follow_id = null  where follow_id =X;
 
 #建立配置表
 CREATE TABLE `config`  (

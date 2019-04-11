@@ -71,7 +71,7 @@ public class HighSeaController extends BaseController {
     public String getconfig(HttpServletRequest request, Model model) {
         List<HSConfigVo> list = highSeaService.findConfig();
         model.addAttribute("list", list);
-        return "highsea/high_sea_seatting";
+        return "highsea/high_sea_setting";
     }
 
     //公海设置

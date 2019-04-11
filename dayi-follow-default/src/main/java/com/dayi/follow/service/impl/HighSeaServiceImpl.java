@@ -20,6 +20,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -50,6 +51,8 @@ public class HighSeaServiceImpl implements HighSeaService {
     FollowUpMapper followUpMapper;
     @Resource
     CountMapper countMapper;
+    @Value("${dayi.dataBase}")
+    String dayiDataBaseStr;
 
     @Override
     public void updateBatch() {
@@ -114,7 +117,7 @@ public class HighSeaServiceImpl implements HighSeaService {
 
     @Override
     public Page<HSListVo> findPage(Page page, SearchVo searchVo) {
-        return followAgentMapper.findHSPage(page, searchVo);
+        return followAgentMapper.findHSPage(page, searchVo, dayiDataBaseStr);
     }
 
     @Override

@@ -91,6 +91,6 @@ public interface FollowAgentMapper extends BaseMapper<FollowAgent> {
     //批量更新公海标志
     void updateHSFlagBatch(List list);
 
-    Page<HSListVo> findHSPage(Page page, @Param("searchVo") SearchVo searchVo);
+    Page<HSListVo> findHSPage(Page page, @Param("searchVo") SearchVo searchVo, @Param("assistDataBase") String assistDataBase);
 
 }
