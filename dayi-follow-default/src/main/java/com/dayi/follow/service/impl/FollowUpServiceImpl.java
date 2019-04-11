@@ -299,12 +299,9 @@ public class FollowUpServiceImpl implements FollowUpService {
 
         if (followUp == null) return BizResult.FAIL;
 
-        if ((followUp.getHisMaxFund() == null && newValue.doubleValue() > 0) || (newValue.compareTo(followUp.getHisMaxFund()) == 1)) {
-            followUp.setHisMaxFund(newValue);
-            followUpMapper.updateAll(followUp);
-            return BizResult.SUCCESS;
-        }
-        return BizResult.fail("输入数值必须大于当前值！");
+        followUp.setHisMaxFund(newValue);
+        followUpMapper.updateAll(followUp);
+        return BizResult.SUCCESS;
     }
 
     @Override
