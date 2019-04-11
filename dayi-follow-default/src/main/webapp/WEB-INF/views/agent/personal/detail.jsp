@@ -318,7 +318,7 @@
         //踢入公海
         $(".goToUserLib").on("click",function (e) {
             e.preventDefault();
-            console.log(58)
+
         });
 
     });

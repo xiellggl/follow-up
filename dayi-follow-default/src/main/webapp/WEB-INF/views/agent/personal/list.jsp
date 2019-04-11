@@ -153,8 +153,9 @@
         });
 
         //踢入公海
-        $(".goToSea").on("click",function () {
-            console.log(4455)
+        $(".goToSea").on("click",function (e) {
+            e.preventDefault();
+
         });
 
     });
