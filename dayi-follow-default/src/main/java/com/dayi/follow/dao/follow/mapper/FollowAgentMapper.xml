@@ -467,4 +467,42 @@
         and a.follow_id =#{followId}
     </select>
 
+    <select id="searchHGCus" parameterType="java.lang.String" resultType="java.lang.String">
+
+    </select>
+
+    <update id="updateHSFlagBatch" parameterType="java.util.List">
+        update follow_agent
+        set high_sea_flag = 1
+        where
+        <foreach collection="list" separator="or" item="i" index="index" >
+            id=#{i.id}
+        </foreach>
+    </update>
+
+    <select id="findHSPage" parameterType="map" resultType="com.dayi.follow.vo.highsea.HSListVo">
+        SELECT * from follow_agent a
+        left join (
+            SELECT id,link_person,invite_code,create_date,mobile from agent where del_status != -1
+        )b on b.id=a.agent_id
+        where a.high_sea_flag =1
+
+        <if test="null!=searchVo.createDateStart and ''!= searchVo.createDateStart and null!=searchVo.createDateEnd and ''!= searchVo.createDateEnd">
+            and b.create_date BETWEEN #{searchVo.createDateStart} and #{searchVo.createDateEnd}
+        </if>
+        <if test="''!=searchVo.mobile and null!=searchVo.mobile">
+            and b.mobile like CONCAT('%','${searchVo.mobile}','%')
+        </if>
+
+        <if test="null!=searchVo.customerType">
+            AND a.customer_type =#{searchVo.customerType}
+        </if>
+
+        <if test="null!=searchVo.createDateStart and ''!= searchVo.createDateStart and null!=searchVo.createDateEnd and ''!= searchVo.createDateEnd">
+            and a.ware_house_date BETWEEN #{searchVo.warehouseDateStart} and #{searchVo.warehouseDateEnd}
+        </if>
+
+
+    </select>
+
 </mapper>

@@ -8,6 +8,7 @@ import com.dayi.follow.vo.agent.AgentListVo;
 import com.dayi.follow.vo.agent.AssignListVo;
 import com.dayi.follow.vo.SearchVo;
 import com.dayi.follow.vo.followup.FollowUpListVo;
+import com.dayi.follow.vo.highsea.HSListVo;
 import com.dayi.mybatis.support.BaseMapper;
 import com.dayi.mybatis.support.Page;
 import org.apache.ibatis.annotations.Param;
@@ -82,4 +83,14 @@ public interface FollowAgentMapper extends BaseMapper<FollowAgent> {
     int getOpenAccountNum(@Param("followId") String followId, @Param("startDate") String startDate, @Param("endDate") String endDate, @Param("assistDataBase") String assistDataBase);
 
     BigDecimal getAgentFund(@Param("followId") String followId, @Param("deadline") String deadline, @Param("assistDataBase") String assistDataBase);
+
+
+    //检索需要扔进公海的客户
+    List<String> searchHGCusID();
+
+    //批量更新公海标志
+    void updateHSFlagBatch(List list);
+
+    Page<HSListVo> findHSPage(Page page, @Param("searchVo") SearchVo searchVo);
+
 }

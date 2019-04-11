@@ -1,5 +1,6 @@
 package com.dayi.follow.model.follow;
 
+import com.dayi.common.util.NameItem;
 import com.dayi.follow.enums.AgentCusTypeEnum;
 import com.dayi.follow.enums.AgentIntenTypeEnum;
 import com.dayi.mybatis.support.BaseModel;
@@ -36,6 +37,31 @@ public class FollowAgent extends BaseModel {
     private BigDecimal hisMaxFund;//历史最高货款
 
     private Date assignDate;//分配跟进人时间
+
+    private Integer highSeaFlag;//是否公海用户
+
+    private Date warehouseDate;//入库时间
+
+
+
+    public static final NameItem IS_HIGHSEA=NameItem.valueOf("公海用户",1);
+    public static final NameItem NOT_HIGHSEA=NameItem.valueOf("非公海用户",0);
+
+    public Date getWarehouseDate() {
+        return warehouseDate;
+    }
+
+    public void setWarehouseDate(Date warehouseDate) {
+        this.warehouseDate = warehouseDate;
+    }
+
+    public Integer getHighSeaFlag() {
+        return highSeaFlag;
+    }
+
+    public void setHighSeaFlag(Integer highSeaFlag) {
+        this.highSeaFlag = highSeaFlag;
+    }
 
     public BigDecimal getHisMaxFund() {
         return hisMaxFund;
