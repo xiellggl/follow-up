@@ -26,15 +26,22 @@
                 </ul>
             </div>
             <div class="page-content">
-                <div class="row">
+                <div class="page-header clearfix">
+                    <h1 class="pull-left">
+                        您当前操作
+                        <small>
+                            <i class="ace-icon fa fa-angle-double-right"></i>
+                            公海设置
+                        </small>
+                    </h1>
+                </div>
+                <div class="row" style="margin-top: 30px;">
                     <form class="form-horizontal" >
                         <div class="clearfix maintop">
                             <div class="col-xs-4 col-sm-6 hidden-xs bank-item">
                                 <div class="input-group">
-                                    <span class="input-group-addon">
-                                        公海范围：
-                                    </span>
-                                    <select name="bankType" id="bankType" multiple="multiple" style="height: 30px;">
+                                    <span class="fs16">公海范围：</span>
+                                    <select name="bankType" id="bankType" multiple="multiple" class="ml30" style="height: 30px">
                                         <c:forEach items="${bankTypes}" var="item">
                                             <c:set var="selected" value="" />
                                             <c:forEach items="${bankTypesArr}" var="type">
@@ -48,20 +55,18 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="clearfix maintop">
+                        <div class="clearfix maintop" style="margin:30px auto">
                             <div class="col-xs-4 col-sm-2 btn-sespan">
                                 <div class="input-group">
-                                    <span class="input-group-addon">
-                                        私海客户数量上限：
-                                    </span>
-                                    <input type="number" name="private_num" class="form-control admin_sea" value=""/>
+                                    <span class="txt">私海客户数量上限：</span>
+                                    <input type="number" name="private_num" class="form-control admin_sea" value="" style="left: 180px;top:-10px"/>
                                 </div>
                             </div>
                         </div>
                         <div class="clearfix maintop">
-                            <div class="col-sm-2 hidden-xs btn-sespan assignDateDiv">
+                            <div class="col-sm-3 hidden-xs btn-sespan assignDateDiv">
                                 <button type="button" class="btn btn-primary" id="save">保存</button>
-                                <a class="btn btn-default" href="./high_sea_list.jsp">返回</a>
+                                <a class="btn btn-default ml30" href="/highsea/list">返回</a>
                             </div>
                         </div>
                     </form>
@@ -82,7 +87,7 @@
         //多选下拉
         var $bankType = $("#bankType");
         $bankType.multiselect({
-            nonSelectedText: '已开通结算银行',
+            nonSelectedText: '选中的全部部门',
             allSelectedText:"全部选中",
             nSelectedText: '个选中',
             buttonClass: 'btn btn-white'

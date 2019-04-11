@@ -38,7 +38,7 @@
                 <div class="row">
                     <form class="form-horizontal" >
                         <div class="clearfix maintop">
-                            <div class="col-sm-2 hidden-xs btn-sespan">
+                            <div class="col-sm-3 hidden-xs btn-sespan">
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-calendar"></i>
@@ -76,7 +76,7 @@
                             </div>
                         </div>
                         <div class="clearfix maintop">
-                            <div class="col-sm-2 hidden-xs btn-sespan assignDateDiv">
+                            <div class="col-sm-3 hidden-xs btn-sespan assignDateDiv">
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-calendar"></i>
@@ -91,7 +91,7 @@
                                         <span class="ace-icon fa fa-search"></span>
                                         搜索
                                     </button>
-                                    <a href="./high_sea_setting.jsp" class="btn btn-xs btn-primary">公海设置</a>
+                                    <a href="/highsea/getconfig" class="btn btn-xs btn-primary" style="margin-left: 20px">公海设置</a>
                                 </div>
                             </div>
                         </div>
