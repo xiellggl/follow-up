@@ -37,21 +37,20 @@
                 </div>
                 <div class="row" style="margin-top: 30px;">
                     <form class="form-horizontal" >
+
                         <div class="clearfix maintop">
                             <div class="col-xs-4 col-sm-6 hidden-xs bank-item">
                                 <div class="input-group">
                                     <span class="fs16">公海范围：</span>
+
                                     <select name="deptIds" id="bankType" multiple="multiple" class="ml30" style="height: 30px">
-                                        <c:forEach items="${list}" var="item">
-                                            <c:set var="selected" value="" />
-                                            <c:forEach items="${bankTypesArr}" var="type">
-                                                <c:if test="${type eq item.value and empty selected}">
-                                                    <c:set var="selected" value="selected" />
-                                                </c:if>
+                                        <c:forEach items="${deptTree}" var="item1" >
+                                            <c:forEach items="${list[0].values}" var="item2">
+                                            <option value="${item2}" ${item1.id eq item2 ? 'selected' : ''}>${item1.treeName}</option>
                                             </c:forEach>
-                                            <option value="${item.value}" ${selected}>${item.mark}</option>
                                         </c:forEach>
                                     </select>
+
                                 </div>
                             </div>
                         </div>
@@ -63,6 +62,8 @@
                                 </div>
                             </div>
                         </div>
+
+
                         <div class="clearfix maintop">
                             <div class="col-sm-3 hidden-xs btn-sespan assignDateDiv">
                                 <button type="button" class="btn btn-primary" id="save">保存</button>

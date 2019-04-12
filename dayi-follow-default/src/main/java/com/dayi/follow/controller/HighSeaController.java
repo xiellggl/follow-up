@@ -6,6 +6,8 @@ import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.enums.AgentCusTypeEnum;
 import com.dayi.follow.model.follow.Agent;
 import com.dayi.follow.model.follow.Config;
+import com.dayi.follow.model.follow.Department;
+import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.HighSeaService;
 import com.dayi.follow.vo.LoginVo;
 import com.dayi.follow.vo.SearchVo;
@@ -34,6 +36,8 @@ public class HighSeaController extends BaseController {
     private UserComponent userComponent;
     @Resource
     private HighSeaService highSeaService;
+    @Resource
+    private DeptService deptService;
 
     //@RequestMapping("/updateBatch")
     public void updateBatch(HttpServletRequest request) {
@@ -70,6 +74,8 @@ public class HighSeaController extends BaseController {
     @RequestMapping("getconfig")
     public String getconfig(HttpServletRequest request, Model model) {
         List<HSConfigVo> list = highSeaService.findConfig();
+        List<Department> deptTree = deptService.getDeptTree(null);
+        model.addAttribute("deptTree",deptTree);
         model.addAttribute("list", list);
         return "highsea/high_sea_setting";
     }
