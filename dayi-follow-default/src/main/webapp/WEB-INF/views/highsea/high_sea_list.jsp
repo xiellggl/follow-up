@@ -61,15 +61,6 @@
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-check-square-o"></i>
                                     </span>
-                                    <%--<select name="customerType" class="form-control admin_sea">--%>
-                                        <%--<option value="">客户类型</option>--%>
-                                        <%--<option value="0"  ${param.customerType=='0'?"selected":''}>已开户</option>--%>
-                                        <%--<option value="1"  ${param.customerType=='1'?"selected":''}>未联系</option>--%>
-                                        <%--<option value="2"  ${param.customerType=='2'?"selected":''}>无意向</option>--%>
-                                        <%--<option value="3"  ${param.customerType=='3'?"selected":''}>流失</option>--%>
-                                        <%--<option value="4"  ${param.customerType=='4'?"selected":''}>无效</option>--%>
-                                        <%--<option value="5"  ${param.customerType=='5'?"selected":''}>可被跟进</option>--%>
-                                    <%--</select>--%>
                                     <select name="customerType" class="form-control admin_sea">
                                         <option value="">客户类型</option>
                                         <c:forEach items="${cusType}" var="item">
@@ -87,7 +78,7 @@
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-calendar"></i>
                                     </span>
-                                    <input type="text" class="form-control admin_sea dates" name="assignDate" value="${param.warehouseDate}"
+                                    <input type="text" class="form-control admin_sea dates" name="warehouseDate" value="${param.warehouseDate}"
                                            placeholder="入库时间"/>
                                 </div>
                             </div>
@@ -215,23 +206,6 @@
             common.loadPageHTML(url_selectlist, select_data, $pageListPanel, true);
             return false;
         });
-
-        //分配
-        $myModal.on("click", '[data-act="check"]', function () {
-            var id = $(this).data("id");
-            common.ajax.handle({
-                url: "/agent/assign/save/batch.json",
-                data: {followId: id, agentIds: ids},
-                succback: function (data) {
-                    $myModal.modal("hide");
-                    ids = null;
-                    select_data = null;
-                    common.successMsg(data.msg, "reload");
-                }
-            });
-            return false;
-        });
-
 
         //认领客户
         $(".dragCustomer").on("click",function (e) {

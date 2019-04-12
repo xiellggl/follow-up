@@ -41,15 +41,15 @@
                             <div class="col-xs-4 col-sm-6 hidden-xs bank-item">
                                 <div class="input-group">
                                     <span class="fs16">公海范围：</span>
-                                    <select name="bankType" id="bankType" multiple="multiple" class="ml30" style="height: 30px">
-                                        <c:forEach items="${bankTypes}" var="item">
+                                    <select name="deptIds" id="bankType" multiple="multiple" class="ml30" style="height: 30px">
+                                        <c:forEach items="${list}" var="item">
                                             <c:set var="selected" value="" />
                                             <c:forEach items="${bankTypesArr}" var="type">
-                                                <c:if test="${type eq item.key and empty selected}">
+                                                <c:if test="${type eq item.value and empty selected}">
                                                     <c:set var="selected" value="selected" />
                                                 </c:if>
                                             </c:forEach>
-                                            <option value="${item.key}" ${selected}>${item.cname}</option>
+                                            <option value="${item.value}" ${selected}>${item.mark}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
@@ -59,7 +59,7 @@
                             <div class="col-xs-4 col-sm-2 btn-sespan">
                                 <div class="input-group">
                                     <span class="txt">私海客户数量上限：</span>
-                                    <input type="number" name="private_num" class="form-control admin_sea" value="" style="left: 180px;top:-10px"/>
+                                    <input type="number" name="num" class="form-control admin_sea" value="" style="left: 180px;top:-10px"/>
                                 </div>
                             </div>
                         </div>
