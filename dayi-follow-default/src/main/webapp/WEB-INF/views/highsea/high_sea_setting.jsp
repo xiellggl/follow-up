@@ -37,20 +37,17 @@
                 </div>
                 <div class="row" style="margin-top: 30px;">
                     <form class="form-horizontal" >
-
                         <div class="clearfix maintop">
                             <div class="col-xs-4 col-sm-6 hidden-xs bank-item">
                                 <div class="input-group">
-                                    <span class="fs16">公海范围：</span>
-
-                                    <select name="deptIds" id="bankType" multiple="multiple" class="ml30" style="height: 30px">
+                                    <span class="fs16 mr50">公海范围：</span>
+                                    <select name="deptIds" id="bankType" multiple="multiple" class="ml30" style="height: 30px;display: none">
                                         <c:forEach items="${deptTree}" var="item1" >
                                             <c:forEach items="${list[0].values}" var="item2">
-                                            <option value="${item2}" ${item1.id eq item2 ? 'selected' : ''}>${item1.treeName}</option>
+                                                <option value="${item2}" ${item1.id eq item2 ? 'selected' : ''}>${item1.treeName}</option>
                                             </c:forEach>
                                         </c:forEach>
                                     </select>
-
                                 </div>
                             </div>
                         </div>
@@ -62,7 +59,6 @@
                                 </div>
                             </div>
                         </div>
-
 
                         <div class="clearfix maintop">
                             <div class="col-sm-3 hidden-xs btn-sespan assignDateDiv">
@@ -87,12 +83,40 @@
 
         //多选下拉
         var $bankType = $("#bankType");
+        var selectedIds = [];   //选中的部门ID
+        // [ deptIds: 1, deptIds:2, deptIds: 3 ]
+        // { deptIds: 1, deptIds:2, deptIds: 3 }
+
         $bankType.multiselect({
-            nonSelectedText: '选中的全部部门',
+            nonSelectedText: '全部部门',
             allSelectedText:"全部选中",
             nSelectedText: '个选中',
-            buttonClass: 'btn btn-white'
+            buttonClass: 'btn btn-white',
+            onChange: function (element, checked) {
+                var brands = $('#bankType option:selected');
+                $(brands).each(function(index, brand){
+                    selectedIds.push([$(this).val()]);
+                });
+                console.log(getObjectValues(selectedIds));
+            }
         });
+
+        //对object的key进行遍历
+        function getObjectKeys(object) {
+            var keys = [];
+            for(var property in object)
+                keys.push(property);
+            return keys;
+        }
+
+        //对object的value进行遍历
+        function getObjectValues(object) {
+            var values = [];
+            for(var property in object)
+                values.push(object[property])
+            return values;
+        }
+
 
         //提交公海设置参数
         $("#save").on("click",function () {
@@ -104,7 +128,7 @@
             common.ajax.handle({
                 url: "/highsea/setconfig",
                 data: {
-                    deptIds: '',
+                    deptIds: selectedIds,
                     num: private_num
                 },
                 succback: function (data) {

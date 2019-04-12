@@ -135,6 +135,9 @@ label.field-error {
 .ml30{
     margin-left: 30px;
 }
+.mr50{
+    margin-right: 50px;
+}
 .txt {
     position: relative;left:0;top:16px;font-size: 16px;
 }
