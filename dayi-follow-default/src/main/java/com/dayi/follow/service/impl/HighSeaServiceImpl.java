@@ -100,6 +100,9 @@ public class HighSeaServiceImpl implements HighSeaService {
 
     private boolean checkKick(String followId) {
         Config c = configMapper.getByMark(Config.MarkType.HS_RANGE.name());
+
+        if (c == null) return false;
+
         String value = c.getValue();
 
         if (StringUtils.isBlank(value)) return false;
