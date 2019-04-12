@@ -61,14 +61,20 @@
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-check-square-o"></i>
                                     </span>
+                                    <%--<select name="customerType" class="form-control admin_sea">--%>
+                                        <%--<option value="">客户类型</option>--%>
+                                        <%--<option value="0"  ${param.customerType=='0'?"selected":''}>已开户</option>--%>
+                                        <%--<option value="1"  ${param.customerType=='1'?"selected":''}>未联系</option>--%>
+                                        <%--<option value="2"  ${param.customerType=='2'?"selected":''}>无意向</option>--%>
+                                        <%--<option value="3"  ${param.customerType=='3'?"selected":''}>流失</option>--%>
+                                        <%--<option value="4"  ${param.customerType=='4'?"selected":''}>无效</option>--%>
+                                        <%--<option value="5"  ${param.customerType=='5'?"selected":''}>可被跟进</option>--%>
+                                    <%--</select>--%>
                                     <select name="customerType" class="form-control admin_sea">
                                         <option value="">客户类型</option>
-                                        <option value="0"  ${param.assignStatus=='0'?"selected":''}>已开户</option>
-                                        <option value="1"  ${param.assignStatus=='1'?"selected":''}>未联系</option>
-                                        <option value="2"  ${param.assignStatus=='2'?"selected":''}>无意向</option>
-                                        <option value="3"  ${param.assignStatus=='3'?"selected":''}>流失</option>
-                                        <option value="4"  ${param.assignStatus=='4'?"selected":''}>无效</option>
-                                        <option value="5"  ${param.assignStatus=='5'?"selected":''}>可被跟进</option>
+                                        <c:forEach items="${customerTypes}" var="item">
+                                            <option value="${item.value}" <c:if test="${param.customerType eq item.value}">selected</c:if>>${item.name}</option>
+                                        </c:forEach>
                                     </select>
                                 </div>
                             </div>
