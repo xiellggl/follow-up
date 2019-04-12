@@ -129,3 +129,13 @@ label.field-error {
     margin: 0 5px;
 }
 
+.fs16{
+    font-size: 16px;
+}
+.ml30{
+    margin-left: 30px;
+}
+.txt {
+    position: relative;left:0;top:16px;font-size: 16px;
+}
+

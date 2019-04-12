@@ -38,7 +38,7 @@
                 <div class="row">
                     <form class="form-horizontal" >
                         <div class="clearfix maintop">
-                            <div class="col-sm-2 hidden-xs btn-sespan">
+                            <div class="col-sm-3 hidden-xs btn-sespan">
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-calendar"></i>
@@ -61,7 +61,7 @@
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-check-square-o"></i>
                                     </span>
-                                    <select name="assignStatus" class="form-control admin_sea">
+                                    <select name="customerType" class="form-control admin_sea">
                                         <option value="">客户类型</option>
                                         <option value="0"  ${param.assignStatus=='0'?"selected":''}>已开户</option>
                                         <option value="1"  ${param.assignStatus=='1'?"selected":''}>未联系</option>
@@ -76,12 +76,12 @@
                             </div>
                         </div>
                         <div class="clearfix maintop">
-                            <div class="col-sm-2 hidden-xs btn-sespan assignDateDiv">
+                            <div class="col-sm-3 hidden-xs btn-sespan assignDateDiv">
                                 <div class="input-group">
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-calendar"></i>
                                     </span>
-                                    <input type="text" class="form-control admin_sea dates" name="assignDate" value="${param.assignDate}"
+                                    <input type="text" class="form-control admin_sea dates" name="assignDate" value="${param.warehouseDate}"
                                            placeholder="入库时间"/>
                                 </div>
                             </div>
@@ -91,7 +91,7 @@
                                         <span class="ace-icon fa fa-search"></span>
                                         搜索
                                     </button>
-                                    <a href="./high_sea_setting.jsp" class="btn btn-xs btn-primary">公海设置</a>
+                                    <a href="/highsea/getconfig" class="btn btn-xs btn-primary" style="margin-left: 20px">公海设置</a>
                                 </div>
                             </div>
                         </div>
@@ -114,31 +114,26 @@
                             <tbody>
                             <c:if test="${empty page.results}">
                                 <tr>
-                                    <td colspan="12" class="no_data">暂无数据记录</td>
+                                    <td colspan="6" class="no_data">暂无数据记录</td>
                                 </tr>
                             </c:if>
 
                             <c:if test="${not empty page.results}">
                                 <c:forEach items="${page.results}" var="item" >
                                     <tr data-id="${item.id}">
-                                        <!-- 名称 -->
-                                        <td>${item.linkPersonFm}</td>
+                                        <!-- 姓名 -->
+                                        <td>${item.LinkPersonFm}</td>
                                         <!-- 邀请码 -->
                                         <td>${item.inviteCode}</td>
                                         <%--客户类型--%>
-                                        <td>客户类型</td>
+                                        <td>${item.CustomerTypeStr}</td>
                                         <!-- 注册时间 -->
                                         <td class="hidden-xs"><fmt:formatDate value="${item.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                         <!-- 入库时间 -->
-                                        <td class="hidden-xs"><fmt:formatDate value="${item.assignDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                        <td class="hidden-xs"><fmt:formatDate value="${item.warehouseDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                         <!-- 操作 -->
                                         <td>
-                                            <a style="margin: 0 5px;" href="javascript:;" class="green"
-                                               data-id="${item.id}" data-from="from=assign_list" data-flowid="${item.followId}"
-                                               data-name='<c:if test="${not empty item.linkPersonFm}">${fn:substring(item.linkPersonFm,0,1)}**</c:if>'
-                                               data-act="assign" data-toggle="tooltip" title="认领客户">
-                                                <i class="ace-icon glyphicon glyphicon-log-in"></i>
-                                            </a>
+                                            <button type="button" class="btn btn-primary dragCustomer" data-id="${item.id}">认领客户</button>
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -230,6 +225,24 @@
             });
             return false;
         });
+
+
+        //认领客户
+        $(".dragCustomer").on("click",function (e) {
+            e.preventDefault();
+            var agentId = $(this).attr("data-id");
+
+            common.ajax.handle({
+                method: 'get',
+                url: "/highsea/drags",
+                data: {
+                    agentId: agentId
+                },
+                succback: function (data) {
+                    common.successMsg(data.msg, "reload");
+                }
+            });
+        })
     });
 </script>
 </body>
