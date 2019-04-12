@@ -72,7 +72,7 @@
                                     <%--</select>--%>
                                     <select name="customerType" class="form-control admin_sea">
                                         <option value="">客户类型</option>
-                                        <c:forEach items="${customerTypes}" var="item">
+                                        <c:forEach items="${cusType}" var="item">
                                             <option value="${item.value}" <c:if test="${param.customerType eq item.value}">selected</c:if>>${item.name}</option>
                                         </c:forEach>
                                     </select>
