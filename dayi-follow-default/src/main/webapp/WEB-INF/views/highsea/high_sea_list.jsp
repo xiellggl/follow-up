@@ -112,14 +112,14 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:if test="${empty page.results}">
+                            <c:if test="${empty list}">
                                 <tr>
                                     <td colspan="6" class="no_data">暂无数据记录</td>
                                 </tr>
                             </c:if>
 
-                            <c:if test="${not empty page.results}">
-                                <c:forEach items="${page.results}" var="item" >
+                            <c:if test="${not empty list}">
+                                <c:forEach items="${list}" var="item" >
                                     <tr data-id="${item.id}">
                                         <!-- 姓名 -->
                                         <td>${item.LinkPersonFm}</td>
@@ -140,7 +140,7 @@
                             </c:if>
                             </tbody>
                         </table>
-                        <c:if test="${not empty page.results}">
+                        <c:if test="${not empty list}">
                             <div class="pagerBar" id="pagerBar">
                                 <common:page url="${pageUrl}" type="3" />
                             </div>
