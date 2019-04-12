@@ -72,6 +72,9 @@ public class HighSeaServiceImpl implements HighSeaService {
         int cusNum = followUpMapper.getCusNum(followId);
 
         Config c = configMapper.getByMark(Config.MarkType.PS_NUM.name());
+
+        if (c == null) return BizResult.fail("请先设置私海上限!");
+
         String value = c.getValue();
         Integer limit = Integer.valueOf(value);
 
@@ -90,22 +93,13 @@ public class HighSeaServiceImpl implements HighSeaService {
 
         if (!followId.equals(fa.getFollowId())) return BizResult.fail("无法操作该用户!");
 
-        //是否属于可踢的范围
-        if (!checkKick(followId)) return BizResult.FAIL;
-
-        fa.setFollowId(null);
-        fa.setHighSeaFlag(FollowAgent.IS_HIGHSEA.getId());
-        return followAgentMapper.updateAll(fa) == 1 ? BizResult.SUCCESS : BizResult.FAIL;
-    }
-
-    private boolean checkKick(String followId) {
         Config c = configMapper.getByMark(Config.MarkType.HS_RANGE.name());
 
-        if (c == null) return false;
+        if (c == null) return BizResult.fail("请先设置公海范围！");
 
         String value = c.getValue();
 
-        if (StringUtils.isBlank(value)) return false;
+        if (StringUtils.isBlank(value)) return BizResult.fail("请先设置公海范围！");
 
         String[] split = StringUtils.split(value, ",");
 
@@ -113,9 +107,12 @@ public class HighSeaServiceImpl implements HighSeaService {
         String deptId = followUp.getDeptId();
 
         if (!ArrayUtils.contains(split, deptId)) {
-            return false;
+            return BizResult.fail("无法操作该用户!");
         }
-        return true;
+
+        fa.setFollowId(null);
+        fa.setHighSeaFlag(FollowAgent.IS_HIGHSEA.getId());
+        return followAgentMapper.updateAll(fa) == 1 ? BizResult.SUCCESS : BizResult.FAIL;
     }
 
     @Override
