@@ -318,7 +318,16 @@
         //踢入公海
         $(".goToUserLib").on("click",function (e) {
             e.preventDefault();
-
+            var agentId = '${param.agentId}';
+            common.ajax.handle({
+                url: '/highsea/kick',
+                data: {
+                    agentId: agentId
+                },
+                succback: function (data) {
+                    common.successMsg(data.msg, 'reload');
+                }
+            });
         });
 
     });

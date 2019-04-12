@@ -153,10 +153,20 @@
         });
 
         //踢入公海
-        $(".goToSea").on("click",function (e) {
+        $(".kick").on("click",function (e) {
             e.preventDefault();
-
+            var agentId = $(this).attr("data-id");
+            common.ajax.handle({
+                url: '/highsea/kick',
+                data: {
+                    agentId: agentId
+                },
+                succback: function (data) {
+                    common.successMsg(data.msg, "reload");
+                }
+            });
         });
+
 
     });
 </script>
