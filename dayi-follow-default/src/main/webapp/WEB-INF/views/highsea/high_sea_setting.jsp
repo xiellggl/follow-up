@@ -59,7 +59,7 @@
                             <div class="col-xs-4 col-sm-2 btn-sespan">
                                 <div class="input-group">
                                     <span class="txt">私海客户数量上限：</span>
-                                    <input type="number" name="num" class="form-control admin_sea" value="" style="left: 180px;top:-10px"/>
+                                    <input type="number" name="num" class="form-control" value="" style="left: 180px;top:-10px"/>
                                 </div>
                             </div>
                         </div>
@@ -93,19 +93,20 @@
             buttonClass: 'btn btn-white'
         });
 
-
+        //提交公海设置参数
         $("#save").on("click",function () {
-            console.log(2555);
-
-            //ajax
+            var private_num = $("input[name='num']").val();
+            if( private_num < 0 || private_num == 0) {
+                layer.alert("私海客户数量上限需要大于0");
+                return
+            }
             common.ajax.handle({
-                url: "/agent/assign/save/batch.json",
+                url: "/highsea/setconfig",
                 data: {
-                    followId: id,
-                    agentIds: ids
+                    deptIds: '',
+                    num: private_num
                 },
                 succback: function (data) {
-                    $myModal.modal("hide");
                     common.successMsg(data.msg, "reload");
                 }
             });
