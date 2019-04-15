@@ -103,7 +103,11 @@
                                 <th>姓名</th>
                                 <th>邀请码</th>
                                 <th>客户类型</th>
-                                <th class="hidden-xs">注册时间</th>
+                                <th class="hidden-xs">
+                                    注册时间
+                                    <span class="glyphicon glyphicon-triangle-top small-hand ml5" aria-hidden="true"></span>
+                                    <span class="glyphicon glyphicon-triangle-bottom small-hand ml5" aria-hidden="true"></span>
+                                </th>
                                 <th class="hidden-sm hidden-xs">入库时间</th>
                                 <th>操作</th>
                             </tr>
