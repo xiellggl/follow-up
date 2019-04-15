@@ -110,6 +110,11 @@ public class HighSeaServiceImpl implements HighSeaService {
     }
 
     @Override
+    public Page findPageOrderBy(Page page, SearchVo searchVo) {
+        return null;
+    }
+
+    @Override
     public BizResult set(ConfigVo[] vos) {
 
         for (ConfigVo vo : vos) {

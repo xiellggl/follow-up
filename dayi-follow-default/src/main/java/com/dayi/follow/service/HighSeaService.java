@@ -30,6 +30,9 @@ public interface HighSeaService {
     //公海查询列表
     Page findPage(Page page, SearchVo searchVo);
 
+    //公海查询列表
+    Page findPageOrderBy(Page page, SearchVo searchVo);
+
     //公海设置
     BizResult set(ConfigVo[] vos);
 

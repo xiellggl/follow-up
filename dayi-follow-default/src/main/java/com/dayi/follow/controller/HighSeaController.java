@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -44,6 +45,14 @@ public class HighSeaController extends BaseController {
     //公海列表-先以羊毛党作为基础
     @RequestMapping("list")
     public String list(Model model, SearchVo searchVo, Page page) {
+        page = highSeaService.findPage(page, searchVo);
+        model.addAttribute("cusType", AgentCusTypeEnum.values());
+        model.addAttribute("page", page);
+        return "highsea/high_sea_list";
+    }
+
+    @RequestMapping("orderlist")
+    public String orderlist(Model model, SearchVo searchVo, Page page) {
         page = highSeaService.findPage(page, searchVo);
         model.addAttribute("cusType", AgentCusTypeEnum.values());
         model.addAttribute("page", page);
@@ -79,9 +88,11 @@ public class HighSeaController extends BaseController {
     //公海设置
     @RequestMapping("setconfig")
     @ResponseBody
-    public BizResult setconfig(HttpServletRequest request,@Valid ConfigVo[] vos, BindingResult result) {
+    public BizResult setconfig(HttpServletRequest request, @RequestBody @Valid ConfigVo[] vos, BindingResult result) {
         BizResult bizResult = checkErrors(result);
         if (!bizResult.isSucc()) return bizResult;//参数传入错误
         return highSeaService.set(vos);
     }
+
+
 }
