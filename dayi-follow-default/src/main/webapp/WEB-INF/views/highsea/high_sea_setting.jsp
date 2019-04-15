@@ -62,7 +62,8 @@
                                     <div class="col-xs-4 col-sm-2 btn-sespan">
                                         <div class="input-group">
                                             <span class="txt">私海客户数量上限：</span>
-                                            <input type="number" name="num" class="form-control" value="" style="left: 180px;top:-10px"/>
+                                            <input type="number" name="num" class="form-control" value=""
+                                                   style="left: 180px;top:-10px"/>
                                         </div>
                                     </div>
                                 </div>
@@ -122,13 +123,13 @@
                 return
             }
 
+            var arr = [{mark:'HS_RANGE',value:newArr.toString()},{mark:'PS_NUM',value:private_num}];
 
             common.ajax.handle({
                 url: "/highsea/setconfig",
-                data: {
-                    HS_RANGE: newArr.toString(),
-                    PS_NUM: private_num
-                },
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify(arr),
                 succback: function (data) {
                     common.successMsg(data.msg, "reload");
                 }
