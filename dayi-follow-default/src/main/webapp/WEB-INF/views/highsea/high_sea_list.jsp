@@ -149,25 +149,7 @@
     </div>
 </div>
 </div>
-<%--编辑跟进人模态框（Modal）--%>
-<div class="modal fade in" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" style="width: 600px;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"
-                        aria-hidden="true">×
-                </button>
-                <h4 class="modal-title">分配跟进人</h4>
-            </div>
-            <div class="modal-body" style="min-height:300px;">
-                <div class="row">
-                    <div class="col-xs-12 selectlistbox"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
 <%@include file="/inc/followup/script.jsp"%>
 <script charset="UTF-8" async="" src="/static/public/daterangepicker3/moment.min.js"></script>
 <script>
@@ -177,7 +159,7 @@
 
         var date_o = {
             autoUpdateInput: false,
-            locale: locale_cn,
+            locale: locale_cn
         };
         date_o.locale.cancelLabel = "清空";
         $('.dates').daterangepicker(date_o);
@@ -188,23 +170,6 @@
 
         $('.dates').on('cancel.daterangepicker', function (ev, picker) {
             $(this).val('');
-        });
-
-
-        var $myModal = $("#myModal");
-        var $pageListPanel = $myModal.find(".selectlistbox");
-        var ids = null;
-        var select_data = null;
-        var url_selectlist = "/agent/assign/select";
-
-        //搜索
-        $myModal.on("click", '[data-act="search"]', function () {
-            var flowId = $(this).data("followid");
-            var linkPerson = $myModal.find('[name="followUp"]').val();
-            select_data = {followUp: linkPerson};
-            select_data.followId=flowId;
-            common.loadPageHTML(url_selectlist, select_data, $pageListPanel, true);
-            return false;
         });
 
         //认领客户
