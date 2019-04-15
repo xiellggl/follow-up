@@ -4,6 +4,7 @@ package com.dayi.follow.service.impl;
 import com.dayi.common.util.BizResult;
 import com.dayi.follow.dao.dayi.CountMapper;
 import com.dayi.follow.dao.follow.*;
+import com.dayi.follow.enums.ConfigEnum;
 import com.dayi.follow.model.follow.Config;
 import com.dayi.follow.model.follow.FollowAgent;
 import com.dayi.follow.model.follow.FollowUp;
@@ -60,7 +61,7 @@ public class HighSeaServiceImpl implements HighSeaService {
         //判断是否超过私海上限
         int cusNum = followUpMapper.getCusNum(followId);
 
-        Config c = configMapper.getByMark(Config.MarkType.PS_NUM.name());
+        Config c = configMapper.get(ConfigEnum.PS_NUM.name());
 
         if (c == null) return BizResult.fail("请先设置私海上限!");
 
@@ -82,7 +83,7 @@ public class HighSeaServiceImpl implements HighSeaService {
 
         if (!followId.equals(fa.getFollowId())) return BizResult.fail("无法操作该用户!");
 
-        Config c = configMapper.getByMark(Config.MarkType.HS_RANGE.name());
+        Config c = configMapper.get(ConfigEnum.HS_RANGE.name());
 
         if (c == null) return BizResult.fail("请先设置公海范围！");
 
@@ -118,19 +119,10 @@ public class HighSeaServiceImpl implements HighSeaService {
     public BizResult set(ConfigVo[] vos) {
 
         for (ConfigVo vo : vos) {
-            Config c1 = configMapper.getByMark(vo.getMark());
-            if (c1 == null) {
-                c1 = new Config();
-                c1.setId(configMapper.getNewId());
-                c1.setMark(Config.MarkType.HS_RANGE);
-                c1.setValue(vo.getValue());
-                configMapper.add(c1);
-            } else {
-                c1.setValue(vo.getValue());
-                configMapper.updateAll(c1);
-            }
+            Config c = configMapper.get(vo.getMark());
+            c.setValue(vo.getValue());
+            configMapper.updateAll(c);
         }
-
         return BizResult.SUCCESS;
 
     }
@@ -140,24 +132,5 @@ public class HighSeaServiceImpl implements HighSeaService {
         return configMapper.findConfig();
     }
 
-    @Override
-    public HSConfigVo getConfig() {
-        HSConfigVo vo=new HSConfigVo();
-
-//        List<Config> vos = configMapper.findConfig();
-//        for (Config config : vos) {
-//            if (Config.MarkType.HS_RANGE.equals(config.getMark())){
-//                vo.setRange(config.getValue());
-//            }
-//            if (Config.MarkType.PS_NUM.equals(config.getMark())){
-//                vo.setRange(config.getValue());
-//            }
-//        }
-//        vo.setNum();
-//        vo.setRange();
-
-
-        return null;
-    }
 }
 

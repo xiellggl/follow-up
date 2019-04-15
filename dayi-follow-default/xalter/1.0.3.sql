@@ -9,10 +9,13 @@ ADD COLUMN `ware_house_date` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP COMMENT
 
 #建立配置表
 CREATE TABLE `config`  (
-  `id` varbinary(18) NOT NULL,
-  `mark` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `id` varchar(18) NOT NULL,
   `value` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建日期',
   `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改日期',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+#初始化配置表
+INSERT INTO `dayi_follow_all`.`config`(`id`, `value`, `create_time`, `update_time`) VALUES ('244218ca000001a1', null, '2019-04-11 15:24:58', '2019-04-11 15:24:58');
+INSERT INTO `dayi_follow_all`.`config`(`id`, `value`, `create_time`, `update_time`) VALUES ('244218ca000002a1', null, '2019-04-11 15:24:58', '2019-04-11 15:24:58');

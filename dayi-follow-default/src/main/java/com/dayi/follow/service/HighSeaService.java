@@ -38,6 +38,4 @@ public interface HighSeaService {
 
     List findConfig();
 
-    HSConfigVo getConfig();
-
 }
