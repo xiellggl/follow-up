@@ -7,32 +7,21 @@ import com.dayi.follow.dao.follow.*;
 import com.dayi.follow.model.follow.Config;
 import com.dayi.follow.model.follow.FollowAgent;
 import com.dayi.follow.model.follow.FollowUp;
-import com.dayi.follow.model.follow.Role;
-import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.HighSeaService;
-import com.dayi.follow.util.StringUtil;
 import com.dayi.follow.vo.SearchVo;
-import com.dayi.follow.vo.highsea.HSConfigQo;
+import com.dayi.follow.vo.ConfigVo;
 import com.dayi.follow.vo.highsea.HSConfigVo;
 import com.dayi.follow.vo.highsea.HSListVo;
 import com.dayi.mybatis.support.Page;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Properties;
+import java.util.Map;
 
 /**
  * 跟进人 业务实现类
@@ -121,43 +110,22 @@ public class HighSeaServiceImpl implements HighSeaService {
     }
 
     @Override
-    public BizResult set(HSConfigQo vo) {
+    public BizResult set(ConfigVo[] vos) {
 
-        List<String> deptIds = vo.getDeptIds();
-
-        String value = "";
-
-        for (int i = 0; i < deptIds.size(); i++) {
-            if (i == deptIds.size() - 1) {
-                value = value + deptIds.get(i);
+        for (ConfigVo vo : vos) {
+            Config c1 = configMapper.getByMark(vo.getMark());
+            if (c1 == null) {
+                c1 = new Config();
+                c1.setId(configMapper.getNewId());
+                c1.setMark(Config.MarkType.HS_RANGE);
+                c1.setValue(vo.getValue());
+                configMapper.add(c1);
             } else {
-                value = value + deptIds.get(i) + ",";
+                c1.setValue(vo.getValue());
+                configMapper.updateAll(c1);
             }
         }
 
-        Config c1 = configMapper.get(vo.getId());
-        if (c1 == null) {
-            c1 = new Config();
-            c1.setId(configMapper.getNewId());
-            c1.setMark(Config.MarkType.HS_RANGE);
-            c1.setValue(value);
-            configMapper.add(c1);
-        } else {
-            c1.setValue(value);
-            configMapper.updateAll(c1);
-        }
-
-        Config c2 = configMapper.get(vo.getId());
-        if (c2 == null) {
-            c2 = new Config();
-            c2.setId(configMapper.getNewId());
-            c2.setMark(Config.MarkType.PS_NUM);
-            c2.setValue(String.valueOf(vo.getNum()));
-            configMapper.add(c2);
-        } else {
-            c2.setValue(value);
-            configMapper.updateAll(c2);
-        }
         return BizResult.SUCCESS;
 
     }
@@ -165,6 +133,26 @@ public class HighSeaServiceImpl implements HighSeaService {
     @Override
     public List<HSConfigVo> findConfig() {
         return configMapper.findConfig();
+    }
+
+    @Override
+    public HSConfigVo getConfig() {
+        HSConfigVo vo=new HSConfigVo();
+
+//        List<Config> vos = configMapper.findConfig();
+//        for (Config config : vos) {
+//            if (Config.MarkType.HS_RANGE.equals(config.getMark())){
+//                vo.setRange(config.getValue());
+//            }
+//            if (Config.MarkType.PS_NUM.equals(config.getMark())){
+//                vo.setRange(config.getValue());
+//            }
+//        }
+//        vo.setNum();
+//        vo.setRange();
+
+
+        return null;
     }
 }
 

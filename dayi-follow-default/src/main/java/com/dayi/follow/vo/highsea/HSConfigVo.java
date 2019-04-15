@@ -28,7 +28,7 @@ public class HSConfigVo {
     }
 
     public String getMark() {
-        return Config.MarkType.getValueByName(mark);
+        return mark;
     }
 
     public void setMark(String mark) {

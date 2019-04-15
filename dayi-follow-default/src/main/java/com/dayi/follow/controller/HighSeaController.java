@@ -4,29 +4,24 @@ import com.dayi.common.util.BizResult;
 import com.dayi.follow.base.BaseController;
 import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.enums.AgentCusTypeEnum;
-import com.dayi.follow.model.follow.Agent;
-import com.dayi.follow.model.follow.Config;
 import com.dayi.follow.model.follow.Department;
 import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.HighSeaService;
 import com.dayi.follow.vo.LoginVo;
 import com.dayi.follow.vo.SearchVo;
-import com.dayi.follow.vo.highsea.HSConfigQo;
+import com.dayi.follow.vo.ConfigVo;
 import com.dayi.follow.vo.highsea.HSConfigVo;
 import com.dayi.mybatis.support.Page;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -84,9 +79,9 @@ public class HighSeaController extends BaseController {
     //公海设置
     @RequestMapping("setconfig")
     @ResponseBody
-    public BizResult setconfig(HttpServletRequest request, @Valid @RequestBody HSConfigQo vo, BindingResult result) {
+    public BizResult setconfig(HttpServletRequest request,@Valid ConfigVo[] vos, BindingResult result) {
         BizResult bizResult = checkErrors(result);
         if (!bizResult.isSucc()) return bizResult;//参数传入错误
-        return highSeaService.set(vo);
+        return highSeaService.set(vos);
     }
 }

@@ -2,17 +2,11 @@ package com.dayi.follow.service;
 
 
 import com.dayi.common.util.BizResult;
-import com.dayi.follow.model.follow.Agent;
-import com.dayi.follow.model.follow.AgentContact;
-import com.dayi.follow.model.follow.Config;
-import com.dayi.follow.vo.LoginLogVo;
 import com.dayi.follow.vo.SearchVo;
-import com.dayi.follow.vo.agent.AgentListVo;
-import com.dayi.follow.vo.highsea.HSConfigQo;
+import com.dayi.follow.vo.ConfigVo;
 import com.dayi.follow.vo.highsea.HSConfigVo;
 import com.dayi.mybatis.support.Page;
 
-import java.io.IOException;
 import java.util.List;
 /**
  * @author xiell
@@ -37,9 +31,10 @@ public interface HighSeaService {
     Page findPage(Page page, SearchVo searchVo);
 
     //公海设置
-    BizResult set(HSConfigQo vo);
+    BizResult set(ConfigVo[] vos);
 
-    List<HSConfigVo> findConfig();
+    List findConfig();
 
+    HSConfigVo getConfig();
 
 }

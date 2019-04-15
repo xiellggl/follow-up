@@ -1,18 +1,18 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
-<%@include file="/inc/followup/taglib.jsp"%>
+<%@include file="/inc/followup/taglib.jsp" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>公海设置</title>
-    <%@include file="/inc/followup/csslink.jsp"%>
+    <%@include file="/inc/followup/csslink.jsp" %>
     <link rel="stylesheet" type="text/css" media="all" href="/static/public/daterangepicker3/daterangepicker.css"/>
 </head>
 <body class="no-skin">
-<%@include file="/inc/followup/topbar.jsp"%>
+<%@include file="/inc/followup/topbar.jsp" %>
 <div class="main-container" id="main-container">
-    <%@include file="/inc/followup/sidebar.jsp"%>
+    <%@include file="/inc/followup/sidebar.jsp" %>
     <div class="main-content">
         <div class="main-content-inner">
             <div class="breadcrumbs ace-save-state breadcrumbs-fixed" id="breadcrumbs">
@@ -36,29 +36,40 @@
                     </h1>
                 </div>
                 <div class="row" style="margin-top: 30px;">
-                    <form class="form-horizontal" >
-                        <div class="clearfix maintop">
-                            <div class="col-xs-4 col-sm-6 hidden-xs bank-item">
-                                <div class="input-group">
-                                    <span class="fs16 mr50">公海范围：</span>
-                                    <select name="deptIds" id="bankType" multiple="multiple" class="ml30" style="height: 30px;display: none">
-                                        <c:forEach items="${deptTree}" var="item1" >
-                                            <c:forEach items="${list[0].values}" var="item2">
-                                                <option value="${item2}" ${item1.id eq item2 ? 'selected' : ''}>${item1.treeName}</option>
-                                            </c:forEach>
-                                        </c:forEach>
-                                    </select>
+                    <form class="form-horizontal">
+                        <c:forEach items="${list}" var="item">
+
+                            <c:if test="${ 'HS_RANGE' eq item.mark }"><%--判断标识--%>
+                                <div class="clearfix maintop">
+                                    <div class="col-xs-4 col-sm-6 hidden-xs bank-item">
+                                        <div class="input-group">
+                                            <span class="fs16 mr50">公海范围：</span>
+                                            <select name="deptIds" id="bankType" multiple="multiple" class="ml30"
+                                                    style="height: 30px;display: none">
+                                                <c:forEach items="${deptTree}" var="item1">
+                                                    <c:forEach items="${item.values}" var="item2">
+                                                        <option value="${item2}" ${item1.id eq item2 ? 'selected' : ''}>${item1.treeName}</option>
+                                                    </c:forEach>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="clearfix maintop" style="margin:30px auto">
-                            <div class="col-xs-4 col-sm-2 btn-sespan">
-                                <div class="input-group">
-                                    <span class="txt">私海客户数量上限：</span>
-                                    <input type="number" name="num" class="form-control" value="" style="left: 180px;top:-10px"/>
+                            </c:if>
+
+                            <c:if test="${ 'PS_NUM' eq item.mark }">
+                                <div class="clearfix maintop" style="margin:30px auto">
+                                    <div class="col-xs-4 col-sm-2 btn-sespan">
+                                        <div class="input-group">
+                                            <span class="txt">私海客户数量上限：</span>
+                                            <input type="number" name="num" class="form-control" value=""
+                                                   style="left: 180px;top:-10px"/>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
+                            </c:if>
+
+                        </c:forEach>
 
                         <div class="clearfix maintop">
                             <div class="col-sm-3 hidden-xs btn-sespan assignDateDiv">
@@ -74,7 +85,7 @@
 </div>
 </div>
 
-<%@include file="/inc/followup/script.jsp"%>
+<%@include file="/inc/followup/script.jsp" %>
 <script charset="UTF-8" async="" src="/static/public/daterangepicker3/moment.min.js"></script>
 <script>
     seajs.use(["common", "multiselect"], function (common) {
@@ -85,19 +96,18 @@
         var $bankType = $("#bankType");
         var selectedIds = [];   //选中的部门ID
         var newArr = [];
-        var config= new Object();
 
         $bankType.multiselect({
             nonSelectedText: '全部部门',
-            allSelectedText:"全部选中",
+            allSelectedText: "全部选中",
             nSelectedText: '个选中',
             buttonClass: 'btn btn-white',
             onChange: function (element, checked) {
                 var departments = $('#bankType option:selected');
-                $(departments).each(function(index, department){
+                $(departments).each(function (index, department) {
                     selectedIds.push([$(this).val()]);
                 });
-                newArr = Object.values(selectedIds).map(function(value,key,arr){
+                newArr = Object.values(selectedIds).map(function (value, key, arr) {
                     // console.log(typeof '' + value)
                     return parseInt('' + value);   //value是Object类型
                 });
@@ -107,21 +117,20 @@
 
 
         //提交公海设置参数
-        $("#save").on("click",function () {
+        $("#save").on("click", function () {
             var private_num = $("input[name='num']").val();
-            if( private_num < 0 || private_num == 0) {
+            if (private_num < 0 || private_num == 0) {
                 layer.alert("私海客户数量上限需要大于0");
                 return
             }
 
-            config.deptIds=newArr;
-            config.num=private_num;
 
             common.ajax.handle({
                 url: "/highsea/setconfig",
-                dataType:"json",
-                data: JSON.stringify(config),//将对象序列化成JSON字符串
-                contentType : 'application/json;charset=utf-8', //设置请求头信息
+                data: {
+                    deptIds: newArr,
+                    num: private_num
+                },
                 succback: function (data) {
                     common.successMsg(data.msg, "reload");
                 }
