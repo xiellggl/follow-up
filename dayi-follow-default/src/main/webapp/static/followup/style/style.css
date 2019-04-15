@@ -132,13 +132,23 @@ label.field-error {
 .fs16{
     font-size: 16px;
 }
+.ml5{
+    margin-left: 5px;
+}
 .ml30{
     margin-left: 30px;
 }
 .mr50{
     margin-right: 50px;
 }
+.small-hand{
+    cursor: pointer;
+}
 .txt {
     position: relative;left:0;top:16px;font-size: 16px;
+}
+.multiselect-container>li>a>label {
+    width: 188px;
+    padding-left: 35px;
 }
 
