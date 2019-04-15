@@ -84,8 +84,7 @@
         //多选下拉
         var $bankType = $("#bankType");
         var selectedIds = [];   //选中的部门ID
-        // [ deptIds: 1, deptIds:2, deptIds: 3 ]
-        // { deptIds: 1, deptIds:2, deptIds: 3 }
+        var newArr = [];
 
         $bankType.multiselect({
             nonSelectedText: '全部部门',
@@ -93,29 +92,17 @@
             nSelectedText: '个选中',
             buttonClass: 'btn btn-white',
             onChange: function (element, checked) {
-                var brands = $('#bankType option:selected');
-                $(brands).each(function(index, brand){
+                var departments = $('#bankType option:selected');
+                $(departments).each(function(index, department){
                     selectedIds.push([$(this).val()]);
                 });
-                console.log(getObjectValues(selectedIds));
+                newArr = Object.values(selectedIds).map(function(value,key,arr){
+                    // console.log(typeof '' + value)
+                    return parseInt('' + value);   //value是Object类型
+                });
+                console.log(newArr);
             }
         });
-
-        //对object的key进行遍历
-        function getObjectKeys(object) {
-            var keys = [];
-            for(var property in object)
-                keys.push(property);
-            return keys;
-        }
-
-        //对object的value进行遍历
-        function getObjectValues(object) {
-            var values = [];
-            for(var property in object)
-                values.push(object[property])
-            return values;
-        }
 
 
         //提交公海设置参数
@@ -128,7 +115,7 @@
             common.ajax.handle({
                 url: "/highsea/setconfig",
                 data: {
-                    deptIds: selectedIds,
+                    deptIds: newArr,
                     num: private_num
                 },
                 succback: function (data) {
