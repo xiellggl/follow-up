@@ -18,6 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -75,7 +76,7 @@ public class HighSeaController extends BaseController {
     public String getconfig(HttpServletRequest request, Model model) {
         List<HSConfigVo> list = highSeaService.findConfig();
         List<Department> deptTree = deptService.getDeptTree(null);
-        model.addAttribute("deptTree",deptTree);
+        model.addAttribute("deptTree", deptTree);
         model.addAttribute("list", list);
         return "highsea/high_sea_setting";
     }
@@ -83,7 +84,7 @@ public class HighSeaController extends BaseController {
     //公海设置
     @RequestMapping("setconfig")
     @ResponseBody
-    public BizResult setconfig(HttpServletRequest request, @Valid HSConfigQo vo, BindingResult result) {
+    public BizResult setconfig(HttpServletRequest request, @Valid @RequestBody HSConfigQo vo, BindingResult result) {
         BizResult bizResult = checkErrors(result);
         if (!bizResult.isSucc()) return bizResult;//参数传入错误
         return highSeaService.set(vo);

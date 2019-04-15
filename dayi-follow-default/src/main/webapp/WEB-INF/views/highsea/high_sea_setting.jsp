@@ -85,6 +85,7 @@
         var $bankType = $("#bankType");
         var selectedIds = [];   //选中的部门ID
         var newArr = [];
+        var config= new Object();
 
         $bankType.multiselect({
             nonSelectedText: '全部部门',
@@ -112,12 +113,15 @@
                 layer.alert("私海客户数量上限需要大于0");
                 return
             }
+
+            config.deptIds=newArr;
+            config.num=private_num;
+
             common.ajax.handle({
                 url: "/highsea/setconfig",
-                data: {
-                    deptIds: newArr,
-                    num: private_num
-                },
+                dataType:"json",
+                data: JSON.stringify(config),//将对象序列化成JSON字符串
+                contentType : 'application/json;charset=utf-8', //设置请求头信息
                 succback: function (data) {
                     common.successMsg(data.msg, "reload");
                 }

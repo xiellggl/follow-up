@@ -1,6 +1,7 @@
 package com.dayi.follow.vo.highsea;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -14,7 +15,7 @@ public class HSConfigQo {
     private String id;
 
     @NotEmpty(message = "{NotEmpty.HSConfigVo.deptIds}")
-    private List<String> deptIds;//部门范围
+    private List deptIds;//部门范围
     @NotNull(message = "{NotNull.HSConfigVo.num}")
     private Integer num;//数量
 
@@ -26,11 +27,11 @@ public class HSConfigQo {
         this.id = id;
     }
 
-    public List<String> getDeptIds() {
+    public List getDeptIds() {
         return deptIds;
     }
 
-    public void setDeptIds(List<String> deptIds) {
+    public void setDeptIds(List deptIds) {
         this.deptIds = deptIds;
     }
 
