@@ -62,8 +62,7 @@
                                     <div class="col-xs-4 col-sm-2 btn-sespan">
                                         <div class="input-group">
                                             <span class="txt">私海客户数量上限：</span>
-                                            <input type="number" name="num" class="form-control" value=""
-                                                   style="left: 180px;top:-10px"/>
+                                            <input type="number" name="num" class="form-control" value="" style="left: 180px;top:-10px"/>
                                         </div>
                                     </div>
                                 </div>
@@ -108,7 +107,6 @@
                     selectedIds.push([$(this).val()]);
                 });
                 newArr = Object.values(selectedIds).map(function (value, key, arr) {
-                    // console.log(typeof '' + value)
                     return parseInt('' + value);   //value是Object类型
                 });
                 console.log(newArr);
@@ -128,8 +126,8 @@
             common.ajax.handle({
                 url: "/highsea/setconfig",
                 data: {
-                    deptIds: newArr,
-                    num: private_num
+                    HS_RANGE: newArr.toString(),
+                    PS_NUM: private_num
                 },
                 succback: function (data) {
                     common.successMsg(data.msg, "reload");
