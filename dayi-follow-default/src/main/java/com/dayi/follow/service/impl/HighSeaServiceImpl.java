@@ -61,7 +61,7 @@ public class HighSeaServiceImpl implements HighSeaService {
         //判断是否超过私海上限
         int cusNum = followUpMapper.getCusNum(followId);
 
-        Config c = configMapper.get(ConfigEnum.PS_NUM.name());
+        Config c = configMapper.getByMark(ConfigEnum.PS_NUM.name());
 
         if (c == null) return BizResult.fail("请先设置私海上限!");
 
@@ -83,7 +83,7 @@ public class HighSeaServiceImpl implements HighSeaService {
 
         if (!followId.equals(fa.getFollowId())) return BizResult.fail("无法操作该用户!");
 
-        Config c = configMapper.get(ConfigEnum.HS_RANGE.name());
+        Config c = configMapper.getByMark(ConfigEnum.HS_RANGE.name());
 
         if (c == null) return BizResult.fail("请先设置公海范围！");
 
@@ -119,7 +119,7 @@ public class HighSeaServiceImpl implements HighSeaService {
     public BizResult set(ConfigVo[] vos) {
 
         for (ConfigVo vo : vos) {
-            Config c = configMapper.get(vo.getMark());
+            Config c = configMapper.getByMark(vo.getMark());
             c.setValue(vo.getValue());
             configMapper.updateAll(c);
         }

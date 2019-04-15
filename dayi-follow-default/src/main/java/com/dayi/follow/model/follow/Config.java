@@ -13,7 +13,16 @@ import java.util.List;
  * @date 2019/4/10
  */
 public class Config extends BaseModel {
+    private String mark;
     private String value;
+
+    public String getMark() {
+        return mark;
+    }
+
+    public void setMark(String mark) {
+        this.mark = mark;
+    }
 
     public String getValue() {
         return value;

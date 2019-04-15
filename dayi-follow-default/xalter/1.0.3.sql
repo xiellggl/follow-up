@@ -9,7 +9,8 @@ ADD COLUMN `ware_house_date` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP COMMENT
 
 #建立配置表
 CREATE TABLE `config`  (
-  `id` varchar(18) NOT NULL,
+  `id` varchar(18) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `mark` varchar(50) NOT NULL,
   `value` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建日期',
   `update_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改日期',

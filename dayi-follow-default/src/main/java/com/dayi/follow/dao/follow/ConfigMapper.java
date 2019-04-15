@@ -13,6 +13,8 @@ import java.util.List;
  * @date 2019/4/11
  */
 public interface ConfigMapper extends BaseMapper<Config> {
+    @Select(" select * from config where mark=#{mark} limit 1")
+    Config getByMark(@Param("mark") String mark);
 
     @Select(" select * from config ")
     List<HSConfigVo> findConfig();
