@@ -48,7 +48,7 @@
                                                     style="height: 30px;display: none">
                                                 <c:forEach items="${deptTree}" var="item1">
                                                     <c:forEach items="${item.values}" var="item2">
-                                                        <option value="${item2}" ${item1.id eq item2 ? 'selected' : ''}>${item1.treeName}</option>
+                                                        <option value="${item1.id}" ${item1.id eq item2 ? 'selected' : ''}>${item1.treeName}</option>
                                                     </c:forEach>
                                                 </c:forEach>
                                             </select>
@@ -95,7 +95,7 @@
         //多选下拉
         var $bankType = $("#bankType");
         var selectedIds = [];   //选中的部门ID
-        var newArr = [];
+        // var newArr = [];
 
         $bankType.multiselect({
             nonSelectedText: '全部部门',
@@ -107,10 +107,10 @@
                 $(departments).each(function (index, department) {
                     selectedIds.push([$(this).val()]);
                 });
-                newArr = Object.values(selectedIds).map(function (value, key, arr) {
-                    return parseInt('' + value);   //value是Object类型
-                });
-                console.log(newArr);
+                // newArr = Object.values(selectedIds).map(function (value, key, arr) {
+                //     return parseInt('' + value);   //value是Object类型
+                // });
+                // console.log(newArr);
             }
         });
 
@@ -123,7 +123,10 @@
                 return
             }
 
-            var arr = [{mark:'HS_RANGE',value:newArr.toString()},{mark:'PS_NUM',value:private_num}];
+            var arr = [
+                    { mark: 'HS_RANGE', value: selectedIds.toString() },
+                    { mark: 'PS_NUM', value: private_num }
+                ];
 
             common.ajax.handle({
                 url: "/highsea/setconfig",
