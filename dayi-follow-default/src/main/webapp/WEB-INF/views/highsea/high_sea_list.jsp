@@ -124,7 +124,7 @@
 
                             <c:if test="${not empty page.results}">
                                 <c:forEach items="${page.results}" var="item" >
-                                    <tr data-id="${item.id}">
+                                    <tr>
                                         <!-- 姓名 -->
                                         <td>${item.linkPersonFm}</td>
                                         <!-- 邀请码 -->
@@ -144,7 +144,7 @@
                             </c:if>
                             </tbody>
                         </table>
-                        <c:if test="${not empty list}">
+                        <c:if test="${not empty page.results}">
                             <div class="pagerBar" id="pagerBar">
                                 <common:page url="${pageUrl}" type="3" />
                             </div>
@@ -186,7 +186,7 @@
 
             common.ajax.handle({
                 method: 'get',
-                url: "/highsea/drags",
+                url: "/highsea/drag",
                 data: {
                     agentId: agentId
                 },
