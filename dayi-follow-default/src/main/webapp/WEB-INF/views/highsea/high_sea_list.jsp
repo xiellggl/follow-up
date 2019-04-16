@@ -100,6 +100,7 @@
                 <div class="space-10"></div>
                 <div class="row" id="listPan">
                     <div class="col-xs-12">
+                        <div class="maintop">数量：${page.results.size()}</div>
                         <table class="table table-striped table-bordered table-hover" id="dynamic-table">
                             <thead>
                             <tr>
