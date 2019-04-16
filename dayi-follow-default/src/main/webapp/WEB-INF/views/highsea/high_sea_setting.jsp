@@ -68,7 +68,7 @@
                                     <div class="col-xs-4 col-sm-2 btn-sespan">
                                         <div class="input-group">
                                             <span class="txt">私海客户数量上限：</span>
-                                            <input type="number" name="num" class="form-control" value=""
+                                            <input type="number" name="num" class="form-control" value="${item.value}"
                                                    style="left: 180px;top:-10px"/>
                                         </div>
                                     </div>
@@ -98,10 +98,6 @@
         //菜单高亮
         common.head();
 
-
-        //处理数据
-
-
         //多选下拉
         var $bankType = $("#bankType");
         var selectedIds = [];   //选中的部门ID
@@ -110,18 +106,17 @@
             nonSelectedText: '全部部门',
             allSelectedText: "全部选中",
             nSelectedText: '个选中',
-            buttonClass: 'btn btn-white',
-            onChange: function (element, checked) {
-                var departments = $('#bankType option:selected');
-                $(departments).each(function (index, department) {
-                    selectedIds.push([$(this).val()]);
-                });
-            }
+            buttonClass: 'btn btn-white'
         });
 
 
         //提交公海设置参数
         $("#save").on("click", function () {
+            var departments = $('#bankType option:selected');
+            $(departments).each(function (index, department) {
+                selectedIds.push([$(this).val()]);
+            });
+
             var private_num = $("input[name='num']").val();
             if (private_num < 0 || private_num == 0) {
                 layer.alert("私海客户数量上限需要大于0");
