@@ -20,11 +20,6 @@
         SELECT * from agent where org_id =#{orgId} and del_status != -1
     </select>
 
-    <select id="getAgentFund" parameterType="java.lang.Integer" resultType="java.math.BigDecimal">
-        SELECT IFNULL(SUM(amount), 0) FROM protocol where status in (1,2) and agent = #{agentId}
-    </select>
-
-
     <select id="getDayInCash" parameterType="map" resultType="java.math.BigDecimal">
         SELECT  IFNULL(SUM(accrual), 0) accrual FROM finance_account_log
         WHERE create_date between #{todayStart} and #{todayEnd} and pay_type = 1
