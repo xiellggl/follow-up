@@ -38,7 +38,8 @@
                 <div class="row" style="margin-top: 30px;">
                     <form class="form-horizontal">
                         <c:forEach items="${list}" var="item">
-
+                            <%--<c:set var="newValues" value="${item.values}"></c:set>--%>
+                            <%--<span>${newValues}</span>--%>
                             <c:if test="${ 'HS_RANGE' eq item.mark }"><%--判断标识--%>
                                 <div class="clearfix maintop">
                                     <div class="col-xs-4 col-sm-6 hidden-xs bank-item">
@@ -47,9 +48,9 @@
                                             <select name="deptIds" id="bankType" multiple="multiple" class="ml30"
                                                     style="height: 30px;display: none">
                                                 <c:forEach items="${deptTree}" var="item1">
-                                                    <c:forEach items="${item.values}" var="item2">
-                                                        <option value="${item1.id}" ${item1.id eq item2 ? 'selected' : ''}>${item1.treeName}</option>
-                                                    </c:forEach>
+
+                                                        <option value="${item1.id}" ${ fn:contains(item.value,item1.id)? 'selected':''}>${item1.treeName}</option>
+
                                                 </c:forEach>
                                             </select>
                                         </div>
