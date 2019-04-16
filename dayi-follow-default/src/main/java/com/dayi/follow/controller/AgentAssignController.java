@@ -59,6 +59,9 @@ public class AgentAssignController extends BaseController{
         return "/agent/assign_list";
     }
 
+    /**
+     * 代理商分配列表导出
+     */
     @RequestMapping(value = "/list/export")
     @ResponseBody
     public void orgExport(HttpServletRequest request, HttpServletResponse response, SearchVo searchVo) throws IOException {
