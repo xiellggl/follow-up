@@ -76,7 +76,7 @@ public class UserController extends BaseController {
 
     private static Logger logger = LoggerFactory.getLogger(UserController.class);
 
-
+    //登录页面
     @RequestMapping(value = "/login")
     public String login(HttpServletRequest request) {
         return "login";
@@ -96,13 +96,14 @@ public class UserController extends BaseController {
             return userService.login(request, loginVo);
         }
     }
-
+    //登出
     @RequestMapping("loginout")
     public String loginOut(HttpServletRequest request, HttpServletResponse response) {
         AuthorizationManager.cleanAllAuthenticationInfo(request, response);
         return "redirect:/user/login";
     }
 
+    //用户列表
     @RequestMapping(value = "/list")
     public String list(HttpServletRequest request, Model model, Page page) {
         String name = request.getParameter("name");
