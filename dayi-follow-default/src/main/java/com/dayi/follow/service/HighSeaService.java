@@ -28,10 +28,7 @@ public interface HighSeaService {
     BizResult kick(String followId, Integer agentId);
 
     //公海查询列表
-    Page findPage(Page page, SearchVo searchVo);
-
-    //公海查询列表
-    Page findPageOrderBy(Page page, SearchVo searchVo);
+    Page findPage(Page page, SearchVo searchVo,Integer orderType);
 
     //公海设置
     BizResult set(ConfigVo[] vos);

@@ -44,16 +44,8 @@ public class HighSeaController extends BaseController {
 
     //公海列表-先以羊毛党作为基础
     @RequestMapping("list")
-    public String list(Model model, SearchVo searchVo, Page page) {
-        page = highSeaService.findPage(page, searchVo);
-        model.addAttribute("cusType", AgentCusTypeEnum.values());
-        model.addAttribute("page", page);
-        return "highsea/high_sea_list";
-    }
-
-    @RequestMapping("orderlist")
-    public String orderlist(Model model, SearchVo searchVo, Page page) {
-        page = highSeaService.findPage(page, searchVo);
+    public String list(Model model, SearchVo searchVo, Page page, Integer orderType) {
+        page = highSeaService.findPage(page, searchVo, orderType);
         model.addAttribute("cusType", AgentCusTypeEnum.values());
         model.addAttribute("page", page);
         return "highsea/high_sea_list";

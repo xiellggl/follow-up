@@ -502,6 +502,12 @@
             and a.ware_house_date BETWEEN #{searchVo.warehouseDateStart} and #{searchVo.warehouseDateEnd}
         </if>
 
+        <if test="1 == orderType">
+            order by b.create_date asc
+        </if>
+        <if test="2 == orderType">
+            order by b.create_date desc
+        </if>
 
     </select>
 

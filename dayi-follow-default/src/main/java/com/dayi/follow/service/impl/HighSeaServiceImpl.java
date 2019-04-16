@@ -106,13 +106,8 @@ public class HighSeaServiceImpl implements HighSeaService {
     }
 
     @Override
-    public Page<HSListVo> findPage(Page page, SearchVo searchVo) {
-        return followAgentMapper.findHSPage(page, searchVo, dayiDataBaseStr);
-    }
-
-    @Override
-    public Page findPageOrderBy(Page page, SearchVo searchVo) {
-        return null;
+    public Page<HSListVo> findPage(Page page, SearchVo searchVo, Integer orderType) {
+        return followAgentMapper.findHSPage(page, searchVo, orderType, dayiDataBaseStr);
     }
 
     @Override
