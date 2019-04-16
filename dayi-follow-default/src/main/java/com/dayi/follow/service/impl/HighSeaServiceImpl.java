@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,6 +73,7 @@ public class HighSeaServiceImpl implements HighSeaService {
 
         fa.setHighSeaFlag(FollowAgent.NOT_HIGHSEA.getId());
         fa.setFollowId(followId);
+        fa.setUpdateTime(new Date());
         return followAgentMapper.updateAll(fa) == 1 ? BizResult.SUCCESS : BizResult.FAIL;
     }
 
@@ -102,6 +104,10 @@ public class HighSeaServiceImpl implements HighSeaService {
 
         fa.setFollowId(null);
         fa.setHighSeaFlag(FollowAgent.IS_HIGHSEA.getId());
+
+        Date date = new Date();
+        fa.setWarehouseDate(date);
+        fa.setUpdateTime(date);
         return followAgentMapper.updateAll(fa) == 1 ? BizResult.SUCCESS : BizResult.FAIL;
     }
 

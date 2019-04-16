@@ -481,7 +481,7 @@
     </update>
 
     <select id="findHSPage" parameterType="map" resultType="com.dayi.follow.vo.highsea.HSListVo">
-        SELECT b.link_person,b.invite_code,a.customer_type,b.create_date,a.ware_house_date from follow_agent a
+        SELECT b.link_person,b.invite_code,a.customer_type,b.create_date,a.warehouse_date from follow_agent a
         left join (
             SELECT id,link_person,invite_code,create_date,mobile from ${assistDataBase}.agent where del_status != -1
         )b on b.id=a.agent_id
