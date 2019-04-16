@@ -60,7 +60,7 @@ public class HighSeaServiceImpl implements HighSeaService {
         if (!StringUtils.isBlank(fa.getFollowId())) return BizResult.FAIL;
 
         //判断是否超过私海上限
-        int cusNum = followUpMapper.getCusNum(followId);
+        int cusNum = followUpMapper.getCusNum(followId, dayiDataBaseStr);
 
         Config c = configMapper.getByMark(ConfigEnum.PS_NUM.name());
 
@@ -72,6 +72,7 @@ public class HighSeaServiceImpl implements HighSeaService {
         if (cusNum >= limit) return BizResult.fail("超过私海限制！");
 
         fa.setHighSeaFlag(FollowAgent.NOT_HIGHSEA.getId());
+        fa.setWarehouseDate(null);
         fa.setFollowId(followId);
         fa.setUpdateTime(new Date());
         return followAgentMapper.updateAll(fa) == 1 ? BizResult.SUCCESS : BizResult.FAIL;

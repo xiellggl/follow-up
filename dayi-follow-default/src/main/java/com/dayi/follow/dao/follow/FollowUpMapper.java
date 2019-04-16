@@ -52,5 +52,5 @@ public interface FollowUpMapper extends BaseMapper<FollowUp> {
 
     BigDecimal getManageFund(@Param("searchVo") SearchVo searchVo, @Param("followId") String followId, @Param("assistDataBase") String assistDataBase);
 
-    int getCusNum(@Param("followId") String followId);
+    int getCusNum(@Param("followId") String followId, @Param("assistDataBase") String assistDataBase);
 }
