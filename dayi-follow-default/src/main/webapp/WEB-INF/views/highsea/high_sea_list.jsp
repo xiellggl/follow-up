@@ -116,21 +116,21 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:if test="${empty list}">
+                            <c:if test="${empty page.results}">
                                 <tr>
                                     <td colspan="6" class="no_data">暂无数据记录</td>
                                 </tr>
                             </c:if>
 
-                            <c:if test="${not empty list}">
-                                <c:forEach items="${list}" var="item" >
+                            <c:if test="${not empty page.results}">
+                                <c:forEach items="${page.results}" var="item" >
                                     <tr data-id="${item.id}">
                                         <!-- 姓名 -->
-                                        <td>${item.LinkPersonFm}</td>
+                                        <td>${item.linkPersonFm}</td>
                                         <!-- 邀请码 -->
                                         <td>${item.inviteCode}</td>
                                         <%--客户类型--%>
-                                        <td>${item.CustomerTypeStr}</td>
+                                        <td>${item.customerTypeStr}</td>
                                         <!-- 注册时间 -->
                                         <td class="hidden-xs"><fmt:formatDate value="${item.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                         <!-- 入库时间 -->

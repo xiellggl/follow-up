@@ -3,11 +3,15 @@ package com.dayi.follow.vo.highsea;
 import com.dayi.follow.enums.AgentCusTypeEnum;
 import com.dayi.follow.util.CommonUtils;
 
+import java.util.Date;
+
 /**
  * @author xiell
  * @date 2019/4/10
  */
 public class HSListVo {
+    private Integer id;
+
     private String linkPerson;//姓名
     private String idCard;//身份证
 
@@ -15,9 +19,17 @@ public class HSListVo {
 
     private Integer customerType;//客户类型
 
-    private String createDate;//注册时间
+    private Date createDate;//注册时间
 
-    private String warehouseDate;//入库时间
+    private Date warehouseDate;//入库时间
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getLinkPersonFm() {
         return CommonUtils.getHideName(linkPerson, idCard);
@@ -43,19 +55,19 @@ public class HSListVo {
         this.customerType = customerType;
     }
 
-    public String getCreateDate() {
+    public Date getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(String createDate) {
+    public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
 
-    public String getWarehouseDate() {
+    public Date getWarehouseDate() {
         return warehouseDate;
     }
 
-    public void setWarehouseDate(String warehouseDate) {
+    public void setWarehouseDate(Date warehouseDate) {
         this.warehouseDate = warehouseDate;
     }
 }
