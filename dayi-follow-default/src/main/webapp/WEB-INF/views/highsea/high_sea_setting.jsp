@@ -38,8 +38,9 @@
                 <div class="row" style="margin-top: 30px;">
                     <form class="form-horizontal">
                         <c:forEach items="${list}" var="item">
-                            <%--<c:set var="newValues" value="${item.values}"></c:set>--%>
-                            <%--<span>${newValues}</span>--%>
+
+                            <c:set var="flag" value="false"></c:set>
+
                             <c:if test="${ 'HS_RANGE' eq item.mark }"><%--判断标识--%>
                                 <div class="clearfix maintop">
                                     <div class="col-xs-4 col-sm-6 hidden-xs bank-item">
@@ -48,9 +49,13 @@
                                             <select name="deptIds" id="bankType" multiple="multiple" class="ml30"
                                                     style="height: 30px;display: none">
                                                 <c:forEach items="${deptTree}" var="item1">
-
-                                                        <option value="${item1.id}" ${ fn:contains(item.value,item1.id)? 'selected':''}>${item1.treeName}</option>
-
+                                                    <c:forEach items="${item.values}" var="item2">
+                                                        <c:if test="${item1.id eq item2}">
+                                                            <c:set var="flag" value="true"></c:set>
+                                                        </c:if>
+                                                    </c:forEach>
+                                                    <option value="${item1.id}" ${ flag eq true? 'selected':''}>${item1.treeName}</option>
+                                                    <c:set var="flag" value="false"></c:set>
                                                 </c:forEach>
                                             </select>
                                         </div>
@@ -93,10 +98,13 @@
         //菜单高亮
         common.head();
 
+
+        //处理数据
+
+
         //多选下拉
         var $bankType = $("#bankType");
         var selectedIds = [];   //选中的部门ID
-        // var newArr = [];
 
         $bankType.multiselect({
             nonSelectedText: '全部部门',
@@ -108,10 +116,6 @@
                 $(departments).each(function (index, department) {
                     selectedIds.push([$(this).val()]);
                 });
-                // newArr = Object.values(selectedIds).map(function (value, key, arr) {
-                //     return parseInt('' + value);   //value是Object类型
-                // });
-                // console.log(newArr);
             }
         });
 
@@ -125,9 +129,9 @@
             }
 
             var arr = [
-                    { mark: 'HS_RANGE', value: selectedIds.toString() },
-                    { mark: 'PS_NUM', value: private_num }
-                ];
+                {mark: 'HS_RANGE', value: selectedIds.toString()},
+                {mark: 'PS_NUM', value: private_num}
+            ];
 
             common.ajax.handle({
                 url: "/highsea/setconfig",
