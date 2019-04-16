@@ -82,6 +82,9 @@
                                            placeholder="入库时间"/>
                                 </div>
                             </div>
+                            <div>
+                                <input type="hidden" name="orderType" value="">
+                            </div>
                             <div class="col-xs-4 col-sm-2 btn-sespan">
                                 <div class="btn-group dropup">
                                     <button type="submit" class="btn btn-xs btn-purple">
@@ -105,8 +108,8 @@
                                 <th>客户类型</th>
                                 <th class="hidden-xs">
                                     注册时间
-                                    <span class="glyphicon glyphicon-triangle-top small-hand ml5" aria-hidden="true"></span>
-                                    <span class="glyphicon glyphicon-triangle-bottom small-hand ml5" aria-hidden="true"></span>
+                                    <span class="glyphicon glyphicon-triangle-top small-hand ml5 orderUp" aria-hidden="true"></span>
+                                    <span class="glyphicon glyphicon-triangle-bottom small-hand ml5 orderDown" aria-hidden="true"></span>
                                 </th>
                                 <th class="hidden-sm hidden-xs">入库时间</th>
                                 <th>操作</th>
@@ -191,7 +194,22 @@
                     common.successMsg(data.msg, "reload");
                 }
             });
-        })
+        });
+
+        //注册时间升序
+        $(".orderUp").on("click",function (e) {
+            e.preventDefault();
+            $("input[name='orderType']").val(1);
+            $(".btn-purple").click();
+        });
+
+        //注册时间降序
+        $(".orderDown").on("click",function (e) {
+            e.preventDefault();
+            $("input[name='orderType']").val(2);
+            $(".btn-purple").click();
+        });
+
     });
 </script>
 </body>
