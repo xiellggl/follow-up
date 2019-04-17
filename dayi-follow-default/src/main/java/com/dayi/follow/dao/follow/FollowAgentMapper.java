@@ -3,11 +3,10 @@ package com.dayi.follow.dao.follow;
 import com.dayi.follow.model.follow.Agent;
 import com.dayi.follow.model.follow.AgentContact;
 import com.dayi.follow.model.follow.FollowAgent;
+import com.dayi.follow.vo.SearchVo;
 import com.dayi.follow.vo.agent.AgentContactVo;
 import com.dayi.follow.vo.agent.AgentListVo;
 import com.dayi.follow.vo.agent.AssignListVo;
-import com.dayi.follow.vo.SearchVo;
-import com.dayi.follow.vo.followup.FollowUpListVo;
 import com.dayi.follow.vo.highsea.HSListVo;
 import com.dayi.mybatis.support.BaseMapper;
 import com.dayi.mybatis.support.Page;
@@ -82,9 +81,6 @@ public interface FollowAgentMapper extends BaseMapper<FollowAgent> {
     //获取开户数
     int getOpenAccountNum(@Param("followId") String followId, @Param("startDate") String startDate, @Param("endDate") String endDate, @Param("assistDataBase") String assistDataBase);
 
-    BigDecimal getAgentFund(@Param("followId") String followId, @Param("deadline") String deadline, @Param("assistDataBase") String assistDataBase);
-
-
     //检索需要扔进公海的客户
     List<String> searchHGCusID();
 
@@ -92,5 +88,8 @@ public interface FollowAgentMapper extends BaseMapper<FollowAgent> {
     void updateHSFlagBatch(List list);
 
     Page<HSListVo> findHSPage(Page page, @Param("searchVo") SearchVo searchVo, @Param("orderType") Integer orderType, @Param("assistDataBase") String assistDataBase);
+
+    //返回代理商代理中的协议数量
+    int getProtocolNum(@Param("agentId") Integer agentId, @Param("assistDataBase") String assistDataBase);
 
 }

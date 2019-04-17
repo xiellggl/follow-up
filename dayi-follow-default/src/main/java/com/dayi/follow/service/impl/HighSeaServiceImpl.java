@@ -103,6 +103,10 @@ public class HighSeaServiceImpl implements HighSeaService {
             return BizResult.fail("无法操作该用户!");
         }
 
+        //判断当前是否代理中
+        int num = followAgentMapper.getProtocolNum(agentId, dayiDataBaseStr);
+        if (num > 0) return BizResult.fail("该用户有代理中的协议，操作失败！");
+
         fa.setFollowId(null);
         fa.setHighSeaFlag(FollowAgent.IS_HIGHSEA.getId());
 

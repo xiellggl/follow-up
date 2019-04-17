@@ -458,15 +458,6 @@
         WHERE a.follow_id =#{followId}
     </select>
 
-    <select id="getAgentFund" parameterType="java.lang.String" resultType="java.math.BigDecimal">
-        SELECT ifnull(sum(0.8*b.cargo_interest+b.cargo_interest_puchas),0) from follow_agent a
-        left join (
-            SELECT agent_org_id,cargo_interest,cargo_interest_puchas from ${assistDataBase}.finance_account
-        )b on b.agent_org_id = a.agent_id
-        where b.agent_org_id is not NULL
-        and a.follow_id =#{followId}
-    </select>
-
     <select id="searchHGCus" parameterType="java.lang.String" resultType="java.lang.String">
 
     </select>
@@ -509,6 +500,10 @@
             order by b.create_date desc
         </if>
 
+    </select>
+
+    <select id="getProtocolNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+       SELECT count(0) FROM ${assistDataBase}.protocol WHERE STATUS in (1,2) AND agent = #{agentId}
     </select>
 
 </mapper>
