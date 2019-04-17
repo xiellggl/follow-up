@@ -325,7 +325,7 @@
                     agentId: agentId
                 },
                 succback: function (data) {
-                    common.successMsg(data.msg, 'reload');
+                    common.successMsg(data.msg);
                 }
             });
         });
