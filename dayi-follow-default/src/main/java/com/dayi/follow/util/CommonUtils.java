@@ -16,7 +16,7 @@ public class CommonUtils {
         if (!StringUtils.isBlank(betweenDate)) {
             String[] split = betweenDate.split(" - ");
             s = split[0];
-            DateTime parse = DateTime.parse(betweenDate, DateTimeFormat.forPattern("yyyy-MM-dd"));
+            DateTime parse = DateTime.parse(s, DateTimeFormat.forPattern("yyyy-MM-dd"));
             s = parse.millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
         }
         return s;
@@ -27,7 +27,7 @@ public class CommonUtils {
         if (!StringUtils.isBlank(betweenDate)) {
             String[] split = betweenDate.split(" - ");
             s = split[1];
-            DateTime parse = DateTime.parse(betweenDate, DateTimeFormat.forPattern("yyyy-MM-dd"));
+            DateTime parse = DateTime.parse(s, DateTimeFormat.forPattern("yyyy-MM-dd"));
             s = parse.millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
         }
         return s;
