@@ -23,7 +23,7 @@ public interface ReportService {
     Page findTeamDaily(Page page, String deptId, String betweenDate);
 
     //团队日报详情
-    Page findTeamDailyDetail(Page page, String deptId, String date);
+    List<ReportVo> findTeamDailyDetail(String deptId, String date);
 
     //导出团队日报详情
     List<ReportVo> exportTeamDailyDetail(String deptId, String date);
