@@ -59,25 +59,36 @@ public class HighSeaServiceImpl implements HighSeaService {
 
         if (!StringUtils.isBlank(fa.getFollowId())) return BizResult.FAIL;
 
-        //判断是否超过私海上限
-        int cusNum = followUpMapper.getCusNum(followId, dayiDataBaseStr);
+        //判断是否在公海范围
+        Config c1 = configMapper.getByMark(ConfigEnum.HS_RANGE.name());
 
-        Config c = configMapper.getByMark(ConfigEnum.PS_NUM.name());
+        if (c1 == null || StringUtils.isBlank(c1.getValue())) return BizResult.fail("请先设置公海范围！");
 
-        if (c == null) return BizResult.fail("请先设置私海上限!");
+        String[] split = StringUtils.split(c1.getValue(), ",");
 
-        String value = c.getValue();
+        FollowUp followUp = followUpMapper.get(followId);
+        String deptId = followUp.getDeptId();
 
-        if (StringUtils.isBlank(value)) return BizResult.fail("请先设置私海上限!");
-        Integer limit = Integer.valueOf(value);
+        if (ArrayUtils.contains(split, deptId)) {
+            //判断是否超过私海上限
+            int cusNum = followUpMapper.getCusNum(followId, dayiDataBaseStr);
 
-        if (cusNum >= limit) return BizResult.fail("超过私海限制！");
+            Config c2 = configMapper.getByMark(ConfigEnum.PS_NUM.name());
 
-        fa.setHighSeaFlag(FollowAgent.NOT_HIGHSEA.getId());
-        fa.setWarehouseDate(null);
-        fa.setFollowId(followId);
-        fa.setUpdateTime(new Date());
-        return followAgentMapper.updateAll(fa) == 1 ? BizResult.SUCCESS : BizResult.FAIL;
+            if (c2 == null || StringUtils.isBlank(c2.getValue())) return BizResult.fail("请先设置私海上限!");
+
+            Integer limit = Integer.valueOf(c2.getValue());
+
+            if (cusNum >= limit) return BizResult.fail("超过私海限制！");
+
+            fa.setHighSeaFlag(FollowAgent.NOT_HIGHSEA.getId());
+            fa.setWarehouseDate(null);
+            fa.setFollowId(followId);
+            fa.setUpdateTime(new Date());
+            return followAgentMapper.updateAll(fa) == 1 ? BizResult.SUCCESS : BizResult.FAIL;
+        }else {
+            return BizResult.fail("您不在公海范围内！");
+        }
     }
 
     @Override
@@ -90,13 +101,9 @@ public class HighSeaServiceImpl implements HighSeaService {
 
         Config c = configMapper.getByMark(ConfigEnum.HS_RANGE.name());
 
-        if (c == null) return BizResult.fail("请先设置公海范围！");
+        if (c == null || StringUtils.isBlank(c.getValue())) return BizResult.fail("请先设置公海范围！");
 
-        String value = c.getValue();
-
-        if (StringUtils.isBlank(value)) return BizResult.fail("请先设置公海范围！");
-
-        String[] split = StringUtils.split(value, ",");
+        String[] split = StringUtils.split(c.getValue(), ",");
 
         FollowUp followUp = followUpMapper.get(followId);
         String deptId = followUp.getDeptId();
