@@ -4,7 +4,7 @@
     <parent>
         <artifactId>dayi-parent</artifactId>
         <groupId>com.dayi</groupId>
-        <version>1.0.3</version>
+        <version>1.0.5</version>
     </parent>
     <artifactId>dayi-follow</artifactId>
     <name>${project.artifactId}</name>

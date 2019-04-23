@@ -1,6 +1,6 @@
 package com.dayi.follow.vo;
 
-import com.dayi.user.model.Role;
+import com.dayi.user.manager.model.Role;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
