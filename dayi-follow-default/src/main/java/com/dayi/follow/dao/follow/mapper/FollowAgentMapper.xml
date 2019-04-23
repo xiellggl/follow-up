@@ -494,10 +494,10 @@
         </if>
 
         <if test="1 == orderType">
-            order by b.create_date asc
+            order by a.warehouse_date asc
         </if>
         <if test="2 == orderType">
-            order by b.create_date desc
+            order by a.warehouse_date desc
         </if>
 
     </select>
