@@ -67,6 +67,8 @@ public class HighSeaServiceImpl implements HighSeaService {
         if (c == null) return BizResult.fail("请先设置私海上限!");
 
         String value = c.getValue();
+
+        if (StringUtils.isBlank(value)) return BizResult.fail("请先设置私海上限!");
         Integer limit = Integer.valueOf(value);
 
         if (cusNum >= limit) return BizResult.fail("超过私海限制！");

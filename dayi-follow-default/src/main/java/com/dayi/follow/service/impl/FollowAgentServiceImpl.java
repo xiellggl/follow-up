@@ -7,12 +7,10 @@ import com.dayi.component.annotation.Log;
 import com.dayi.component.model.BaseLog;
 import com.dayi.follow.component.UserComponent;
 import com.dayi.follow.dao.dayi.AgentMapper;
+import com.dayi.follow.dao.follow.ConfigMapper;
 import com.dayi.follow.dao.follow.FollowAgentMapper;
 import com.dayi.follow.dao.follow.FollowUpMapper;
-import com.dayi.follow.enums.AgentCusTypeEnum;
-import com.dayi.follow.enums.BankTypeEnum;
-import com.dayi.follow.enums.CommonEnums;
-import com.dayi.follow.enums.MemberStatusEnum;
+import com.dayi.follow.enums.*;
 import com.dayi.follow.model.follow.*;
 import com.dayi.follow.service.AgentService;
 import com.dayi.follow.service.DeptService;
@@ -60,6 +58,8 @@ public class FollowAgentServiceImpl implements FollowAgentService {
     private UserComponent userComponent;
     @Resource
     private UserService ucUserService;
+    @Resource
+    private ConfigMapper configMapper;
     @Value("${dayi.dataBase}")
     String dayiDataBaseStr;
 
@@ -299,7 +299,36 @@ public class FollowAgentServiceImpl implements FollowAgentService {
 
     @Override
     @Log(target = OperateLog.class, action = BaseLog.LogAction.ADD, what = "代理商分配管理", note = "批量分配跟进人")
-    public BizResult addBatch(List<FollowAgent> followAgents) {
+    public BizResult addBatch(String agentIds, String followId) {
+        //判断是否超过私海上限
+        int cusNum = followUpMapper.getCusNum(followId, dayiDataBaseStr);
+
+        Config c = configMapper.getByMark(ConfigEnum.PS_NUM.name());
+
+        if (c == null) return BizResult.fail("请先设置私海上限!");
+
+        String value = c.getValue();
+        if (StringUtils.isBlank(value)) return BizResult.fail("请先设置私海上限!");
+
+        Integer limit = Integer.valueOf(value);
+
+        if (cusNum >= limit) return BizResult.fail("超过私海限制！");
+
+        List<FollowAgent> followAgents = new ArrayList<FollowAgent>();
+
+        String[] split = StringUtils.split(agentIds, ",");
+        for (String s : split) {
+            Agent agent = agentService.get(Integer.valueOf(s));
+            if (agent == null) return BizResult.FAIL;
+
+            FollowAgent followAgent = new FollowAgent();
+            followAgent.setAgentId(Integer.valueOf(s));
+            followAgent.setFollowId(followId);
+
+            followAgents.add(followAgent);
+        }
+
+
         for (FollowAgent followAgent : followAgents) {
             BizResult add = this.add(followAgent);
             if (!add.isSucc()) return BizResult.FAIL;
