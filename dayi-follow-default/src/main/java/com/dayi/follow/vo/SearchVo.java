@@ -109,11 +109,7 @@ public class SearchVo {
     }
 
     public String getChangeDateStart() {
-        if (!StringUtils.isBlank(changeDate)) {
-            String[] split = changeDate.split(" - ");
-            changeDateStart = split[0];
-        }
-        return changeDateStart;
+        return CommonUtils.getStart(changeDate);
     }
 
     public void setChangeDateStart(String changeDateStart) {
@@ -121,13 +117,7 @@ public class SearchVo {
     }
 
     public String getChangeDateEnd() {
-        if (!StringUtils.isBlank(changeDate)) {
-            String[] split = changeDate.split(" - ");
-            changeDateEnd = split[1];
-            DateTime parse = DateTime.parse(changeDateEnd, DateTimeFormat.forPattern("yyyy-MM-dd"));
-            changeDateEnd = parse.millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
-        }
-        return changeDateEnd;
+        return CommonUtils.getEnd(changeDate);
     }
 
     public String getWarehouseDateStart() {
@@ -287,11 +277,7 @@ public class SearchVo {
     }
 
     public String getCreateDateStart() {
-        if (!StringUtils.isBlank(createDate)) {
-            String[] split = createDate.split(" - ");
-            createDateStart = split[0];
-        }
-        return createDateStart;
+        return CommonUtils.getStart(createDate);
     }
 
     public void setCreateDateStart(String createDateStart) {
@@ -299,11 +285,7 @@ public class SearchVo {
     }
 
     public String getCreateDateEnd() {
-        if (!StringUtils.isBlank(createDate)) {
-            String[] split = createDate.split(" - ");
-            createDateEnd = split[1];
-        }
-        return createDateEnd;
+        return CommonUtils.getEnd(createDate);
     }
 
     public void setCreateDateEnd(String createDateEnd) {
@@ -311,11 +293,7 @@ public class SearchVo {
     }
 
     public String getAssignDateStart() {
-        if (!StringUtils.isBlank(assignDate)) {
-            String[] split = assignDate.split(" - ");
-            assignDateStart = split[0];
-        }
-        return assignDateStart;
+        return CommonUtils.getStart(assignDate);
     }
 
     public void setAssignDateStart(String assignDateStart) {
@@ -323,11 +301,7 @@ public class SearchVo {
     }
 
     public String getAssignDateEnd() {
-        if (!StringUtils.isBlank(assignDate)) {
-            String[] split = assignDate.split(" - ");
-            assignDateEnd = split[1];
-        }
-        return assignDateEnd;
+        return CommonUtils.getEnd(assignDate);
     }
 
     public void setAssignDateEnd(String assignDateEnd) {
