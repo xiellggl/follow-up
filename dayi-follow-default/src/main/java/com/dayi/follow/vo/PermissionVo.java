@@ -2,7 +2,7 @@ package com.dayi.follow.vo;
 
 import com.dayi.common.util.NameItem;
 import com.dayi.common.util.NameItems;
-import com.dayi.user.model.Permission;
+import com.dayi.user.manager.model.Permission;
 
 import javax.persistence.Transient;
 import java.util.List;

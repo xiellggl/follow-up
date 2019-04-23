@@ -65,11 +65,12 @@ public class AgentMessageConsumer extends AbstractConsumer {
         UserRegistration registration = messageExt.getContent(UserRegistration.class);
 
         // 别的平台注册消息，不做处理。 当前平台注册来源finance(前端注册)、xinhuo(星火)和后台添加
-        if (!DayiConstant.SystemId.SYSTEM_FINANCE.getName().equals(registration.getRegisterSource())
+        if(!DayiConstant.SystemId.SYSTEM_FINANCE.getName().equals(registration.getRegisterSource())
                 && !DayiConstant.SystemId.SYSTEM_SYS.getName().equals(registration.getRegisterSource())
-                && !DayiConstant.SystemId.SYSTEM_ANDROID.getName().equals(registration.getRegisterSource())
-                && !DayiConstant.SystemId.SYSTEM_IOS.getName().equals(registration.getRegisterSource())
-                && !"xinhuo".equals(registration.getRegisterSource())) {
+                && !DayiConstant.SystemId.SYSTEM_FINANCE_ANDROID.getName().equals(registration.getRegisterSource())
+                && !DayiConstant.SystemId.SYSTEM_FINANCE_IOS.getName().equals(registration.getRegisterSource())
+                && !DayiConstant.SystemId.SYSTEM_FINANCE_H5.getName().equals(registration.getRegisterSource())
+                && !"xinhuo".equals(registration.getRegisterSource())){
             log.info("非塑如意用户，不作处理");
             return true;
         }
