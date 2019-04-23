@@ -1,5 +1,13 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@include file="/inc/followup/taglib.jsp"%>
+<%--权限判断--%>
+<c:set var="highseaSet" value="false" />
+<c:forEach items="${permissions}" var="item">
+    <%--团队代理商分配--%>
+    <c:if test="${item.url eq '/highsea/getconfig'}">
+        <c:set var="highseaSet" value="true" />
+    </c:if>
+</c:forEach>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -91,7 +99,9 @@
                                         <span class="ace-icon fa fa-search"></span>
                                         搜索
                                     </button>
+                                    <c:if test="${highseaSet eq true}">
                                     <a href="/highsea/getconfig" class="btn btn-xs btn-primary" style="margin-left: 20px">公海设置</a>
+                                    </c:if>
                                 </div>
                             </div>
                         </div>
