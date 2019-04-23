@@ -7,6 +7,7 @@ import com.dayi.follow.enums.AgentCusTypeEnum;
 import com.dayi.follow.model.follow.Department;
 import com.dayi.follow.service.DeptService;
 import com.dayi.follow.service.HighSeaService;
+import com.dayi.follow.util.PageUtil;
 import com.dayi.follow.vo.LoginVo;
 import com.dayi.follow.vo.SearchVo;
 import com.dayi.follow.vo.ConfigVo;
@@ -44,8 +45,10 @@ public class HighSeaController extends BaseController {
 
     //公海列表-先以羊毛党作为基础
     @RequestMapping("list")
-    public String list(Model model, SearchVo searchVo, Page page, Integer orderType) {
+    public String list(HttpServletRequest request, Model model, SearchVo searchVo, Page page, Integer orderType) {
         page = highSeaService.findPage(page, searchVo, orderType);
+        String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
+        request.setAttribute("pageUrl", pageUrl);
         model.addAttribute("cusType", AgentCusTypeEnum.values());
         model.addAttribute("page", page);
         return "highsea/high_sea_list";

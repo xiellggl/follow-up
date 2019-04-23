@@ -109,7 +109,7 @@
         GROUP BY agent_id
         )g ON c.id = g.agent_id
 
-        WHERE 1 = 1  and b.disable != -1
+        WHERE 1 = 1  and b.disable != -1 and c.id is not null
     </sql>
 
    <sql id="followConditionSql">
