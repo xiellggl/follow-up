@@ -496,7 +496,7 @@
         <if test="1 == orderType">
             order by a.warehouse_date asc
         </if>
-        <if test="2 == orderType">
+        <if test="2 == orderType or null == orderType">
             order by a.warehouse_date desc
         </if>
 

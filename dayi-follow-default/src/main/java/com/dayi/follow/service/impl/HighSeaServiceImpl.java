@@ -109,7 +109,7 @@ public class HighSeaServiceImpl implements HighSeaService {
         String deptId = followUp.getDeptId();
 
         if (!ArrayUtils.contains(split, deptId)) {
-            return BizResult.fail("无法操作该用户!");
+            return BizResult.fail("您不在公海范围内!");
         }
 
         //判断当前是否代理中
