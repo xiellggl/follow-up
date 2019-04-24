@@ -326,6 +326,7 @@
                 },
                 succback: function (data) {
                     common.successMsg(data.msg);
+                    history.go(-1);     //返回上一页
                 }
             });
         });
