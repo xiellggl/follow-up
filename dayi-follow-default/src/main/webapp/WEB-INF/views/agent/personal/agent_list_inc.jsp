@@ -347,6 +347,7 @@
                                     <i class="ace-icon glyphicon glyphicon-log-in"></i>
                                 </a>
                             </c:if>
+                            <a href="javascript:;" data-toggle="tooltip" title="踢入公海" data-id="${item.id}" class="kick"><i class="ace-icon fa fa-users smaller-90"></i></a>
                         </td>
                     </tr>
                 </c:forEach>

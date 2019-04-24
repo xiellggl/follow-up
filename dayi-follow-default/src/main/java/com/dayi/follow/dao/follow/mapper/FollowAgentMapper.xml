@@ -109,7 +109,7 @@
         GROUP BY agent_id
         )g ON c.id = g.agent_id
 
-        WHERE 1 = 1  and b.disable != -1
+        WHERE 1 = 1  and b.disable != -1 and c.id is not null
     </sql>
 
    <sql id="followConditionSql">
@@ -458,13 +458,55 @@
         WHERE a.follow_id =#{followId}
     </select>
 
-    <select id="getAgentFund" parameterType="java.lang.String" resultType="java.math.BigDecimal">
-        SELECT ifnull(sum(0.8*b.cargo_interest+b.cargo_interest_puchas),0) from follow_agent a
+    <select id="searchHGCus" parameterType="java.lang.String" resultType="java.lang.String">
+
+    </select>
+
+    <update id="updateHSFlagBatch" parameterType="java.util.List">
+        update follow_agent
+        set high_sea_flag = 1
+        where
+        <foreach collection="list" separator="or" item="i" index="index" >
+            id=#{i.id}
+        </foreach>
+    </update>
+
+    <select id="findHSPage" parameterType="map" resultType="com.dayi.follow.vo.highsea.HSListVo">
+        SELECT b.id,b.link_person,b.id_card,b.record_invite_code inviteCode,a.customer_type,b.create_date,a.warehouse_date from follow_agent a
         left join (
-            SELECT agent_org_id,cargo_interest,cargo_interest_puchas from ${assistDataBase}.finance_account
-        )b on b.agent_org_id = a.agent_id
-        where b.agent_org_id is not NULL
-        and a.follow_id =#{followId}
+            SELECT id,link_person,id_card,record_invite_code,create_date,mobile from ${assistDataBase}.agent where del_status != -1
+        )b on b.id=a.agent_id
+        where a.high_sea_flag =1
+
+        <if test="null!=searchVo.createDateStart and ''!= searchVo.createDateStart and null!=searchVo.createDateEnd and ''!= searchVo.createDateEnd">
+            and b.create_date BETWEEN #{searchVo.createDateStart} and #{searchVo.createDateEnd}
+        </if>
+        <if test="''!=searchVo.mobile and null!=searchVo.mobile">
+            and b.mobile like CONCAT('%','${searchVo.mobile}','%')
+        </if>
+
+        <if test="null!=searchVo.customerType">
+            AND a.customer_type =#{searchVo.customerType}
+        </if>
+
+        <if test="null!=searchVo.warehouseDateStart and ''!= searchVo.warehouseDateStart and null!=searchVo.warehouseDateEnd and ''!= searchVo.warehouseDateEnd">
+            and a.warehouse_date BETWEEN #{searchVo.warehouseDateStart} and #{searchVo.warehouseDateEnd}
+        </if>
+
+        <if test="1 == orderType">
+            order by b.create_date asc
+        </if>
+        <if test="2 == orderType">
+            order by b.create_date desc
+        </if>
+        <if test="null == orderType">
+            order by a.warehouse_date desc
+        </if>
+
+    </select>
+
+    <select id="getProtocolNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+       SELECT count(0) FROM ${assistDataBase}.protocol WHERE STATUS in (1,2) AND agent = #{agentId}
     </select>
 
 </mapper>

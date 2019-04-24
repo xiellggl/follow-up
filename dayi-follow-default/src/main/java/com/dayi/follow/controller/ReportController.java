@@ -99,11 +99,11 @@ public class ReportController extends BaseController {
 
         page.setPageSize(Constants.DEFAULT_PAGE_SIZE);
 
-        page = reportService.findTeamDailyDetail(page, currUser.getDeptId(), date);
+        List<ReportVo> list = reportService.findTeamDailyDetail(currUser.getDeptId(), date);
 
         String pageUrl = PageUtil.getPageUrl(request.getRequestURI(), request.getQueryString());  // 构建分页查询请求
         request.setAttribute("pageUrl", pageUrl);
-        model.addAttribute("page", page);
+        model.addAttribute("list", list);
         model.addAttribute("date", date);
         model.addAttribute("deptName", currUser.getDeptName());
         return "/followup/daily/team_daily_detail";

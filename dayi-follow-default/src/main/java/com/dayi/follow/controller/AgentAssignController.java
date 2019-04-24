@@ -34,7 +34,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/agent/assign")
-public class AgentAssignController extends BaseController{
+public class AgentAssignController extends BaseController {
     @Resource
     FollowUpService followUpService;
     @Resource
@@ -59,6 +59,9 @@ public class AgentAssignController extends BaseController{
         return "/agent/assign_list";
     }
 
+    /**
+     * 代理商分配列表导出
+     */
     @RequestMapping(value = "/list/export")
     @ResponseBody
     public void orgExport(HttpServletRequest request, HttpServletResponse response, SearchVo searchVo) throws IOException {
@@ -95,24 +98,9 @@ public class AgentAssignController extends BaseController{
      */
     @RequestMapping("/save/batch")
     @ResponseBody
-    public BizResult assignSave(HttpServletRequest request, @RequestParam("agentIds") String agentIds, @RequestParam("followId") String followId) {
-        List<FollowAgent> followAgents = new ArrayList<FollowAgent>();
-
-        String[] split = StringUtils.split(agentIds, ",");
-        for (String s : split) {
-            Agent agent = agentService.get(Integer.valueOf(s));
-            if (agent == null) return BizResult.FAIL;
-
-            FollowAgent followAgent = new FollowAgent();
-            followAgent.setAgentId(Integer.valueOf(s));
-            followAgent.setFollowId(followId);
-
-            followAgents.add(followAgent);
-        }
-        return followAgentService.addBatch(followAgents);
-
+    public BizResult assignSave(@RequestParam("agentIds") String agentIds, @RequestParam("followId") String followId) {
+        return followAgentService.addBatch(agentIds, followId);
     }
-
 
 
     /**

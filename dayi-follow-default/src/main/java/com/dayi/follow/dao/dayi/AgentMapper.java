@@ -18,17 +18,15 @@ import java.util.List;
  */
 public interface AgentMapper extends BaseMapper<Agent> {
 
-
+    //获取代理商最后登录时间
     Date findLastLoginTime(@Param("agentId") Integer agentId);
 
+    //获取最近代理金额和日期
     AgentListVo countRecentAgent(@Param("agentId") Integer agentId);
 
     List<Agent> findByOrgId(@Param("orgId") Integer orgId);
 
     List<Agent> findLevel1ByOrgId(@Param("orgId") Integer orgId);
-
-    //获取代理中的资金
-    BigDecimal getAgentFund(@Param("agentId") Integer agentId);
 
     //获取当日入金
     BigDecimal getDayInCash(@Param("agentId") Integer agentId, @Param("todayStart") String todayStart, @Param("todayEnd") String todayEnd);
@@ -56,6 +54,7 @@ public interface AgentMapper extends BaseMapper<Agent> {
 
     //获取代理商的账户
     Page<LoginLogVo> findLoginLog(Page page, @Param("agentId") Integer agentId);
+
 
     Agent getByUcId(String ucId);
 

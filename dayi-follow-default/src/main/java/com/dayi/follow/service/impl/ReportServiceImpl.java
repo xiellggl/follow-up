@@ -83,12 +83,12 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public Page findTeamDailyDetail(Page page, String deptId, String date) {
-        if (StringUtils.isBlank(deptId) || StringUtils.isBlank(date)) return page;
+    public List<ReportVo> findTeamDailyDetail(String deptId, String date) {
+        if (StringUtils.isBlank(deptId) || StringUtils.isBlank(date)) return null;
         String startDate = DateTime.parse(date).millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
         String endDate = DateTime.parse(date).millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
 
-        return reportMapper.findTeamDailyDetail(page, deptId, startDate, endDate);
+        return reportMapper.findTeamDailyDetail(deptId, startDate, endDate);
     }
 
     @Override

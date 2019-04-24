@@ -36,7 +36,7 @@ public interface FollowAgentService {
 
     BizResult add(FollowAgent followAgent);
 
-    BizResult addBatch(List<FollowAgent> followAgents);
+    BizResult addBatch(String agentIds,String followId);
 
     BizResult clear(FollowAgent followAgent);
 

@@ -18,8 +18,10 @@ public interface ReportMapper extends BaseMapper<BaseVo> {
 
     Page<ReportVo> findTeamDaily(Page page, @Param("deptId") String deptId, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
-    Page<ReportVo> findTeamDailyDetail(Page page, @Param("deptId") String deptId, @Param("startDate") String startDate, @Param("endDate") String endDate);
+    //分页查出团队日报详情
+    List<ReportVo> findTeamDailyDetail(Page page, @Param("deptId") String deptId, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
+    //团队日报详情-不分页
     List<ReportVo> findTeamDailyDetail(@Param("deptId") String deptId, @Param("startDate") String startDate, @Param("endDate") String endDate);
 
     ReportVo sumByTime(@Param("followId") String followId, @Param("startDate") String startDate, @Param("endDate") String endDate);

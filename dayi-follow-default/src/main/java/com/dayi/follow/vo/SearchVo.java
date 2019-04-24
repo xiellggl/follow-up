@@ -1,10 +1,10 @@
 package com.dayi.follow.vo;
 
+import com.dayi.follow.util.CommonUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -71,6 +71,19 @@ public class SearchVo {
     //加于创客分配
     private Integer orgType;//机构类型
 
+    //加于公海列表
+    private String warehouseDate;//入库时间
+    private String warehouseDateStart;//注册时间开始
+    private String warehouseDateEnd;//注册时间结束
+
+    public String getWarehouseDate() {
+        return warehouseDate;
+    }
+
+    public void setWarehouseDate(String warehouseDate) {
+        this.warehouseDate = warehouseDate;
+    }
+
     public Integer getOrgType() {
         return orgType;
     }
@@ -96,11 +109,7 @@ public class SearchVo {
     }
 
     public String getChangeDateStart() {
-        if (!StringUtils.isBlank(changeDate)) {
-            String[] split = changeDate.split(" - ");
-            changeDateStart = split[0];
-        }
-        return changeDateStart;
+        return CommonUtils.getStart(changeDate);
     }
 
     public void setChangeDateStart(String changeDateStart) {
@@ -108,13 +117,23 @@ public class SearchVo {
     }
 
     public String getChangeDateEnd() {
-        if (!StringUtils.isBlank(changeDate)) {
-            String[] split = changeDate.split(" - ");
-            changeDateEnd = split[1];
-            DateTime parse = DateTime.parse(changeDateEnd, DateTimeFormat.forPattern("yyyy-MM-dd"));
-            changeDateEnd = parse.millisOfDay().withMaximumValue().toString("yyyy-MM-dd HH:mm:ss");
-        }
-        return changeDateEnd;
+        return CommonUtils.getEnd(changeDate);
+    }
+
+    public String getWarehouseDateStart() {
+        return CommonUtils.getStart(warehouseDate);
+    }
+
+    public void setWarehouseDateStart(String warehouseDateStart) {
+        this.warehouseDateStart = warehouseDateStart;
+    }
+
+    public String getWarehouseDateEnd() {
+        return CommonUtils.getEnd(warehouseDate);
+    }
+
+    public void setWarehouseDateEnd(String warehouseDateEnd) {
+        this.warehouseDateEnd = warehouseDateEnd;
     }
 
     public void setChangeDateEnd(String changeDateEnd) {
@@ -258,11 +277,7 @@ public class SearchVo {
     }
 
     public String getCreateDateStart() {
-        if (!StringUtils.isBlank(createDate)) {
-            String[] split = createDate.split(" - ");
-            createDateStart = split[0];
-        }
-        return createDateStart;
+        return CommonUtils.getStart(createDate);
     }
 
     public void setCreateDateStart(String createDateStart) {
@@ -270,11 +285,7 @@ public class SearchVo {
     }
 
     public String getCreateDateEnd() {
-        if (!StringUtils.isBlank(createDate)) {
-            String[] split = createDate.split(" - ");
-            createDateEnd = split[1];
-        }
-        return createDateEnd;
+        return CommonUtils.getEnd(createDate);
     }
 
     public void setCreateDateEnd(String createDateEnd) {
@@ -282,11 +293,7 @@ public class SearchVo {
     }
 
     public String getAssignDateStart() {
-        if (!StringUtils.isBlank(assignDate)) {
-            String[] split = assignDate.split(" - ");
-            assignDateStart = split[0];
-        }
-        return assignDateStart;
+        return CommonUtils.getStart(assignDate);
     }
 
     public void setAssignDateStart(String assignDateStart) {
@@ -294,11 +301,7 @@ public class SearchVo {
     }
 
     public String getAssignDateEnd() {
-        if (!StringUtils.isBlank(assignDate)) {
-            String[] split = assignDate.split(" - ");
-            assignDateEnd = split[1];
-        }
-        return assignDateEnd;
+        return CommonUtils.getEnd(assignDate);
     }
 
     public void setAssignDateEnd(String assignDateEnd) {

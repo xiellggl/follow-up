@@ -68,14 +68,14 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <c:if test="${empty page.results}">
+                                <c:if test="${empty list}">
                                     <tr>
                                         <td colspan="7" class="no_data">暂无数据记录</td>
                                     </tr>
                                 </c:if>
 
-                                <c:if test="${not empty page.results}">
-                                    <c:forEach items="${page.results}" var="item">
+                                <c:if test="${not empty list}">
+                                    <c:forEach items="${list}" var="item">
                                         <tr>
                                             <td>${item.name}</td>
                                             <td>${item.openAccountNum}</td>
@@ -92,11 +92,6 @@
                             <div>
                                 历史最高资产规模: <span class="hisMaxFund"></span>
                             </div>
-                            <c:if test="${not empty page}">
-                                <div class="pagerBar" id="pagerBar">
-                                    <common:page url="${pageUrl}" type="3"/>
-                                </div>
-                            </c:if>
                         </div>
                     </div>
                 </c:if>
