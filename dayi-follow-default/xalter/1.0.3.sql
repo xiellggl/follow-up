@@ -5,7 +5,7 @@ ADD COLUMN `high_sea_flag` tinyint(2) NOT NULL COMMENT '是否公海用户(0：�
 ADD COLUMN `warehouse_date` timestamp(0) NULL DEFAULT NULL COMMENT '入库时间' AFTER `high_sea_flag`;
 
 #将羊毛党的客户作为公海基础(这条看情况执行)
-#UPDATE follow_agent set high_sea_flag = 1,follow_id = null  where follow_id =X;
+#UPDATE follow_agent set high_sea_flag = 1,follow_id = null,warehouse_date=now(),update_time=now()  where follow_id =44;
 
 #建立配置表
 CREATE TABLE `config`  (
@@ -22,4 +22,8 @@ INSERT INTO `config`(`id`, `mark`, `value`, `create_time`, `update_time`) VALUES
 INSERT INTO `config`(`id`, `mark`, `value`, `create_time`, `update_time`) VALUES ('244218ca000002a1', 'PS_NUM', null, '2019-04-11 15:24:58', '2019-04-11 15:24:58');
 
 #添加公海权限
+INSERT INTO `permission`(`id`, `name`, `url`, `moduleid`, `display_name`, `display_status`, `del_status`, `status`, `sort`, `description`, `create_by`, `update_by`, `create_time`, `update_time`, `parentid`) VALUES ('244cbf59000001a1', '客户公海', '/highsea/list', '244cbf1a000001a1', NULL, 1, 0, 1, 0, '', 'admin', NULL, '2019-04-19 17:18:42', '2019-04-19 17:25:17', '');
+INSERT INTO `permission`(`id`, `name`, `url`, `moduleid`, `display_name`, `display_status`, `del_status`, `status`, `sort`, `description`, `create_by`, `update_by`, `create_time`, `update_time`, `parentid`) VALUES ('244cc529000001a1', '公海设置', '/highsea/getconfig', '244cbf1a000001a1', NULL, 0, 0, 1, 1, '', 'admin', 'admin', '2019-04-19 17:43:30', '2019-04-19 17:48:25', '244cbf59000001a1');
+INSERT INTO `module`(`id`, `parentid`, `name`, `url`, `status`, `del_status`, `sort`, `description`, `create_by`, `update_by`, `create_time`, `update_time`, `css_name`) VALUES ('244cbf1a000001a1', '', '公海', '', 1, 0, 10, '', 'admin', NULL, '2019-04-19 17:17:39', '2019-04-19 17:17:14', 'fa-users');
+
 
