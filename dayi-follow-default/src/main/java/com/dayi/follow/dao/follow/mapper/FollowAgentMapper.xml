@@ -494,9 +494,12 @@
         </if>
 
         <if test="1 == orderType">
-            order by a.warehouse_date asc
+            order by b.create_date asc
         </if>
-        <if test="2 == orderType or null == orderType">
+        <if test="2 == orderType">
+            order by b.create_date desc
+        </if>
+        <if test="null == orderType">
             order by a.warehouse_date desc
         </if>
 
