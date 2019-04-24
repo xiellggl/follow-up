@@ -264,6 +264,8 @@ public class FollowAgentServiceImpl implements FollowAgentService {
         }
 
         FollowAgent followAgent = followAgentMapper.getFollowAgentByAgentId(followAgentVo.getAgentId());
+        followAgent.setHighSeaFlag(0);
+
         if (followAgent == null) {//创建
             followAgent = new FollowAgent();
             followAgent.setId(followAgentMapper.getNewId());
@@ -277,7 +279,7 @@ public class FollowAgentServiceImpl implements FollowAgentService {
             followAgent.setTotalFundBefore(totalFund);
 
             followAgent.setCustomerType(AgentCusTypeEnum.NOT_LINK.getValue());
-
+            return 1 == followAgentMapper.add(followAgent) ? BizResult.SUCCESS : BizResult.FAIL;
         } else {
             //当前有跟进人
             FollowUp oldFollowUp = followUpMapper.get(followAgent.getFollowId());
@@ -294,7 +296,6 @@ public class FollowAgentServiceImpl implements FollowAgentService {
             followAgent.setUpdateTime(new Date());
             return 1 == followAgentMapper.updateAll(followAgent) ? BizResult.SUCCESS : BizResult.FAIL;
         }
-        return 1 == followAgentMapper.add(followAgent) ? BizResult.SUCCESS : BizResult.FAIL;
     }
 
     @Override
