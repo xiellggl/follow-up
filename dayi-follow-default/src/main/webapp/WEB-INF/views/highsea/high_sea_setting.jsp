@@ -45,7 +45,7 @@
                                 <div class="clearfix maintop">
                                     <div class="col-xs-4 col-sm-6 hidden-xs bank-item">
                                         <div class="input-group">
-                                            <span class="fs16 mr50">公海范围：</span>
+                                            <span class="fs16 mr20">公海范围：</span>
                                             <select name="deptIds" id="bankType" multiple="multiple" class="ml30"
                                                     style="height: 30px;display: none">
                                                 <c:forEach items="${deptTree}" var="item1">
@@ -69,7 +69,7 @@
                                         <div class="input-group">
                                             <span class="txt">私海客户数量上限：</span>
                                             <input type="number" name="num" class="form-control" value="${item.value}"
-                                                   style="left: 180px;top:-10px"/>
+                                                   style="left: 180px;top:-10px;width: 180px"/>
                                         </div>
                                     </div>
                                 </div>
