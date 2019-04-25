@@ -327,7 +327,7 @@
                 succback: function (data) {
                     common.successMsg(data.msg);
                     setTimeout(function () {
-                        history.go(-1);     //返回上一页
+                        window.location.href = document.referrer;     //返回上一页并刷新页面，不要用history.go(-1),没刷新页面
                     },1000);
                 }
             });
