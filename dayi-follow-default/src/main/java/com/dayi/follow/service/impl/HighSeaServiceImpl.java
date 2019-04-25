@@ -2,9 +2,11 @@ package com.dayi.follow.service.impl;
 
 
 import com.dayi.common.util.BizResult;
+import com.dayi.follow.dao.dayi.AgentMapper;
 import com.dayi.follow.dao.dayi.CountMapper;
 import com.dayi.follow.dao.follow.*;
 import com.dayi.follow.enums.ConfigEnum;
+import com.dayi.follow.model.follow.Account;
 import com.dayi.follow.model.follow.Config;
 import com.dayi.follow.model.follow.FollowAgent;
 import com.dayi.follow.model.follow.FollowUp;
@@ -20,6 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -42,6 +45,8 @@ public class HighSeaServiceImpl implements HighSeaService {
     FollowUpMapper followUpMapper;
     @Resource
     CountMapper countMapper;
+    @Resource
+    AgentMapper agentMapper;
     @Value("${dayi.dataBase}")
     String dayiDataBaseStr;
 
@@ -81,12 +86,27 @@ public class HighSeaServiceImpl implements HighSeaService {
 
             if (cusNum >= limit) return BizResult.fail("超过私海限制！");
 
+            Account account = agentMapper.getAccount(agentId);
+            BigDecimal agentFund = BigDecimal.ZERO;
+            BigDecimal totalFund = BigDecimal.ZERO;
+            if (account != null) {
+                agentFund = account.getCargoInterest().multiply(BigDecimal.valueOf(0.8)).add(account.getCargoInterestPuchas());
+
+                totalFund = account.getCargoInterest().multiply(BigDecimal.valueOf(0.8)).
+                        add(account.getCargoInterestPuchas()).
+                        add(account.getFrozen()).add(account.getUseable()).add(account.getOutFrozen());
+            }
+
+            fa.setAgentFundBefore(agentFund);
+            fa.setTotalFundBefore(totalFund);
+            fa.setAssignDate(new Date());
+
             fa.setHighSeaFlag(FollowAgent.NOT_HIGHSEA.getId());
             fa.setWarehouseDate(null);
             fa.setFollowId(followId);
             fa.setUpdateTime(new Date());
             return followAgentMapper.updateAll(fa) == 1 ? BizResult.SUCCESS : BizResult.FAIL;
-        }else {
+        } else {
             return BizResult.fail("您不在公海范围内！");
         }
     }
@@ -115,6 +135,13 @@ public class HighSeaServiceImpl implements HighSeaService {
         //判断当前是否代理中
         int num = followAgentMapper.getProtocolNum(agentId, dayiDataBaseStr);
         if (num > 0) return BizResult.fail("该用户有代理中的协议，操作失败！");
+
+        fa.setFollowUpBefore(followUp.getName());//记录当前分配信息到变更前
+        fa.setAssignDateBefore(fa.getAssignDate());
+
+        fa.setAgentFundBefore(null);//为空不是没有是不统计，统计来没有意义
+        fa.setTotalFundBefore(null);
+        fa.setAssignDate(null);
 
         fa.setFollowId(null);
         fa.setHighSeaFlag(FollowAgent.IS_HIGHSEA.getId());
