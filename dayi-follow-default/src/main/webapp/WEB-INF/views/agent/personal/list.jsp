@@ -8,6 +8,13 @@
         <c:set var="assignSave" value="true" />
     </c:if>
 </c:forEach>
+<c:set var="assignSelect" value="false" />
+<c:forEach items="${permissions}" var="item">
+    <%--团队代理商分配--%>
+    <c:if test="${item.url eq '/team/agent/followup/select'}">
+        <c:set var="assignSelect" value="true" />
+    </c:if>
+</c:forEach>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
