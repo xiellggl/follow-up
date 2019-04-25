@@ -303,7 +303,7 @@ public class FollowAgentServiceImpl implements FollowAgentService {
     @Log(target = OperateLog.class, action = BaseLog.LogAction.ADD, what = "代理商分配管理", note = "批量分配跟进人")
     public BizResult addBatch(String agentIds, String followId) {
         //判断是否超过私海上限
-        int cusNum = followUpMapper.getCusNum(followId, dayiDataBaseStr);
+        int cusNum = followUpMapper.getCusNum(followId, dayiDataBaseStr);//当前已有客户数量
 
         Config c = configMapper.getByMark(ConfigEnum.PS_NUM.name());
 
@@ -314,9 +314,7 @@ public class FollowAgentServiceImpl implements FollowAgentService {
 
         Integer limit = Integer.valueOf(value);
 
-        if (cusNum >= limit) return BizResult.fail("超过私海限制！");
-
-        List<FollowAgent> followAgents = new ArrayList<FollowAgent>();
+        List<FollowAgent> followAgents = new ArrayList<>();
 
         String[] split = StringUtils.split(agentIds, ",");
         for (String s : split) {
@@ -330,6 +328,7 @@ public class FollowAgentServiceImpl implements FollowAgentService {
             followAgents.add(followAgent);
         }
 
+        if (cusNum + followAgents.size() > limit) return BizResult.fail("超过私海限制！");
 
         for (FollowAgent followAgent : followAgents) {
             BizResult add = this.add(followAgent);
