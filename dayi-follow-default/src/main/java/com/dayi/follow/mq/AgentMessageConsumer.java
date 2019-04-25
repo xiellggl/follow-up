@@ -182,6 +182,7 @@ public class AgentMessageConsumer extends AbstractConsumer {
 
         followAgent.setCreateTime(registration.getRegisterTime());
         followAgent.setUpdateTime(registration.getRegisterTime());
+        followAgent.setHighSeaFlag(0);
         followAgentMapper.add(followAgent);
     }
 }
