@@ -332,7 +332,7 @@
                             <%-- 操作 --%>
                         <td>
                             <a href="./detail?agentId=${item.id}&returnUrl=${returnUrl}" data-toggle="tooltip" title="明细"><i class="ace-icon fa fa-pencil-square-o bigger-110"></i></a>
-                            <c:if test="${assignSave and ((item.recordInviteCode ne item.flowUpInviteCode) or (empty item.recordInviteCode)) and item.inCash <= 0 }">
+                            <c:if test="${assignSelect and ((item.recordInviteCode ne item.flowUpInviteCode) or (empty item.recordInviteCode)) and item.inCash <= 0 }">
                                 <a style="margin: 0 5px;" href="javascript:;" class="green green-assign"
                                    data-id="${item.id}" data-flowid="${item.followId}"
                                    data-name='<c:if test="${not empty item.linkPerson}">${fn:substring(item.linkPerson,0,1)}**</c:if>'
