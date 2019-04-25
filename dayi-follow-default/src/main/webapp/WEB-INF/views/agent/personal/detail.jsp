@@ -326,7 +326,9 @@
                 },
                 succback: function (data) {
                     common.successMsg(data.msg);
-                    history.go(-1);     //返回上一页
+                    setTimeout(function () {
+                        history.go(-1);     //返回上一页
+                    },1000);
                 }
             });
         });
