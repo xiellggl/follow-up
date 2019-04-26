@@ -319,20 +319,24 @@
         $(".goToUserLib").on("click",function (e) {
             e.preventDefault();
             var agentId = '${param.agentId}';
-            common.ajax.handle({
-                url: '/highsea/kick',
-                data: {
-                    agentId: agentId
-                },
-                succback: function (data) {
-                    common.successMsg(data.msg);
-                    setTimeout(function () {
-                        window.location.href = document.referrer;     //返回上一页并刷新页面，不要用history.go(-1),没刷新页面
-                    },1000);
-                }
-            });
-        });
 
+            layer.confirm("确定踢入公海吗？", {icon: 3}, function (index) {
+                layer.close(index);
+                common.ajax.handle({
+                    url: '/highsea/kick',
+                    data: {
+                        agentId: agentId
+                    },
+                    succback: function (data) {
+                        common.successMsg(data.msg);
+                        setTimeout(function () {
+                            window.location.href = document.referrer;     //返回上一页并刷新页面，不要用history.go(-1),没刷新页面
+                        },1000);
+                    }
+                });
+            });
+
+        });
     });
 </script>
 </body>
