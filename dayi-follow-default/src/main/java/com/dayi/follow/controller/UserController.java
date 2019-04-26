@@ -335,7 +335,7 @@ public class UserController extends BaseController {
     /**
      * 便于测试，生成销售统计，上线删除
      */
-    @RequestMapping("/test/log")
+    //@RequestMapping("/test/log")
     public BizResult test(Date date) {
         if (date == null) return BizResult.FAIL;
         List<FollowUp> followUps = followUpMapper.findAll();
