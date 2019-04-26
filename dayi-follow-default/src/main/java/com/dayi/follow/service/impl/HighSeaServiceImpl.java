@@ -140,7 +140,7 @@ public class HighSeaServiceImpl implements HighSeaService {
         String limitDate = DateTime.now().millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
 
         int num2 = followAgentMapper.getAgentApplyNum(agentId, limitDate, dayiDataBaseStr);
-        if (num2 > 0) return BizResult.fail("该用户有预约代理中的协议，操作失败！");
+        if (num2 > 0) return BizResult.fail("该用户预约代理中，操作失败！");
 
         fa.setFollowUpBefore(followUp.getName());//记录当前分配信息到变更前
         fa.setAssignDateBefore(fa.getAssignDate());
