@@ -15,6 +15,13 @@
         <c:set var="assignSelect" value="true" />
     </c:if>
 </c:forEach>
+<c:set var="kick" value="false" />
+<c:forEach items="${permissions}" var="item">
+    <%--团队代理商分配--%>
+    <c:if test="${item.url eq '/highsea/kick'}">
+        <c:set var="kick" value="true" />
+    </c:if>
+</c:forEach>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
