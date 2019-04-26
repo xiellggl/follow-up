@@ -506,7 +506,11 @@
     </select>
 
     <select id="getProtocolNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-       SELECT count(0) FROM ${assistDataBase}.protocol WHERE STATUS in (1,2) AND agent = #{agentId}
+       SELECT count(0) FROM ${assistDataBase}.protocol WHERE agent = #{agentId}
+    </select>
+
+    <select id="getAgentApplyNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT count(0) FROM ${assistDataBase}.finance_agent_apply WHERE agent = #{agentId} and status = 0 and create_date > #{limitDate}
     </select>
 
 </mapper>

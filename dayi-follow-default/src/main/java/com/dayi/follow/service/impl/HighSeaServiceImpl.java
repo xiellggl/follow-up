@@ -18,6 +18,7 @@ import com.dayi.follow.vo.highsea.HSListVo;
 import com.dayi.mybatis.support.Page;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -133,8 +134,13 @@ public class HighSeaServiceImpl implements HighSeaService {
         }
 
         //判断当前是否代理中
-        int num = followAgentMapper.getProtocolNum(agentId, dayiDataBaseStr);
-        if (num > 0) return BizResult.fail("该用户有代理中的协议，操作失败！");
+        int num1 = followAgentMapper.getProtocolNum(agentId, dayiDataBaseStr);
+        if (num1 > 0) return BizResult.fail("该用户有代理中的协议,或有历史代理记录，操作失败！");
+
+        String limitDate = DateTime.now().millisOfDay().withMinimumValue().toString("yyyy-MM-dd HH:mm:ss");
+
+        int num2 = followAgentMapper.getAgentApplyNum(agentId, limitDate, dayiDataBaseStr);
+        if (num2 > 0) return BizResult.fail("该用户有预约代理中的协议，操作失败！");
 
         fa.setFollowUpBefore(followUp.getName());//记录当前分配信息到变更前
         fa.setAssignDateBefore(fa.getAssignDate());
