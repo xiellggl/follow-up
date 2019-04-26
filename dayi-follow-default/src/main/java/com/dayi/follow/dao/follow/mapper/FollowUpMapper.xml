@@ -208,7 +208,7 @@
 
     <select id="getCusNum" parameterType="java.lang.String" resultType="java.lang.Integer">
         SELECT count(b.id)  from follow_agent a
-        left join (SELECT id FROM ${assistDataBase}.agent  where del_status != -1) b on b.id = a.agent_id
+        left join (SELECT id FROM ${assistDataBase}.agent) b on b.id = a.agent_id
         WHERE  a.follow_id =#{followId}
     </select>
 

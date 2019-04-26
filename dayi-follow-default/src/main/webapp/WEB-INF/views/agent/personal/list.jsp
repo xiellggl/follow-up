@@ -170,17 +170,21 @@
         $(".kick").on("click",function (e) {
             e.preventDefault();
             var agentId = $(this).attr("data-id");
-            common.ajax.handle({
-                url: '/highsea/kick',
-                data: {
-                    agentId: agentId
-                },
-                succback: function (data) {
-                    common.successMsg(data.msg, "reload");
-                }
+
+            //弹窗
+            layer.confirm("确定踢入公海吗？", {icon: 3}, function (index) {
+                layer.close(index);
+                common.ajax.handle({
+                    url: '/highsea/kick',
+                    data: {
+                        agentId: agentId
+                    },
+                    succback: function (data) {
+                        common.successMsg(data.msg, "reload");
+                    }
+                });
             });
         });
-
 
     });
 </script>
