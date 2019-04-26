@@ -8,6 +8,13 @@
         <c:set var="highseaSet" value="true" />
     </c:if>
 </c:forEach>
+<c:set var="drag" value="false" />
+<c:forEach items="${permissions}" var="item">
+    <%--团队代理商分配--%>
+    <c:if test="${item.url eq '/highsea/drag'}">
+        <c:set var="drag" value="true" />
+    </c:if>
+</c:forEach>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -147,7 +154,9 @@
                                         <td class="hidden-xs"><fmt:formatDate value="${item.warehouseDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                         <!-- 操作 -->
                                         <td>
+                                            <c:if test="${drag}">
                                             <button type="button" class="btn btn-primary dragCustomer" data-id="${item.id}">认领客户</button>
+                                            </c:if>
                                         </td>
                                     </tr>
                                 </c:forEach>
