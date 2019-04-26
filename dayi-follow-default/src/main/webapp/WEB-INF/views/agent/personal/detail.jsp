@@ -330,7 +330,7 @@
                     succback: function (data) {
                         common.successMsg(data.msg);
                         setTimeout(function () {
-                            window.location.href = document.referrer;     //返回上一页并刷新页面，不要用history.go(-1),没刷新页面
+                            window.location.href = '/agent/list?${returnUrl}';     //返回上一页并刷新页面，不要用history.go(-1),没刷新页面
                         },1000);
                     }
                 });
