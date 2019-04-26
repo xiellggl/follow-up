@@ -89,7 +89,9 @@ public interface FollowAgentMapper extends BaseMapper<FollowAgent> {
 
     Page<HSListVo> findHSPage(Page page, @Param("searchVo") SearchVo searchVo, @Param("orderType") Integer orderType, @Param("assistDataBase") String assistDataBase);
 
-    //返回代理商代理中的协议数量
+    //返回代理商代理的协议数量
     int getProtocolNum(@Param("agentId") Integer agentId, @Param("assistDataBase") String assistDataBase);
 
+    //返回预约代理中的协议数量
+    int getAgentApplyNum(@Param("agentId") Integer agentId, @Param("limitDate") String limitDate, @Param("assistDataBase") String assistDataBase);
 }
