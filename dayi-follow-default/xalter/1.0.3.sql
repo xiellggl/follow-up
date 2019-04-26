@@ -5,7 +5,7 @@ ADD COLUMN `high_sea_flag` tinyint(2) NOT NULL COMMENT '是否公海用户(0：�
 ADD COLUMN `warehouse_date` timestamp(0) NULL DEFAULT NULL COMMENT '入库时间' AFTER `high_sea_flag`;
 
 #将羊毛党的客户作为公海基础(这条看情况执行)
-#UPDATE follow_agent set high_sea_flag = 1,follow_id = null,warehouse_date=now(),update_time=now()  where follow_id =44;
+UPDATE follow_agent set high_sea_flag = 1,follow_id = null,warehouse_date=now(),update_time=now()  where follow_id =44;
 
 #建立配置表
 CREATE TABLE `config`  (
