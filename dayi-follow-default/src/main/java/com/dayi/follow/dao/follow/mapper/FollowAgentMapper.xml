@@ -83,7 +83,7 @@
         card_valid_date ,bank_sign_date , mobile,
         bank_sign , record_invite_code ,id_card,
         account_id,uc_id,bank_account
-        from ${assistDataBase}.agent  where del_status != -1
+        from ${assistDataBase}.agent
         )c on c.id = a.agent_id
 
         left join ${assistDataBase}.finance_account d on d.id = c.account_id
