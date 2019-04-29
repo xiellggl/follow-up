@@ -85,6 +85,16 @@
                                 </div>
                             </div>
                             <div class="col-xs-4 col-sm-2 btn-sespan">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="ace-icon fa fa-check-square-o"></i>
+                                    </span>
+                                    <select name="inCash">
+                                        <option value="">入金状态</option>
+                                        <option value="1" ${param.inCash=='1'?"selected":''}>已入金</option>
+                                        <option value="0" ${param.inCash=='0'?"selected":''}>未入金</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                         <div class="clearfix maintop">
@@ -99,6 +109,30 @@
                             </div>
                             <div>
                                 <input type="hidden" name="orderType" value="">
+                            </div>
+                            <div class="col-xs-4 col-sm-2 btn-sespan">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="ace-icon fa fa-check"></i>
+                                    </span>
+                                    <select name="idCardValidate">
+                                        <option value="">实名状态</option>
+                                        <option value="1"  ${param.idCardValidate=='1'?"selected":''}>已认证</option>
+                                        <option value="0"  ${param.idCardValidate=='0'?"selected":''}>未认证</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xs-4 col-sm-2 btn-sespan">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="ace-icon fa fa-credit-card"></i>
+                                    </span>
+                                    <select name="bankSign">
+                                        <option value="">绑卡状态</option>
+                                        <option value="1"  ${param.bankSign=='1'?"selected":''}>已绑定</option>
+                                        <option value="0"  ${param.bankSign=='0'?"selected":''}>未绑定</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="col-xs-4 col-sm-2 btn-sespan">
                                 <div class="btn-group dropup">
