@@ -475,12 +475,45 @@
         SELECT b.id,b.link_person,b.id_card,b.card_valid_date,b.bank_sign,b.bank_sign_date,c.total_in_cash inCash,
                c.frist_in_cash_date,b.record_invite_code inviteCode,a.customer_type,b.create_date,a.warehouse_date from follow_agent a
         left join (
-            SELECT id,account_id,link_person,id_card,card_valid_date,bank_sign,bank_sign_date,record_invite_code,create_date,mobile from ${assistDataBase}.agent
+            SELECT id,account_id,link_person,id_card,card_valid_date,bank_sign,bank_sign_date,record_invite_code,
+            create_date,mobile,bank_account from ${assistDataBase}.agent
         )b on b.id=a.agent_id
         left join (
             SELECT id,frist_in_cash_date,total_in_cash from ${assistDataBase}.finance_account
         )c on c.id=b.account_id
         where a.high_sea_flag =1
+
+        <if test="null!=searchVo.idCardValidate">
+            <choose>
+                <when test="1==searchVo.idCardValidate">
+                    AND b.id_card is not null
+                </when>
+                <otherwise>
+                    AND b.id_card is  null
+                </otherwise>
+            </choose>
+        </if>
+        -- 是否绑卡
+        <if test="null!=searchVo.bankSign">
+            <if test="0==searchVo.bankSign">
+                AND b.bank_account is null
+            </if>
+            <if test="1==searchVo.bankSign">
+                AND b.bank_account is not null
+            </if>
+        </if>
+
+        -- 是否入金
+        <if test="null!=searchVo.inCash">
+            <choose>
+                <when test="1==searchVo.inCash">
+                    AND ifnull(c.total_in_cash,0) > 0
+                </when>
+                <otherwise>
+                    AND ifnull(c.total_in_cash,0) &lt;= 0
+                </otherwise>
+            </choose>
+        </if>
 
         <if test="null!=searchVo.createDateStart and ''!= searchVo.createDateStart and null!=searchVo.createDateEnd and ''!= searchVo.createDateEnd">
             and b.create_date BETWEEN #{searchVo.createDateStart} and #{searchVo.createDateEnd}
