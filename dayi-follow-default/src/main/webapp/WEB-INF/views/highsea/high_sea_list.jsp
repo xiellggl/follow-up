@@ -152,47 +152,47 @@
 
                                         <%-- 实名认证 --%>
                                         <td>
-                                            <%--<c:choose>--%>
-                                                <%--<c:when test="${!empty item.idCard }">--%>
-                                                    <%--<span class="green" data-toggle="tooltip"--%>
-                                                          <%--title="认证时间：<fmt:formatDate value='${item.cardValidDate}' pattern='yyyy-MM-dd HH:mm:ss'/>">--%>
-                                                        <%--<i class="ace-icon fa fa-check"></i>--%>
-                                                    <%--</span>--%>
-                                                <%--</c:when>--%>
-                                                <%--<c:otherwise>--%>
-                                                    <%--<i class="ace-icon fa fa-times red"></i>--%>
-                                                <%--</c:otherwise>--%>
-                                            <%--</c:choose>--%>
+                                            <c:choose>
+                                                <c:when test="${!empty item.idCard }">
+                                                    <span class="green" data-toggle="tooltip"
+                                                          title="认证时间：<fmt:formatDate value='${item.cardValidDate}' pattern='yyyy-MM-dd HH:mm:ss'/>">
+                                                        <i class="ace-icon fa fa-check"></i>
+                                                    </span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <i class="ace-icon fa fa-times red"></i>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </td>
 
                                         <%-- 是否绑卡 --%>
                                         <td>
-                                            <%--<c:choose>--%>
-                                                <%--<c:when test="${item.bankSign eq true}">--%>
-                                                    <%--<span class="green" data-toggle="tooltip"--%>
-                                                          <%--title="绑卡时间：<fmt:formatDate value='${item.bankSignDate}' pattern='yyyy-MM-dd HH:mm:ss'/>">--%>
-                                                        <%--<i class="ace-icon fa fa-check"></i>--%>
-                                                    <%--</span>--%>
-                                                <%--</c:when>--%>
-                                                <%--<c:otherwise>--%>
-                                                    <%--<i class="ace-icon fa fa-times red"></i>--%>
-                                                <%--</c:otherwise>--%>
-                                            <%--</c:choose>--%>
+                                            <c:choose>
+                                                <c:when test="${item.bankSign eq true}">
+                                                    <span class="green" data-toggle="tooltip"
+                                                          title="绑卡时间：<fmt:formatDate value='${item.bankSignDate}' pattern='yyyy-MM-dd HH:mm:ss'/>">
+                                                        <i class="ace-icon fa fa-check"></i>
+                                                    </span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <i class="ace-icon fa fa-times red"></i>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </td>
 
                                         <%-- 是否入金 --%>
                                         <td>
-                                            <%--<c:choose>--%>
-                                                <%--<c:when test="${not empty item.fristInCashDate and item.inCash > 0}">--%>
-                                                    <%--<span class="green" data-toggle="tooltip"--%>
-                                                          <%--title="首次入金时间：<fmt:formatDate value='${item.fristInCashDate}' pattern='yyyy-MM-dd HH:mm:ss'/>">--%>
-                                                        <%--<i class="ace-icon fa fa-check"></i>--%>
-                                                    <%--</span>--%>
-                                                <%--</c:when>--%>
-                                                <%--<c:otherwise>--%>
-                                                    <%--<i class="ace-icon fa fa-times red"></i>--%>
-                                                <%--</c:otherwise>--%>
-                                            <%--</c:choose>--%>
+                                            <c:choose>
+                                                <c:when test="${not empty item.fristInCashDate and item.inCash > 0}">
+                                                    <span class="green" data-toggle="tooltip"
+                                                          title="首次入金时间：<fmt:formatDate value='${item.fristInCashDate}' pattern='yyyy-MM-dd HH:mm:ss'/>">
+                                                        <i class="ace-icon fa fa-check"></i>
+                                                    </span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <i class="ace-icon fa fa-times red"></i>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </td>
 
                                         <%--客户类型--%>
