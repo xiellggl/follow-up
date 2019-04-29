@@ -119,4 +119,12 @@ public class HSListVo {
     public void setWarehouseDate(Date warehouseDate) {
         this.warehouseDate = warehouseDate;
     }
+
+    public String getIdCard() {
+        return idCard;
+    }
+
+    public void setIdCard(String idCard) {
+        this.idCard = idCard;
+    }
 }
