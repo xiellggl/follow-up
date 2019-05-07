@@ -17,16 +17,18 @@ import org.springframework.data.redis.core.RedisTemplate;
 @EnableCaching//开启缓存
 public class RedisConfig extends CachingConfigurerSupport {
 
+    //这里会传入DayiComponentAutoConfiguration类的redisTemplate
     @Bean
     public CacheManager cacheManager(RedisTemplate<?, ?> redisTemplate) {
         CacheManager cacheManager = new RedisCacheManager(redisTemplate);
         return cacheManager;
     }
 
-    @Bean
-    public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory factory) {
-        RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(factory);
-        return redisTemplate;
-    }
+//这里配了没效果,被DayiComponentAutoConfiguration类的redisTemplate弄了
+//    @Bean
+//    public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory factory) {
+//        RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
+//        redisTemplate.setConnectionFactory(factory);
+//        return redisTemplate;
+//    }
 }
