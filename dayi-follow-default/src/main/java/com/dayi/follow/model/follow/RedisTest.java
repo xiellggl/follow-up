@@ -1,5 +1,7 @@
 package com.dayi.follow.model.follow;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 
 /**
@@ -13,6 +15,11 @@ public class RedisTest implements Serializable {
         this.name = name;
     }
 
+    public RedisTest() {
+
+    }
+
+
     public String getName() {
         return name;
     }
@@ -21,6 +28,7 @@ public class RedisTest implements Serializable {
         this.name = name;
     }
 
+    @JsonIgnore
     public String getValue() {
         return "default";
     }

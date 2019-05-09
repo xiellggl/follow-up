@@ -11,6 +11,7 @@ import com.dayi.follow.vo.highsea.HSListVo;
 import com.dayi.mybatis.support.BaseMapper;
 import com.dayi.mybatis.support.Page;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.math.BigDecimal;
 import java.util.Date;

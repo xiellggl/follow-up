@@ -11,10 +11,12 @@ import com.dayi.follow.util.PageUtil;
 import com.dayi.follow.util.StringUtil;
 import com.dayi.follow.vo.LoginVo;
 import com.dayi.follow.vo.SearchVo;
+import com.dayi.follow.vo.agent.AgentListVo;
 import com.dayi.mybatis.support.Page;
 import com.dayi.user.model.User;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,6 +43,8 @@ public class RedisController {
     UserComponent userComponent;
     @Resource
     RedisTemplate redisTemplate;
+    @Resource(name = "followRedisTemplate")
+    RedisTemplate followRedisTemplate;
 
     @RequestMapping("/set1")
     public void set() {
@@ -68,17 +72,15 @@ public class RedisController {
         String followId = currVo.getId();
         Page agentPage = agentService.findAgentPage(page, searchVo, followId);
 
-        FRedisService.set(followId, agentPage, redisTemplate);
+        FRedisService.set(followId, agentPage, followRedisTemplate);
     }
 
     @RequestMapping("/get2")
-    public void get2(HttpServletRequest request, Model model, String name) {
+    public String get2(HttpServletRequest request, Model model, String name) {
         LoginVo currVo = userComponent.getCurrUser(request);
         String followId = currVo.getId();
 
-        Object obj = FRedisService.get1(followId, redisTemplate);
-
-        Page page = (Page) obj;
+        Page page = FRedisService.get2(followId, followRedisTemplate);
 
         model.addAttribute("page", page);
 
@@ -93,9 +95,11 @@ public class RedisController {
 
         String[] bankTypesArr = request.getParameterValues("bankType");   //结算银行搜索参数
 
+        request.setAttribute("pageUrl", pageUrl);
         model.addAttribute("bankTypes", bankTypes);//银行类型
         model.addAttribute("bankTypesArr", bankTypesArr);
         model.addAttribute("customerTypes", AgentCusTypeEnum.values());
+        return "agent/personal/list";
     }
 
 
@@ -116,7 +120,7 @@ public class RedisController {
 
     @RequestMapping("/get3")
     public void get3(HttpServletRequest request, Model model, String name) {
-        Object set3 = FRedisService.get1("set3", redisTemplate);
+        RedisTest set3 = FRedisService.get2("set3", redisTemplate);
     }
 
     @RequestMapping("/set4")
@@ -136,14 +140,34 @@ public class RedisController {
     @RequestMapping("/get4")
     public void get4(HttpServletRequest request, Model model, String name) {
 
-        Object set3 = FRedisService.get1("set3", redisTemplate);
+        Object o = FRedisService.getList("set4", 0, redisTemplate);
     }
 
     @RequestMapping("/set5")
     public void set5() {
-        //redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
-        FRedisService.set("set5", "谢淋璃", redisTemplate);
-        FRedisService.setList("set5list", "谢淋璃", redisTemplate);
+        RedisTest xll1 = new RedisTest("xll1");
+        RedisTest xll2 = new RedisTest("xll2");
+
+        List list = new ArrayList();
+        list.add(xll1);
+        list.add(xll2);
+
+        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(Object.class));
+
+        FRedisService.setList("set5list", list, redisTemplate);
+    }
+
+    @RequestMapping("/get5")
+    @ResponseBody
+    public BizResult get5() {
+
+        Object o = FRedisService.getList("set5list", 0, redisTemplate);
+
+        return BizResult.succ(null);
+    }
+
+    @RequestMapping("/set6")
+    public void set6() {
 
         RedisTest xll1 = new RedisTest("xll1");
         RedisTest xll2 = new RedisTest("xll2");
@@ -152,16 +176,16 @@ public class RedisController {
         list.add(xll1);
         list.add(xll2);
 
+//        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(List.class));
 
-        FRedisService.setList("set5list", list, redisTemplate);
+
+        FRedisService.setList("set6", list, redisTemplate);
     }
 
-    @RequestMapping("/get5")
+    @RequestMapping("/get6")
     @ResponseBody
-    public BizResult get5() {
-        String s = (String) FRedisService.get1("set5", redisTemplate);
-
-        List set5list = FRedisService.getList("set5list", 1, redisTemplate);
+    public BizResult get6() {
+        List set5list = FRedisService.getList("set6", 0, redisTemplate);
 
         return BizResult.succ(set5list);
     }

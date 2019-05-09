@@ -2,6 +2,7 @@ package com.dayi.follow.service.impl;
 
 
 import com.dayi.common.util.Misc;
+import com.dayi.follow.model.follow.RedisTest;
 import com.dayi.follow.service.FRedisService;
 import org.springframework.data.redis.core.BoundListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -30,12 +31,15 @@ public class FRedisServiceImpl implements FRedisService {
         return false;
     }
 
+
+
     @Override
-    public Object get1(String key, RedisTemplate redisTemplate) {
-        redisTemplate.opsForValue().get(key);
-        return redisTemplate.opsForValue().get(key);
+    public RedisTest get1(String key, RedisTemplate redisTemplate) {
+        //有问题不能这样转
+        return (RedisTest) redisTemplate.opsForValue().get(key);
     }
 
+    //这样子不用显示强转，不过如果有错误还是会在运行时报不能cast异常
     @Override
     public <T> T get2(String key, RedisTemplate redisTemplate) {
         return (T) redisTemplate.opsForValue().get(key);

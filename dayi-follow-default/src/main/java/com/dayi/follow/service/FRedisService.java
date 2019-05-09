@@ -1,6 +1,7 @@
 package com.dayi.follow.service;
 
 
+import com.dayi.follow.model.follow.RedisTest;
 import org.springframework.data.redis.core.RedisTemplate;
 
 public interface FRedisService {
@@ -16,7 +17,7 @@ public interface FRedisService {
      */
     boolean setList(String key, Object value, RedisTemplate redisTemplate);
 
-    Object get1(String key, RedisTemplate redisTemplate);
+    RedisTest get1(String key, RedisTemplate redisTemplate);
 
     //使用T调用者不用进行强制类型转换
     <T> T get2(String key, RedisTemplate redisTemplate);
