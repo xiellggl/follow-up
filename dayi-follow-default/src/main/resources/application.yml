@@ -22,6 +22,9 @@ spring:
     host: 192.168.15.128
     port: 6379
     password: 1234
+    sentinel:
+      master: mymaster
+      nodes: 192.168.15.128:26379
 
 
 dayi:
