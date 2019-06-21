@@ -17,13 +17,13 @@ public class MessageConsumer {
     public static void main(String[] args) throws InterruptedException, MQClientException {
 
         // Instantiate with specified consumer group name.
-        DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("please_rename_unique_group_name");
+        DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("xll_consumer");
 
         // Specify name server addresses.
         consumer.setNamesrvAddr("192.168.15.128:9876");
 
         // Subscribe one more more topics to consume.
-        consumer.subscribe("TopicTest", "*");
+        consumer.subscribe("TopicTest2", "TagA");
         // Register callback to execute on arrival of messages fetched from brokers.
         consumer.registerMessageListener(new MessageListenerConcurrently() {
 
